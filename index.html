@@ -1,1 +1,691 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080812">
+
+<title>HEXCLØWN | Underground Digital Universe</title>
+
+<meta name="description" content="HEXCLØWN is an underground digital universe where technology, creativity and entertainment collide. Explore powerful tools, games, music and hidden digital experiences beyond the ordinary.">
+
+<style>
+:root {
+  --bg: #080812;
+  --panel: #111120;
+  --panel2: #17172a;
+  --purple: #a879ff;
+  --blue: #43baff;
+  --text: #f4f1ff;
+  --muted: #9290aa;
+  --border: #29273f;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* HEADER */
+
+header {
+  padding: 19px 17px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0c0c17;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--purple);
+  text-shadow: 0 0 14px #a879ff55;
+}
+
+.menu-btn {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  color: white;
+  padding: 9px 13px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* NAVIGATION */
+
+nav {
+  display: none;
+  background: #10101e;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+nav.show {
+  display: block;
+}
+
+nav a {
+  display: block;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 1px solid #222237;
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: var(--purple);
+}
+
+/* MAIN */
+
+.container {
+  width: 100%;
+  max-width: 1050px;
+  margin: auto;
+  padding: 20px 16px;
+}
+
+.hero {
+  background:
+    radial-gradient(circle at 90% 10%, #6336a544, transparent 35%),
+    linear-gradient(135deg, #17132a, #101a30);
+  border: 1px solid #49366e;
+  border-radius: 18px;
+  padding: 28px 20px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.hero-tag {
+  color: var(--blue);
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+  font-weight: bold;
+}
+
+.hero h1 {
+  font-size: 32px;
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.hero h1 span {
+  color: var(--purple);
+}
+
+.hero p {
+  color: #b3aec9;
+  font-size: 14px;
+  line-height: 1.7;
+  max-width: 500px;
+}
+
+.hero-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 19px;
+  background: var(--purple);
+  color: #090811;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* STATS */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 15px 8px;
+  text-align: center;
+}
+
+.stat h2 {
+  color: var(--purple);
+  font-size: 21px;
+}
+
+.stat p {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 6px;
+}
+
+/* SEARCH */
+
+.search-box {
+  margin-bottom: 25px;
+}
+
+.search-box input {
+  width: 100%;
+  background: var(--panel);
+  color: white;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  outline: none;
+  font-size: 14px;
+}
+
+.search-box input:focus {
+  border-color: var(--purple);
+}
+
+/* CATEGORIES */
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.section-heading h2 {
+  font-size: 19px;
+}
+
+.section-heading small {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.categories {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 13px;
+  margin-bottom: 18px;
+  scrollbar-width: none;
+}
+
+.categories button {
+  white-space: nowrap;
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 9px 15px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.categories button.active {
+  background: #30204b;
+  color: var(--purple);
+  border-color: var(--purple);
+}
+
+/* APP GRID */
+
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.app-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 17px 13px;
+  min-height: 145px;
+  position: relative;
+  transition: .2s;
+}
+
+.app-card:hover {
+  border-color: var(--purple);
+  transform: translateY(-3px);
+}
+
+.app-icon {
+  font-size: 27px;
+  margin-bottom: 13px;
+}
+
+.app-card h3 {
+  font-size: 14px;
+  margin-bottom: 7px;
+}
+
+.app-card p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.favorite {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #77748b;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.favorite.saved {
+  color: #ffca65;
+}
+
+.open-app {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 11px;
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.empty {
+  display: none;
+  text-align: center;
+  padding: 35px 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* FOOTER */
+
+footer {
+  text-align: center;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+  padding: 27px 15px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.9;
+}
+
+footer strong {
+  color: var(--purple);
+}
+
+.credit {
+  margin-top: 12px;
+  color: var(--purple);
+  font-weight: bold;
+}
+
+/* LARGER SCREENS */
+
+@media (min-width: 650px) {
+  .app-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .container {
+    padding: 30px 25px;
+  }
+
+  .hero {
+    padding: 45px 35px;
+  }
+
+  .hero h1 {
+    font-size: 42px;
+  }
+
+  nav.show {
+    display: flex;
+    gap: 25px;
+    padding: 0 25px;
+  }
+
+  nav a {
+    border: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCLØWN</div>
+  <button class="menu-btn" onclick="toggleMenu()">☰ MENU</button>
+</header>
+
+<nav id="navigation">
+  <a href="#">Home</a>
+  <a href="#explore">Explore</a>
+  <a href="#apps">Applications</a>
+  <a href="#favorites">Favourites</a>
+  <a href="#about">About</a>
+</nav>
+
+<main class="container">
+
+  <section class="hero">
+    <div class="hero-tag">● UNDERGROUND DIGITAL NETWORK</div>
+
+    <h1>ENTER THE <span>UNKNOWN.</span></h1>
+
+    <p>
+      Welcome to HEXCLØWN — an underground digital universe
+      where technology, creativity and entertainment collide.
+      Discover something beyond the ordinary.
+    </p>
+
+    <a href="#apps" class="hero-btn">EXPLORE THE HUB →</a>
+  </section>
+
+  <section class="stats">
+    <div class="stat">
+      <h2 id="appCount">29</h2>
+      <p>FEATURES PLANNED</p>
+    </div>
+
+    <div class="stat">
+      <h2>06</h2>
+      <p>MAIN CATEGORIES</p>
+    </div>
+
+    <div class="stat">
+      <h2 id="favCount">0</h2>
+      <p>YOUR FAVOURITES</p>
+    </div>
+  </section>
+
+  <section class="search-box" id="explore">
+    <input
+      type="search"
+      id="search"
+      placeholder="Search tools, games, music..."
+      oninput="filterApps()"
+    >
+  </section>
+
+  <section id="apps">
+
+    <div class="section-heading">
+      <h2>Explore Applications</h2>
+      <small>DISCOVER THE HUB</small>
+    </div>
+
+    <div class="categories">
+      <button class="active" onclick="setCategory('all',this)">All</button>
+      <button onclick="setCategory('games',this)">Games</button>
+      <button onclick="setCategory('tools',this)">Tools</button>
+      <button onclick="setCategory('audio',this)">Audio</button>
+      <button onclick="setCategory('creative',this)">Creative</button>
+      <button onclick="setCategory('learning',this)">Learning</button>
+      <button onclick="setCategory('security',this)">Cyber</button>
+    </div>
+
+    <div class="app-grid" id="appGrid">
+
+      <article class="app-card" data-category="games">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🎮</div>
+        <h3>Game Zone</h3>
+        <p>Discover games and interactive challenges.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="games">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🧩</div>
+        <h3>Quiz Centre</h3>
+        <p>Test your knowledge and sharpen your mind.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="tools">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">⏱️</div>
+        <h3>Focus Manager</h3>
+        <p>Organise tasks and manage your time.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="tools">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">📝</div>
+        <h3>Text Editor</h3>
+        <p>Write and organise your notes.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="audio">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🎵</div>
+        <h3>Audio Studio</h3>
+        <p>Experiment with sounds and chiptunes.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="audio">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🎙️</div>
+        <h3>Voice FX Studio</h3>
+        <p>Explore audio effects and voice recording.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="creative">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🎨</div>
+        <h3>Pixel Art</h3>
+        <p>Create your own pixel artwork.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="learning">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">📚</div>
+        <h3>Learning Hub</h3>
+        <p>Explore educational activities and flashcards.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="security">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🔐</div>
+        <h3>Password Checker</h3>
+        <p>Learn about password strength and safety.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="tools">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🔄</div>
+        <h3>Quick Converter</h3>
+        <p>Convert common units and values.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="games">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🧠</div>
+        <h3>Memory Match</h3>
+        <p>Challenge your memory with matching games.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="creative">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">⚡</div>
+        <h3>Code Playground</h3>
+        <p>Experiment with simple code examples.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+    </div>
+
+    <div class="empty" id="empty">
+      No applications found. Try another search.
+    </div>
+
+  </section>
+
+  <section id="favorites" style="margin-top:35px">
+    <div class="section-heading">
+      <h2>Your Favourites</h2>
+      <small>SAVED APPS</small>
+    </div>
+    <p style="font-size:12px;color:#9290aa">
+      Tap the ☆ on any application to save it here.
+      Your choices are saved on this device.
+    </p>
+  </section>
+
+</main>
+
+<footer id="about">
+  <strong>HEXCLØWN</strong><br>
+  THE UNDERGROUND DIGITAL UNIVERSE<br>
+  Technology · Creativity · Entertainment
+
+  <div class="credit">
+    99% CODED BY TIJANI ALIYU
+    <br>
+    (HEXWHISPER / CYBERCODECLOWN)
+  </div>
+
+  <br>
+  © 2026 HEXCLØWN. ALL RIGHTS RESERVED.
+</footer>
+
+<script>
+let currentCategory = "all";
+
+function toggleMenu() {
+  document.getElementById("navigation")
+    .classList.toggle("show");
+}
+
+function setCategory(category, button) {
+  currentCategory = category;
+
+  document.querySelectorAll(".categories button")
+    .forEach(btn => btn.classList.remove("active"));
+
+  button.classList.add("active");
+
+  filterApps();
+}
+
+function filterApps() {
+  const search = document.getElementById("search")
+    .value.toLowerCase();
+
+  const cards = document.querySelectorAll(".app-card");
+  let visible = 0;
+
+  cards.forEach(card => {
+    const matchesSearch =
+      card.innerText.toLowerCase().includes(search);
+
+    const matchesCategory =
+      currentCategory === "all" ||
+      card.dataset.category === currentCategory;
+
+    const show = matchesSearch && matchesCategory;
+
+    card.style.display = show ? "block" : "none";
+
+    if (show) visible++;
+  });
+
+  document.getElementById("empty").style.display =
+    visible === 0 ? "block" : "none";
+}
+
+/* FAVOURITES */
+
+function getFavorites() {
+  try {
+    return JSON.parse(
+      localStorage.getItem("hexclown_favorites") || "[]"
+    );
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveFavorites(favorites) {
+  try {
+    localStorage.setItem(
+      "hexclown_favorites",
+      JSON.stringify(favorites)
+    );
+  } catch (error) {
+    alert("Your browser could not save favourites.");
+  }
+}
+
+function toggleFavorite(button) {
+  const card = button.closest(".app-card");
+  const name = card.querySelector("h3").innerText;
+
+  let favorites = getFavorites();
+
+  if (favorites.includes(name)) {
+    favorites = favorites.filter(item => item !== name);
+    button.classList.remove("saved");
+    button.innerText = "☆";
+  } else {
+    favorites.push(name);
+    button.classList.add("saved");
+    button.innerText = "★";
+  }
+
+  saveFavorites(favorites);
+  updateFavoriteCount();
+}
+
+function loadFavorites() {
+  const favorites = getFavorites();
+
+  document.querySelectorAll(".app-card").forEach(card => {
+    const name = card.querySelector("h3").innerText;
+    const button = card.querySelector(".favorite");
+
+    if (favorites.includes(name)) {
+      button.classList.add("saved");
+      button.innerText = "★";
+    }
+  });
+
+  updateFavoriteCount();
+}
+
+function updateFavoriteCount() {
+  document.getElementById("favCount").innerText =
+    getFavorites().length;
+}
+
+loadFavorites();
+</script>
+
+</body>
+      </html>
+          
