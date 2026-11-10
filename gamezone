@@ -1,1 +1,646 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080812">
+<title>HEXCLØWN | GameZone</title>
+
+<style>
+:root {
+  --bg:#080812;
+  --panel:#111121;
+  --panel2:#19192d;
+  --purple:#9b5cff;
+  --blue:#35c9ff;
+  --text:#f4f1ff;
+  --muted:#9998b5;
+  --green:#4beba1;
+  --red:#ff647c;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header {
+  position:sticky;top:0;z-index:10;
+  background:#090916ed;
+  border-bottom:1px solid #292744;
+  padding:15px;
+  display:flex;justify-content:space-between;
+  align-items:center;gap:10px;
+}
+.logo {
+  font-size:21px;font-weight:900;
+  letter-spacing:2px;color:white;
+}
+.logo span {color:var(--purple)}
+button,input {font:inherit}
+button {
+  cursor:pointer;border:0;border-radius:9px;
+  padding:11px 14px;color:white;
+  background:var(--panel2);
+}
+button:hover {filter:brightness(1.2)}
+.primary {
+  background:linear-gradient(120deg,#753cff,#268bff);
+}
+.back {background:#29243e}
+main {max-width:1100px;margin:auto;padding:18px}
+.hero {
+  padding:30px 20px;text-align:center;
+  background:linear-gradient(140deg,#17102e,#101a31);
+  border:1px solid #302653;border-radius:17px;
+  margin-bottom:22px;
+}
+.hero h1 {
+  font-size:clamp(30px,7vw,48px);
+  margin:5px;color:white;
+}
+.hero h1 span {color:var(--purple)}
+.hero p {color:var(--muted);line-height:1.6}
+.stats {
+  display:flex;justify-content:center;
+  gap:25px;flex-wrap:wrap;margin-top:18px;
+}
+.stat strong {display:block;color:var(--blue);font-size:21px}
+.stat small {color:var(--muted)}
+.search {
+  width:100%;padding:14px;
+  border-radius:10px;border:1px solid #33304e;
+  background:#111120;color:white;
+  margin:12px 0 18px;outline:none;
+}
+.filters {display:flex;gap:8px;overflow-x:auto;padding-bottom:13px}
+.filters button {white-space:nowrap}
+.filters button.active {background:var(--purple)}
+.section-title {margin:25px 0 13px;font-size:19px}
+.games {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+  gap:12px;
+}
+.game-card {
+  background:var(--panel);border:1px solid #282640;
+  border-radius:13px;padding:15px;
+  min-height:145px;display:flex;
+  flex-direction:column;justify-content:space-between;
+}
+.game-card .emoji {font-size:27px}
+.game-card h3 {font-size:14px;line-height:1.4;margin:10px 0}
+.game-card small {color:var(--muted)}
+.game-card button {margin-top:12px;background:#292344}
+.game-card button:hover {background:#6037a8}
+#gameScreen {
+  display:none;background:var(--panel);
+  border:1px solid #302c50;border-radius:16px;
+  padding:18px;margin-top:15px;min-height:350px;
+}
+#gameScreen h2 {color:var(--blue)}
+#gameArea {margin-top:20px;line-height:1.6}
+#gameArea button {margin:5px}
+.game-info {
+  display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:10px;color:var(--muted);
+}
+.answer-grid {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;margin:15px 0;
+}
+.answer-grid button {min-height:48px}
+.big-number {font-size:36px;font-weight:bold;color:var(--purple)}
+.game-input {
+  width:100%;padding:13px;margin:10px 0;
+  border-radius:9px;border:1px solid #393452;
+  background:#080812;color:white;
+}
+.board {
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:7px;max-width:310px;margin:18px auto;
+}
+.board button {
+  aspect-ratio:1;font-size:27px;
+  background:#25223c;
+}
+.tiles {
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:6px;max-width:330px;margin:15px auto;
+}
+.tiles button {aspect-ratio:1;font-size:20px;padding:5px}
+#message {color:var(--green);font-weight:bold;margin:15px 0}
+footer {
+  text-align:center;padding:30px 12px;
+  color:var(--muted);font-size:12px;
+}
+.hidden {display:none!important}
+@media(max-width:450px) {
+  main {padding:12px}
+  .games {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .game-card {padding:12px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCL<span>Ø</span>WN</div>
+  <button onclick="showHome()">⌂ HOME</button>
+</header>
+
+<main>
+<section id="home">
+  <div class="hero">
+    <p>THE UNDERGROUND DIGITAL UNIVERSE</p>
+    <h1>GAME<span>ZONE</span></h1>
+    <p>32 games. Six worlds. Endless challenges.<br>
+    Choose your game and enter the arena.</p>
+    <div class="stats">
+      <div class="stat"><strong>32</strong><small>GAMES</small></div>
+      <div class="stat"><strong>06</strong><small>GENRES</small></div>
+      <div class="stat"><strong id="totalBest">0</strong><small>BEST SCORES</small></div>
+    </div>
+  </div>
+
+  <input class="search" id="search"
+    placeholder="⌕ Search games..."
+    oninput="renderGames()">
+
+  <div class="filters" id="filters"></div>
+  <div id="gameList"></div>
+</section>
+
+<section id="gameScreen">
+  <button class="back" onclick="showHome()">← BACK TO GAMEZONE</button>
+  <h2 id="gameTitle">Game</h2>
+  <div class="game-info">
+    <span id="gameGenre"></span>
+    <span>Best: <b id="bestScore">0</b></span>
+    <span>Score: <b id="score">0</b></span>
+  </div>
+  <div id="gameArea"></div>
+  <div id="message"></div>
+</section>
+</main>
+
+<footer>
+  HEXCLØWN GAMEZONE<br><br>
+  99% CODED BY TIJANI ALIYU<br>
+  (HEXWHISPER / CYBERCODECLOWN)
+</footer>
+
+<script>
+const categories = [
+"Arcade & Action",
+"Puzzle & Logic",
+"Board & Strategy",
+"Simulation & Tycoon",
+"Educational & Trivia",
+"Rhythm & Audio"
+];
+
+const games = [
+["Space Invaders Retro Shooter","Arcade & Action","🚀","arcade"],
+["Flappy Bird Arcade","Arcade & Action","🐦","tap"],
+["Brick Breaker","Arcade & Action","🧱","arcade"],
+["Pac-Man Maze Lite","Arcade & Action","👾","maze"],
+["Dino Runner","Arcade & Action","🦖","tap"],
+["Bubble Shooter","Arcade & Action","🫧","arcade"],
+["Geometry Dash Lite","Arcade & Action","🔺","tap"],
+
+["2048 Number Tile Merger","Puzzle & Logic","🔢","2048"],
+["Sudoku Grid Challenge","Puzzle & Logic","🔣","sudoku"],
+["Tetris Falling Blocks","Puzzle & Logic","🟪","tetris"],
+["Minesweeper Classic","Puzzle & Logic","💣","mines"],
+["Wordle","Puzzle & Logic","🔤","wordle"],
+["Block Slide Puzzle","Puzzle & Logic","🧩","slide"],
+["Tower of Hanoi","Puzzle & Logic","🗼","hanoi"],
+
+["Checkers Classic","Board & Strategy","⚫","board"],
+["Chess Lite Local Match","Board & Strategy","♟️","board"],
+["Connect Four Grid","Board & Strategy","🔴","connect"],
+["Tic-Tac-Toe Ultimate","Board & Strategy","❎","tic"],
+["Battleship Grid","Board & Strategy","🚢","board"],
+["Reversi / Othello Strategy","Board & Strategy","⚪","board"],
+
+["Whisper Tower","Simulation & Tycoon","🏢","sim"],
+["C3CLOWN Café Internet Shop","Simulation & Tycoon","💻","sim"],
+["Whisper Mining","Simulation & Tycoon","⛏️","sim"],
+
+["General Knowledge Quiz","Educational & Trivia","🧠","quiz"],
+["Typing Speedrun Racer","Educational & Trivia","⌨️","typing"],
+["Math Challenge","Educational & Trivia","➗","math"],
+["Countries & Flags","Educational & Trivia","🌍","flags"],
+["C3CLOWN Security: Phishing Detective","Educational & Trivia","🛡️","phishing"],
+["Vocabulary Word Scramble","Educational & Trivia","📚","scramble"],
+
+["Piano Tiles: Speed Tapper","Rhythm & Audio","🎹","rhythm"],
+["Guitar Hero-Style Rhythm Strips","Rhythm & Audio","🎸","rhythm"],
+["8-Bit Chiptune Matrix Sequencer","Rhythm & Audio","🎛️","sequencer"]
+];
+
+let activeCategory = "All";
+let currentGame = null;
+let score = 0;
+let gameTimer = null;
+let gameData = {};
+let bestScores = JSON.parse(localStorage.getItem("hexclown_bests") || "{}");
+
+const $ = id => document.getElementById(id);
+
+function updateStats() {
+  $("totalBest").textContent =
+    Object.keys(bestScores).filter(k => bestScores[k] > 0).length;
+}
+
+function buildFilters() {
+  $("filters").innerHTML =
+    ["All",...categories].map(c =>
+      `<button class="${c===activeCategory?'active':''}"
+      onclick="setCategory(${JSON.stringify(c)})">${c}</button>`
+    ).join("");
+}
+
+function setCategory(c) {
+  activeCategory = c;
+  buildFilters();
+  renderGames();
+}
+
+function renderGames() {
+  const q = $("search").value.toLowerCase();
+  let html = "";
+
+  categories.forEach(cat => {
+    if(activeCategory !== "All" && activeCategory !== cat) return;
+    const list = games.filter(g =>
+      g[1]===cat && g[0].toLowerCase().includes(q)
+    );
+    if(!list.length) return;
+
+    html += `<h2 class="section-title">${cat}</h2><div class="games">`;
+    list.forEach(g => {
+      const index = games.indexOf(g);
+      html += `
+      <div class="game-card">
+        <div>
+          <div class="emoji">${g[2]}</div>
+          <h3>${g[0]}</h3>
+          <small>Best: ${bestScores[index] || 0}</small>
+        </div>
+        <button onclick="openGame(${index})">PLAY NOW →</button>
+      </div>`;
+    });
+    html += "</div>";
+  });
+
+  $("gameList").innerHTML = html ||
+    "<p>No games found. Try another search.</p>";
+}
+
+function stopTimer() {
+  if(gameTimer) clearInterval(gameTimer);
+  gameTimer = null;
+}
+
+function showHome() {
+  stopTimer();
+  $("home").style.display = "block";
+  $("gameScreen").style.display = "none";
+  currentGame = null;
+  updateStats();
+  renderGames();
+}
+
+function openGame(index) {
+  stopTimer();
+  currentGame = index;
+  score = 0;
+  gameData = {};
+  const g = games[index];
+
+  $("home").style.display = "none";
+  $("gameScreen").style.display = "block";
+  $("gameTitle").textContent = g[0];
+  $("gameGenre").textContent = g[1];
+  $("bestScore").textContent = bestScores[index] || 0;
+  $("score").textContent = 0;
+  $("message").textContent = "";
+
+  launchGame(g[3]);
+  window.scrollTo(0,0);
+}
+
+function addScore(n=1) {
+  score += n;
+  $("score").textContent = score;
+  if(score > (bestScores[currentGame] || 0)) {
+    bestScores[currentGame] = score;
+    localStorage.setItem("hexclown_bests",JSON.stringify(bestScores));
+    $("bestScore").textContent = score;
+    updateStats();
+  }
+}
+
+function say(text) {
+  $("message").textContent = text;
+}
+
+function area(html) {
+  $("gameArea").innerHTML = html;
+}
+
+function launchGame(type) {
+  switch(type) {
+    case "quiz": quizGame(); break;
+    case "math": mathGame(); break;
+    case "flags": flagsGame(); break;
+    case "phishing": phishingGame(); break;
+    case "typing": typingGame(); break;
+    case "scramble": scrambleGame(); break;
+    case "tic": ticGame(); break;
+    case "connect": connectGame(); break;
+    case "2048": numberGame(); break;
+    case "wordle": wordleGame(); break;
+    case "tap": tapGame(); break;
+    case "rhythm": rhythmGame(); break;
+    case "sequencer": sequencerGame(); break;
+    case "sim": simGame(); break;
+    case "maze": mazeGame(); break;
+    case "slide": slideGame(); break;
+    case "hanoi": hanoiGame(); break;
+    case "sudoku": sudokuGame(); break;
+    case "mines": minesGame(); break;
+    case "tetris": tetrisGame(); break;
+    case "board": boardGame(); break;
+    default: arcadeGame();
+  }
+}
+
+/* EDUCATIONAL GAMES */
+
+const questions = [
+  ["What is the capital of Nigeria?",["Lagos","Abuja","Kano","Ibadan"],1],
+  ["Which planet is called the Red Planet?",["Earth","Venus","Mars","Jupiter"],2],
+  ["How many days are in a leap year?",["364","365","366","367"],2],
+  ["Which ocean is the largest?",["Atlantic","Indian","Arctic","Pacific"],3],
+  ["What is the chemical symbol for water?",["CO2","H2O","O2","NaCl"],1],
+  ["Which animal is the largest mammal?",["Elephant","Blue whale","Giraffe","Shark"],1],
+  ["How many sides has a hexagon?",["5","6","7","8"],1]
+];
+
+function quizGame() {
+  gameData.i = 0;
+  area(`<h3>General Knowledge Quiz</h3>
+  <p id="question"></p><div class="answer-grid" id="answers"></div>
+  <button onclick="quizGame()">RESTART QUIZ</button>`);
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = questions[gameData.i % questions.length];
+  $("question").textContent = q[0];
+  $("answers").innerHTML = q[1].map((a,i)=>
+    `<button onclick="answerQuiz(${i})">${a}</button>`
+  ).join("");
+}
+
+function answerQuiz(i) {
+  const q = questions[gameData.i % questions.length];
+  if(i === q[2]) {addScore(10);say("Correct! +10 points");}
+  else say("Not quite! Try the next question.");
+  gameData.i++;
+  showQuestion();
+}
+
+function mathGame() {
+  nextMath();
+}
+function nextMath() {
+  const a = Math.floor(Math.random()*20)+1;
+  const b = Math.floor(Math.random()*20)+1;
+  const op = Math.random()>.5 ? "+" : "×";
+  const ans = op==="+" ? a+b : a*b;
+  gameData.answer = ans;
+  area(`<h3>Solve this:</h3>
+  <div class="big-number">${a} ${op} ${b} = ?</div>
+  <input class="game-input" id="mathAnswer" type="number" placeholder="Your answer">
+  <button class="primary" onclick="checkMath()">SUBMIT</button>`);
+}
+function checkMath() {
+  if(Number($("mathAnswer").value)===gameData.answer) {
+    addScore(10);say("Correct answer!");
+  } else say("Incorrect. Give it another try!");
+  nextMath();
+}
+
+const flags = [
+  ["🇳🇬","Nigeria"],["🇬🇭","Ghana"],["🇬🇧","United Kingdom"],
+  ["🇺🇸","United States"],["🇯🇵","Japan"],["🇧🇷","Brazil"],
+  ["🇨🇦","Canada"],["🇫🇷","France"]
+];
+
+function flagsGame() {
+  const f = flags[Math.floor(Math.random()*flags.length)];
+  gameData.flag = f[1];
+  const options = [f[1]];
+  while(options.length<4) {
+    const x = flags[Math.floor(Math.random()*flags.length)][1];
+    if(!options.includes(x)) options.push(x);
+  }
+  options.sort(()=>Math.random()-.5);
+  area(`<h3>Which country does this flag belong to?</h3>
+  <div class="big-number">${f[0]}</div>
+  <div class="answer-grid">${options.map(o=>
+    `<button onclick="checkFlag('${o}')">${o}</button>`).join("")}</div>
+  <button onclick="flagsGame()">SKIP</button>`);
+}
+function checkFlag(a) {
+  if(a===gameData.flag) {addScore(10);say("Correct!");}
+  else say("The answer was "+gameData.flag);
+  flagsGame();
+}
+
+const phishingExamples = [
+  ["Your account has a security alert. Visit our official website directly to check it.","SAFE"],
+  ["URGENT! Send your password and verification code to claim a prize!","SUSPICIOUS"],
+  ["A friend sends you an unexpected link asking for personal details.","SUSPICIOUS"],
+  ["You open your bank's official app and check its security notifications.","SAFE"]
+];
+
+function phishingGame() {
+  const p = phishingExamples[Math.floor(Math.random()*phishingExamples.length)];
+  gameData.answer = p[1];
+  area(`<h3>Security Detective 🛡️</h3>
+  <p>Is this message safe or suspicious?</p>
+  <div class="hero">${p[0]}</div>
+  <button onclick="checkPhishing('SAFE')">SAFE</button>
+  <button onclick="checkPhishing('SUSPICIOUS')">SUSPICIOUS</button>
+  <p>Learning tip: Never share passwords or verification codes.</p>`);
+}
+function checkPhishing(a) {
+  if(a===gameData.answer) {addScore(10);say("Good detective work!");}
+  else say("Review the warning signs and try again.");
+  phishingGame();
+}
+
+function typingGame() {
+  const words = ["technology","universe","mystery","digital","creative","keyboard"];
+  gameData.word = words[Math.floor(Math.random()*words.length)];
+  area(`<h3>Type the word shown below:</h3>
+  <div class="big-number">${gameData.word}</div>
+  <input class="game-input" id="typed" placeholder="Type here">
+  <button class="primary" onclick="checkTyping()">CHECK</button>`);
+}
+function checkTyping() {
+  if($("typed").value.trim().toLowerCase()===gameData.word) {
+    addScore(10);say("Perfect typing!");
+  } else say("Not quite. Try again.");
+  typingGame();
+}
+
+const vocabulary = ["MYSTERY","PLANET","JOURNEY","COURAGE","FUTURE"];
+function scrambleGame() {
+  const w = vocabulary[Math.floor(Math.random()*vocabulary.length)];
+  gameData.word = w;
+  gameData.scrambled = w.split("").sort(()=>Math.random()-.5).join("");
+  area(`<h3>Unscramble this word:</h3>
+  <div class="big-number">${gameData.scrambled}</div>
+  <input class="game-input" id="scrambled" placeholder="Your answer">
+  <button class="primary" onclick="checkScramble()">SUBMIT</button>`);
+}
+function checkScramble() {
+  if($("scrambled").value.trim().toUpperCase()===gameData.word) {
+    addScore(10);say("Correct!");
+  } else say("Try again!");
+  scrambleGame();
+}
+
+/* BOARD GAMES */
+
+function ticGame() {
+  gameData.cells = Array(9).fill("");
+  gameData.turn = "X";
+  gameData.done = false;
+  drawTic();
+}
+function drawTic() {
+  area(`<h3>Tic-Tac-Toe — Local Match</h3>
+  <p>Take turns on the same device.</p>
+  <div class="board">${gameData.cells.map((v,i)=>
+    `<button onclick="ticMove(${i})">${v}</button>`).join("")}</div>
+  <button onclick="ticGame()">NEW MATCH</button>`);
+}
+function ticMove(i) {
+  if(gameData.cells[i] || gameData.done) return;
+  gameData.cells[i] = gameData.turn;
+  const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  const won = wins.some(w=>w.every(x=>gameData.cells[x]===gameData.turn));
+  if(won) {
+    gameData.done=true;
+    if(gameData.turn==="X") addScore(10);
+    say(gameData.turn+" wins!");
+  } else if(gameData.cells.every(Boolean)) {
+    gameData.done=true;say("It's a draw!");
+  } else gameData.turn=gameData.turn==="X"?"O":"X";
+  drawTic();
+}
+
+function connectGame() {
+  gameData.cells = Array(42).fill("");
+  gameData.turn = "🔴";
+  gameData.done=false;
+  drawConnect();
+}
+function drawConnect() {
+  area(`<h3>Connect Four</h3><p>Connect four pieces in a row.</p>
+  <div class="tiles">${gameData.cells.map((v,i)=>
+    `<button onclick="connectMove(${i%7})">${v||"·"}</button>`).join("")}</div>
+  <button onclick="connectGame()">NEW GAME</button>`);
+}
+function connectMove(col) {
+  if(gameData.done)return;
+  for(let r=5;r>=0;r--) {
+    let i=r*7+col;
+    if(!gameData.cells[i]) {
+      gameData.cells[i]=gameData.turn;
+      break;
+    }
+  }
+  const lines=[];
+  for(let r=0;r<6;r++) for(let c=0;c<7;c++) {
+    for(const [dr,dc] of [[0,1],[1,0],[1,1],[1,-1]]) {
+      let line=[];
+      for(let k=0;k<4;k++) {
+        let rr=r+dr*k,cc=c+dc*k;
+        if(rr<0||rr>=6||cc<0||cc>=7) break;
+        line.push(rr*7+cc);
+      }
+      if(line.length===4) lines.push(line);
+    }
+  }
+  const win=lines.some(l=>l.every(i=>gameData.cells[i]===gameData.turn));
+  if(win) {gameData.done=true;say(gameData.turn+" wins!");addScore(10);}
+  else if(gameData.cells.every(Boolean)) {gameData.done=true;say("Draw!");}
+  else gameData.turn=gameData.turn==="🔴"?"🟡":"🔴";
+  drawConnect();
+}
+
+/* PUZZLE GAMES */
+
+function numberGame() {
+  gameData.numbers=[2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  drawNumbers();
+}
+function drawNumbers() {
+  area(`<h3>2048 Number Tile Merger</h3>
+  <p>Tap two equal tiles to merge them.</p>
+  <div class="tiles">${gameData.numbers.map((n,i)=>
+    `<button onclick="mergeTile(${i})">${n||""}</button>`).join("")}</div>
+  <button onclick="numberGame()">RESTART</button>`);
+}
+function mergeTile(i) {
+  const n=gameData.numbers[i];
+  const other=gameData.numbers.findIndex((x,j)=>j!==i&&x===n&&x>0);
+  if(!n||other<0){say("Find two equal numbers.");return;}
+  gameData.numbers[i]=n*2;
+  gameData.numbers[other]=0;
+  addScore(n*2);
+  const empty=gameData.numbers.map((v,j)=>v===0?j:-1).filter(j=>j>=0);
+  if(empty.length) gameData.numbers[empty[Math.floor(Math.random()*empty.length)]]=2;
+  drawNumbers();
+}
+
+function wordleGame() {
+  gameData.answer = ["PLANT","BRAVE","STONE","MUSIC","LIGHT"][Math.floor(Math.random()*5)];
+  gameData.tries=0;
+  area(`<h3>Wordle — Guess the five-letter word</h3>
+  <input class="game-input" id="wordGuess" maxlength="5" placeholder="FIVE LETTERS">
+  <button class="primary" onclick="checkWord()">GUESS</button>
+  <p id="wordHistory"></p>
+  <button onclick="wordleGame()">NEW WORD</button>`);
+}
+function checkWord() {
+  const v=$("wordGuess").value.toUpperCase();
+  if(v.length!==5){say("Enter five letters.");return;}
+  gameData.tries++;
+  $("wordHistory").innerHTML += `<p>${v} — ${
+    v===gameData.answer?"Correct!":"Letters: "+v.split("").map((x,i)=>
+    x===gameData.answer[i]?"🟩":gameData.answer.includes(x)?"🟨":"⬛").join("")
+  }</p>`;
+  if(v===gameData.answer) {addScore(20);say("You solved it!");}
+  else if(gameData.tries>=6) say("The word was "+gameData.answer);
+  $("wordGuess").value="";
+}
+
+function slideGame() {
+  gameData.tiles=[1,2,3,4,5,6,7,8,0];
+  gameData.tiles.sort(()=>Math.random()-.5);
+  drawSlide();
+}
+function drawSlide() {
+ 
