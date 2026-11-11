@@ -2,949 +2,1000 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#070b0a">
-
-  <title>HEXCLØWN | Digital Underground</title>
-
-  <meta name="description" content="HEXCLØWN is a digital underground hub for games, technology, creativity, music, learning and useful online tools. Powered by C3CLOWN.">
-
-  <style>
-    :root {
-      --bg: #070b0a;
-      --panel: #0d1411;
-      --panel2: #111c17;
-      --green: #00ff88;
-      --cyan: #00e5ff;
-      --white: #edf7f1;
-      --muted: #91a49a;
-      --border: rgba(0,255,136,.16);
-      --shadow: 0 0 25px rgba(0,255,136,.07);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--white);
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.6;
-      min-height: 100vh;
-    }
-
-    button, input {
-      font: inherit;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .container {
-      width: min(1100px, 92%);
-      margin: auto;
-    }
-
-    /* HEADER */
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(7,11,10,.95);
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(12px);
-    }
-
-    .navbar {
-      min-height: 72px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .logo {
-      font-size: 25px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      color: var(--green);
-      text-shadow: 0 0 14px rgba(0,255,136,.45);
-      white-space: nowrap;
-    }
-
-    .logo span {
-      color: var(--cyan);
-    }
-
-    .menu-btn {
-      background: transparent;
-      color: var(--green);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 22px;
-      display: none;
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-    }
-
-    nav a {
-      color: var(--muted);
-      font-size: 13px;
-      transition: .2s;
-    }
-
-    nav a:hover {
-      color: var(--green);
-    }
-
-    /* HERO */
-
-    .hero {
-      text-align: center;
-      padding: 85px 12px 65px;
-      background:
-        radial-gradient(ellipse at top, rgba(0,255,136,.10), transparent 60%);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--green);
-      border: 1px solid var(--border);
-      background: rgba(0,255,136,.05);
-      padding: 6px 13px;
-      border-radius: 30px;
-      font-size: 11px;
-      letter-spacing: 2px;
-      margin-bottom: 22px;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 10px var(--green);
-    }
-
-    .hero h1 {
-      font-size: clamp(35px, 8vw, 66px);
-      line-height: 1.12;
-      font-weight: 900;
-      letter-spacing: 3px;
-      margin-bottom: 17px;
-    }
-
-    .hero h1 span {
-      color: var(--green);
-      text-shadow: 0 0 25px rgba(0,255,136,.25);
-    }
-
-    .hero h2 {
-      color: var(--cyan);
-      font-size: 13px;
-      letter-spacing: 5px;
-      margin-bottom: 17px;
-    }
-
-    .hero p {
-      max-width: 570px;
-      margin: auto;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .hero-actions {
-      margin-top: 30px;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 12px 20px;
-      border-radius: 7px;
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      transition: .2s;
-    }
-
-    .btn-primary {
-      color: #001b10;
-      background: var(--green);
-      border: 1px solid var(--green);
-    }
-
-    .btn-primary:hover {
-      box-shadow: 0 0 20px rgba(0,255,136,.4);
-      transform: translateY(-2px);
-    }
-
-    .btn-secondary {
-      color: var(--cyan);
-      border: 1px solid var(--cyan);
-      background: transparent;
-    }
-
-    .btn-secondary:hover {
-      background: rgba(0,229,255,.08);
-    }
-
-    /* STATS */
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      padding: 28px 0;
-    }
-
-    .stat {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px 8px;
-      text-align: center;
-    }
-
-    .stat strong {
-      display: block;
-      color: var(--green);
-      font-size: 25px;
-    }
-
-    .stat span {
-      color: var(--muted);
-      font-size: 10px;
-      letter-spacing: 1px;
-    }
-
-    /* MAIN SECTIONS */
-
-    .section {
-      padding: 35px 0 55px;
-    }
-
-    .section-heading {
-      margin-bottom: 22px;
-    }
-
-    .section-heading h2 {
-      font-size: 23px;
-      letter-spacing: 1px;
-    }
-
-    .section-heading h2 span {
-      color: var(--green);
-    }
-
-    .section-heading p {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 5px;
-    }
-
-    /* SEARCH */
-
-    .search-box {
-      margin-bottom: 18px;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 15px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      outline: none;
-      color: var(--white);
-      font-size: 14px;
-    }
-
-    .search-box input:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 12px rgba(0,255,136,.1);
-    }
-
-    .search-box input::placeholder {
-      color: #718078;
-    }
-
-    /* FILTERS */
-
-    .filters {
-      display: flex;
-      gap: 9px;
-      overflow-x: auto;
-      padding: 3px 0 15px;
-      scrollbar-width: thin;
-    }
-
-    .filter-btn {
-      flex-shrink: 0;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 8px 14px;
-      border-radius: 30px;
-      font-size: 11px;
-      transition: .2s;
-    }
-
-    .filter-btn.active,
-    .filter-btn:hover {
-      color: #001b10;
-      background: var(--green);
-      border-color: var(--green);
-    }
-
-    /* APP GRID */
-
-    .app-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-    }
-
-    .app-card {
-      position: relative;
-      background: linear-gradient(145deg, var(--panel2), var(--panel));
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 21px 17px;
-      min-height: 185px;
-      display: flex;
-      flex-direction: column;
-      transition: .25s;
-      overflow: hidden;
-    }
-
-    .app-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--green);
-      box-shadow: var(--shadow);
-    }
-
-    .app-icon {
-      font-size: 29px;
-      margin-bottom: 13px;
-    }
-
-    .app-card h3 {
-      font-size: 15px;
-      margin-bottom: 6px;
-    }
-
-    .app-card p {
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 17px;
-      flex-grow: 1;
-    }
-
-    .card-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .card-link {
-      color: var(--green);
-      font-size: 11px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-
-    .coming {
-      color: var(--cyan);
-      font-size: 9px;
-      letter-spacing: 1px;
-      border: 1px solid rgba(0,229,255,.3);
-      padding: 4px 7px;
-      border-radius: 20px;
-    }
-
-    .favorite {
-      color: var(--muted);
-      border: none;
-      background: transparent;
-      font-size: 19px;
-      padding: 2px 5px;
-    }
-
-    .favorite.saved {
-      color: #ffcc55;
-    }
-
-    .empty-message {
-      display: none;
-      text-align: center;
-      color: var(--muted);
-      padding: 35px 10px;
-      border: 1px dashed var(--border);
-      border-radius: 10px;
-      font-size: 13px;
-      grid-column: 1 / -1;
-    }
-
-    /* ABOUT */
-
-    .about-box {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 25px;
-    }
-
-    .about-box h2 {
-      color: var(--green);
-      margin-bottom: 12px;
-      font-size: 20px;
-    }
-
-    .about-box p {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 10px;
-    }
-
-    /* FOOTER */
-
-    footer {
-      margin-top: 20px;
-      padding: 30px 10px;
-      text-align: center;
-      border-top: 1px solid var(--border);
-      background: #050807;
-    }
-
-    footer h2 {
-      color: var(--green);
-      font-size: 20px;
-      letter-spacing: 3px;
-    }
-
-    footer p {
-      color: var(--muted);
-      font-size: 11px;
-      margin-top: 7px;
-    }
-
-    footer strong {
-      color: var(--cyan);
-    }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 25px;
-      transform: translate(-50%, 20px);
-      background: var(--green);
-      color: #001b10;
-      padding: 11px 17px;
-      border-radius: 7px;
-      font-size: 12px;
-      font-weight: bold;
-      opacity: 0;
-      pointer-events: none;
-      transition: .25s;
-      z-index: 200;
-      text-align: center;
-      max-width: 90%;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    /* MOBILE */
-
-    @media (max-width: 750px) {
-      .app-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      nav {
-        gap: 13px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .navbar {
-        min-height: 65px;
-      }
-
-      .logo {
-        font-size: 21px;
-      }
-
-      .menu-btn {
-        display: block;
-      }
-
-      nav {
-        display: none;
-        position: absolute;
-        top: 65px;
-        left: 0;
-        width: 100%;
-        background: #09100c;
-        border-bottom: 1px solid var(--border);
-        padding: 17px 5%;
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav.open {
-        display: flex;
-      }
-
-      nav a {
-        width: 100%;
-        padding: 7px 0;
-      }
-
-      .hero {
-        padding: 65px 10px 50px;
-      }
-
-      .hero h2 {
-        font-size: 10px;
-        letter-spacing: 3px;
-      }
-
-      .hero p {
-        font-size: 12px;
-      }
-
-      .stats {
-        gap: 7px;
-      }
-
-      .stat strong {
-        font-size: 21px;
-      }
-
-      .stat span {
-        font-size: 8px;
-      }
-
-      .app-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-      }
-
-      .app-card {
-        padding: 15px 12px;
-        min-height: 185px;
-      }
-
-      .app-card h3 {
-        font-size: 13px;
-      }
-
-      .app-card p {
-        font-size: 10px;
-      }
-
-      .section-heading h2 {
-        font-size: 20px;
-      }
-    }
-
-    @media (max-width: 340px) {
-      .app-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html {
-        scroll-behavior: auto;
-      }
-
-      *, *::before, *::after {
-        transition-duration: .01ms !important;
-        animation-duration: .01ms !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+
+<title>HEXCLØWN | Underground Digital Universe</title>
+
+<meta name="description" content="HEXCLØWN is an underground digital universe where technology, creativity and entertainment collide. Explore games, tools, music and digital experiences.">
+
+<style>
+:root {
+  --bg: #07131a;
+  --bg2: #0b1c25;
+  --panel: #10232c;
+  --panel2: #142c36;
+  --green: #39ff88;
+  --cyan: #00e5ff;
+  --blue: #287bff;
+  --red: #ff4058;
+  --text: #eafff8;
+  --muted: #9ab5bc;
+  --border: #214451;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 10% 5%, #00e5ff12, transparent 35%),
+    radial-gradient(ellipse at 90% 25%, #39ff8810, transparent 35%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* HEADER */
+
+header {
+  padding: 17px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #091922;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px #0005;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: var(--green);
+  text-shadow: 0 0 12px #39ff8870;
+}
+
+.logo span {
+  color: var(--cyan);
+}
+
+.menu-btn {
+  background: #102c36;
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  padding: 10px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* NAVIGATION */
+
+nav {
+  display: none;
+  background: #0b1c25;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+nav.show {
+  display: block;
+}
+
+nav a {
+  display: block;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 13px 0;
+  border-bottom: 1px solid #1d3944;
+  font-size: 13px;
+  transition: .2s;
+}
+
+nav a:hover {
+  color: var(--green);
+}
+
+/* MAIN */
+
+.container {
+  width: 100%;
+  max-width: 1100px;
+  margin: auto;
+  padding: 22px 15px;
+}
+
+/* HERO */
+
+.hero {
+  background:
+    radial-gradient(circle at 90% 15%, #00e5ff26, transparent 35%),
+    radial-gradient(circle at 5% 90%, #39ff8820, transparent 40%),
+    linear-gradient(135deg, #102c36, #0b1b29);
+  border: 1px solid #247080;
+  border-radius: 17px;
+  padding: 34px 21px;
+  margin-bottom: 25px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 25px #00e5ff12;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  border: 1px solid #39ff8825;
+  border-radius: 50%;
+  right: -65px;
+  bottom: -75px;
+  box-shadow: 0 0 30px #00e5ff18;
+}
+
+.hero-tag {
+  color: var(--green);
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin-bottom: 17px;
+  font-weight: bold;
+}
+
+.hero h1 {
+  font-size: 34px;
+  margin-bottom: 14px;
+  line-height: 1.2;
+}
+
+.hero h1 span {
+  color: var(--cyan);
+  text-shadow: 0 0 15px #00e5ff55;
+}
+
+.hero p {
+  color: #bfd5db;
+  font-size: 14px;
+  line-height: 1.8;
+  max-width: 520px;
+}
+
+.hero-btn {
+  display: inline-block;
+  margin-top: 23px;
+  padding: 13px 19px;
+  background: var(--green);
+  color: #06140d;
+  border-radius: 7px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 0 16px #39ff8840;
+  transition: .2s;
+}
+
+.hero-btn:hover {
+  background: var(--cyan);
+  box-shadow: 0 0 22px #00e5ff80;
+}
+
+/* SYSTEM STATUS */
+
+.system-status {
+  margin-bottom: 24px;
+  background: #0d2029;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.system-status strong {
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.online {
+  color: var(--green);
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.online span {
+  text-shadow: 0 0 9px var(--green);
+}
+
+/* STATS */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  padding: 17px 6px;
+  text-align: center;
+}
+
+.stat h2 {
+  color: var(--green);
+  font-size: 23px;
+  text-shadow: 0 0 10px #39ff8840;
+}
+
+.stat:nth-child(2) h2 {
+  color: var(--cyan);
+}
+
+.stat:nth-child(3) h2 {
+  color: var(--blue);
+}
+
+.stat p {
+  color: var(--muted);
+  font-size: 9px;
+  margin-top: 7px;
+}
+
+/* SEARCH */
+
+.search-box {
+  margin-bottom: 27px;
+}
+
+.search-box input {
+  width: 100%;
+  background: #10232c;
+  color: white;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  outline: none;
+  font-size: 14px;
+  transition: .2s;
+}
+
+.search-box input:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 12px #00e5ff25;
+}
+
+.search-box input::placeholder {
+  color: #829da5;
+}
+
+/* SECTION HEADINGS */
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.section-heading h2 {
+  font-size: 19px;
+  color: var(--text);
+}
+
+.section-heading small {
+  color: var(--cyan);
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+/* CATEGORIES */
+
+.categories {
+  display: flex;
+  gap: 9px;
+  overflow-x: auto;
+  padding-bottom: 13px;
+  margin-bottom: 17px;
+  scrollbar-width: none;
+}
+
+.categories::-webkit-scrollbar {
+  display: none;
+}
+
+.categories button {
+  white-space: nowrap;
+  background: #10232c;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 10px 16px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.categories button.active {
+  background: #123c37;
+  color: var(--green);
+  border-color: var(--green);
+  box-shadow: 0 0 12px #39ff8820;
+}
+
+.categories button:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+
+/* APPLICATION GRID */
+
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.app-card {
+  background: linear-gradient(145deg, #142c36, #0e2029);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 17px 13px;
+  min-height: 165px;
+  position: relative;
+  transition: .25s;
+}
+
+.app-card:hover {
+  border-color: var(--green);
+  box-shadow: 0 0 17px #39ff8820;
+  transform: translateY(-3px);
+}
+
+.app-icon {
+  font-size: 29px;
+  margin-bottom: 13px;
+}
+
+.app-card h3 {
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.app-card p {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.favorite {
+  position: absolute;
+  top: 11px;
+  right: 11px;
+  background: transparent;
+  border: none;
+  color: #91a9b0;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.favorite.saved {
+  color: #39ff88;
+  text-shadow: 0 0 10px #39ff8870;
+}
+
+.open-app {
+  display: inline-block;
+  margin-top: 13px;
+  font-size: 11px;
+  color: var(--cyan);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.open-app:hover {
+  color: var(--green);
+}
+
+/* EMPTY SEARCH */
+
+.empty {
+  display: none;
+  text-align: center;
+  padding: 35px 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* FAVOURITES */
+
+.fav-section {
+  margin-top: 35px;
+  padding: 19px;
+  background: #0d2029;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.fav-section > p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.fav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.fav-item {
+  background: #123b34;
+  border: 1px solid #287b60;
+  color: var(--green);
+  padding: 8px 11px;
+  border-radius: 7px;
+  font-size: 11px;
+}
+
+/* FOOTER */
+
+footer {
+  text-align: center;
+  border-top: 1px solid var(--border);
+  margin-top: 40px;
+  padding: 28px 15px;
+  background: #091922;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 2;
+}
+
+footer strong {
+  color: var(--green);
+  font-size: 16px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px #39ff8840;
+}
+
+.credit {
+  margin-top: 12px;
+  color: var(--cyan);
+  font-weight: bold;
+}
+
+.footer-warning {
+  color: var(--red);
+  font-size: 10px;
+  margin-top: 9px;
+}
+
+/* DESKTOP */
+
+@media (min-width: 650px) {
+  .container {
+    padding: 30px 25px;
+  }
+
+  .app-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .hero {
+    padding: 48px 38px;
+  }
+
+  .hero h1 {
+    font-size: 45px;
+  }
+
+  nav.show {
+    display: flex;
+    gap: 27px;
+    padding: 0 25px;
+  }
+
+  nav a {
+    border: none;
+  }
+}
+
+@media (min-width: 950px) {
+  .app-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- HEADER -->
+<header>
+  <div class="logo">HEX<span>CLØWN</span></div>
+  <button class="menu-btn" onclick="toggleMenu()">☰ MENU</button>
+</header>
 
-  <header>
-    <div class="container navbar">
+<nav id="navigation">
+  <a href="#">Home</a>
+  <a href="#explore">Explore</a>
+  <a href="#apps">Applications</a>
+  <a href="#favorites">Favourites</a>
+  <a href="#about">About</a>
+</nav>
 
-      <a href="index.html" class="logo">
-        HEXCL<span>Ø</span>WN
-      </a>
-
-      <button class="menu-btn" id="menuBtn"
-        aria-label="Toggle navigation"
-        aria-expanded="false">
-        ☰
-      </button>
-
-      <nav id="mainNav">
-        <a href="index.html">HOME</a>
-        <a href="#apps">EXPLORE</a>
-        <a href="#favorites">FAVOURITES</a>
-        <a href="#about">ABOUT</a>
-      </nav>
-
-    </div>
-  </header>
+<main class="container">
 
   <!-- HERO -->
 
   <section class="hero">
+    <div class="hero-tag">● UNDERGROUND DIGITAL NETWORK</div>
 
-    <div class="container">
+    <h1>ENTER THE <span>UNKNOWN.</span></h1>
 
-      <div class="status">
-        <span class="status-dot"></span>
-        DIGITAL NETWORK ONLINE
-      </div>
+    <p>
+      Welcome to HEXCLØWN — an underground digital
+      universe where technology, creativity and
+      entertainment collide. Discover something
+      beyond the ordinary.
+    </p>
 
-      <h1>
-        WELCOME TO<br>
-        <span>HEXCLØWN</span>
-      </h1>
+    <a href="#apps" class="hero-btn">
+      EXPLORE THE HUB →
+    </a>
+  </section>
 
-      <h2>ENTER THE DIGITAL UNDERGROUND</h2>
+  <!-- STATUS -->
 
-      <p>
-        Explore a different side of the digital world.
-        Discover games, creative tools, music, learning
-        experiences and more — all in one underground hub.
-      </p>
-
-      <div class="hero-actions">
-        <a href="#apps" class="btn btn-primary">
-          EXPLORE THE HUB
-        </a>
-
-        <a href="#about" class="btn btn-secondary">
-          ABOUT HEXCLØWN
-        </a>
-      </div>
-
+  <section class="system-status">
+    <strong>HEXCLØWN SYSTEM</strong>
+    <div class="online">
+      <span>●</span> NETWORK ONLINE
     </div>
-
   </section>
 
   <!-- STATS -->
 
-  <main class="container">
+  <section class="stats">
+    <div class="stat">
+      <h2 id="appCount">29</h2>
+      <p>FEATURES PLANNED</p>
+    </div>
+
+    <div class="stat">
+      <h2>06</h2>
+      <p>MAIN CATEGORIES</p>
+    </div>
+
+    <div class="stat">
+      <h2 id="favCount">0</h2>
+      <p>YOUR FAVOURITES</p>
+    </div>
+  </section>
+
+  <!-- SEARCH -->
+
+  <section class="search-box" id="explore">
+    <input
+      type="search"
+      id="search"
+      placeholder="⌕ Search tools, games, music..."
+      oninput="filterApps()"
+    >
+  </section>
+
+  <!-- APPLICATIONS -->
+
+  <section id="apps">
+
+    <div class="section-heading">
+      <h2>Explore Applications</h2>
+      <small>DISCOVER THE HUB</small>
+    </div>
+
+    <!-- CATEGORY FILTERS -->
+
+    <div class="categories">
+
+      <button class="active"
+        onclick="setCategory('all',this)">All</button>
+
+      <button onclick="setCategory('games',this)">
+        Games
+      </button>
+
+      <button onclick="setCategory('tools',this)">
+        Tools
+      </button>
+
+      <button onclick="setCategory('audio',this)">
+        Audio
+      </button>
+
+      <button onclick="setCategory('creative',this)">
+        Creative
+      </button>
+
+      <button onclick="setCategory('learning',this)">
+        Learning
+      </button>
+
+      <button onclick="setCategory('security',this)">
+        Cyber
+      </button>
+
+    </div>
+
+    <!-- APP GRID -->
+
+    <div class="app-grid" id="appGrid">
+
+      <article class="app-card" data-category="games">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🎮</div>
+        <h3>Game Zone</h3>
+        <p>Discover games and interactive challenges.</p>
+        <a href="GameZone.html" class="open-app">ENTER GAME ZONE →</a>
+      </article>
+
+      <article class="app-card" data-category="games">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🧩</div>
+        <h3>Quiz Centre</h3>
+        <p>Test your knowledge and sharpen your mind.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="tools">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">⏱️</div>
+        <h3>Focus Manager</h3>
+        <p>Organise tasks and manage your time.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="tools">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">📝</div>
+        <h3>Text Editor</h3>
+        <p>Write and organise your notes.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="audio">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🎵</div>
+        <h3>Audio Studio</h3>
+        <p>Experiment with sounds and chiptunes.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="audio">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🎙️</div>
+        <h3>Voice FX Studio</h3>
+        <p>Explore audio effects and voice recording.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="creative">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🎨</div>
+        <h3>Pixel Art</h3>
+        <p>Create your own pixel artwork.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="learning">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">📚</div>
+        <h3>Learning Hub</h3>
+        <p>Explore educational activities and flashcards.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
+
+      <article class="app-card" data-category="security">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🔐</div>
+        <h3>Password Checker</h3>
+        <p>Learn about password strength and safety.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
 
-    <section class="stats">
+      <article class="app-card" data-category="tools">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🔄</div>
+        <h3>Quick Converter</h3>
+        <p>Convert common units and values.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
 
-      <div class="stat">
-        <strong id="appCount">12</strong>
-        <span>HUB CATEGORIES</span>
-      </div>
+      <article class="app-card" data-category="games">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🧠</div>
+        <h3>Memory Match</h3>
+        <p>Challenge your memory with matching games.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
 
-      <div class="stat">
-        <strong id="favoriteCount">0</strong>
-        <span>YOUR FAVOURITES</span>
-      </div>
+      <article class="app-card" data-category="creative">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">⚡</div>
+        <h3>Code Playground</h3>
+        <p>Experiment with simple code examples.</p>
+        <a href="#" class="open-app">Coming soon →</a>
+      </article>
 
-      <div class="stat">
-        <strong>24/7</strong>
-        <span>DIGITAL ACCESS</span>
-      </div>
+    </div>
 
-    </section>
+    <div class="empty" id="empty">
+      No applications found. Try another search.
+    </div>
 
-    <!-- APPLICATIONS -->
+  </section>
 
-    <section class="section" id="apps">
+  <!-- FAVOURITES -->
 
-      <div class="section-heading">
-        <h2>EXPLORE THE <span>HUB</span></h2>
-        <p>Choose a destination and enter the digital underground.</p>
-      </div>
+  <section class="fav-section" id="favorites">
 
-      <div class="search-box">
-        <input
-          type="search"
-          id="searchInput"
-          placeholder="Search games, tools, music and more..."
-          autocomplete="off"
-          aria-label="Search hub categories">
-      </div>
+    <div class="section-heading">
+      <h2>Your Favourites</h2>
+      <small>SAVED APPS</small>
+    </div>
 
-      <div class="filters" id="filters">
+    <p id="favMessage">
+      Tap the ☆ on any application to save it here.
+      Your choices are saved on this device.
+    </p>
 
-        <button class="filter-btn active" data-filter="all">ALL</button>
-        <button class="filter-btn" data-filter="games">GAMES</button>
-        <button class="filter-btn" data-filter="learning">LEARNING</button>
-        <button class="filter-btn" data-filter="tools">TOOLS</button>
-        <button class="filter-btn" data-filter="music">MUSIC</button>
-        <button class="filter-btn" data-filter="creative">CREATIVE</button>
-        <button class="filter-btn" data-filter="security">SECURITY</button>
-        <button class="filter-btn" data-filter="productivity">PRODUCTIVITY</button>
+    <div class="fav-list" id="favList"></div>
 
-      </div>
+  </section>
 
-      <div class="app-grid" id="appGrid">
+</main>
 
-        <!-- GAME ZONE -->
+<!-- FOOTER -->
 
-        <article class="app-card"
-          data-category="games"
-          data-name="game zone arcade games">
+<footer id="about">
 
-          <div class="app-icon">🎮</div>
+  <strong>HEXCLØWN</strong><br>
 
-          <h3>Game Zone</h3>
+  THE UNDERGROUND DIGITAL UNIVERSE<br>
 
-          <p>Discover exciting browser games, challenges and arcade experiences.</p>
+  Technology · Creativity · Entertainment
 
-          <div class="card-bottom">
-            <a href="gamezone.html" class="card-link">ENTER ZONE →</a>
+  <div class="credit">
+    99% CODED BY TIJANI ALIYU
+    <br>
+    (HEXWHISPER / CYBERCODECLOWN)
+  </div>
 
-            <button class="favorite"
-              data-favorite="gamezone"
-              aria-label="Add Game Zone to favourites"
-              aria-pressed="false">☆</button>
-          </div>
+  <div class="footer-warning">
+    ACCESS THE UNKNOWN. EXPLORE THE DIGITAL WORLD.
+  </div>
 
-        </article>
+  <br>
 
-        <!-- QUIZ CENTRE -->
+  © 2026 HEXCLØWN. ALL RIGHTS RESERVED.
 
-        <article class="app-card"
-          data-category="learning"
-          data-name="quiz centre trivia questions">
+</footer>
 
-          <div class="app-icon">🧠</div>
+<script>
 
-          <h3>Quiz Centre</h3>
+let currentCategory = "all";
 
-          <p>Test your knowledge with quizzes, trivia and brain challenges.</p>
+/* NAVIGATION */
 
-          <div class="card-bottom">
-            <span class="coming">COMING SOON</span>
+function toggleMenu() {
+  document.getElementById("navigation")
+    .classList.toggle("show");
+}
 
-            <button class="favorite"
-              data-favorite="quiz"
-              aria-label="Add Quiz Centre to favourites"
-              aria-pressed="false">☆</button>
-          </div>
+/* CATEGORY FILTER */
 
-        </article>
+function setCategory(category, button) {
 
-        <!-- TYPING ACADEMY -->
+  currentCategory = category;
 
-        <article class="app-card"
-          data-category="learning"
-          data-name="typing academy speed typing">
+  document.querySelectorAll(".categories button")
+    .forEach(btn => btn.classList.remove("active"));
 
-          <div class="app-icon">⌨️</div>
+  button.classList.add("active");
 
-          <h3>Typing Academy</h3>
+  filterApps();
+}
 
-          <p>Improve your typing skills and challenge your speed.</p>
+/* SEARCH AND FILTER */
 
-          <div class="card-bottom">
-            <span class="coming">COMING SOON</span>
+function filterApps() {
 
-            <button class="favorite"
-              data-favorite="typing"
-              aria-label="Add Typing Academy to favourites"
-              aria-pressed="false">☆</button>
-          </div>
+  const search = document.getElementById("search")
+    .value.toLowerCase();
 
-        </article>
+  const cards = document.querySelectorAll(".app-card");
 
-        <!-- TOOLS HUB -->
+  let visible = 0;
 
-        <article class="app-card"
-          data-category="tools"
-          data-name="tools hub utilities">
+  cards.forEach(card => {
 
-          <div class="app-icon">🛠️</div>
+    const matchesSearch =
+      card.innerText.toLowerCase().includes(search);
 
-          <h3>Tools Hub</h3>
+    const matchesCategory =
+      currentCategory === "all" ||
+      card.dataset.category === currentCategory;
 
-          <p>Explore useful digital utilities and everyday web tools.</p>
+    const show = matchesSearch && matchesCategory;
 
-          <div class="card-bottom">
-            <span class="coming">COMING SOON</span>
+    card.hidden = !show;
 
-            <button class="favorite"
-              data-favorite="tools"
-              aria-label="Add Tools Hub to favourites"
-              aria-pressed="false">☆</button>
-          </div>
+    if (show) visible++;
 
-        </article>
+  });
 
-        <!-- MUSIC ZONE -->
+  document.getElementById("empty").style.display =
+    visible === 0 ? "block" : "none";
+}
 
-        <article class="app-card"
-          data-category="music"
-          data-name="music zone audio sound">
+/* FAVOURITES */
 
-          <div class="app-icon">🎧</div>
+function getFavorites() {
 
-          <h3>Music Zone</h3>
+  try {
 
-          <p>Explore audio experiences, sound tools and music projects.</p>
+    return JSON.parse(
+      localStorage.getItem("hexclown_favorites") || "[]"
+    );
 
-          <div class="card-bottom">
-            <span class="coming">COMING SOON</span>
+  } catch (error) {
 
-            <button class="favorite"
-              data-favorite="music"
-              aria-label="Add Music Zone to favourites"
-              aria-pressed="false">☆</button>
-          </div>
+    return [];
 
-        </article>
+  }
+}
 
-        <!-- BOT CENTRE -->
+function saveFavorites(favorites) {
 
-        <article class="app-card"
-          data-category="tools"
-          data-name="bot centre automation">
+  try {
 
-          <div class="app-icon">🤖</div>
+    localStorage.setItem(
+      "hexclown_favorites",
+      JSON.stringify(favorites)
+    );
 
-          <h3>Bot Centre</h3>
+  } catch (error) {
 
-          <p>Discover interactive browser-based bot experiments.</p>
+    alert("Your browser could not save favourites.");
 
-          <div class="card-bottom">
-            <span class="coming">COMING SOON</span>
+  }
+}
 
-            <button class="favorite"
-              data-favorite="bots"
-              aria-label="Add Bot Centre to favourites"
-              aria-pressed="false">☆</button>
-          </div>
+function toggleFavorite(button) {
 
-        </article>
+  const card = button.closest(".app-card");
 
-        <!-- LEARNING HUB -->
+  const name = card.querySelector("h3").innerText;
 
-        <article class="app-card"
-          data-category="learning"
-          data-name="learning hub education">
+  let favorites = getFavorites();
 
-          <div class="app-icon">📚</div>
+  if (favorites.includes(name)) {
 
-          <h3>Learning Hub</h3>
+    favorites = favorites.filter(item => item !== name);
 
-          <p>Find educational activities and interactive learning resources.</p>
+  } else {
 
-          <div class="card-bottom">
-            <span class="coming">COMING SOON</span>
+    favorites.push(name);
 
-            <button class="favorite"
-              data-favorite="learning"
-              aria-label="Add Learning Hub to favourites"
-              aria-pressed="false">☆</button>
-          </div>
+  }
 
-        </article>
+  saveFavorites(favorites);
 
-        <!-- WEB DIRECTORY -->
+  loadFavorites();
+}
 
-        <article class="app-card"
-          data-category="tools"
-          data-name="web directory websites">
+/* LOAD FAVOURITES */
 
-          <div class="app-icon">🌐</div>
+function loadFavorites() {
 
-          <h3>Web Directory</h3>
+  const favorites = getFavorites();
 
-          <p>Discover useful websites and interesting online destinations.</p>
+  document.querySelectorAll(".app-card").forEach(card => {
 
-          <div class="card-bottom">
-            <span class="coming">COMING SOON</span>
+    const name = card.querySelector("h3").innerText;
 
-            <button class="favorite"
-              data-favorite="directory"
-              aria-label="Add Web Directory to favourites"
-              aria-pressed="false">☆</button>
-          </div>
+    const button = card.querySelector(".favorite");
 
-        </article>
+    if (favorites.includes(name)) {
 
-        <!-- CREATIVE STUDIO -->
+      button.classList.add("saved");
 
-        <article class="app-card"
-          data-category="creative"
-          data-name="creative studio design art">
+      button.innerText = "★";
 
-          <div class="app-icon">🎨</div>
+    } else {
 
-          <h3>Creative Studio</h3>
+      button.classList.remove("saved");
 
-          <p>Experiment with digital art, creative projects and ideas.</p>
+      button.innerText = "☆";
 
-          <div class="card-bottom">
-            <span class="coming">COMING SOON</span>
+    }
 
-            <button class="favorite"
-              data-favorite="creative"
-              aria-label="Add Creative Studio to favourites"
-              aria-pressed="false">☆</button>
-          </div>
+  });
 
-        </article>
+  updateFavoriteCount();
 
-        <!-- SECURITY LAB -->
+  displayFavorites();
+}
 
-        <article class="app-card"
-          data-category="security"
-          data-name="security lab cyber safety">
+/* UPDATE COUNT */
 
-          <div class="app-icon">🔐</div>
+function updateFavoriteCount() {
 
-          <h3>Security Lab</h3>
+  document.getElementById("favCount").innerText =
+    getFavorites().length;
 
-          <p>Learn about online safety, privacy and responsible cybersecurity.</p>
+}
 
-          <div class="card-bottom">
-            <span class="coming">COMING SOON</span>
+/* DISPLAY SAVED APPS */
 
-            <button class="favorite"
-              data-favorite="security"
-              aria-label="Add Security Lab to favourites"
-              aria-pressed="false">☆</button>
-          </div>
+function displayFavorites() {
 
-        </articl
+  const favorites = getFavorites();
+
+  const list = document.getElementById("favList");
+
+  const message = document.getElementById("favMessage");
+
+  list.innerHTML = "";
+
+  if (favorites.length === 0) {
+
+    message.innerText =
+      "Tap the ☆ on any application to save it here. Your choices are saved on this device.";
+
+    return;
+
+  }
+
+  message.innerText = "Your saved applications:";
+
+  favorites.forEach(name => {
+
+    const item = document.createElement("div");
+
+    item.className = "fav-item";
+
+    item.innerText = "★ " + name;
+
+    list.appendChild(item);
+
+  });
+
+}
+
+/* INITIALISE */
+
+loadFavorites();
+
+</script>
+
+</body>
+</html>
