@@ -1,1 +1,638 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131b">
+<title>Board & Strategy | HEXCLØWN</title>
+
+<style>
+:root {
+  --bg:#07131b;
+  --panel:#10232e;
+  --panel2:#142d39;
+  --green:#39ff88;
+  --cyan:#27eaff;
+  --blue:#3985ff;
+  --red:#ff536b;
+  --text:#e9fbff;
+  --muted:#91aeb9;
+  --border:#24505c;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#12313d,#07131b 55%);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header{
+  padding:17px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  border-bottom:1px solid var(--border);
+  background:#091923;
+}
+.logo{
+  color:var(--green);
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:2px;
+  text-shadow:0 0 12px #39ff8877;
+}
+nav{display:flex;gap:16px;flex-wrap:wrap}
+nav a{
+  color:var(--cyan);
+  text-decoration:none;
+  font-size:13px;
+  font-weight:bold;
+}
+nav a:hover{color:var(--green)}
+.hero{
+  text-align:center;
+  padding:38px 15px 25px;
+}
+.hero h1{
+  color:var(--cyan);
+  font-size:clamp(27px,6vw,43px);
+  margin:0 0 12px;
+  text-shadow:0 0 15px #27eaff55;
+}
+.hero p{color:var(--muted);line-height:1.6}
+.hero .tag{
+  display:inline-block;
+  color:var(--green);
+  border:1px solid var(--green);
+  border-radius:30px;
+  padding:7px 14px;
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:13px;
+}
+.container{width:92%;max-width:1100px;margin:auto}
+.section-title{
+  color:var(--green);
+  font-size:20px;
+  margin:25px 0 14px;
+}
+.game-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+  gap:12px;
+  margin-bottom:25px;
+}
+.game-card{
+  background:linear-gradient(145deg,#15313d,#0c1d27);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:16px 12px;
+  cursor:pointer;
+  transition:.2s;
+  text-align:left;
+  color:var(--text);
+}
+.game-card:hover,.game-card.active{
+  border-color:var(--green);
+  box-shadow:0 0 15px #39ff8833;
+  transform:translateY(-2px);
+}
+.game-card .emoji{font-size:25px}
+.game-card h3{font-size:14px;margin:9px 0 5px}
+.game-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
+.game-area{
+  background:linear-gradient(145deg,#112833,#0a1a23);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:18px;
+  margin:15px 0 35px;
+  min-height:300px;
+}
+.game-heading{
+  text-align:center;
+  margin-bottom:15px;
+}
+.game-heading h2{color:var(--cyan);margin:5px}
+.game-heading p{color:var(--muted);font-size:13px}
+.info{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:12px 0;
+}
+.info span{
+  background:#091923;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:8px 12px;
+  font-size:12px;
+}
+button{
+  background:#153541;
+  border:1px solid var(--cyan);
+  color:var(--cyan);
+  padding:10px 14px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  margin:4px;
+}
+button:hover{background:#1b4b59}
+button.primary{
+  background:var(--green);
+  color:#06150e;
+  border-color:var(--green);
+}
+button:disabled{opacity:.4;cursor:not-allowed}
+.board-wrap{
+  display:flex;
+  justify-content:center;
+  overflow-x:auto;
+  padding:10px 0;
+}
+.board{
+  display:grid;
+  border:3px solid #287080;
+  border-radius:5px;
+  overflow:hidden;
+  user-select:none;
+  touch-action:manipulation;
+}
+.cell{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  position:relative;
+  font-weight:bold;
+}
+.cell.selected{outline:3px solid var(--green);outline-offset:-3px}
+.cell.possible:after{
+  content:"";
+  width:25%;
+  height:25%;
+  border-radius:50%;
+  background:#39ff8899;
+  position:absolute;
+}
+.cell.last{box-shadow:inset 0 0 0 3px var(--cyan)}
+.status{
+  text-align:center;
+  color:var(--green);
+  min-height:24px;
+  margin:10px 0;
+  font-size:14px;
+}
+.controls{text-align:center;margin:12px 0}
+.small-note{
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
+}
+footer{
+  text-align:center;
+  padding:25px 10px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:11px;
+}
+footer strong{color:var(--green)}
+.empty{
+  text-align:center;
+  color:var(--muted);
+  padding:35px 10px;
+}
+@media(max-width:500px){
+  header{justify-content:center}
+  nav{justify-content:center}
+  .game-area{padding:12px}
+  .game-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCLØWN</div>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="GameZone.html">GAME ZONE</a>
+    <a href="#games">BOARD GAMES</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="tag">STRATEGY MODE ACTIVATED</div>
+  <h1>BOARD & STRATEGY</h1>
+  <p>Think ahead. Make your move. Challenge your strategy.<br>
+  Six classic games inside one HEXCLØWN zone.</p>
+</section>
+
+<main class="container">
+  <h2 class="section-title" id="games">Choose Your Game</h2>
+
+  <div class="game-list" id="gameList">
+    <button class="game-card" onclick="startGame('checkers')">
+      <div class="emoji">🔴</div>
+      <h3>Checkers Classic</h3>
+      <p>Capture pieces and crown your kings.</p>
+    </button>
+    <button class="game-card" onclick="startGame('chess')">
+      <div class="emoji">♟️</div>
+      <h3>Chess Lite</h3>
+      <p>Local two-player chess match.</p>
+    </button>
+    <button class="game-card" onclick="startGame('connect')">
+      <div class="emoji">🔵</div>
+      <h3>Connect Four</h3>
+      <p>Connect four pieces in a row.</p>
+    </button>
+    <button class="game-card" onclick="startGame('tic')">
+      <div class="emoji">❎</div>
+      <h3>Tic-Tac-Toe Ultimate</h3>
+      <p>Get three marks in a line.</p>
+    </button>
+    <button class="game-card" onclick="startGame('battle')">
+      <div class="emoji">🚢</div>
+      <h3>Battleship Grid</h3>
+      <p>Find the hidden ships.</p>
+    </button>
+    <button class="game-card" onclick="startGame('reversi')">
+      <div class="emoji">⚫</div>
+      <h3>Reversi / Othello</h3>
+      <p>Flip pieces and control the board.</p>
+    </button>
+  </div>
+
+  <section class="game-area" id="gameArea">
+    <div class="empty">
+      <div style="font-size:42px">🎮</div>
+      <h2 style="color:var(--cyan)">Welcome to the Strategy Arena</h2>
+      <p>Select a game above to begin playing.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>HEXCLØWN</strong><br><br>
+  CREATED BY TIJANI ALIYU<br>
+  HEXWHISPER / CYBERCODECLOWN<br><br>
+  © 2026 HEXCLØWN. ALL RIGHTS RESERVED.
+</footer>
+
+<script>
+const area=document.getElementById("gameArea");
+let currentGame="";
+
+function shell(title,description,content){
+  area.innerHTML=`
+    <div class="game-heading">
+      <h2>${title}</h2>
+      <p>${description}</p>
+    </div>
+    ${content}
+  `;
+}
+function message(txt){
+  const el=document.getElementById("status");
+  if(el)el.textContent=txt;
+}
+function startGame(game){
+  currentGame=game;
+  document.querySelectorAll(".game-card").forEach(c=>c.classList.remove("active"));
+  const cards=[...document.querySelectorAll(".game-card")];
+  const index=["checkers","chess","connect","tic","battle","reversi"].indexOf(game);
+  if(cards[index])cards[index].classList.add("active");
+
+  if(game==="checkers")initCheckers();
+  if(game==="chess")initChess();
+  if(game==="connect")initConnect();
+  if(game==="tic")initTic();
+  if(game==="battle")initBattle();
+  if(game==="reversi")initReversi();
+}
+
+/* =========================
+   CHECKERS CLASSIC
+========================= */
+let checkBoard,checkTurn,checkSelected,checkMoves;
+
+function initCheckers(){
+  checkBoard=Array.from({length:8},()=>Array(8).fill(""));
+  for(let r=0;r<3;r++)for(let c=0;c<8;c++)
+    if((r+c)%2===1)checkBoard[r][c]="B";
+  for(let r=5;r<8;r++)for(let c=0;c<8;c++)
+    if((r+c)%2===1)checkBoard[r][c]="R";
+  checkTurn="R";checkSelected=null;checkMoves=[];
+  drawCheckers();
+}
+function drawCheckers(){
+  shell("🔴 Checkers Classic","Two-player local match. Capture your opponent's pieces.",`
+    <div class="info"><span id="turnInfo">Red's turn</span><span>Red vs Blue</span></div>
+    <div class="board-wrap"><div class="board" id="checkBoard" style="grid-template-columns:repeat(8,40px)"></div></div>
+    <div class="status" id="status">Red begins.</div>
+    <div class="controls"><button onclick="initCheckers()">New Match</button></div>
+    <p class="small-note">Tap one of your pieces, then tap a highlighted square. Kings can move in both directions. Captures are supported.</p>
+  `);
+  const board=document.getElementById("checkBoard");
+  board.innerHTML="";
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+    const el=document.createElement("div");
+    el.className="cell";
+    el.style.width="40px";el.style.height="40px";
+    el.style.background=(r+c)%2?"#286070":"#c5dce0";
+    if(checkSelected&&checkSelected[0]===r&&checkSelected[1]===c)el.classList.add("selected");
+    if(checkMoves.some(m=>m.r===r&&m.c===c))el.classList.add("possible");
+    const p=checkBoard[r][c];
+    if(p){
+      el.textContent=p==="R"?"🔴":p==="B"?"🔵":p==="RK"?"👑":"♛";
+      el.style.fontSize="23px";
+    }
+    el.onclick=()=>checkClick(r,c);
+    board.appendChild(el);
+  }
+  document.getElementById("turnInfo").textContent=(checkTurn==="R"?"Red":"Blue")+"'s turn";
+}
+function getCheckMoves(r,c){
+  const p=checkBoard[r][c],side=p[0],king=p.length>1;
+  const dirs=king?[-1,1]:[side==="R"?-1:1];
+  let moves=[];
+  dirs.forEach(dr=>[-1,1].forEach(dc=>{
+    let nr=r+dr,nc=c+dc;
+    if(nr<0||nr>7||nc<0||nc>7)return;
+    if(!checkBoard[nr][nc])moves.push({r:nr,c:nc,cap:false});
+    else if(checkBoard[nr][nc][0]!==side){
+      let jr=nr+dr,jc=nc+dc;
+      if(jr>=0&&jr<8&&jc>=0&&jc<8&&!checkBoard[jr][jc])
+        moves.push({r:jr,c:jc,cap:true,cr:nr,cc:nc});
+    }
+  }));
+  return moves;
+}
+function checkClick(r,c){
+  const p=checkBoard[r][c];
+  if(checkSelected){
+    const move=checkMoves.find(m=>m.r===r&&m.c===c);
+    if(move){
+      const [sr,sc]=checkSelected;
+      const piece=checkBoard[sr][sc];
+      checkBoard[r][c]=piece;
+      checkBoard[sr][sc]="";
+      if(move.cap)checkBoard[move.cr][move.cc]="";
+      if(piece==="R"&&r===0)checkBoard[r][c]="RK";
+      if(piece==="B"&&r===7)checkBoard[r][c]="BK";
+      checkSelected=null;checkMoves=[];
+      checkTurn=checkTurn==="R"?"B":"R";
+      drawCheckers();
+      message("Move made. "+(checkTurn==="R"?"Red":"Blue")+"'s turn.");
+      return;
+    }
+  }
+  if(p&&p[0]===checkTurn){
+    checkSelected=[r,c];
+    checkMoves=getCheckMoves(r,c);
+    drawCheckers();
+    message("Choose a highlighted square.");
+  }else{
+    checkSelected=null;checkMoves=[];drawCheckers();
+  }
+}
+
+/* =========================
+   CHESS LITE
+========================= */
+const chessStart=[
+ ["r","n","b","q","k","b","n","r"],
+ ["p","p","p","p","p","p","p","p"],
+ ["","","","","","","",""],
+ ["","","","","","","",""],
+ ["","","","","","","",""],
+ ["","","","","","","",""],
+ ["P","P","P","P","P","P","P","P"],
+ ["R","N","B","Q","K","B","N","R"]
+];
+let chessBoard,chessTurn,chessSelected,chessOptions;
+
+function initChess(){
+  chessBoard=chessStart.map(row=>row.slice());
+  chessTurn="W";chessSelected=null;chessOptions=[];
+  drawChess();
+}
+function drawChess(){
+  shell("♟️ Chess Lite Local Match","Two-player chess. Take turns and capture your opponent's pieces.",`
+    <div class="info"><span id="chessTurn">White's turn</span><span>White vs Black</span></div>
+    <div class="board-wrap"><div class="board" id="chessBoard" style="grid-template-columns:repeat(8,40px)"></div></div>
+    <div class="status" id="status">White begins.</div>
+    <div class="controls"><button onclick="initChess()">New Match</button></div>
+    <p class="small-note">This is a casual chess-lite version. It supports piece movement and captures, but does not enforce check, checkmate or castling rules.</p>
+  `);
+  const b=document.getElementById("chessBoard");b.innerHTML="";
+  const symbols={K:"♔",Q:"♕",R:"♖",B:"♗",N:"♘",P:"♙",k:"♚",q:"♛",r:"♜",b:"♝",n:"♞",p:"♟"};
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+    const el=document.createElement("div");
+    el.className="cell";
+    el.style.width="40px";el.style.height="40px";
+    el.style.background=(r+c)%2?"#397080":"#d4e4dc";
+    if(chessSelected&&chessSelected[0]===r&&chessSelected[1]===c)el.classList.add("selected");
+    if(chessOptions.some(m=>m.r===r&&m.c===c))el.classList.add("possible");
+    const p=chessBoard[r][c];
+    if(p){el.textContent=symbols[p];el.style.fontSize="29px";el.style.color=p===p.toUpperCase()?"#10232e":"#07131b";}
+    el.onclick=()=>chessClick(r,c);
+    b.appendChild(el);
+  }
+  document.getElementById("chessTurn").textContent=(chessTurn==="W"?"White":"Black")+"'s turn";
+}
+function chessMoves(r,c){
+  const p=chessBoard[r][c],side=p===p.toUpperCase()?"W":"B";
+  const type=p.toLowerCase(),dir=side==="W"?-1:1;
+  let out=[];
+  const add=(nr,nc)=>{
+    if(nr<0||nr>7||nc<0||nc>7)return false;
+    const target=chessBoard[nr][nc];
+    if(target&&(target===target.toUpperCase()?"W":"B")===side)return false;
+    out.push({r:nr,c:nc});
+    return !target;
+  };
+  if(type==="p"){
+    const nr=r+dir;
+    if(nr>=0&&nr<8&&!chessBoard[nr][c]){
+      out.push({r:nr,c});
+      if((side==="W"&&r===6)||(side==="B"&&r===1)){
+        if(!chessBoard[nr+dir][c])out.push({r:nr+dir,c});
+      }
+    }
+    [-1,1].forEach(dc=>{
+      const nc=c+dc;
+      if(nr>=0&&nr<8&&nc>=0&&nc<8&&chessBoard[nr][nc]&&
+        (chessBoard[nr][nc]===chessBoard[nr][nc].toUpperCase()?"W":"B")!==side)
+        out.push({r:nr,c:nc});
+    });
+  }
+  if(type==="n"){
+    [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]].forEach(([a,b])=>add(r+a,c+b));
+  }
+  if(type==="k"){
+    for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++)if(a||b)add(r+a,c+b);
+  }
+  if(["r","b","q"].includes(type)){
+    let dirs=[];
+    if(type==="r"||type==="q")dirs.push([1,0],[-1,0],[0,1],[0,-1]);
+    if(type==="b"||type==="q")dirs.push([1,1],[1,-1],[-1,1],[-1,-1]);
+    dirs.forEach(([a,b])=>{
+      for(let n=1;n<8;n++)if(!add(r+a*n,c+b*n))break;
+    });
+  }
+  return out;
+}
+function chessClick(r,c){
+  const p=chessBoard[r][c];
+  if(chessSelected){
+    const move=chessOptions.find(m=>m.r===r&&m.c===c);
+    if(move){
+      const [sr,sc]=chessSelected;
+      const moving=chessBoard[sr][sc];
+      chessBoard[r][c]=moving;
+      chessBoard[sr][sc]="";
+      if(moving==="P"&&r===0)chessBoard[r][c]="Q";
+      if(moving==="p"&&r===7)chessBoard[r][c]="q";
+      chessTurn=chessTurn==="W"?"B":"W";
+      chessSelected=null;chessOptions=[];
+      drawChess();message("Move made. "+(chessTurn==="W"?"White":"Black")+"'s turn.");
+      return;
+    }
+  }
+  if(p&&(p===p.toUpperCase()?"W":"B")===chessTurn){
+    chessSelected=[r,c];chessOptions=chessMoves(r,c);
+    drawChess();message("Choose a highlighted square.");
+  }else{
+    chessSelected=null;chessOptions=[];drawChess();
+  }
+}
+
+/* =========================
+   CONNECT FOUR
+========================= */
+let connectBoard,connectTurn,connectOver;
+function initConnect(){
+  connectBoard=Array.from({length:6},()=>Array(7).fill(""));
+  connectTurn="R";connectOver=false;drawConnect();
+}
+function drawConnect(){
+  shell("🔵 Connect Four Grid","Drop four pieces in a row horizontally, vertically or diagonally.",`
+    <div class="info"><span id="connectTurn">Red's turn</span></div>
+    <div class="board-wrap"><div class="board" id="connectBoard" style="grid-template-columns:repeat(7,43px);background:#164d75;padding:5px;gap:3px"></div></div>
+    <div class="status" id="status">Red begins.</div>
+    <div class="controls"><button onclick="initConnect()">New Match</button></div>
+  `);
+  const b=document.getElementById("connectBoard");b.innerHTML="";
+  for(let r=0;r<6;r++)for(let c=0;c<7;c++){
+    const el=document.createElement("div");el.className="cell";
+    el.style.width="43px";el.style.height="43px";
+    el.style.borderRadius="50%";el.style.background=connectBoard[r][c]==="R"?"#ff536b":connectBoard[r][c]==="Y"?"#ffe45c":"#071923";
+    el.onclick=()=>dropConnect(c);b.appendChild(el);
+  }
+  document.getElementById("connectTurn").textContent=connectOver?"Game over":(connectTurn==="R"?"Red":"Yellow")+"'s turn";
+}
+function dropConnect(c){
+  if(connectOver)return;
+  for(let r=5;r>=0;r--)if(!connectBoard[r][c]){
+    connectBoard[r][c]=connectTurn;
+    if(checkConnectWin(r,c)){
+      connectOver=true;drawConnect();message((connectTurn==="R"?"Red":"Yellow")+" wins!");return;
+    }
+    if(connectBoard.every(row=>row.every(Boolean))){
+      connectOver=true;drawConnect();message("It's a draw!");return;
+    }
+    connectTurn=connectTurn==="R"?"Y":"R";
+    drawConnect();return;
+  }
+  message("That column is full.");
+}
+function checkConnectWin(r,c){
+  const p=connectBoard[r][c];
+  const dirs=[[1,0],[0,1],[1,1],[1,-1]];
+  return dirs.some(([dr,dc])=>{
+    let count=1;
+    for(let s of [-1,1]){
+      let nr=r+dr*s,nc=c+dc*s;
+      while(nr>=0&&nr<6&&nc>=0&&nc<7&&connectBoard[nr][nc]===p){
+        count++;nr+=dr*s;nc+=dc*s;
+      }
+    }
+    return count>=4;
+  });
+}
+
+/* =========================
+   TIC TAC TOE
+========================= */
+let ticBoard,ticTurn,ticOver;
+function initTic(){
+  ticBoard=Array(9).fill("");
+  ticTurn="X";ticOver=false;drawTic();
+}
+function drawTic(){
+  shell("❎ Tic-Tac-Toe Ultimate","Challenge another player on the same device.",`
+    <div class="info"><span id="ticTurn">X's turn</span></div>
+    <div class="board-wrap"><div class="board" id="ticBoard" style="grid-template-columns:repeat(3,85px);gap:5px;border:0"></div></div>
+    <div class="status" id="status">X begins.</div>
+    <div class="controls"><button onclick="initTic()">New Match</button></div>
+  `);
+  const b=document.getElementById("ticBoard");b.innerHTML="";
+  ticBoard.forEach((p,i)=>{
+    const el=document.createElement("div");el.className="cell";
+    el.style.width="85px";el.style.height="85px";
+    el.style.background="#153541";el.style.border="1px solid #27eaff";
+    el.style.borderRadius="10px";el.style.fontSize="38px";
+    el.style.color=p==="X"?"#39ff88":"#27eaff";
+    el.textContent=p;el.onclick=()=>ticClick(i);b.appendChild(el);
+  });
+  document.getElementById("ticTurn").textContent=ticOver?"Game over":ticTurn+"'s turn";
+}
+function ticClick(i){
+  if(ticOver||ticBoard[i])return;
+  ticBoard[i]=ticTurn;
+  const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  if(lines.some(line=>line.every(n=>ticBoard[n]===ticTurn))){
+    ticOver=true;drawTic();message(ticTurn+" wins!");return;
+  }
+  if(ticBoard.every(Boolean)){
+    ticOver=true;drawTic();message("It's a draw!");return;
+  }
+  ticTurn=ticTurn==="X"?"O":"X";
+  drawTic();
+}
+
+/* =========================
+   BATTLESHIP
+========================= */
+let battleShips,battleShots,battleCount,battleOver;
+function initBattle(){
+  battleShips=new Set();
+  while(battleShips.size<5)battleShips.add(Math.floor(Math.random()*100));
+  battleShots=new Set();battleCount=0;battleOver=false;
+  drawBattle();
+}
+function drawBattle(){
+  shell("🚢 Battleship Grid","Find all five hidden ship positions on the 10 × 10 grid.",`
+    <div class="info"><span id="battleCount">Hits: 0 / 5</span><span>Misses: <b id="missCount">0</b></span></div>
+    <div class="board-wrap"><div class="board" id="battleBoard" style="grid-template-columns:repeat(10,29px);gap:2px;border:0"></div></div>
+    <div class="status" id="status">Choose a square to fire!</div>
+    <div class="controls"><button onclick="initBattle()">New Fleet</button></div>
+    <p class="small-note">Tap a square to search for a hidden ship. Red means hit; blue means water.</p>
+  `);
+  const b=document.getElementById("battleBoard");b.innerHTML="";
+  let misses=0;
+  for(let i=0;i<100;i++){
+    const el=document.createElement("div");el.className="cell";
+    el.style.width="29px";el.style.height="29px";
+    el.style.background="#153541";el.style.border="1px solid #286070";
+    if(battleShots.has(i)){
+      if(battleShips.has(i)){el.textContent="✦";el.style.color="#ff536b";el.style.background="#542431";}
+      else{el.textContent="·";
