@@ -1,1 +1,646 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Maze Chaser | HEXCLØWN</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 15px;
+    background: #071321;
+    color: #eaffff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    color: #00ffc8;
+    text-shadow: 0 0 12px #00ffc8;
+}
+
+.subtitle {
+    color: #9bbbc8;
+    font-size: 13px;
+}
+
+.game-box {
+    max-width: 480px;
+    margin: 20px auto;
+    padding: 12px;
+    background: #102438;
+    border: 1px solid #00d9ff;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #00d9ff33;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: #00ffc8;
+    font-weight: bold;
+}
+
+canvas {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    display: block;
+    margin: auto;
+    background: #020914;
+    border: 2px solid #00d9ff;
+    border-radius: 8px;
+    touch-action: none;
+}
+
+button {
+    padding: 12px 18px;
+    margin: 5px;
+    border: none;
+    border-radius: 8px;
+    background: #00d9ff;
+    color: #071321;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:active {
+    background: #00ffc8;
+}
+
+#startBtn {
+    background: #00ffc8;
+}
+
+.dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 65px);
+    justify-content: center;
+    gap: 6px;
+    margin: 15px auto;
+}
+
+.dpad button {
+    height: 48px;
+    font-size: 20px;
+    padding: 5px;
+    margin: 0;
+}
+
+.info {
+    color: #a9c5d0;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.back {
+    display: inline-block;
+    margin-top: 15px;
+    color: #00ffc8;
+    text-decoration: none;
+    border: 1px solid #00ffc8;
+    padding: 10px 18px;
+    border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>MAZE CHASER</h1>
+<p class="subtitle">HEXCLØWN ARCADE SYSTEM</p>
+
+<div class="game-box">
+
+    <div class="stats">
+        <span>SCORE: <span id="score">0</span></span>
+        <span>LIVES: <span id="lives">3</span></span>
+        <span>LEVEL: <span id="level">1</span></span>
+    </div>
+
+    <canvas id="game" width="420" height="450"></canvas>
+
+    <div>
+        <button id="startBtn">START GAME</button>
+        <button id="pauseBtn">PAUSE</button>
+        <button id="restartBtn">RESTART</button>
+    </div>
+
+    <div class="dpad">
+        <span></span>
+        <button data-dir="up">▲</button>
+        <span></span>
+
+        <button data-dir="left">◀</button>
+        <button data-dir="down">▼</button>
+        <button data-dir="right">▶</button>
+    </div>
+
+    <p class="info">
+        Collect all the glowing dots.<br>
+        Avoid the coloured enemies!<br>
+        Use the arrow keys or mobile buttons.
+    </p>
+
+</div>
+
+<a class="back" href="arcandact.html">← BACK TO ARCADE & ACTION</a>
+
+<script>
+(function () {
+"use strict";
+
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+const scoreText = document.getElementById("score");
+const livesText = document.getElementById("lives");
+const levelText = document.getElementById("level");
+
+const startBtn = document.getElementById("startBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const restartBtn = document.getElementById("restartBtn");
+
+const TILE = 30;
+const COLS = 14;
+const ROWS = 15;
+
+const originalMap = [
+    "##############",
+    "#............#",
+    "#.##.####.##.#",
+    "#............#",
+    "#.##.#..#.##.#",
+    "#....#..#....#",
+    "####.#..#.####",
+    "#............#",
+    "####.#..#.####",
+    "#....#..#....#",
+    "#.##.#..#.##.#",
+    "#............#",
+    "#.##.####.##.#",
+    "#............#",
+    "##############"
+];
+
+let map = [];
+let score = 0;
+let lives = 3;
+let level = 1;
+let state = "ready";
+
+let lastTime = 0;
+let playerTimer = 0;
+let ghostTimer = 0;
+let animationId = null;
+
+const player = {
+    x: 1,
+    y: 1,
+    dir: "right",
+    nextDir: "right"
+};
+
+let ghosts = [];
+
+const directions = {
+    up:    { x: 0, y: -1 },
+    down:  { x: 0, y: 1 },
+    left:  { x: -1, y: 0 },
+    right: { x: 1, y: 0 }
+};
+
+const ghostColors = [
+    "#ff4568",
+    "#00d9ff",
+    "#a855f7"
+];
+
+function copyMap() {
+    map = originalMap.map(row => row.split(""));
+}
+
+function createGhosts() {
+    ghosts = [
+        { x: 6, y: 7, color: ghostColors[0], dir: "left" },
+        { x: 7, y: 7, color: ghostColors[1], dir: "right" },
+        { x: 8, y: 7, color: ghostColors[2], dir: "up" }
+    ];
+}
+
+function updateStats() {
+    scoreText.textContent = score;
+    livesText.textContent = lives;
+    levelText.textContent = level;
+}
+
+function isWall(x, y) {
+    if (x < 0 || x >= COLS || y < 0 || y >= ROWS) {
+        return true;
+    }
+
+    return map[y][x] === "#";
+}
+
+function resetPositions() {
+    player.x = 1;
+    player.y = 1;
+    player.dir = "right";
+    player.nextDir = "right";
+
+    createGhosts();
+}
+
+function resetGame() {
+    score = 0;
+    lives = 3;
+    level = 1;
+
+    copyMap();
+    resetPositions();
+    updateStats();
+
+    state = "ready";
+    startBtn.textContent = "START GAME";
+
+    draw();
+}
+
+function startGame() {
+    if (state === "won" || state === "gameover") {
+        resetGame();
+    }
+
+    state = "running";
+    startBtn.textContent = "GAME RUNNING";
+    lastTime = 0;
+    draw();
+}
+
+function pauseGame() {
+    if (state === "running") {
+        state = "paused";
+        startBtn.textContent = "RESUME GAME";
+    } else if (state === "paused") {
+        startGame();
+    }
+
+    draw();
+}
+
+function setDirection(dir) {
+    if (directions[dir]) {
+        player.nextDir = dir;
+    }
+}
+
+function movePlayer() {
+    const next = directions[player.nextDir];
+
+    if (!isWall(player.x + next.x, player.y + next.y)) {
+        player.dir = player.nextDir;
+    }
+
+    const move = directions[player.dir];
+
+    const nx = player.x + move.x;
+    const ny = player.y + move.y;
+
+    if (!isWall(nx, ny)) {
+        player.x = nx;
+        player.y = ny;
+    }
+
+    // Collect dot
+    if (map[player.y][player.x] === ".") {
+        map[player.y][player.x] = " ";
+        score += 10;
+        updateStats();
+    }
+
+    // Check if all dots are collected
+    let dots = 0;
+
+    for (let y = 0; y < ROWS; y++) {
+        for (let x = 0; x < COLS; x++) {
+            if (map[y][x] === ".") dots++;
+        }
+    }
+
+    if (dots === 0) {
+        level++;
+
+        if (level > 3) {
+            state = "won";
+            startBtn.textContent = "PLAY AGAIN";
+        } else {
+            copyMap();
+            resetPositions();
+            startBtn.textContent = "NEXT LEVEL";
+            state = "ready";
+        }
+
+        updateStats();
+    }
+}
+
+function moveGhosts() {
+    ghosts.forEach(ghost => {
+        const possible = [];
+
+        for (const dir in directions) {
+            const d = directions[dir];
+
+            if (!isWall(ghost.x + d.x, ghost.y + d.y)) {
+                possible.push(dir);
+            }
+        }
+
+        if (possible.length === 0) return;
+
+        // Usually continue in the current direction.
+        if (
+            !possible.includes(ghost.dir) ||
+            Math.random() < 0.35
+        ) {
+            ghost.dir = possible[
+                Math.floor(Math.random() * possible.length)
+            ];
+        }
+
+        const move = directions[ghost.dir];
+
+        ghost.x += move.x;
+        ghost.y += move.y;
+    });
+}
+
+function checkCollisions() {
+    for (const ghost of ghosts) {
+        if (ghost.x === player.x && ghost.y === player.y) {
+            lives--;
+            updateStats();
+
+            if (lives <= 0) {
+                state = "gameover";
+                startBtn.textContent = "PLAY AGAIN";
+            } else {
+                resetPositions();
+            }
+
+            return;
+        }
+    }
+}
+
+function drawWalls() {
+    for (let y = 0; y < ROWS; y++) {
+        for (let x = 0; x < COLS; x++) {
+            if (map[y][x] === "#") {
+                ctx.fillStyle = "#123a75";
+                ctx.fillRect(
+                    x * TILE + 2,
+                    y * TILE + 2,
+                    TILE - 4,
+                    TILE - 4
+                );
+
+                ctx.strokeStyle = "#00d9ff";
+                ctx.lineWidth = 1;
+                ctx.strokeRect(
+                    x * TILE + 2,
+                    y * TILE + 2,
+                    TILE - 4,
+                    TILE - 4
+                );
+            }
+        }
+    }
+}
+
+function drawDots() {
+    ctx.fillStyle = "#ffffff";
+    ctx.shadowColor = "#00ffc8";
+    ctx.shadowBlur = 8;
+
+    for (let y = 0; y < ROWS; y++) {
+        for (let x = 0; x < COLS; x++) {
+            if (map[y][x] === ".") {
+                ctx.beginPath();
+                ctx.arc(
+                    x * TILE + TILE / 2,
+                    y * TILE + TILE / 2,
+                    3,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fill();
+            }
+        }
+    }
+
+    ctx.shadowBlur = 0;
+}
+
+function drawPlayer() {
+    const cx = player.x * TILE + TILE / 2;
+    const cy = player.y * TILE + TILE / 2;
+
+    const angles = {
+        right: 0,
+        down: Math.PI / 2,
+        left: Math.PI,
+        up: -Math.PI / 2
+    };
+
+    const angle = angles[player.dir];
+
+    ctx.beginPath();
+    ctx.fillStyle = "#ffe600";
+    ctx.shadowColor = "#ffe600";
+    ctx.shadowBlur = 12;
+
+    ctx.moveTo(cx, cy);
+    ctx.arc(
+        cx,
+        cy,
+        12,
+        angle + 0.35,
+        angle + Math.PI * 2 - 0.35
+    );
+
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+}
+
+function drawGhost(ghost) {
+    const cx = ghost.x * TILE + TILE / 2;
+    const cy = ghost.y * TILE + TILE / 2;
+
+    ctx.fillStyle = ghost.color;
+    ctx.shadowColor = ghost.color;
+    ctx.shadowBlur = 10;
+
+    ctx.beginPath();
+    ctx.arc(cx, cy - 2, 11, Math.PI, 0);
+    ctx.lineTo(cx + 11, cy + 10);
+    ctx.lineTo(cx + 5, cy + 6);
+    ctx.lineTo(cx, cy + 10);
+    ctx.lineTo(cx - 5, cy + 6);
+    ctx.lineTo(cx - 11, cy + 10);
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.shadowBlur = 0;
+
+    // Eyes
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    ctx.arc(cx - 4, cy - 3, 3, 0, Math.PI * 2);
+    ctx.arc(cx + 4, cy - 3, 3, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#071321";
+    ctx.beginPath();
+    ctx.arc(cx - 4, cy - 3, 1.5, 0, Math.PI * 2);
+    ctx.arc(cx + 4, cy - 3, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+}
+
+function drawOverlay(title, message) {
+    ctx.fillStyle = "rgba(0, 5, 15, 0.85)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.textAlign = "center";
+
+    ctx.fillStyle = "#00ffc8";
+    ctx.font = "bold 27px Arial";
+    ctx.fillText(title, canvas.width / 2, 210);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "14px Arial";
+    ctx.fillText(message, canvas.width / 2, 245);
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#020914";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    drawWalls();
+    drawDots();
+
+    ghosts.forEach(drawGhost);
+    drawPlayer();
+
+    if (state === "ready") {
+        drawOverlay("MAZE CHASER", "Tap START GAME to begin");
+    }
+
+    if (state === "paused") {
+        drawOverlay("PAUSED", "Tap RESUME to continue");
+    }
+
+    if (state === "gameover") {
+        drawOverlay("GAME OVER", "Tap PLAY AGAIN to restart");
+    }
+
+    if (state === "won") {
+        drawOverlay("YOU WIN!", "You completed all 3 levels!");
+    }
+}
+
+function gameLoop(timestamp) {
+    if (state === "running") {
+        if (!lastTime) lastTime = timestamp;
+
+        const delta = Math.min(timestamp - lastTime, 100);
+        lastTime = timestamp;
+
+        playerTimer += delta;
+        ghostTimer += delta;
+
+        if (playerTimer >= 140) {
+            playerTimer = 0;
+            movePlayer();
+            checkCollisions();
+        }
+
+        if (ghostTimer >= 260) {
+            ghostTimer = 0;
+            moveGhosts();
+            checkCollisions();
+        }
+    } else {
+        lastTime = timestamp;
+    }
+
+    draw();
+    animationId = requestAnimationFrame(gameLoop);
+}
+
+// Keyboard controls
+document.addEventListener("keydown", function (event) {
+    const keys = {
+        ArrowUp: "up",
+        ArrowDown: "down",
+        ArrowLeft: "left",
+        ArrowRight: "right"
+    };
+
+    if (keys[event.key]) {
+        event.preventDefault();
+        setDirection(keys[event.key]);
+    }
+
+    if (event.code === "Space") {
+        event.preventDefault();
+
+        if (state === "running") {
+            pauseGame();
+        } else {
+            startGame();
+        }
+    }
+});
+
+// Mobile direction buttons
+document.querySelectorAll("[data-dir]").forEach(button => {
+    button.addEventListener("click", function () {
+        setDirection(button.dataset.dir);
+    });
+});
+
+startBtn.addEventListener("click", startGame);
+pauseBtn.addEventListener("click", pauseGame);
+restartBtn.addEventListener("click", resetGame);
+
+// Initialize
+copyMap();
+resetPositions();
+updateStats();
+draw();
+
+if (animationId === null) {
+    animationId = requestAnimationFrame(gameLoop);
+}
+
+})();
+</script>
+
+</body>
+  </html>
+  
