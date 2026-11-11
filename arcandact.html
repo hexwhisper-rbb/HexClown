@@ -8,386 +8,247 @@
 <title>Arcade & Action | HEXCLØWN</title>
 
 <style>
-:root {
-    --bg:#071321;
-    --panel:#10243a;
-    --panel2:#142d45;
-    --green:#39ff88;
-    --cyan:#00e5ff;
-    --blue:#398cff;
-    --red:#ff5364;
-    --white:#eaf7ff;
-    --muted:#9ab1c5;
+:root{
+ --bg:#071321;
+ --panel:#102438;
+ --panel2:#142d43;
+ --cyan:#00eaff;
+ --green:#39ff88;
+ --blue:#278bff;
+ --red:#ff4567;
+ --white:#eafaff;
+ --muted:#9bb5c5;
 }
-
-* {
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,Helvetica,sans-serif;
+ background:linear-gradient(135deg,#071321,#0a1d2e,#071321);
+ color:var(--white);
+ min-height:100vh;
 }
-
-body {
-    background:var(--bg);
-    color:var(--white);
-    font-family:Arial,sans-serif;
-    min-height:100vh;
+header{
+ padding:17px 5%;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:15px;
+ flex-wrap:wrap;
+ background:#081827;
+ border-bottom:1px solid #17445b;
 }
-
-a {
-    color:inherit;
-    text-decoration:none;
+.logo{
+ font-size:24px;
+ font-weight:900;
+ letter-spacing:2px;
+ color:var(--cyan);
+ text-shadow:0 0 12px #00eaff88;
 }
-
-header {
-    background:#0b1b2d;
-    border-bottom:1px solid #1d405b;
-    padding:16px 6%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    flex-wrap:wrap;
-    gap:12px;
+.logo span{color:var(--green)}
+nav a{
+ color:var(--white);
+ text-decoration:none;
+ margin-left:15px;
+ font-size:13px;
+ font-weight:bold;
 }
-
-.logo {
-    color:var(--green);
-    font-size:24px;
-    font-weight:900;
-    letter-spacing:2px;
+nav a:hover{color:var(--green)}
+.hero{
+ padding:45px 20px 30px;
+ text-align:center;
 }
-
-.logo span {
-    color:var(--cyan);
+.hero small{
+ color:var(--green);
+ letter-spacing:4px;
+ font-weight:bold;
 }
-
-nav {
-    display:flex;
-    gap:18px;
-    flex-wrap:wrap;
+.hero h1{
+ font-size:clamp(30px,6vw,55px);
+ margin:13px 0;
+ color:var(--cyan);
+ text-shadow:0 0 20px #00eaff55;
 }
-
-nav a {
-    color:var(--muted);
-    font-size:12px;
+.hero p{
+ color:var(--muted);
+ max-width:650px;
+ margin:auto;
+ line-height:1.7;
 }
-
-nav a:hover {
-    color:var(--green);
+.stats{
+ display:flex;
+ justify-content:center;
+ gap:12px;
+ flex-wrap:wrap;
+ margin-top:23px;
 }
-
-.hero {
-    text-align:center;
-    padding:48px 6% 35px;
-    background:
-      radial-gradient(circle at 20% 20%,#087c6c33,transparent 35%),
-      radial-gradient(circle at 80% 30%,#1769bd33,transparent 35%),
-      #091a2c;
-    border-bottom:1px solid #183b54;
+.stat{
+ background:#10283b;
+ border:1px solid #1c5269;
+ padding:10px 17px;
+ border-radius:10px;
+ font-size:13px;
 }
-
-.tag {
-    display:inline-block;
-    padding:7px 14px;
-    border:1px solid #39ff8866;
-    border-radius:30px;
-    color:var(--green);
-    font-size:10px;
-    letter-spacing:2px;
-    margin-bottom:15px;
+.stat strong{color:var(--green)}
+.tools{
+ max-width:1100px;
+ margin:15px auto 25px;
+ padding:0 18px;
+ display:flex;
+ gap:12px;
+ flex-wrap:wrap;
 }
-
-.hero h1 {
-    font-size:clamp(30px,7vw,52px);
-    margin-bottom:12px;
+.tools input{
+ flex:1;
+ min-width:180px;
+ padding:13px;
+ border-radius:9px;
+ border:1px solid #286078;
+ background:#102438;
+ color:white;
+ outline:none;
 }
-
-.hero h1 span {
-    color:var(--cyan);
+.tools input:focus{border-color:var(--cyan)}
+.section-title{
+ max-width:1100px;
+ margin:25px auto 15px;
+ padding:0 18px;
+ color:var(--green);
+ font-size:19px;
 }
-
-.hero p {
-    max-width:570px;
-    margin:auto;
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.7;
+.game-grid{
+ max-width:1100px;
+ margin:auto;
+ padding:0 18px 50px;
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+ gap:17px;
 }
-
-main {
-    max-width:1150px;
-    margin:auto;
-    padding:35px 6%;
+.game-card{
+ background:linear-gradient(145deg,#132d43,#0c2032);
+ border:1px solid #1d4b62;
+ border-radius:15px;
+ padding:19px;
+ transition:.2s;
 }
-
-.section-title {
-    margin-bottom:20px;
+.game-card:hover{
+ transform:translateY(-4px);
+ border-color:var(--cyan);
+ box-shadow:0 0 18px #00eaff20;
 }
-
-.section-title h2 {
-    font-size:22px;
-    margin-bottom:8px;
+.game-icon{
+ width:53px;
+ height:53px;
+ border-radius:13px;
+ display:grid;
+ place-items:center;
+ background:#0b3a4b;
+ font-size:28px;
+ margin-bottom:13px;
 }
-
-.section-title h2 span {
-    color:var(--green);
+.game-card h3{margin:0 0 9px;color:var(--cyan)}
+.game-card p{
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.6;
+ min-height:42px;
 }
-
-.section-title p {
-    color:var(--muted);
-    font-size:13px;
-    line-height:1.6;
+.play-btn,.action-btn{
+ border:0;
+ border-radius:8px;
+ padding:12px 17px;
+ background:linear-gradient(90deg,var(--green),var(--cyan));
+ color:#061522;
+ font-weight:900;
+ cursor:pointer;
 }
-
-.search {
-    width:100%;
-    padding:14px 16px;
-    border-radius:9px;
-    border:1px solid #28506c;
-    background:#0d2034;
-    color:white;
-    outline:none;
-    font-size:14px;
-    margin-bottom:22px;
+.play-btn{width:100%;margin-top:9px}
+.play-btn:hover,.action-btn:hover{filter:brightness(1.12)}
+#gameScreen{
+ display:none;
+ max-width:950px;
+ margin:10px auto 50px;
+ padding:0 15px;
 }
-
-.search:focus {
-    border-color:var(--cyan);
+.game-top{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ flex-wrap:wrap;
+ gap:12px;
+ margin-bottom:13px;
 }
-
-.game-grid {
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:17px;
+.game-top h2{color:var(--cyan);margin:0}
+.game-top button{
+ background:#17364c;
+ color:white;
+ border:1px solid #2c657e;
+ padding:10px 14px;
+ border-radius:8px;
+ cursor:pointer;
 }
-
-.game-card {
-    background:linear-gradient(145deg,var(--panel2),var(--panel));
-    border:1px solid #234761;
-    border-radius:13px;
-    padding:19px;
-    transition:.25s;
+.game-info{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-bottom:12px;
+ color:var(--green);
+ font-size:14px;
 }
-
-.game-card:hover {
-    transform:translateY(-4px);
-    border-color:var(--green);
-    box-shadow:0 8px 22px #00ff8818;
+.canvas-wrap{
+ background:#06101b;
+ border:2px solid #1c657b;
+ border-radius:13px;
+ overflow:hidden;
+ box-shadow:0 0 22px #00eaff20;
 }
-
-.game-icon {
-    font-size:32px;
-    margin-bottom:12px;
+canvas{
+ display:block;
+ width:100%;
+ height:auto;
+ touch-action:none;
+ background:#06101b;
 }
-
-.game-card h3 {
-    font-size:16px;
-    margin-bottom:8px;
+.instructions{
+ text-align:center;
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.6;
+ margin:13px 0;
 }
-
-.game-card p {
-    color:var(--muted);
-    font-size:12px;
-    line-height:1.6;
-    min-height:55px;
+.controls{
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-top:15px;
 }
-
-.play-btn {
-    display:block;
-    width:100%;
-    margin-top:15px;
-    padding:11px;
-    border:1px solid #39ff8877;
-    border-radius:7px;
-    background:#39ff8814;
-    color:var(--green);
-    font-size:11px;
-    font-weight:bold;
-    letter-spacing:1px;
-    cursor:pointer;
+.control-btn{
+ min-width:58px;
+ min-height:48px;
+ border:1px solid #26728b;
+ background:#102d43;
+ color:var(--cyan);
+ border-radius:10px;
+ font-size:19px;
+ font-weight:bold;
+ touch-action:none;
 }
-
-.play-btn:hover {
-    background:var(--green);
-    color:#061321;
+.control-btn:active{background:#1c5269}
+footer{
+ text-align:center;
+ padding:25px 15px;
+ border-top:1px solid #17445b;
+ color:var(--muted);
+ font-size:12px;
 }
-
-#gameArea {
-    display:none;
-    margin-top:30px;
-    background:#0b1b2d;
-    border:1px solid #24506c;
-    border-radius:15px;
-    padding:18px;
-}
-
-.game-top {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom:15px;
-}
-
-.game-top h2 {
-    font-size:19px;
-    color:var(--cyan);
-}
-
-.back-btn,.action-btn {
-    border:1px solid #39ff8877;
-    color:var(--green);
-    background:#39ff8812;
-    border-radius:7px;
-    padding:9px 13px;
-    cursor:pointer;
-    font-size:11px;
-    font-weight:bold;
-}
-
-.back-btn:hover,.action-btn:hover {
-    background:var(--green);
-    color:#071321;
-}
-
-.game-info {
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    flex-wrap:wrap;
-    color:var(--muted);
-    font-size:12px;
-    margin-bottom:12px;
-}
-
-.game-info strong {
-    color:var(--green);
-}
-
-.canvas-wrap {
-    width:100%;
-    background:#030b14;
-    border:1px solid #1c526b;
-    border-radius:10px;
-    overflow:hidden;
-}
-
-canvas {
-    display:block;
-    width:100%;
-    max-width:800px;
-    height:auto;
-    margin:auto;
-    touch-action:none;
-}
-
-.game-message {
-    color:var(--cyan);
-    text-align:center;
-    min-height:24px;
-    margin:12px 0;
-    font-size:13px;
-}
-
-.game-actions {
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-top:12px;
-}
-
-.mobile-controls {
-    display:grid;
-    grid-template-columns:repeat(3,55px);
-    justify-content:center;
-    gap:7px;
-    margin:17px auto 5px;
-}
-
-.mobile-controls button {
-    height:45px;
-    border:1px solid #00e5ff77;
-    background:#00e5ff12;
-    color:var(--cyan);
-    border-radius:9px;
-    font-size:18px;
-    font-weight:bold;
-    touch-action:none;
-}
-
-.mobile-controls button:active {
-    background:var(--cyan);
-    color:#071321;
-}
-
-.instructions {
-    color:var(--muted);
-    text-align:center;
-    font-size:11px;
-    line-height:1.7;
-    margin-top:15px;
-}
-
-.hidden {
-    display:none!important;
-}
-
-.empty {
-    display:none;
-    text-align:center;
-    color:var(--muted);
-    padding:25px;
-    grid-column:1/-1;
-}
-
-footer {
-    background:#091827;
-    border-top:1px solid #1c3b53;
-    text-align:center;
-    padding:25px 15px;
-    color:var(--muted);
-    font-size:11px;
-    line-height:2;
-    margin-top:35px;
-}
-
-footer strong {
-    color:var(--green);
-}
-
-@media(max-width:800px) {
-    .game-grid {
-        grid-template-columns:repeat(2,1fr);
-    }
-}
-
-@media(max-width:520px) {
-    header {
-        justify-content:center;
-        text-align:center;
-    }
-
-    nav {
-        justify-content:center;
-        gap:13px;
-    }
-
-    .game-grid {
-        grid-template-columns:1fr;
-    }
-
-    .game-card p {
-        min-height:0;
-    }
-
-    main {
-        padding:28px 5%;
-    }
-
-    #gameArea {
-        padding:12px;
-    }
+.hidden{display:none!important}
+@media(max-width:600px){
+ header{justify-content:center;text-align:center}
+ nav{width:100%;text-align:center}
+ nav a{margin:0 8px}
+ .hero{padding-top:32px}
 }
 </style>
 </head>
@@ -395,519 +256,534 @@ footer strong {
 <body>
 
 <header>
-    <a href="index.html" class="logo">HEX<span>CLØWN</span></a>
-
-    <nav>
-        <a href="index.html">HOME</a>
-        <a href="GameZone.html">GAME ZONE</a>
-        <a href="#games">ARCADE GAMES</a>
-    </nav>
+ <div class="logo">HEXCL<span>Ø</span>WN</div>
+ <nav>
+  <a href="index.html">HOME</a>
+  <a href="GameZone.html">GAME ZONE</a>
+  <a href="#games">ARCADE</a>
+ </nav>
 </header>
 
 <section class="hero">
-    <div class="tag">HEXCLØWN GAMING NETWORK</div>
-    <h1>ARCADE <span>& ACTION</span></h1>
-    <p>
-        Enter the arcade dimension. Test your reflexes,
-        dodge obstacles, break records and enjoy seven
-        exciting mini-games built into HEXCLØWN.
-    </p>
+ <small>HEXCLØWN GAMING NETWORK</small>
+ <h1>ARCADE & ACTION</h1>
+ <p>Enter the arcade. Play classic-inspired challenges, beat your high scores and test your skills.</p>
+ <div class="stats">
+  <div class="stat">GAMES: <strong>07</strong></div>
+  <div class="stat">MODE: <strong>ARCADE</strong></div>
+  <div class="stat">STATUS: <strong>ONLINE</strong></div>
+ </div>
 </section>
 
-<main>
+<div class="tools" id="searchArea">
+ <input id="searchGame" type="search" placeholder="Search arcade games...">
+</div>
 
-    <div class="section-title" id="games">
-        <h2>SELECT YOUR <span>GAME</span></h2>
-        <p>Choose a game below and start playing.</p>
-    </div>
+<h2 class="section-title" id="games">AVAILABLE GAMES</h2>
 
-    <input
-        type="search"
-        class="search"
-        id="gameSearch"
-        placeholder="Search Arcade & Action games..."
-        oninput="filterGames()"
-    >
+<section class="game-grid" id="gameGrid">
 
-    <div class="game-grid" id="gameGrid">
+ <article class="game-card" data-name="space invaders retro shooter">
+  <div class="game-icon">👾</div>
+  <h3>Space Invaders</h3>
+  <p>Defend your ship and shoot down the incoming alien fleet.</p>
+  <button class="play-btn" onclick="startGame('space')">PLAY GAME</button>
+ </article>
 
-        <div class="game-card" data-search="space invaders retro shooter">
-            <div class="game-icon">👾</div>
-            <h3>Space Invaders</h3>
-            <p>Defend your spaceship and clear the alien invasion.</p>
-            <button class="play-btn" onclick="startGame('space')">PLAY GAME →</button>
-        </div>
+ <article class="game-card" data-name="flappy bird arcade">
+  <div class="game-icon">🐤</div>
+  <h3>Flappy Arcade</h3>
+  <p>Fly through the obstacles. Every successful gap earns a point.</p>
+  <button class="play-btn" onclick="startGame('flappy')">PLAY GAME</button>
+ </article>
 
-        <div class="game-card" data-search="flappy bird flying arcade">
-            <div class="game-icon">🐦</div>
-            <h3>Flappy Bird Arcade</h3>
-            <p>Keep your bird flying and pass through the obstacles.</p>
-            <button class="play-btn" onclick="startGame('flappy')">PLAY GAME →</button>
-        </div>
+ <article class="game-card" data-name="brick breaker">
+  <div class="game-icon">🧱</div>
+  <h3>Brick Breaker</h3>
+  <p>Control your paddle, bounce the ball and clear every brick.</p>
+  <button class="play-btn" onclick="startGame('brick')">PLAY GAME</button>
+ </article>
 
-        <div class="game-card" data-search="brick breaker ball">
-            <div class="game-icon">🧱</div>
-            <h3>Brick Breaker</h3>
-            <p>Control the paddle, bounce the ball and destroy the bricks.</p>
-            <button class="play-btn" onclick="startGame('brick')">PLAY GAME →</button>
-        </div>
+ <article class="game-card" data-name="pac man maze">
+  <div class="game-icon">🟡</div>
+  <h3>Pac-Man Maze</h3>
+  <p>Explore the maze, collect the dots and avoid the roaming ghosts.</p>
+  <button class="play-btn" onclick="startGame('pac')">PLAY GAME</button>
+ </article>
 
-        <div class="game-card" data-search="pac man maze">
-            <div class="game-icon">🟡</div>
-            <h3>Pac-Man Maze Lite</h3>
-            <p>Explore the maze, collect dots and avoid the ghost.</p>
-            <button class="play-btn" onclick="startGame('pac')">PLAY GAME →</button>
-        </div>
+ <article class="game-card" data-name="dino runner">
+  <div class="game-icon">🦖</div>
+  <h3>Dino Runner</h3>
+  <p>Jump over obstacles and see how far your dinosaur can run.</p>
+  <button class="play-btn" onclick="startGame('dino')">PLAY GAME</button>
+ </article>
 
-        <div class="game-card" data-search="dino dinosaur runner">
-            <div class="game-icon">🦖</div>
-            <h3>Dino Runner</h3>
-            <p>Jump over obstacles and see how far you can run.</p>
-            <button class="play-btn" onclick="startGame('dino')">PLAY GAME →</button>
-        </div>
+ <article class="game-card" data-name="bubble shooter">
+  <div class="game-icon">🫧</div>
+  <h3>Bubble Shooter</h3>
+  <p>Aim and shoot matching bubbles to clear the board.</p>
+  <button class="play-btn" onclick="startGame('bubble')">PLAY GAME</button>
+ </article>
 
-        <div class="game-card" data-search="bubble shooter">
-            <div class="game-icon">🫧</div>
-            <h3>Bubble Shooter</h3>
-            <p>Aim and shoot matching bubbles to clear the board.</p>
-            <button class="play-btn" onclick="startGame('bubble')">PLAY GAME →</button>
-        </div>
+ <article class="game-card" data-name="geometry dash">
+  <div class="game-icon">🔷</div>
+  <h3>Geometry Dash Lite</h3>
+  <p>Jump over spikes and survive the fast-moving course.</p>
+  <button class="play-btn" onclick="startGame('geometry')">PLAY GAME</button>
+ </article>
 
-        <div class="game-card" data-search="geometry dash runner">
-            <div class="game-icon">🔷</div>
-            <h3>Geometry Dash Lite</h3>
-            <p>Jump over spikes and survive the geometric course.</p>
-            <button class="play-btn" onclick="startGame('geometry')">PLAY GAME →</button>
-        </div>
+</section>
 
-        <div class="empty" id="noGames">
-            No matching games found.
-        </div>
+<section id="gameScreen">
+ <div class="game-top">
+  <h2 id="gameTitle">GAME</h2>
+  <div>
+   <button onclick="restartGame()">↻ RESTART</button>
+   <button onclick="exitGame()">✕ EXIT</button>
+  </div>
+ </div>
 
-    </div>
+ <div class="game-info">
+  <span id="scoreText">SCORE: 0</span>
+  <span id="bestText">BEST: 0</span>
+  <span id="statusText">PLAYING</span>
+ </div>
 
-    <!-- GAME PLAY AREA -->
-    <section id="gameArea">
+ <div class="canvas-wrap">
+  <canvas id="gameCanvas" width="800" height="500"></canvas>
+ </div>
 
-        <div class="game-top">
-            <h2 id="gameTitle">GAME</h2>
-            <button class="back-btn" onclick="backToGames()">← ALL GAMES</button>
-        </div>
+ <p class="instructions" id="instructions">
+  Use the controls to play.
+ </p>
 
-        <div class="game-info">
-            <span>SCORE: <strong id="score">0</strong></span>
-            <span>BEST: <strong id="best">0</strong></span>
-            <span>STATUS: <strong id="status">READY</strong></span>
-        </div>
-
-        <div class="canvas-wrap">
-            <canvas id="gameCanvas" width="800" height="450"></canvas>
-        </div>
-
-        <div class="game-message" id="gameMessage">
-            Press START to begin.
-        </div>
-
-        <div class="game-actions">
-            <button class="action-btn" onclick="restartGame()">↻ RESTART</button>
-            <button class="action-btn" id="startBtn" onclick="toggleGame()">▶ START</button>
-        </div>
-
-        <div class="mobile-controls">
-            <button data-key="ArrowLeft">←</button>
-            <button data-key="ArrowUp">↑</button>
-            <button data-key="Space">●</button>
-            <button data-key="ArrowRight">→</button>
-            <button data-key="ArrowDown">↓</button>
-        </div>
-
-        <p class="instructions" id="instructions">
-            Use the keyboard or on-screen controls to play.
-        </p>
-
-    </section>
-
-</main>
+ <div class="controls" id="mobileControls">
+  <button class="control-btn" id="leftBtn">◀</button>
+  <button class="control-btn" id="jumpBtn">▲</button>
+  <button class="control-btn" id="rightBtn">▶</button>
+  <button class="control-btn" id="fireBtn">●</button>
+ </div>
+</section>
 
 <footer>
-    <strong>HEXCLØWN</strong> — ENTER THE UNKNOWN<br>
-    CREATED BY TIJANI ALIYU<br>
-    HEXWHISPER / CYBERCODECLOWN<br>
-    © 2026 HEXCLØWN. ALL RIGHTS RESERVED.
+ © HEXCLØWN GAMING NETWORK · ARCADE & ACTION
 </footer>
 
 <script>
-/* =================================
-   HEXCLØWN ARCADE GAME ENGINE
-================================= */
+"use strict";
 
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
+const W = 800, H = 500;
 
-const W = canvas.width;
-const H = canvas.height;
-
-let currentGame = "";
+let game = "";
 let running = false;
-let gameOver = false;
+let over = false;
 let score = 0;
 let best = 0;
+let animation = 0;
 let lastTime = 0;
-let animationId = null;
 let state = {};
+let keys = {};
+let pointer = {x:400,y:250,down:false};
+let touchAction = "";
+let message = "";
 
-const keys = {};
+const colors = ["#39ff88","#00eaff","#278bff","#ff4567","#ffd166"];
 
-const titles = {
-    space:"SPACE INVADERS RETRO SHOOTER",
-    flappy:"FLAPPY BIRD ARCADE",
-    brick:"BRICK BREAKER",
-    pac:"PAC-MAN MAZE LITE",
-    dino:"DINO RUNNER",
-    bubble:"BUBBLE SHOOTER",
-    geometry:"GEOMETRY DASH LITE"
-};
+function getBest(){
+ try{return Number(localStorage.getItem("hexclown_"+game)||0)}
+ catch(e){return 0}
+}
+function saveBest(){
+ try{
+  if(score>best){
+   best=score;
+   localStorage.setItem("hexclown_"+game,String(best));
+  }
+ }catch(e){}
+}
+function setScore(n){
+ score=Math.max(0,Math.floor(n));
+ if(score>best) saveBest();
+ updateInfo();
+}
+function updateInfo(){
+ document.getElementById("scoreText").textContent="SCORE: "+score;
+ document.getElementById("bestText").textContent="BEST: "+best;
+ document.getElementById("statusText").textContent=over?"GAME OVER":running?"PLAYING":"READY";
+}
+function startGame(name){
+ game=name;
+ document.getElementById("gameGrid").style.display="none";
+ document.getElementById("searchArea").style.display="none";
+ document.querySelector(".section-title").style.display="none";
+ document.querySelector(".hero").style.display="none";
+ document.getElementById("gameScreen").style.display="block";
 
-const instructions = {
-    space:"Move with LEFT and RIGHT. Press SPACE to shoot.",
-    flappy:"Tap the canvas or press SPACE / UP to flap.",
-    brick:"Move with LEFT and RIGHT. Use your finger on the canvas.",
-    pac:"Use the arrow keys or the on-screen directional controls.",
-    dino:"Press SPACE, UP or tap the canvas to jump.",
-    bubble:"Tap the canvas to aim and shoot a bubble.",
-    geometry:"Press SPACE, UP or tap the canvas to jump."
-};
+ const titles={
+  space:"SPACE INVADERS",
+  flappy:"FLAPPY ARCADE",
+  brick:"BRICK BREAKER",
+  pac:"PAC-MAN MAZE",
+  dino:"DINO RUNNER",
+  bubble:"BUBBLE SHOOTER",
+  geometry:"GEOMETRY DASH LITE"
+ };
+ const tips={
+  space:"Move with LEFT and RIGHT. Shoot with SPACE or the FIRE button.",
+  flappy:"Tap the canvas, press SPACE or tap JUMP to fly.",
+  brick:"Move the paddle with your finger or LEFT and RIGHT keys.",
+  pac:"Use the arrow keys or the direction buttons to move through the maze.",
+  dino:"Tap JUMP or press SPACE to jump over obstacles.",
+  bubble:"Tap or drag to aim, then tap FIRE or the canvas to shoot.",
+  geometry:"Tap JUMP or press SPACE to jump over spikes."
+ };
+ document.getElementById("gameTitle").textContent=titles[name];
+ document.getElementById("instructions").textContent=tips[name];
 
-function setScore(value) {
-    score = Math.max(0, Math.floor(value));
-    document.getElementById("score").textContent = score;
-
-    const oldBest = Number(
-        localStorage.getItem("hexclown_arcade_" + currentGame) || 0
-    );
-
-    if (score > oldBest) {
-        best = score;
-        localStorage.setItem("hexclown_arcade_" + currentGame, score);
-    } else {
-        best = oldBest;
-    }
-
-    document.getElementById("best").textContent = best;
+ best=getBest();
+ score=0;
+ over=false;
+ running=true;
+ keys={};
+ cancelAnimationFrame(animation);
+ initGame();
+ updateInfo();
+ lastTime=0;
+ animation=requestAnimationFrame(loop);
+}
+function exitGame(){
+ running=false;
+ over=false;
+ cancelAnimationFrame(animation);
+ document.getElementById("gameScreen").style.display="none";
+ document.getElementById("gameGrid").style.display="grid";
+ document.getElementById("searchArea").style.display="flex";
+ document.querySelector(".section-title").style.display="block";
+ document.querySelector(".hero").style.display="block";
+}
+function restartGame(){
+ if(!game)return;
+ startGame(game);
+}
+function endGame(text){
+ if(over)return;
+ over=true;
+ running=false;
+ message=text||"GAME OVER";
+ saveBest();
+ updateInfo();
+ draw();
+}
+function drawBackground(){
+ ctx.fillStyle="#06101b";
+ ctx.fillRect(0,0,W,H);
+ ctx.strokeStyle="#10283a";
+ ctx.lineWidth=1;
+ for(let x=0;x<W;x+=40){
+  ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();
+ }
+ for(let y=0;y<H;y+=40){
+  ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+ }
+}
+function text(str,x,y,size=22,color="#00eaff",align="center"){
+ ctx.fillStyle=color;
+ ctx.font="bold "+size+"px Arial";
+ ctx.textAlign=align;
+ ctx.fillText(str,x,y);
+}
+function overlay(){
+ if(!over)return;
+ ctx.fillStyle="rgba(2,10,19,.78)";
+ ctx.fillRect(0,0,W,H);
+ text(message,W/2,H/2-15,35,"#39ff88");
+ text("Tap RESTART to play again",W/2,H/2+30,18,"#eafaff");
+}
+function draw(){
+ drawBackground();
+ if(game==="space")drawSpace();
+ if(game==="flappy")drawFlappy();
+ if(game==="brick")drawBrick();
+ if(game==="pac")drawPac();
+ if(game==="dino")drawDino();
+ if(game==="bubble")drawBubble();
+ if(game==="geometry")drawGeometry();
+ overlay();
+}
+function loop(time){
+ if(!running)return;
+ const dt=Math.min((time-lastTime)/16.67||1,2);
+ lastTime=time;
+ update(dt);
+ draw();
+ if(running)animation=requestAnimationFrame(loop);
+}
+function update(dt){
+ if(game==="space")updateSpace(dt);
+ if(game==="flappy")updateFlappy(dt);
+ if(game==="brick")updateBrick(dt);
+ if(game==="pac")updatePac(dt);
+ if(game==="dino")updateDino(dt);
+ if(game==="bubble")updateBubble(dt);
+ if(game==="geometry")updateGeometry(dt);
 }
 
-function message(text) {
-    document.getElementById("gameMessage").textContent = text;
+/* INPUT */
+function canvasPoint(e){
+ const r=canvas.getBoundingClientRect();
+ return {
+  x:(e.clientX-r.left)*W/r.width,
+  y:(e.clientY-r.top)*H/r.height
+ };
+}
+canvas.addEventListener("pointerdown",e=>{
+ const p=canvasPoint(e);
+ pointer.x=p.x;pointer.y=p.y;pointer.down=true;
+ canvas.setPointerCapture(e.pointerId);
+ if(game==="flappy")flap();
+ else if(game==="dino")jumpDino();
+ else if(game==="geometry")jumpGeometry();
+ else if(game==="bubble")shootBubble(p.x,p.y);
+});
+canvas.addEventListener("pointermove",e=>{
+ const p=canvasPoint(e);
+ pointer.x=p.x;pointer.y=p.y;
+ if(game==="brick")state.paddle.x=p.x;
+});
+canvas.addEventListener("pointerup",()=>pointer.down=false);
+canvas.addEventListener("pointercancel",()=>pointer.down=false);
+
+document.addEventListener("keydown",e=>{
+ const k=e.key.toLowerCase();
+ keys[k]=true;
+ if(["arrowup","arrowdown","arrowleft","arrowright"," "].includes(k))e.preventDefault();
+
+ if(game==="flappy"&&(k===" "||k==="arrowup"))flap();
+ if(game==="dino"&&(k===" "||k==="arrowup"))jumpDino();
+ if(game==="geometry"&&(k===" "||k==="arrowup"))jumpGeometry();
+ if(game==="pac"){
+  if(k==="arrowup")state.nextDir={x:0,y:-1};
+  if(k==="arrowdown")state.nextDir={x:0,y:1};
+  if(k==="arrowleft")state.nextDir={x:-1,y:0};
+  if(k==="arrowright")state.nextDir={x:1,y:0};
+ }
+});
+document.addEventListener("keyup",e=>{keys[e.key.toLowerCase()]=false});
+
+function bindButton(id,action){
+ const b=document.getElementById(id);
+ b.addEventListener("pointerdown",e=>{
+  e.preventDefault();touchAction=action;actionStart(action);
+ });
+ b.addEventListener("pointerup",e=>{e.preventDefault();actionEnd(action)});
+ b.addEventListener("pointerleave",()=>actionEnd(action));
+ b.addEventListener("pointercancel",()=>actionEnd(action));
+}
+function actionStart(a){
+ keys[a]=true;
+ if(a==="jump"){if(game==="dino")jumpDino();if(game==="geometry")jumpGeometry();if(game==="flappy")flap()}
+ if(a==="fire"){
+  if(game==="space")shootSpace();
+  if(game==="bubble")shootBubble(pointer.x,pointer.y);
+ }
+ if(game==="pac"){
+  if(a==="left")state.nextDir={x:-1,y:0};
+  if(a==="right")state.nextDir={x:1,y:0};
+  if(a==="up")state.nextDir={x:0,y:-1};
+  if(a==="down")state.nextDir={x:0,y:1};
+ }
+}
+function actionEnd(a){keys[a]=false}
+bindButton("leftBtn","left");
+bindButton("rightBtn","right");
+bindButton("jumpBtn","jump");
+bindButton("fireBtn","fire");
+
+/* SPACE INVADERS */
+function initSpace(){
+ state={
+  player:{x:400,y:445,w:42,h:22,speed:6},
+  bullets:[],
+  enemies:[],
+  enemyDir:1,
+  enemySpeed:1.1,
+  cooldown:0
+ };
+ for(let r=0;r<4;r++)for(let c=0;c<9;c++){
+  state.enemies.push({x:100+c*68,y:65+r*48,w:30,h:25,alive:true});
+ }
+}
+function shootSpace(){
+ if(game!=="space"||over)return;
+ if(state.cooldown<=0){
+  state.bullets.push({x:state.player.x,y:state.player.y-15});
+  state.cooldown=12;
+ }
+}
+function updateSpace(dt){
+ const p=state.player;
+ if(keys.arrowleft||keys.a||keys.left)p.x-=p.speed*dt;
+ if(keys.arrowright||keys.d||keys.right)p.x+=p.speed*dt;
+ p.x=Math.max(25,Math.min(775,p.x));
+ if(keys[" "]||keys.fire)shootSpace();
+ state.cooldown=Math.max(0,state.cooldown-dt);
+ state.bullets.forEach(b=>b.y-=8*dt);
+ state.bullets=state.bullets.filter(b=>b.y>-10);
+
+ let hitEdge=false;
+ state.enemies.forEach(e=>{
+  if(!e.alive)return;
+  e.x+=state.enemyDir*state.enemySpeed*dt;
+  if(e.x>W-35||e.x<35)hitEdge=true;
+ });
+ if(hitEdge){
+  state.enemyDir*=-1;
+  state.enemies.forEach(e=>{if(e.alive)e.y+=17});
+ }
+ state.bullets.forEach(b=>{
+  state.enemies.forEach(e=>{
+   if(e.alive&&Math.abs(b.x-e.x)<23&&Math.abs(b.y-e.y)<19){
+    e.alive=false;b.y=-30;setScore(score+10);
+   }
+  });
+ });
+ if(state.enemies.every(e=>!e.alive)){endGame("YOU WIN!");return}
+ if(state.enemies.some(e=>e.alive&&e.y>p.y-20)){endGame("ALIENS LANDED!");return}
+}
+function drawSpace(){
+ const p=state.player;
+ ctx.fillStyle="#39ff88";
+ ctx.beginPath();
+ ctx.moveTo(p.x,p.y-18);ctx.lineTo(p.x-22,p.y+12);ctx.lineTo(p.x+22,p.y+12);ctx.fill();
+ ctx.fillStyle="#00eaff";
+ state.bullets.forEach(b=>ctx.fillRect(b.x-2,b.y-8,4,14));
+ state.enemies.forEach((e,i)=>{
+  if(!e.alive)return;
+  ctx.fillStyle=colors[i%colors.length];
+  ctx.fillRect(e.x-14,e.y-10,28,19);
+  ctx.fillRect(e.x-20,e.y-3,8,9);
+  ctx.fillRect(e.x+12,e.y-3,8,9);
+  ctx.fillStyle="#06101b";
+  ctx.fillRect(e.x-7,e.y-4,4,5);
+  ctx.fillRect(e.x+4,e.y-4,4,5);
+ });
 }
 
-function status(text) {
-    document.getElementById("status").textContent = text;
+/* FLAPPY */
+function initFlappy(){
+ state={bird:{x:150,y:240,vy:0},pipes:[],timer:0,passed:0};
+}
+function flap(){
+ if(game!=="flappy"||over)return;
+ state.bird.vy=-7.5;
+}
+function updateFlappy(dt){
+ const b=state.bird;
+ b.vy+=.38*dt;
+ b.y+=b.vy*dt;
+ state.timer+=dt;
+ if(state.timer>105){
+  state.timer=0;
+  const gap=155;
+  const top=65+Math.random()*205;
+  state.pipes.push({x:W+30,top:top,bottom:top+gap,passed:false});
+ }
+ state.pipes.forEach(p=>{
+  p.x-=3.2*dt;
+  if(!p.passed&&p.x+65<b.x){
+   p.passed=true;setScore(score+1);
+  }
+  if(b.x+14>p.x&&b.x-14<p.x+65&&(b.y-12<p.top||b.y+12>p.bottom)){
+   endGame("FLIGHT FAILED");
+  }
+ });
+ state.pipes=state.pipes.filter(p=>p.x>-80);
+ if(b.y>H-10||b.y<10)endGame("FLIGHT FAILED");
+}
+function drawFlappy(){
+ const b=state.bird;
+ ctx.fillStyle="#39ff88";
+ state.pipes.forEach(p=>{
+  ctx.fillRect(p.x,0,65,p.top);
+  ctx.fillRect(p.x,p.bottom,65,H-p.bottom);
+  ctx.fillStyle="#00eaff";
+  ctx.fillRect(p.x-5,p.top-12,75,12);
+  ctx.fillRect(p.x-5,p.bottom,75,12);
+  ctx.fillStyle="#39ff88";
+ });
+ ctx.fillStyle="#ffd166";
+ ctx.beginPath();ctx.arc(b.x,b.y,14,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle="#06101b";
+ ctx.beginPath();ctx.arc(b.x+5,b.y-4,3,0,Math.PI*2);ctx.fill();
+ text("TAP TO FLY",W/2,35,16,"#9bb5c5");
 }
 
-function random(min,max) {
-    return Math.random() * (max-min) + min;
+/* BRICK BREAKER */
+function initBrick(){
+ state={
+  paddle:{x:400,y:460,w:110,h:13},
+  ball:{x:400,y:420,vx:3.5,vy:-4,r:9},
+  bricks:[],lives:3
+ };
+ for(let r=0;r<5;r++)for(let c=0;c<10;c++){
+  state.bricks.push({x:55+c*70,y:55+r*32,w:60,h:19,alive:true,color:colors[r]});
+ }
+}
+function updateBrick(dt){
+ const p=state.paddle,b=state.ball;
+ if(keys.arrowleft||keys.a||keys.left)p.x-=7*dt;
+ if(keys.arrowright||keys.d||keys.right)p.x+=7*dt;
+ p.x=Math.max(p.w/2,Math.min(W-p.w/2,p.x));
+ b.x+=b.vx*dt;b.y+=b.vy*dt;
+ if(b.x<b.r||b.x>W-b.r)b.vx*=-1;
+ if(b.y<b.r)b.vy=Math.abs(b.vy);
+ if(b.y>p.y-8&&b.y<p.y+10&&b.x>p.x-p.w/2&&b.x<p.x+p.w/2&&b.vy>0){
+  b.vy=-Math.abs(b.vy);
+  b.vx=((b.x-p.x)/(p.w/2))*5;
+ }
+ state.bricks.forEach(br=>{
+  if(!br.alive)return;
+  if(b.x>br.x&&b.x<br.x+br.w&&b.y>b.y*0+br.y&&b.y<br.y+br.h){
+   br.alive=false;b.vy*=-1;setScore(score+5);
+  }
+ });
+ if(state.bricks.every(br=>!br.alive)){endGame("BOARD CLEARED!");return}
+ if(b.y>H+10){
+  state.lives--;
+  if(state.lives<=0){endGame("NO MORE LIVES");return}
+  b.x=400;b.y=420;b.vx=3.5;b.vy=-4;
+ }
+}
+function drawBrick(){
+ const p=state.paddle,b=state.ball;
+ state.bricks.forEach(br=>{
+  if(!br.alive)return;
+  ctx.fillStyle=br.color;ctx.fillRect(br.x,br.y,br.w,br.h);
+ });
+ ctx.fillStyle="#00eaff";
+ ctx.fillRect(p.x-p.w/2,p.y,p.w,p.h);
+ ctx.fillStyle="#39ff88";
+ ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fill();
+ text("LIVES: "+state.lives,70,30,16,"#39ff88");
 }
 
-function drawText(text,x,y,size=24,color="#eaf7ff") {
-    ctx.fillStyle = color;
-    ctx.font = "bold " + size + "px Arial";
-    ctx.fillText(text,x,y);
-}
-
-function background() {
-    ctx.fillStyle = "#030b14";
-    ctx.fillRect(0,0,W,H);
-
-    ctx.strokeStyle = "#102b3c";
-    ctx.lineWidth = 1;
-
-    for(let x=0;x<W;x+=40) {
-        ctx.beginPath();
-        ctx.moveTo(x,0);
-        ctx.lineTo(x,H);
-        ctx.stroke();
-    }
-
-    for(let y=0;y<H;y+=40) {
-        ctx.beginPath();
-        ctx.moveTo(0,y);
-        ctx.lineTo(W,y);
-        ctx.stroke();
-    }
-}
-
-function finishGame(text="GAME OVER") {
-    running = false;
-    gameOver = true;
-    status("FINISHED");
-    message(text + " — Press RESTART to play again.");
-    document.getElementById("startBtn").textContent = "▶ START";
-}
-
-/* =================================
-   GAME SELECTION
-================================= */
-
-function startGame(name) {
-    currentGame = name;
-
-    document.getElementById("gameArea").style.display = "block";
-    document.getElementById("gameGrid").style.display = "none";
-    document.querySelector(".search").style.display = "none";
-
-    document.getElementById("gameTitle").textContent = titles[name];
-    document.getElementById("instructions").textContent = instructions[name];
-
-    best = Number(localStorage.getItem("hexclown_arcade_" + name) || 0);
-    document.getElementById("best").textContent = best;
-
-    initGame();
-    drawGame();
-
-    document.getElementById("gameArea").scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-    });
-}
-
-function backToGames() {
-    running = false;
-    cancelAnimationFrame(animationId);
-
-    document.getElementById("gameArea").style.display = "none";
-    document.getElementById("gameGrid").style.display = "grid";
-    document.querySelector(".search").style.display = "block";
-
-    currentGame = "";
-}
-
-function restartGame() {
-    initGame();
-    startLoop();
-}
-
-function toggleGame() {
-    if(gameOver) {
-        restartGame();
-        return;
-    }
-
-    if(running) {
-        running = false;
-        status("PAUSED");
-        message("Game paused. Press START to continue.");
-        document.getElementById("startBtn").textContent = "▶ RESUME";
-    } else {
-        startLoop();
-    }
-}
-
-function startLoop() {
-    running = true;
-    lastTime = 0;
-    status("PLAYING");
-    message("Good luck!");
-    document.getElementById("startBtn").textContent = "Ⅱ PAUSE";
-
-    cancelAnimationFrame(animationId);
-    animationId = requestAnimationFrame(loop);
-}
-
-function initGame() {
-    running = false;
-    gameOver = false;
-    score = 0;
-    setScore(0);
-
-    status("READY");
-    message("Press START to begin.");
-    document.getElementById("startBtn").textContent = "▶ START";
-
-    state = {};
-
-    if(currentGame==="space") initSpace();
-    if(currentGame==="flappy") initFlappy();
-    if(currentGame==="brick") initBrick();
-    if(currentGame==="pac") initPac();
-    if(currentGame==="dino") initDino();
-    if(currentGame==="bubble") initBubble();
-    if(currentGame==="geometry") initGeometry();
-}
-
-function loop(time) {
-    if(!running) return;
-
-    const dt = Math.min((time-lastTime)/16.67 || 1,2);
-    lastTime = time;
-
-    updateGame(dt);
-    drawGame();
-
-    if(running) {
-        animationId = requestAnimationFrame(loop);
-    }
-}
-
-function updateGame(dt) {
-    if(currentGame==="space") updateSpace(dt);
-    if(currentGame==="flappy") updateFlappy(dt);
-    if(currentGame==="brick") updateBrick(dt);
-    if(currentGame==="pac") updatePac(dt);
-    if(currentGame==="dino") updateDino(dt);
-    if(currentGame==="bubble") updateBubble(dt);
-    if(currentGame==="geometry") updateGeometry(dt);
-}
-
-function drawGame() {
-    background();
-
-    if(currentGame==="space") drawSpace();
-    if(currentGame==="flappy") drawFlappy();
-    if(currentGame==="brick") drawBrick();
-    if(currentGame==="pac") drawPac();
-    if(currentGame==="dino") drawDino();
-    if(currentGame==="bubble") drawBubble();
-    if(currentGame==="geometry") drawGeometry();
-}
-
-/* =================================
-   1. SPACE INVADERS
-================================= */
-
-function initSpace() {
-    state.player = {x:380,y:395};
-    state.bullets = [];
-    state.enemies = [];
-
-    for(let r=0;r<3;r++) {
-        for(let c=0;c<8;c++) {
-            state.enemies.push({
-                x:100+c*75,
-                y:65+r*48,
-                alive:true
-            });
-        }
-    }
-
-    state.direction = 1;
-    state.cooldown = 0;
-    state.enemyTimer = 0;
-}
-
-function updateSpace(dt) {
-    const p = state.player;
-
-    if(keys.ArrowLeft) p.x -= 6*dt;
-    if(keys.ArrowRight) p.x += 6*dt;
-
-    p.x = Math.max(15,Math.min(W-55,p.x));
-
-    state.cooldown -= dt;
-
-    if(keys.Space && state.cooldown<=0) {
-        state.bullets.push({x:p.x+20,y:p.y});
-        state.cooldown = 13;
-    }
-
-    state.bullets.forEach(b=>b.y-=8*dt);
-    state.bullets = state.bullets.filter(b=>b.y>0);
-
-    state.enemyTimer += dt;
-
-    if(state.enemyTimer>20) {
-        state.enemyTimer=0;
-
-        let hitEdge = false;
-
-        state.enemies.filter(e=>e.alive).forEach(e=>{
-            if(e.x>W-45 || e.x<10) hitEdge=true;
-        });
-
-        if(hitEdge) {
-            state.direction *= -1;
-            state.enemies.forEach(e=>e.y+=13);
-        }
-
-        state.enemies.forEach(e=>{
-            if(e.alive) e.x += state.direction*2.2;
-        });
-    }
-
-    state.bullets.forEach(b=>{
-        state.enemies.forEach(e=>{
-            if(e.alive &&
-               b.x>e.x && b.x<e.x+30 &&
-               b.y>e.y && b.y<e.y+25) {
-                e.alive=false;
-                b.y=-20;
-                setScore(score+10);
-            }
-        });
-    });
-
-    if(state.enemies.some(e=>e.alive && e.y>350)) {
-        finishGame("THE INVADERS REACHED YOU");
-    }
-
-    if(state.enemies.every(e=>!e.alive)) {
-        finishGame("YOU SAVED THE GALAXY");
-    }
-}
-
-function drawSpace() {
-    ctx.fillStyle="#39ff88";
-    ctx.fillRect(state.player.x,state.player.y,40,20);
-    ctx.fillRect(state.player.x+14,state.player.y-10,12,12);
-
-    ctx.fillStyle="#00e5ff";
-    state.bullets.forEach(b=>ctx.fillRect(b.x,b.y,5,13));
-
-    state.enemies.forEach(e=>{
-        if(!e.alive) return;
-
-        ctx.fillStyle="#ff5364";
-        ctx.fillRect(e.x,e.y,30,23);
-
-        ctx.fillStyle="#030b14";
-        ctx.fillRect(e.x+6,e.y+7,5,5);
-        ctx.fillRect(e.x+19,e.y+7,5,5);
-    });
-
-    drawText("DEFEND THE GALAXY",260,30,19,"#00e5ff");
-}
-
-/* =================================
-   2. FLAPPY BIRD
-================================= */
-
-function initFlappy() {
-    state.bird={x:145,y:220,vy:0};
-    state.pipes=[];
-    state.timer=0;
-    state.passed=0;
-    state.flap=true;
-}
-
-function flapBird() {
-    if(currentGame!=="flappy" || !running) return;
-    state.bird.vy=-7.5;
-}
-
-function updateFlappy(dt) {
-    const b=state.bird;
-
-    b.vy+=0.35*dt;
-    b.y+=b.vy*dt;
-
-    state.timer+=dt;
-
-    if(state.timer>100) {
-        state.timer=0;
-        const gapY=random(130,310);
-
-        state.pipes.push({
-            x:W,
-            gapY:gapY,
-            passed:false
-        });
-  
+/* PAC-MAN MAZE */
+const mazeMap=[
+ "###################",
+ "#........#........#",
+ "#.###.##.#.##.###.#",
+ "#.................#",
+ "#.##.#.#####.#.##.#",
+ "#....#...#...#....#",
+ "####.###.#.###.####",
+ "#......#.#.#......#",
+ "#.####.#...#.####.#",
+ "#......#...#......#",
+ "###################"
+];
+function initPac(){
+ const map=mazeMap.map(row=>row.split(""));
+ state={
+  map:m
