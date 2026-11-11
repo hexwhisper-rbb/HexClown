@@ -1,1 +1,744 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Tower of Hanoi | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #071321;
+    --panel: #102638;
+    --cyan: #00eaff;
+    --green: #39ff88;
+    --blue: #168cff;
+    --text: #eafaff;
+    --muted: #91aebe;
+    --border: #1d5265;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    padding: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at top left, #10334a, transparent 38%),
+        radial-gradient(circle at bottom right, #102a43, transparent 35%),
+        var(--bg);
+}
+
+.container {
+    max-width: 540px;
+    width: 100%;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    padding: 16px 5px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+}
+
+.brand {
+    color: var(--green);
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px #39ff8870;
+}
+
+.subtitle {
+    color: var(--cyan);
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-top: 5px;
+}
+
+header h2 {
+    margin-top: 18px;
+    font-size: 22px;
+    letter-spacing: 2px;
+}
+
+.description {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    margin-top: 8px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+    margin-bottom: 16px;
+}
+
+.stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 5px;
+    text-align: center;
+}
+
+.stat-label {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-bottom: 7px;
+}
+
+.stat-value {
+    color: var(--cyan);
+    font-size: 21px;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+}
+
+.message {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8px;
+    color: var(--green);
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.game-area {
+    background: #0b1e2d;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 15px 8px 12px;
+    margin: 8px auto 18px;
+    box-shadow: 0 0 22px #00eaff12;
+}
+
+.towers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    align-items: end;
+}
+
+.tower {
+    height: 265px;
+    min-width: 0;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 8px 2px 0;
+    position: relative;
+    cursor: pointer;
+    background: #10283a;
+    transition: background .2s, border-color .2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.tower.selected {
+    background: #123d4c;
+    border: 2px solid var(--green);
+    box-shadow: 0 0 14px #39ff8840;
+}
+
+.tower:active {
+    background: #15394c;
+}
+
+.tower-base {
+    width: 92%;
+    height: 9px;
+    background: linear-gradient(90deg, #168cff, #00eaff, #168cff);
+    border-radius: 8px;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px #00eaff60;
+}
+
+.pole {
+    position: absolute;
+    bottom: 17px;
+    width: 9px;
+    height: 190px;
+    background: linear-gradient(90deg, #168cff, #00eaff, #168cff);
+    border-radius: 6px 6px 0 0;
+    opacity: .8;
+    pointer-events: none;
+}
+
+.discs {
+    width: 100%;
+    height: 190px;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.disc {
+    height: 29px;
+    flex-shrink: 0;
+    border: 2px solid #ffffff45;
+    border-radius: 7px;
+    margin-top: 2px;
+    box-shadow: 0 2px 7px #0005;
+}
+
+.tower-name {
+    margin-top: 12px;
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding-bottom: 7px;
+}
+
+.tower-hint {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 10px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 17px 0;
+}
+
+.btn {
+    border: 1px solid var(--cyan);
+    background: transparent;
+    color: var(--cyan);
+    border-radius: 8px;
+    padding: 12px 17px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn.primary {
+    background: var(--green);
+    color: #06151b;
+    border-color: var(--green);
+}
+
+.btn:active {
+    transform: scale(.96);
+}
+
+.instructions {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 20px;
+}
+
+.instructions h3 {
+    color: var(--cyan);
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.instructions p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.instructions strong {
+    color: var(--green);
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin: 25px 0 12px;
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    color: var(--green);
+}
+
+footer {
+    text-align: center;
+    color: #688394;
+    font-size: 11px;
+    padding: 10px 0 20px;
+}
+
+@media(max-width: 380px) {
+    body {
+        padding: 10px;
+    }
+
+    .tower {
+        height: 235px;
+    }
+
+    .pole {
+        height: 165px;
+    }
+
+    .discs {
+        height: 165px;
+    }
+
+    .disc {
+        height: 25px;
+    }
+
+    .btn {
+        padding: 11px 13px;
+        font-size: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="brand">HEXCLØWN</div>
+        <div class="subtitle">GAMING NETWORK</div>
+
+        <h2>TOWER OF HANOI</h2>
+
+        <p class="description">
+            Move all five discs from Tower A to Tower C.
+            Think carefully before every move!
+        </p>
+    </header>
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="stat-label">MOVES</div>
+            <div class="stat-value" id="moves">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">TIME</div>
+            <div class="stat-value" id="timer">00:00</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">MINIMUM</div>
+            <div class="stat-value">31</div>
+        </div>
+
+    </div>
+
+    <div class="message" id="message" aria-live="polite">
+        Select a disc from Tower A to begin!
+    </div>
+
+    <div class="game-area">
+
+        <div class="towers">
+
+            <div class="tower" id="tower-0"
+                 role="button" tabindex="0"
+                 aria-label="Tower A"
+                 onclick="selectTower(0)"
+                 onkeydown="handleTowerKey(event, 0)">
+
+                <div class="pole"></div>
+                <div class="discs" id="discs-0"></div>
+                <div class="tower-base"></div>
+                <div class="tower-name">TOWER A</div>
+
+            </div>
+
+            <div class="tower" id="tower-1"
+                 role="button" tabindex="0"
+                 aria-label="Tower B"
+                 onclick="selectTower(1)"
+                 onkeydown="handleTowerKey(event, 1)">
+
+                <div class="pole"></div>
+                <div class="discs" id="discs-1"></div>
+                <div class="tower-base"></div>
+                <div class="tower-name">TOWER B</div>
+
+            </div>
+
+            <div class="tower" id="tower-2"
+                 role="button" tabindex="0"
+                 aria-label="Tower C"
+                 onclick="selectTower(2)"
+                 onkeydown="handleTowerKey(event, 2)">
+
+                <div class="pole"></div>
+                <div class="discs" id="discs-2"></div>
+                <div class="tower-base"></div>
+                <div class="tower-name">TOWER C</div>
+
+            </div>
+
+        </div>
+
+        <p class="tower-hint">
+            Tap a tower to select or move its top disc.
+        </p>
+
+    </div>
+
+    <div class="controls">
+
+        <button class="btn primary" onclick="newGame()">
+            ↻ NEW GAME
+        </button>
+
+        <button class="btn" onclick="restartGame()">
+            RESTART
+        </button>
+
+    </div>
+
+    <div class="instructions">
+
+        <h3>HOW TO PLAY</h3>
+
+        <p>
+            1. Tap a tower to select its top disc.
+            <br>
+            2. Tap another tower to move the selected disc.
+            <br>
+            3. You can only move one disc at a time.
+            <br>
+            4. Never place a bigger disc on a smaller disc.
+            <br>
+            5. Move all five discs to Tower C to win.
+            <br><br>
+            <strong>CHALLENGE:</strong> Complete the puzzle in the minimum 31 moves!
+        </p>
+
+    </div>
+
+    <a href="puzandlog.html" class="back-link">
+        ← BACK TO PUZZLE & LOGIC
+    </a>
+
+    <footer>
+        © HEXCLØWN GAMING NETWORK
+    </footer>
+
+</div>
+
+<script>
+
+/* GAME SETTINGS */
+
+const TOTAL_DISCS = 5;
+
+const discColors = [
+    "",
+    "#168cff",
+    "#00c9ff",
+    "#39ff88",
+    "#a855f7",
+    "#ff5268"
+];
+
+let towers = [];
+let selectedTower = null;
+let moves = 0;
+let seconds = 0;
+let gameStarted = false;
+let gameWon = false;
+let timerInterval = null;
+
+/* INITIALISE GAME */
+
+function setupGame() {
+    towers = [
+        [5, 4, 3, 2, 1],
+        [],
+        []
+    ];
+
+    selectedTower = null;
+    moves = 0;
+    seconds = 0;
+    gameStarted = false;
+    gameWon = false;
+
+    stopTimer();
+
+    updateStats();
+    renderGame();
+
+    document.getElementById("message").textContent =
+        "Select a disc from Tower A to begin!";
+
+}
+
+/* RENDER ALL TOWERS */
+
+function renderGame() {
+
+    for (let i = 0; i < 3; i++) {
+
+        const discsContainer =
+            document.getElementById("discs-" + i);
+
+        const towerElement =
+            document.getElementById("tower-" + i);
+
+        discsContainer.innerHTML = "";
+
+        // Draw discs from bottom to top
+        towers[i].forEach(size => {
+
+            const disc = document.createElement("div");
+
+            disc.className = "disc";
+
+            const width = 35 + (size * 12);
+
+            disc.style.width = width + "%";
+            disc.style.background = discColors[size];
+
+            disc.title = "Disc " + size;
+
+            discsContainer.appendChild(disc);
+
+        });
+
+        towerElement.classList.toggle(
+            "selected",
+            selectedTower === i
+        );
+    }
+}
+
+/* TIMER */
+
+function startTimer() {
+
+    if (gameStarted || gameWon) return;
+
+    gameStarted = true;
+
+    timerInterval = setInterval(function() {
+
+        seconds++;
+
+        updateStats();
+
+    }, 1000);
+}
+
+function stopTimer() {
+
+    if (timerInterval !== null) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+}
+
+/* UPDATE STATISTICS */
+
+function updateStats() {
+
+    document.getElementById("moves").textContent = moves;
+
+    const minutes = Math.floor(seconds / 60);
+    const remaining = seconds % 60;
+
+    document.getElementById("timer").textContent =
+        String(minutes).padStart(2, "0") + ":" +
+        String(remaining).padStart(2, "0");
+}
+
+/* SELECT A TOWER */
+
+function selectTower(index) {
+
+    if (gameWon) return;
+
+    // First selection: choose a tower with a disc
+    if (selectedTower === null) {
+
+        if (towers[index].length === 0) {
+
+            document.getElementById("message").textContent =
+                "That tower is empty. Select another tower!";
+
+            return;
+        }
+
+        selectedTower = index;
+
+        const topDisc = towers[index][
+            towers[index].length - 1
+        ];
+
+        document.getElementById("message").textContent =
+            "Disc " + topDisc + " selected. Choose a destination!";
+
+        renderGame();
+
+        return;
+    }
+
+    // Tapping the same tower cancels selection
+    if (selectedTower === index) {
+
+        selectedTower = null;
+
+        document.getElementById("message").textContent =
+            "Selection cancelled. Choose another tower!";
+
+        renderGame();
+
+        return;
+    }
+
+    moveDisc(selectedTower, index);
+}
+
+/* MOVE DISC */
+
+function moveDisc(from, to) {
+
+    const sourceTower = towers[from];
+    const destinationTower = towers[to];
+
+    if (sourceTower.length === 0) {
+
+        selectedTower = null;
+        renderGame();
+        return;
+    }
+
+    const movingDisc =
+        sourceTower[sourceTower.length - 1];
+
+    const destinationTop =
+        destinationTower.length > 0
+            ? destinationTower[destinationTower.length - 1]
+            : null;
+
+    // A larger disc cannot be placed on a smaller disc
+    if (
+        destinationTop !== null &&
+        movingDisc > destinationTop
+    ) {
+
+        document.getElementById("message").textContent =
+            "Invalid move! A bigger disc cannot go on a smaller disc.";
+
+        selectedTower = null;
+
+        renderGame();
+
+        return;
+    }
+
+    startTimer();
+
+    // Perform the move
+    sourceTower.pop();
+    destinationTower.push(movingDisc);
+
+    moves++;
+
+    selectedTower = null;
+
+    updateStats();
+    renderGame();
+
+    document.getElementById("message").textContent =
+        "Disc moved successfully!";
+
+    checkWin();
+}
+
+/* CHECK WIN */
+
+function checkWin() {
+
+    if (towers[2].length === TOTAL_DISCS) {
+
+        gameWon = true;
+
+        stopTimer();
+
+        document.getElementById("message").textContent =
+            "🎉 PUZZLE SOLVED! All five discs reached Tower C!";
+
+        renderGame();
+
+        return true;
+    }
+
+    return false;
+}
+
+/* NEW GAME */
+
+function newGame() {
+
+    setupGame();
+
+}
+
+/* RESTART */
+
+function restartGame() {
+
+    setupGame();
+
+}
+
+/* KEYBOARD ACCESSIBILITY */
+
+function handleTowerKey(event, index) {
+
+    if (event.key === "Enter" || event.key === " ") {
+
+        event.preventDefault();
+
+        selectTower(index);
+    }
+}
+
+/* START */
+
+setupGame();
+
+</script>
+
+</body>
+  </html>
+  
