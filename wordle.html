@@ -1,1 +1,733 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Wordle Challenge | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #071321;
+    --panel: #0d2031;
+    --panel2: #102b3e;
+    --cyan: #00eaff;
+    --green: #39ff88;
+    --blue: #168cff;
+    --red: #ff5268;
+    --text: #eafaff;
+    --muted: #91aebe;
+    --border: #1d5265;
+    --correct: #20b96c;
+    --present: #c49b22;
+    --absent: #344554;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, #10334a 0, transparent 38%),
+        radial-gradient(circle at bottom right, #102a43 0, transparent 35%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 16px;
+}
+
+.container {
+    width: 100%;
+    max-width: 540px;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    padding: 15px 5px 18px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 18px;
+}
+
+.brand {
+    color: var(--green);
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px #39ff8870;
+}
+
+.subtitle {
+    color: var(--cyan);
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-top: 5px;
+}
+
+header h2 {
+    margin-top: 17px;
+    font-size: 22px;
+    letter-spacing: 2px;
+}
+
+.description {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 7px;
+    line-height: 1.5;
+}
+
+.info {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.info strong {
+    color: var(--cyan);
+}
+
+.message {
+    min-height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--green);
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px;
+}
+
+.board {
+    display: grid;
+    grid-template-rows: repeat(6, 1fr);
+    gap: 6px;
+    width: min(100%, 330px);
+    margin: 5px auto 20px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+}
+
+.tile {
+    aspect-ratio: 1 / 1;
+    border: 2px solid #315064;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(21px, 7vw, 29px);
+    font-weight: 900;
+    color: white;
+    background: #102333;
+    text-transform: uppercase;
+    transition: background .2s, border-color .2s;
+}
+
+.tile.filled {
+    border-color: var(--cyan);
+}
+
+.tile.correct {
+    background: var(--correct);
+    border-color: var(--correct);
+}
+
+.tile.present {
+    background: var(--present);
+    border-color: var(--present);
+}
+
+.tile.absent {
+    background: var(--absent);
+    border-color: var(--absent);
+}
+
+.keyboard {
+    width: 100%;
+    margin: 0 auto 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.key-row {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+}
+
+.key {
+    border: 0;
+    border-radius: 6px;
+    background: #244052;
+    color: white;
+    min-width: 0;
+    flex: 1;
+    height: 49px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.key:active {
+    transform: scale(.95);
+}
+
+.key.wide {
+    flex: 1.55;
+    font-size: 11px;
+}
+
+.key.correct {
+    background: var(--correct);
+}
+
+.key.present {
+    background: var(--present);
+}
+
+.key.absent {
+    background: #26323d;
+    color: #a6b0b8;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.action-btn {
+    border: 1px solid var(--cyan);
+    background: transparent;
+    color: var(--cyan);
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.action-btn.primary {
+    background: var(--green);
+    border-color: var(--green);
+    color: #06151b;
+}
+
+.action-btn:active {
+    transform: scale(.97);
+}
+
+.legend {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.legend h3 {
+    color: var(--cyan);
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 12px;
+    margin: 9px 0;
+}
+
+.sample {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.sample.green { background: var(--correct); }
+.sample.yellow { background: var(--present); }
+.sample.grey { background: var(--absent); }
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin: 22px 0 10px;
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    color: var(--green);
+}
+
+footer {
+    text-align: center;
+    color: #688394;
+    font-size: 11px;
+    padding: 10px 0 20px;
+}
+
+@media (max-width: 380px) {
+    body { padding: 10px; }
+    .key { height: 43px; font-size: 12px; }
+    .key.wide { font-size: 9px; }
+    .board { gap: 5px; }
+    .row { gap: 5px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="brand">HEXCLØWN</div>
+        <div class="subtitle">GAMING NETWORK</div>
+        <h2>WORDLE CHALLENGE</h2>
+        <p class="description">
+            Crack the five-letter code. You have six attempts!
+        </p>
+    </header>
+
+    <div class="info">
+        Guess the hidden <strong>5-letter word</strong> in six tries.
+        <br>
+        Green = correct position. Yellow = wrong position.
+    </div>
+
+    <div class="message" id="message" aria-live="polite">
+        Enter your first five-letter word!
+    </div>
+
+    <div class="board" id="board"></div>
+
+    <div class="keyboard" id="keyboard"></div>
+
+    <div class="actions">
+        <button class="action-btn primary" onclick="submitGuess()">
+            ENTER WORD
+        </button>
+        <button class="action-btn" onclick="deleteLetter()">
+            DELETE
+        </button>
+    </div>
+
+    <div class="actions">
+        <button class="action-btn" onclick="newGame()">
+            ↻ NEW GAME
+        </button>
+    </div>
+
+    <div class="legend">
+        <h3>HOW TO PLAY</h3>
+
+        <div class="legend-item">
+            <span class="sample green"></span>
+            <span>Correct letter in the correct position.</span>
+        </div>
+
+        <div class="legend-item">
+            <span class="sample yellow"></span>
+            <span>Correct letter in the wrong position.</span>
+        </div>
+
+        <div class="legend-item">
+            <span class="sample grey"></span>
+            <span>Letter is not in the hidden word.</span>
+        </div>
+    </div>
+
+    <a href="puzandlog.html" class="back-link">
+        ← BACK TO PUZZLE & LOGIC
+    </a>
+
+    <footer>
+        © HEXCLØWN GAMING NETWORK
+    </footer>
+
+</div>
+
+<script>
+/* WORD LIST */
+
+const answers = [
+    "APPLE", "BRAVE", "BRAIN", "CLOUD", "CHAIR",
+    "DREAM", "EARTH", "FLAME", "GHOST", "GRAPE",
+    "HEART", "HOUSE", "LIGHT", "MAGIC", "MONEY",
+    "NIGHT", "OCEAN", "PLANT", "QUEEN", "ROBOT",
+    "SMILE", "STONE", "STORM", "TIGER", "TRAIN",
+    "WATER", "WORLD", "YOUTH", "ZEBRA", "MUSIC",
+    "CANDY", "DANCE", "SPACE", "SOUND", "POWER",
+    "GREEN", "BLACK", "WHITE", "HAPPY", "FUNNY",
+    "BREAD", "CROWN", "DARKS", "FRUIT", "GAMES",
+    "LASER", "MOUSE", "PHONE", "RIVER", "SHARE",
+    "SNAKE", "SWEET", "THINK", "TOUCH", "WATCH",
+    "WITCH", "WRITE", "YOUNG", "QUIET", "QUICK"
+];
+
+const extraWords = [
+    "ABOUT", "ABOVE", "ADMIT", "AFTER", "AGAIN",
+    "AGENT", "ALARM", "ALBUM", "ALERT", "ALIVE",
+    "ALONE", "ANGEL", "ANGER", "ANGLE", "ANIME",
+    "ARENA", "ARMOR", "AUDIO", "AWAKE", "BADGE",
+    "BASIC", "BEACH", "BEGAN", "BEGIN", "BEING",
+    "BELOW", "BENCH", "BIRTH", "BLAME", "BLEND",
+    "BLIND", "BLOCK", "BLOOD", "BOARD", "BOOST",
+    "BOUND", "BRAIN", "BRAND", "BREAK", "BRICK",
+    "BRING", "BROWN", "BUILD", "BUYER", "CABLE",
+    "CAMEL", "CARRY", "CAUSE", "CHAIN", "CHARM",
+    "CHASE", "CHEAP", "CHECK", "CHESS", "CHIEF",
+    "CHILD", "CIVIL", "CLAIM", "CLASS", "CLEAN",
+    "CLEAR", "CLIMB", "CLOCK", "CLOSE", "COACH",
+    "COAST", "COLOR", "COUNT", "COURT", "COVER",
+    "CRACK", "CRAFT", "CRAZY", "CREAM", "CRIME",
+    "CROSS", "CROWD", "CRUSH", "CYCLE", "DAILY",
+    "DEATH", "DELAY", "DEPTH", "DIGIT", "DIRTY",
+    "DOUBT", "DOZEN", "DRESS", "DRINK", "DRIVE",
+    "EARLY", "EMPTY", "ENEMY", "ENJOY", "ENTER",
+    "EQUAL", "ERROR", "EVENT", "EVERY", "EXACT",
+    "EXTRA", "FAITH", "FALSE", "FANCY", "FAULT",
+    "FEAST", "FIELD", "FIGHT", "FINAL", "FIRST",
+    "FIXED", "FLASH", "FLOOR", "FOCUS", "FORCE",
+    "FORUM", "FOUND", "FRAME", "FRESH", "FRONT",
+    "FUNNY", "GIANT", "GIVEN", "GLASS", "GLOBE",
+    "GLORY", "GOING", "GRACE", "GRADE", "GRAND",
+    "GRANT", "GRASS", "GREAT", "GROUP", "GUARD",
+    "GUESS", "GUIDE", "HABIT", "HAPPY", "HARSH",
+    "HASTE", "HAVEN", "HEAVY", "HELLO", "HONEY",
+    "HONOR", "HUMAN", "IDEAL", "IMAGE", "INDEX",
+    "INNER", "INPUT", "ISSUE", "JAPAN", "JEWEL",
+    "JOINT", "JUDGE", "JUICE", "KNIFE", "KNOWN",
+    "LABEL", "LARGE", "LATER", "LAUGH", "LAYER",
+    "LEARN", "LEAST", "LEAVE", "LEGAL", "LEVEL",
+    "LIMIT", "LOCAL", "LOGIC", "LOOSE", "LUCKY",
+    "LUNCH", "MAJOR", "MAKER", "MATCH", "MAYBE",
+    "METAL", "MIGHT", "MINOR", "MODEL", "MORAL",
+    "MOTOR", "MOUNT", "MOUTH", "MOVIE", "NEVER",
+    "NEWLY", "NOISE", "NORTH", "NOVEL", "NURSE",
+    "OFFER", "ORDER", "OTHER", "OWNER", "PAINT",
+    "PANEL", "PAPER", "PARTY", "PAUSE", "PEACE",
+    "PHASE", "PILOT", "PITCH", "PLACE", "PLAIN",
+    "PLANE", "POINT", "PRICE", "PRIDE", "PRIME",
+    "PRINT", "PRIZE", "PROOF", "PROUD", "PROVE",
+    "PUNCH", "RADIO", "RAISE", "RANGE", "RAPID",
+    "REACH", "READY", "REALM", "REBEL", "REFER",
+    "RELAX", "REPLY", "RIGHT", "RISKY", "ROUND",
+    "ROUTE", "ROYAL", "RURAL", "SAFER", "SAINT",
+    "SCALE", "SCARE", "SCENE", "SCOPE", "SCORE",
+    "SCOUT", "SENSE", "SERVE", "SEVEN", "SHAPE",
+    "SHARP", "SHEEP", "SHELF", "SHELL", "SHIFT",
+    "SHINE", "SHIRT", "SHOCK", "SHORT", "SIGHT",
+    "SINCE", "SKILL", "SLEEP", "SLICE", "SLOW",
+    "SMALL", "SMART", "SOLID", "SOLVE", "SORRY",
+    "SOUTH", "SPEED", "SPELL", "SPEND", "SPICE",
+    "SPINE", "SPLIT", "SPORT", "STAFF", "STAGE",
+    "STAIR", "STAKE", "STAND", "START", "STATE",
+    "STEAM", "STEEL", "STICK", "STILL", "STOCK",
+    "STORE", "STORY", "STUDY", "STYLE", "SUGAR",
+    "SUPER", "TABLE", "TASTE", "TEACH", "TEETH",
+    "THEME", "THERE", "THICK", "THING", "THREE",
+    "THROW", "TIGHT", "TITLE", "TODAY", "TOTAL",
+    "TOWER", "TRACK", "TRADE", "TRIAL", "TRICK",
+    "TRUTH", "TWICE", "UNDER", "UNION", "UNITY",
+    "UNTIL", "UPPER", "URBAN", "USAGE", "USUAL",
+    "VALUE", "VIDEO", "VISIT", "VOICE", "WASTE",
+    "WHOLE", "WOMAN", "WOMEN", "WOULD", "WORTH",
+    "WOUND", "WRONG", "XEROX", "YEARS", "YIELD"
+];
+
+const validWords = new Set([...answers, ...extraWords]);
+
+/* GAME SETTINGS */
+
+const ROWS = 6;
+const COLS = 5;
+
+let secretWord = "";
+let currentRow = 0;
+let currentGuess = "";
+let gameOver = false;
+let boardStates = [];
+let keyStates = {};
+
+/* CREATE BOARD */
+
+const board = document.getElementById("board");
+const keyboard = document.getElementById("keyboard");
+const message = document.getElementById("message");
+
+function createBoard() {
+    board.innerHTML = "";
+
+    for (let r = 0; r < ROWS; r++) {
+        const row = document.createElement("div");
+        row.className = "row";
+
+        for (let c = 0; c < COLS; c++) {
+            const tile = document.createElement("div");
+            tile.className = "tile";
+            tile.id = `tile-${r}-${c}`;
+            row.appendChild(tile);
+        }
+
+        board.appendChild(row);
+    }
+}
+
+/* CREATE KEYBOARD */
+
+const keyboardRows = [
+    "QWERTYUIOP",
+    "ASDFGHJKL",
+    "ENTERZXCVBNMDEL"
+];
+
+function createKeyboard() {
+    keyboard.innerHTML = "";
+
+    keyboardRows.forEach((letters, rowIndex) => {
+        const row = document.createElement("div");
+        row.className = "key-row";
+
+        if (rowIndex === 2) {
+            const enter = createKey("ENTER", "wide");
+            row.appendChild(enter);
+
+            "ZXCVBNM".split("").forEach(letter => {
+                row.appendChild(createKey(letter));
+            });
+
+            const del = createKey("DEL", "wide");
+            row.appendChild(del);
+
+        } else {
+            letters.split("").forEach(letter => {
+                row.appendChild(createKey(letter));
+            });
+        }
+
+        keyboard.appendChild(row);
+    });
+}
+
+function createKey(letter, extraClass = "") {
+    const button = document.createElement("button");
+
+    button.className = "key " + extraClass;
+    button.textContent = letter;
+    button.type = "button";
+
+    button.addEventListener("click", () => {
+        if (letter === "ENTER") {
+            submitGuess();
+        } else if (letter === "DEL") {
+            deleteLetter();
+        } else {
+            addLetter(letter);
+        }
+    });
+
+    return button;
+}
+
+/* UPDATE CURRENT ROW */
+
+function updateCurrentRow() {
+    for (let c = 0; c < COLS; c++) {
+        const tile = document.getElementById(`tile-${currentRow}-${c}`);
+        tile.textContent = currentGuess[c] || "";
+        tile.classList.toggle("filled", !!currentGuess[c]);
+    }
+}
+
+/* ADD LETTER */
+
+function addLetter(letter) {
+    if (gameOver || currentGuess.length >= COLS) return;
+
+    currentGuess += letter.toUpperCase();
+    updateCurrentRow();
+}
+
+/* DELETE LETTER */
+
+function deleteLetter() {
+    if (gameOver || currentGuess.length === 0) return;
+
+    currentGuess = currentGuess.slice(0, -1);
+    updateCurrentRow();
+}
+
+/* CHECK GUESS */
+
+function submitGuess() {
+    if (gameOver) return;
+
+    if (currentGuess.length !== COLS) {
+        showMessage("Enter all five letters first!");
+        return;
+    }
+
+    if (!validWords.has(currentGuess)) {
+        showMessage("That word is not in the game dictionary.");
+        return;
+    }
+
+    checkGuess();
+}
+
+/* COLOR LETTERS */
+
+function checkGuess() {
+    const guess = currentGuess;
+    const result = Array(COLS).fill("absent");
+    const remaining = secretWord.split("");
+
+    // First pass: exact matches
+    for (let i = 0; i < COLS; i++) {
+        if (guess[i] === secretWord[i]) {
+            result[i] = "correct";
+            remaining[i] = null;
+        }
+    }
+
+    // Second pass: letters in the wrong position
+    for (let i = 0; i < COLS; i++) {
+        if (result[i] === "correct") continue;
+
+        const foundIndex = remaining.indexOf(guess[i]);
+
+        if (foundIndex !== -1) {
+            result[i] = "present";
+            remaining[foundIndex] = null;
+        }
+    }
+
+    // Display result
+    for (let i = 0; i < COLS; i++) {
+        const tile = document.getElementById(`tile-${currentRow}-${i}`);
+        tile.classList.remove("filled");
+        tile.classList.add(result[i]);
+    }
+
+    // Update keyboard colors
+    for (let i = 0; i < COLS; i++) {
+        updateKeyColor(guess[i], result[i]);
+    }
+
+    boardStates.push({ guess, result });
+
+    if (guess === secretWord) {
+        gameOver = true;
+        showMessage("ACCESS GRANTED! You cracked the word!");
+        return;
+    }
+
+    currentRow++;
+    currentGuess = "";
+
+    if (currentRow >= ROWS) {
+        gameOver = true;
+        showMessage("GAME OVER! The word was " + secretWord + ".");
+        return;
+    }
+
+    showMessage("Good try! Keep guessing.");
+}
+
+/* UPDATE KEYBOARD COLOR */
+
+function updateKeyColor(letter, status) {
+    const priority = {
+        absent: 1,
+        present: 2,
+        correct: 3
+    };
+
+    const oldStatus = keyStates[letter];
+
+    if (!oldStatus || priority[status] > priority[oldStatus]) {
+        keyStates[letter] = status;
+    }
+
+    document.querySelectorAll(".key").forEach(key => {
+        if (key.textContent === letter) {
+            key.classList.remove("correct", "present", "absent");
+            key.classList.add(keyStates[letter]);
+        }
+    });
+}
+
+/* MESSAGE */
+
+function showMessage(text) {
+    message.textContent = text;
+}
+
+/* KEYBOARD SUPPORT */
+
+document.addEventListener("keydown", function(event) {
+    if (gameOver) return;
+
+    const key = event.key.toUpperCase();
+
+    if (key === "ENTER") {
+        submitGuess();
+    } else if (key === "BACKSPACE") {
+        deleteLetter();
+    } else if (/^[A-Z]$/.test(key)) {
+        addLetter(key);
+    }
+});
+
+/* START NEW GAME */
+
+function newGame() {
+    secretWord = answers[Math.floor(Math.random() * answers.length)];
+
+    currentRow = 0;
+    currentGuess = "";
+    gameOver = false;
+    boardStates = [];
+    keyStates = {};
+
+    createBoard();
+    createKeyboard();
+
+    showMessage("Enter your first five-letter word!");
+}
+
+/* START GAME */
+
+newGame();
+
+</script>
+
+</body>
+          </html>
+
