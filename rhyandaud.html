@@ -1,1 +1,912 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07121b">
+<title>Rhythm & Audio | HEXCLØWN</title>
+
+<style>
+:root {
+  --bg:#07121b;
+  --panel:#0d202c;
+  --panel2:#102b38;
+  --green:#39ff88;
+  --cyan:#20eaff;
+  --blue:#5688ff;
+  --red:#ff5577;
+  --text:#eafff8;
+  --muted:#9bb9c4;
+  --border:rgba(32,234,255,.22);
+}
+
+* {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body {
+  background:
+    radial-gradient(circle at 10% 0%,rgba(32,234,255,.10),transparent 30%),
+    radial-gradient(circle at 90% 20%,rgba(57,255,136,.08),transparent 30%),
+    var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  min-height:100vh;
+}
+
+header {
+  padding:22px 16px;
+  border-bottom:1px solid var(--border);
+  background:rgba(7,18,27,.94);
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(12px);
+}
+
+.header-inner {
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.logo {
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:var(--green);
+  text-shadow:0 0 12px rgba(57,255,136,.5);
+}
+
+.logo span {color:var(--cyan);}
+
+nav {
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+}
+
+nav a {
+  color:var(--text);
+  text-decoration:none;
+  font-size:13px;
+  padding:9px 13px;
+  border:1px solid var(--border);
+  border-radius:8px;
+}
+
+nav a:hover {
+  color:var(--green);
+  border-color:var(--green);
+}
+
+.container {
+  max-width:1100px;
+  margin:auto;
+  padding:25px 15px 50px;
+}
+
+.hero {
+  text-align:center;
+  padding:35px 12px 30px;
+}
+
+.eyebrow {
+  color:var(--green);
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:3px;
+  margin-bottom:12px;
+}
+
+.hero h1 {
+  font-size:clamp(29px,6vw,48px);
+  margin-bottom:12px;
+}
+
+.hero h1 span {
+  color:var(--cyan);
+  text-shadow:0 0 18px rgba(32,234,255,.4);
+}
+
+.hero p {
+  color:var(--muted);
+  line-height:1.7;
+  max-width:620px;
+  margin:auto;
+  font-size:14px;
+}
+
+.notice {
+  background:rgba(32,234,255,.07);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px;
+  margin:15px auto 25px;
+  max-width:750px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+.game-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:15px;
+  margin-bottom:30px;
+}
+
+.game-card {
+  background:linear-gradient(145deg,var(--panel2),var(--panel));
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:19px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.game-card:hover {
+  transform:translateY(-4px);
+  border-color:var(--green);
+  box-shadow:0 0 20px rgba(57,255,136,.09);
+}
+
+.game-card .emoji {
+  font-size:30px;
+  margin-bottom:12px;
+}
+
+.game-card h3 {
+  font-size:16px;
+  margin-bottom:8px;
+}
+
+.game-card p {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+.play-label {
+  display:inline-block;
+  color:var(--green);
+  font-size:11px;
+  font-weight:bold;
+  margin-top:14px;
+  letter-spacing:1px;
+}
+
+.section-title {
+  font-size:19px;
+  margin:25px 0 15px;
+}
+
+.game-panel {
+  display:none;
+  background:linear-gradient(145deg,#102a38,#0a1a26);
+  border:1px solid var(--cyan);
+  border-radius:15px;
+  padding:20px;
+  margin:20px 0;
+  box-shadow:0 0 22px rgba(32,234,255,.07);
+}
+
+.game-panel.active {display:block;}
+
+.panel-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:15px;
+}
+
+.panel-heading h2 {
+  font-size:20px;
+  color:var(--cyan);
+}
+
+button {
+  border:none;
+  border-radius:8px;
+  padding:11px 15px;
+  background:var(--green);
+  color:#04140d;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:12px;
+  transition:.2s;
+}
+
+button:hover {
+  filter:brightness(1.15);
+  transform:translateY(-1px);
+}
+
+button.secondary {
+  background:#173b4c;
+  color:var(--cyan);
+  border:1px solid var(--border);
+}
+
+button.danger {
+  background:var(--red);
+  color:#240610;
+}
+
+button:disabled {
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.stats {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:12px 0 17px;
+}
+
+.stat {
+  flex:1;
+  min-width:95px;
+  background:#071923;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:10px;
+  text-align:center;
+}
+
+.stat small {
+  color:var(--muted);
+  display:block;
+  font-size:10px;
+  margin-bottom:5px;
+}
+
+.stat strong {
+  color:var(--green);
+  font-size:19px;
+}
+
+.message {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  margin:12px 0;
+  min-height:22px;
+}
+
+.game-area {
+  background:#06141d;
+  border:1px solid rgba(32,234,255,.18);
+  border-radius:11px;
+  padding:14px;
+  min-height:180px;
+  overflow:hidden;
+}
+
+footer {
+  text-align:center;
+  border-top:1px solid var(--border);
+  padding:23px 12px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.8;
+}
+
+footer strong {color:var(--green);}
+
+.back-link {
+  display:inline-block;
+  margin-bottom:12px;
+  color:var(--cyan);
+  text-decoration:none;
+  font-size:12px;
+}
+
+/* PIANO TILES */
+
+.piano-board {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:7px;
+  max-width:430px;
+  margin:12px auto;
+}
+
+.piano-tile {
+  height:95px;
+  border-radius:9px;
+  background:#173747;
+  border:1px solid #286074;
+  cursor:pointer;
+  transition:.1s;
+}
+
+.piano-tile.active {
+  background:var(--cyan);
+  box-shadow:0 0 20px rgba(32,234,255,.5);
+}
+
+.piano-tile.hit {
+  background:var(--green);
+}
+
+.piano-tile.missed {
+  background:var(--red);
+}
+
+/* GUITAR RHYTHM */
+
+.rhythm-board {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:8px;
+  max-width:500px;
+  margin:12px auto;
+}
+
+.rhythm-lane {
+  min-height:220px;
+  border:1px solid rgba(32,234,255,.18);
+  background:linear-gradient(#102b38,#071923);
+  border-radius:9px;
+  position:relative;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.rhythm-note {
+  position:absolute;
+  left:12%;
+  width:76%;
+  height:22px;
+  border-radius:7px;
+  background:var(--cyan);
+  box-shadow:0 0 12px rgba(32,234,255,.6);
+}
+
+.rhythm-note.red {background:var(--red);}
+.rhythm-note.green {background:var(--green);}
+.rhythm-note.blue {background:var(--blue);}
+
+.hit-line {
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:28px;
+  border-top:2px solid var(--green);
+  box-shadow:0 0 8px var(--green);
+  pointer-events:none;
+}
+
+.lane-key {
+  position:absolute;
+  bottom:5px;
+  left:0;
+  right:0;
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  pointer-events:none;
+}
+
+/* CHiPTUNE SEQUENCER */
+
+.sequencer-wrap {
+  overflow-x:auto;
+  padding-bottom:8px;
+}
+
+.sequencer {
+  display:grid;
+  grid-template-columns:65px repeat(8,minmax(30px,1fr));
+  gap:5px;
+  min-width:370px;
+}
+
+.seq-label {
+  color:var(--muted);
+  font-size:11px;
+  display:flex;
+  align-items:center;
+}
+
+.seq-cell {
+  height:34px;
+  border-radius:5px;
+  background:#173747;
+  border:1px solid #285267;
+  cursor:pointer;
+}
+
+.seq-cell.on {
+  background:var(--green);
+  box-shadow:0 0 9px rgba(57,255,136,.5);
+}
+
+.seq-cell.playing {
+  outline:2px solid var(--cyan);
+  outline-offset:1px;
+}
+
+.seq-cell.on.playing {
+  background:var(--cyan);
+}
+
+.controls {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+input[type="range"] {
+  accent-color:var(--green);
+  width:130px;
+}
+
+.control-label {
+  color:var(--muted);
+  font-size:12px;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+@media(max-width:500px) {
+  header {position:relative;}
+  .logo {font-size:21px;}
+  .container {padding:15px 11px 35px;}
+  .hero {padding:28px 5px;}
+  .game-panel {padding:13px;}
+  .piano-tile {height:78px;}
+  .rhythm-board {gap:5px;}
+  .rhythm-lane {min-height:190px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">HEX<span>CLØWN</span></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="GameZone.html">Game Zone</a>
+      <a href="arcandact.html">Arcade</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <div class="eyebrow">HEXCLØWN GAME NETWORK</div>
+    <h1>RHYTHM <span>& AUDIO</span></h1>
+    <p>
+      Enter the sound lab. Test your timing, follow the rhythm
+      and create your own 8-bit sounds.
+    </p>
+  </section>
+
+  <div class="notice">
+    🎧 Sound is generated by your browser. Tap a game and press
+    START to begin. Turn up your device volume for the full experience.
+  </div>
+
+  <h2 class="section-title">🎮 Select Your Sound Challenge</h2>
+
+  <div class="game-grid">
+    <div class="game-card" onclick="openGame('piano')">
+      <div class="emoji">🎹</div>
+      <h3>Piano Tiles Speed Tapper</h3>
+      <p>Watch the glowing tiles and tap them before the sequence ends. Test your reaction and memory.</p>
+      <span class="play-label">PLAY GAME →</span>
+    </div>
+
+    <div class="game-card" onclick="openGame('guitar')">
+      <div class="emoji">🎸</div>
+      <h3>Guitar Rhythm Strips</h3>
+      <p>Hit the correct rhythm lanes as notes reach the target line. Keep your streak alive.</p>
+      <span class="play-label">PLAY GAME →</span>
+    </div>
+
+    <div class="game-card" onclick="openGame('chip')">
+      <div class="emoji">🎛️</div>
+      <h3>8-Bit Chiptune Matrix Sequencer</h3>
+      <p>Build your own retro electronic beat with a step sequencer and browser-generated sounds.</p>
+      <span class="play-label">OPEN STUDIO →</span>
+    </div>
+  </div>
+
+  <!-- PIANO TILES -->
+
+  <section class="game-panel" id="piano">
+    <div class="panel-heading">
+      <h2>🎹 Piano Tiles Speed Tapper</h2>
+      <button class="secondary" onclick="closeGames()">CLOSE</button>
+    </div>
+
+    <p class="message">
+      Memorise the glowing sequence. Tap the four tiles in the correct order.
+      Each round adds another note.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><small>ROUND</small><strong id="pRound">0</strong></div>
+      <div class="stat"><small>SCORE</small><strong id="pScore">0</strong></div>
+      <div class="stat"><small>BEST</small><strong id="pBest">0</strong></div>
+    </div>
+
+    <div class="game-area">
+      <div class="piano-board">
+        <button class="piano-tile" id="pt0" aria-label="Piano tile 1" onclick="pianoTap(0)"></button>
+        <button class="piano-tile" id="pt1" aria-label="Piano tile 2" onclick="pianoTap(1)"></button>
+        <button class="piano-tile" id="pt2" aria-label="Piano tile 3" onclick="pianoTap(2)"></button>
+        <button class="piano-tile" id="pt3" aria-label="Piano tile 4" onclick="pianoTap(3)"></button>
+      </div>
+      <p class="message" id="pMessage">Press START to begin.</p>
+    </div>
+
+    <div class="controls">
+      <button onclick="startPiano()">START / RESTART</button>
+      <button class="secondary" onclick="pianoSoundToggle()" id="pSoundBtn">SOUND: ON</button>
+    </div>
+  </section>
+
+  <!-- GUITAR RHYTHM -->
+
+  <section class="game-panel" id="guitar">
+    <div class="panel-heading">
+      <h2>🎸 Guitar Rhythm Strips</h2>
+      <button class="secondary" onclick="closeGames()">CLOSE</button>
+    </div>
+
+    <p class="message">
+      Tap a lane when its glowing note reaches the green target line.
+      You can also use keys A, S, D and F on a keyboard.
+    </p>
+
+    <div class="stats">
+      <div class="stat"><small>SCORE</small><strong id="gScore">0</strong></div>
+      <div class="stat"><small>STREAK</small><strong id="gStreak">0</strong></div>
+      <div class="stat"><small>TIME</small><strong id="gTime">30</strong></div>
+    </div>
+
+    <div class="game-area">
+      <div class="rhythm-board" id="rhythmBoard">
+        <div class="rhythm-lane" onclick="hitLane(0)"><div class="hit-line"></div><div class="lane-key">A</div></div>
+        <div class="rhythm-lane" onclick="hitLane(1)"><div class="hit-line"></div><div class="lane-key">S</div></div>
+        <div class="rhythm-lane" onclick="hitLane(2)"><div class="hit-line"></div><div class="lane-key">D</div></div>
+        <div class="rhythm-lane" onclick="hitLane(3)"><div class="hit-line"></div><div class="lane-key">F</div></div>
+      </div>
+      <p class="message" id="gMessage">Press START and catch the notes!</p>
+    </div>
+
+    <div class="controls">
+      <button onclick="startGuitar()">START / RESTART</button>
+    </div>
+  </section>
+
+  <!-- CHIPTUNE STUDIO -->
+
+  <section class="game-panel" id="chip">
+    <div class="panel-heading">
+      <h2>🎛️ 8-Bit Chiptune Matrix</h2>
+      <button class="secondary" onclick="closeGames()">CLOSE</button>
+    </div>
+
+    <p class="message">
+      Tap the squares to activate notes. Press PLAY to hear your pattern.
+      Create a little retro game soundtrack!
+    </p>
+
+    <div class="stats">
+      <div class="stat"><small>ACTIVE STEPS</small><strong id="activeSteps">0</strong></div>
+      <div class="stat"><small>INSTRUMENTS</small><strong>4</strong></div>
+      <div class="stat"><small>MODE</small><strong>8-BIT</strong></div>
+    </div>
+
+    <div class="game-area">
+      <div class="sequencer-wrap">
+        <div class="sequencer" id="sequencer"></div>
+      </div>
+
+      <div class="controls">
+        <button onclick="playSequencer()" id="seqPlay">▶ PLAY</button>
+        <button class="secondary" onclick="stopSequencer()">■ STOP</button>
+        <button class="secondary" onclick="clearSequencer()">CLEAR</button>
+        <button class="secondary" onclick="randomSequencer()">RANDOM BEAT</button>
+      </div>
+
+      <div class="controls">
+        <label class="control-label">
+          TEMPO
+          <input type="range" min="65" max="180" value="110" id="tempo"
+          oninput="document.getElementById('tempoValue').textContent=this.value">
+          <strong id="tempoValue">110</strong>
+        </label>
+      </div>
+
+      <p class="message" id="seqMessage">Your sound studio is ready.</p>
+    </div>
+  </section>
+
+  <a class="back-link" href="GameZone.html">← BACK TO GAME ZONE</a>
+
+</main>
+
+<footer>
+  <strong>HEXCLØWN</strong> — ENTER THE DIGITAL PLAYGROUND<br>
+  RHYTHM & AUDIO LAB<br>
+  CREATED BY TIJANI ALIYU / HEXWHISPER / CYBERCODECLOWN
+</footer>
+
+<script>
+/* ==================================
+   SHARED AUDIO ENGINE
+================================== */
+
+let audioCtx = null;
+let soundEnabled = true;
+
+function getAudio() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) audioCtx = new AudioContextClass();
+  }
+
+  if (audioCtx && audioCtx.state === "suspended") {
+    audioCtx.resume();
+  }
+
+  return audioCtx;
+}
+
+function tone(freq, duration=0.12, type="square", volume=0.12) {
+  if (!soundEnabled) return;
+
+  const ctx = getAudio();
+  if (!ctx) return;
+
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = type;
+  osc.frequency.value = freq;
+
+  gain.gain.setValueAtTime(volume,ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(
+    0.001,ctx.currentTime + duration
+  );
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start();
+  osc.stop(ctx.currentTime + duration);
+}
+
+function pianoSoundToggle() {
+  soundEnabled = !soundEnabled;
+  document.getElementById("pSoundBtn").textContent =
+    "SOUND: " + (soundEnabled ? "ON" : "OFF");
+}
+
+/* ==================================
+   PAGE NAVIGATION
+================================== */
+
+let currentGame = "";
+
+function openGame(id) {
+  closeGames();
+  currentGame = id;
+  document.getElementById(id).classList.add("active");
+
+  if (id === "chip") {
+    buildSequencer();
+  }
+
+  document.getElementById(id).scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+}
+
+function closeGames() {
+  document.querySelectorAll(".game-panel").forEach(panel => {
+    panel.classList.remove("active");
+  });
+
+  stopGuitar();
+  stopSequencer();
+  currentGame = "";
+}
+
+/* ==================================
+   PIANO TILES SPEED TAPPER
+================================== */
+
+let pianoSequence = [];
+let pianoPosition = 0;
+let pianoScore = 0;
+let pianoRound = 0;
+let pianoPlaying = false;
+let pianoShowing = false;
+let pianoBest = 0;
+
+const pianoFrequencies = [262,330,392,523];
+
+function updatePianoStats() {
+  document.getElementById("pScore").textContent = pianoScore;
+  document.getElementById("pRound").textContent = pianoRound;
+  document.getElementById("pBest").textContent = pianoBest;
+}
+
+function flashTile(index, className="active") {
+  const tile = document.getElementById("pt"+index);
+  tile.classList.add(className);
+
+  setTimeout(() => tile.classList.remove(className),220);
+}
+
+function pianoPlaySequence() {
+  pianoShowing = true;
+  pianoPosition = 0;
+
+  document.getElementById("pMessage").textContent =
+    "Watch the sequence carefully...";
+
+  let i = 0;
+
+  const showNext = () => {
+    if (!pianoShowing) return;
+
+    if (i >= pianoSequence.length) {
+      pianoShowing = false;
+      pianoPlaying = true;
+      document.getElementById("pMessage").textContent =
+        "Your turn! Repeat the sequence.";
+      return;
+    }
+
+    const index = pianoSequence[i];
+    flashTile(index);
+    tone(pianoFrequencies[index],0.2,"sine");
+    i++;
+
+    setTimeout(showNext,520);
+  };
+
+  setTimeout(showNext,400);
+}
+
+function startPiano() {
+  pianoSequence = [];
+  pianoPosition = 0;
+  pianoScore = 0;
+  pianoRound = 0;
+  pianoPlaying = false;
+  pianoShowing = false;
+
+  updatePianoStats();
+  nextPianoRound();
+}
+
+function nextPianoRound() {
+  pianoRound++;
+  pianoSequence.push(Math.floor(Math.random()*4));
+  updatePianoStats();
+  pianoPlaying = false;
+  pianoPlaySequence();
+}
+
+function pianoTap(index) {
+  if (!pianoPlaying || pianoShowing) return;
+
+  tone(pianoFrequencies[index],0.14,"sine");
+
+  const tile = document.getElementById("pt"+index);
+  tile.classList.add("hit");
+  setTimeout(() => tile.classList.remove("hit"),140);
+
+  if (pianoSequence[pianoPosition] === index) {
+    pianoPosition++;
+    pianoScore += 10;
+    pianoBest = Math.max(pianoBest,pianoScore);
+    updatePianoStats();
+
+    if (pianoPosition === pianoSequence.length) {
+      pianoPlaying = false;
+      document.getElementById("pMessage").textContent =
+        "Correct! Get ready for the next round.";
+
+      setTimeout(nextPianoRound,800);
+    }
+  } else {
+    pianoPlaying = false;
+    pianoShowing = false;
+    tile.classList.add("missed");
+    setTimeout(() => tile.classList.remove("missed"),300);
+
+    document.getElementById("pMessage").textContent =
+      "Game over! Final score: " + pianoScore +
+      ". Press START to try again.";
+  }
+}
+
+/* ==================================
+   GUITAR RHYTHM STRIPS
+================================== */
+
+let guitarRunning = false;
+let guitarScore = 0;
+let guitarStreak = 0;
+let guitarTime = 30;
+let guitarTimer = null;
+let guitarLoop = null;
+let guitarNotes = [];
+let guitarLastSpawn = 0;
+let guitarAnimation = null;
+
+const guitarColors = ["","red","green","blue"];
+
+function updateGuitarStats() {
+  document.getElementById("gScore").textContent = guitarScore;
+  document.getElementById("gStreak").textContent = guitarStreak;
+  document.getElementById("gTime").textContent = guitarTime;
+}
+
+function startGuitar() {
+  stopGuitar();
+
+  guitarRunning = true;
+  guitarScore = 0;
+  guitarStreak = 0;
+  guitarTime = 30;
+  guitarNotes = [];
+  guitarLastSpawn = 0;
+
+  updateGuitarStats();
+  document.getElementById("gMessage").textContent =
+    "Catch the notes at the green line!";
+
+  const lanes = document.querySelectorAll(".rhythm-lane");
+  lanes.forEach(lane => {
+    lane.querySelectorAll(".rhythm-note").forEach(note => note.remove());
+  });
+
+  guitarTimer = setInterval(() => {
+    guitarTime--;
+    updateGuitarStats();
+
+    if (guitarTime <= 0) {
+      stopGuitar();
+      document.getElementById("gMessage").textContent =
+        "Time up! Final score: " + guitarScore;
+    }
+  },1000);
+
+  guitarLoop = setInterval(spawnGuitarNote,650);
+  guitarAnimation = requestAnimationFrame(moveGuitarNotes);
+}
+
+function spawnGuitarNote() {
+  if (!guitarRunning) return;
+
+  const laneIndex = Math.floor(Math.random()*4);
+  const lane = document.querySelectorAll(".rhythm-lane")[laneIndex];
+  const note = document.createElement(
