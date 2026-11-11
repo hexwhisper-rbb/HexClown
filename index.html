@@ -2,908 +2,949 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#030806">
-
-<title>HEXCLØWN | Enter the Digital Underground</title>
-
-<meta name="description" content="HEXCLØWN is your digital underground hub for games, creative studios, music, productivity, technology and interactive experiences.">
-
-<style>
-:root {
-  --bg: #030806;
-  --panel: #09130e;
-  --panel2: #0d1c13;
-  --green: #39ff14;
-  --green2: #00ff88;
-  --cyan: #00eaff;
-  --text: #eaffef;
-  --muted: #82998a;
-  --border: #163c27;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background:
-    radial-gradient(ellipse at top, #092012 0%, transparent 55%),
-    var(--bg);
-  color: var(--text);
-  font-family: Arial, sans-serif;
-  min-height: 100vh;
-}
-
-/* HEADER */
-
-header {
-  padding: 17px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(3,10,6,.96);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  backdrop-filter: blur(12px);
-}
-
-.logo {
-  font-size: 23px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  color: var(--green);
-  text-shadow: 0 0 8px var(--green), 0 0 22px #39ff1466;
-}
-
-.logo span {
-  color: var(--cyan);
-}
-
-.menu-btn {
-  background: var(--panel2);
-  border: 1px solid var(--green);
-  color: var(--green);
-  padding: 9px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-/* NAVIGATION */
-
-nav {
-  display: none;
-  background: #061009;
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--border);
-}
-
-nav.show {
-  display: block;
-}
-
-nav a {
-  display: block;
-  color: var(--muted);
-  text-decoration: none;
-  padding: 12px 0;
-  border-bottom: 1px solid #14291c;
-  font-size: 13px;
-  transition: .2s;
-}
-
-nav a:hover {
-  color: var(--green);
-  text-shadow: 0 0 8px var(--green);
-}
-
-/* MAIN */
-
-.container {
-  width: 100%;
-  max-width: 1100px;
-  margin: auto;
-  padding: 20px 16px;
-}
-
-/* HERO */
-
-.hero {
-  position: relative;
-  background:
-    radial-gradient(circle at 90% 10%, #39ff1425, transparent 40%),
-    linear-gradient(135deg, #0a1a10, #06131a);
-  border: 1px solid #236b3c;
-  border-radius: 13px;
-  padding: 30px 20px;
-  margin-bottom: 25px;
-  overflow: hidden;
-  box-shadow: 0 0 22px #39ff1418;
-}
-
-.hero::after {
-  content: "SYSTEM ONLINE";
-  position: absolute;
-  right: 15px;
-  bottom: 13px;
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: #39ff1455;
-}
-
-.hero-tag {
-  color: var(--cyan);
-  font-size: 11px;
-  letter-spacing: 3px;
-  margin-bottom: 15px;
-  font-weight: bold;
-}
-
-.hero h1 {
-  font-size: 34px;
-  margin-bottom: 13px;
-  line-height: 1.2;
-}
-
-.hero h1 span {
-  color: var(--green);
-  text-shadow: 0 0 12px #39ff1488;
-}
-
-.hero p {
-  color: #a8c4af;
-  font-size: 14px;
-  line-height: 1.8;
-  max-width: 520px;
-}
-
-.hero-btn {
-  display: inline-block;
-  margin-top: 22px;
-  padding: 13px 21px;
-  background: var(--green);
-  color: #001705;
-  border-radius: 5px;
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: bold;
-  box-shadow: 0 0 15px #39ff1477;
-  transition: .25s;
-}
-
-.hero-btn:hover {
-  background: var(--green2);
-  box-shadow: 0 0 25px #00ff88aa;
-  transform: translateY(-2px);
-}
-
-/* SYSTEM STATUS */
-
-.status-line {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--green);
-  font-size: 10px;
-  letter-spacing: 1px;
-  margin: 0 0 22px 3px;
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  background: var(--green);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--green);
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  50% {
-    opacity: .3;
-    box-shadow: 0 0 2px var(--green);
-  }
-}
-
-/* STATS */
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 28px;
-}
-
-.stat {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  padding: 16px 7px;
-  text-align: center;
-}
-
-.stat h2 {
-  color: var(--green);
-  font-size: 23px;
-  text-shadow: 0 0 9px #39ff1455;
-}
-
-.stat p {
-  color: var(--muted);
-  font-size: 10px;
-  margin-top: 7px;
-}
-
-/* SEARCH */
-
-.search-box {
-  margin-bottom: 28px;
-}
-
-.search-box input {
-  width: 100%;
-  background: #08130c;
-  color: var(--green);
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  outline: none;
-  font-size: 14px;
-  transition: .2s;
-}
-
-.search-box input::placeholder {
-  color: #607b68;
-}
-
-.search-box input:focus {
-  border-color: var(--green);
-  box-shadow: 0 0 13px #39ff1433;
-}
-
-/* SECTION HEADINGS */
-
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.section-heading h2 {
-  font-size: 19px;
-  color: var(--green);
-}
-
-.section-heading small {
-  color: var(--muted);
-  font-size: 10px;
-}
-
-/* CATEGORIES */
-
-.categories {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 13px;
-  margin-bottom: 18px;
-  scrollbar-width: none;
-}
-
-.categories::-webkit-scrollbar {
-  display: none;
-}
-
-.categories button {
-  white-space: nowrap;
-  background: var(--panel);
-  color: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: 5px;
-  padding: 10px 15px;
-  font-size: 11px;
-  cursor: pointer;
-  transition: .2s;
-}
-
-.categories button:hover,
-.categories button.active {
-  background: #102d19;
-  color: var(--green);
-  border-color: var(--green);
-  box-shadow: 0 0 10px #39ff1422;
-}
-
-/* APP GRID */
-
-.app-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 13px;
-}
-
-.app-card {
-  background: linear-gradient(145deg, #0a170e, #07100b);
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  padding: 18px 13px;
-  min-height: 165px;
-  position: relative;
-  transition: .25s;
-}
-
-.app-card:hover {
-  border-color: var(--green);
-  box-shadow: 0 0 17px #39ff1422;
-  transform: translateY(-4px);
-}
-
-.app-icon {
-  font-size: 28px;
-  margin-bottom: 13px;
-  filter: drop-shadow(0 0 6px #39ff1477);
-}
-
-.app-card h3 {
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
-.app-card p {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.6;
-}
-
-.favorite {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: transparent;
-  border: none;
-  color: #66816c;
-  font-size: 19px;
-  cursor: pointer;
-}
-
-.favorite.saved {
-  color: var(--green);
-  text-shadow: 0 0 10px var(--green);
-}
-
-.open-app {
-  display: inline-block;
-  margin-top: 14px;
-  font-size: 11px;
-  font-weight: bold;
-  color: var(--cyan);
-  text-decoration: none;
-  transition: .2s;
-}
-
-.open-app:hover {
-  color: var(--green);
-  text-shadow: 0 0 8px var(--green);
-}
-
-.empty {
-  display: none;
-  text-align: center;
-  padding: 40px 10px;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-/* FAVORITES */
-
-.fav-section {
-  margin-top: 35px;
-}
-
-.fav-count {
-  color: var(--cyan);
-}
-
-/* TOAST */
-
-.toast {
-  position: fixed;
-  bottom: 22px;
-  left: 50%;
-  transform: translate(-50%, 100px);
-  background: #0c1c11;
-  color: var(--green);
-  border: 1px solid var(--green);
-  padding: 12px 18px;
-  border-radius: 6px;
-  font-size: 12px;
-  z-index: 999;
-  box-shadow: 0 0 15px #39ff1433;
-  transition: .3s;
-  opacity: 0;
-  text-align: center;
-}
-
-.toast.show {
-  transform: translate(-50%, 0);
-  opacity: 1;
-}
-
-/* FOOTER */
-
-footer {
-  text-align: center;
-  border-top: 1px solid var(--border);
-  margin-top: 45px;
-  padding: 28px 15px;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 2;
-}
-
-footer strong {
-  color: var(--green);
-  text-shadow: 0 0 8px #39ff1455;
-}
-
-.credit {
-  margin-top: 10px;
-  color: var(--cyan);
-  font-weight: bold;
-}
-
-/* DESKTOP */
-
-@media (min-width: 650px) {
-  .app-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .container {
-    padding: 30px 25px;
-  }
-
-  .hero {
-    padding: 48px 38px;
-  }
-
-  .hero h1 {
-    font-size: 44px;
-  }
-
-  nav.show {
-    display: flex;
-    gap: 25px;
-    padding: 0 25px;
-  }
-
-  nav a {
-    border: none;
-  }
-
-  .app-card {
-    padding: 21px;
-  }
-}
-
-@media (min-width: 950px) {
-  .app-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-    animation: none !important;
-    transition: none !important;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#070b0a">
+
+  <title>HEXCLØWN | Digital Underground</title>
+
+  <meta name="description" content="HEXCLØWN is a digital underground hub for games, technology, creativity, music, learning and useful online tools. Powered by C3CLOWN.">
+
+  <style>
+    :root {
+      --bg: #070b0a;
+      --panel: #0d1411;
+      --panel2: #111c17;
+      --green: #00ff88;
+      --cyan: #00e5ff;
+      --white: #edf7f1;
+      --muted: #91a49a;
+      --border: rgba(0,255,136,.16);
+      --shadow: 0 0 25px rgba(0,255,136,.07);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: auto;
+    }
+
+    /* HEADER */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7,11,10,.95);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .navbar {
+      min-height: 72px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: var(--green);
+      text-shadow: 0 0 14px rgba(0,255,136,.45);
+      white-space: nowrap;
+    }
+
+    .logo span {
+      color: var(--cyan);
+    }
+
+    .menu-btn {
+      background: transparent;
+      color: var(--green);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 22px;
+      display: none;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    nav a {
+      color: var(--muted);
+      font-size: 13px;
+      transition: .2s;
+    }
+
+    nav a:hover {
+      color: var(--green);
+    }
+
+    /* HERO */
+
+    .hero {
+      text-align: center;
+      padding: 85px 12px 65px;
+      background:
+        radial-gradient(ellipse at top, rgba(0,255,136,.10), transparent 60%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      border: 1px solid var(--border);
+      background: rgba(0,255,136,.05);
+      padding: 6px 13px;
+      border-radius: 30px;
+      font-size: 11px;
+      letter-spacing: 2px;
+      margin-bottom: 22px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px var(--green);
+    }
+
+    .hero h1 {
+      font-size: clamp(35px, 8vw, 66px);
+      line-height: 1.12;
+      font-weight: 900;
+      letter-spacing: 3px;
+      margin-bottom: 17px;
+    }
+
+    .hero h1 span {
+      color: var(--green);
+      text-shadow: 0 0 25px rgba(0,255,136,.25);
+    }
+
+    .hero h2 {
+      color: var(--cyan);
+      font-size: 13px;
+      letter-spacing: 5px;
+      margin-bottom: 17px;
+    }
+
+    .hero p {
+      max-width: 570px;
+      margin: auto;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .hero-actions {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 20px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      transition: .2s;
+    }
+
+    .btn-primary {
+      color: #001b10;
+      background: var(--green);
+      border: 1px solid var(--green);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 20px rgba(0,255,136,.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      color: var(--cyan);
+      border: 1px solid var(--cyan);
+      background: transparent;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0,229,255,.08);
+    }
+
+    /* STATS */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 28px 0;
+    }
+
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 8px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--green);
+      font-size: 25px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+
+    /* MAIN SECTIONS */
+
+    .section {
+      padding: 35px 0 55px;
+    }
+
+    .section-heading {
+      margin-bottom: 22px;
+    }
+
+    .section-heading h2 {
+      font-size: 23px;
+      letter-spacing: 1px;
+    }
+
+    .section-heading h2 span {
+      color: var(--green);
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    /* SEARCH */
+
+    .search-box {
+      margin-bottom: 18px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 15px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      color: var(--white);
+      font-size: 14px;
+    }
+
+    .search-box input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 12px rgba(0,255,136,.1);
+    }
+
+    .search-box input::placeholder {
+      color: #718078;
+    }
+
+    /* FILTERS */
+
+    .filters {
+      display: flex;
+      gap: 9px;
+      overflow-x: auto;
+      padding: 3px 0 15px;
+      scrollbar-width: thin;
+    }
+
+    .filter-btn {
+      flex-shrink: 0;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 30px;
+      font-size: 11px;
+      transition: .2s;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      color: #001b10;
+      background: var(--green);
+      border-color: var(--green);
+    }
+
+    /* APP GRID */
+
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .app-card {
+      position: relative;
+      background: linear-gradient(145deg, var(--panel2), var(--panel));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 21px 17px;
+      min-height: 185px;
+      display: flex;
+      flex-direction: column;
+      transition: .25s;
+      overflow: hidden;
+    }
+
+    .app-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--green);
+      box-shadow: var(--shadow);
+    }
+
+    .app-icon {
+      font-size: 29px;
+      margin-bottom: 13px;
+    }
+
+    .app-card h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .app-card p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 17px;
+      flex-grow: 1;
+    }
+
+    .card-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-link {
+      color: var(--green);
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .coming {
+      color: var(--cyan);
+      font-size: 9px;
+      letter-spacing: 1px;
+      border: 1px solid rgba(0,229,255,.3);
+      padding: 4px 7px;
+      border-radius: 20px;
+    }
+
+    .favorite {
+      color: var(--muted);
+      border: none;
+      background: transparent;
+      font-size: 19px;
+      padding: 2px 5px;
+    }
+
+    .favorite.saved {
+      color: #ffcc55;
+    }
+
+    .empty-message {
+      display: none;
+      text-align: center;
+      color: var(--muted);
+      padding: 35px 10px;
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      grid-column: 1 / -1;
+    }
+
+    /* ABOUT */
+
+    .about-box {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 25px;
+    }
+
+    .about-box h2 {
+      color: var(--green);
+      margin-bottom: 12px;
+      font-size: 20px;
+    }
+
+    .about-box p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    /* FOOTER */
+
+    footer {
+      margin-top: 20px;
+      padding: 30px 10px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      background: #050807;
+    }
+
+    footer h2 {
+      color: var(--green);
+      font-size: 20px;
+      letter-spacing: 3px;
+    }
+
+    footer p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 7px;
+    }
+
+    footer strong {
+      color: var(--cyan);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+      transform: translate(-50%, 20px);
+      background: var(--green);
+      color: #001b10;
+      padding: 11px 17px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: bold;
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      z-index: 200;
+      text-align: center;
+      max-width: 90%;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 750px) {
+      .app-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      nav {
+        gap: 13px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .navbar {
+        min-height: 65px;
+      }
+
+      .logo {
+        font-size: 21px;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 65px;
+        left: 0;
+        width: 100%;
+        background: #09100c;
+        border-bottom: 1px solid var(--border);
+        padding: 17px 5%;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      nav.open {
+        display: flex;
+      }
+
+      nav a {
+        width: 100%;
+        padding: 7px 0;
+      }
+
+      .hero {
+        padding: 65px 10px 50px;
+      }
+
+      .hero h2 {
+        font-size: 10px;
+        letter-spacing: 3px;
+      }
+
+      .hero p {
+        font-size: 12px;
+      }
+
+      .stats {
+        gap: 7px;
+      }
+
+      .stat strong {
+        font-size: 21px;
+      }
+
+      .stat span {
+        font-size: 8px;
+      }
+
+      .app-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .app-card {
+        padding: 15px 12px;
+        min-height: 185px;
+      }
+
+      .app-card h3 {
+        font-size: 13px;
+      }
+
+      .app-card p {
+        font-size: 10px;
+      }
+
+      .section-heading h2 {
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 340px) {
+      .app-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *, *::before, *::after {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <div class="logo">HEXCL<span>ØWN</span></div>
-  <button class="menu-btn" id="menuBtn"
-    aria-expanded="false" aria-controls="mainNav">
-    ☰ MENU
-  </button>
-</header>
+  <!-- HEADER -->
 
-<nav id="mainNav">
-  <a href="index.html">⌂ Home</a>
-  <a href="gamezone.html">🎮 Game Zone</a>
-  <a href="#apps">▣ Applications</a>
-  <a href="#favorites">☆ Favorites</a>
-  <a href="#about">ⓘ About</a>
-</nav>
+  <header>
+    <div class="container navbar">
 
-<main class="container">
+      <a href="index.html" class="logo">
+        HEXCL<span>Ø</span>WN
+      </a>
+
+      <button class="menu-btn" id="menuBtn"
+        aria-label="Toggle navigation"
+        aria-expanded="false">
+        ☰
+      </button>
+
+      <nav id="mainNav">
+        <a href="index.html">HOME</a>
+        <a href="#apps">EXPLORE</a>
+        <a href="#favorites">FAVOURITES</a>
+        <a href="#about">ABOUT</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- HERO -->
 
   <section class="hero">
-    <div class="hero-tag">[ DIGITAL UNDERGROUND NETWORK ]</div>
 
-    <h1>WELCOME TO<br><span>HEXCLØWN</span></h1>
+    <div class="container">
 
-    <p>
-      Your gateway to the digital underground.
-      Explore games, creative studios, intelligent tools,
-      productivity systems and interactive experiences
-      in one powerful hub.
-    </p>
+      <div class="status">
+        <span class="status-dot"></span>
+        DIGITAL NETWORK ONLINE
+      </div>
 
-    <a href="#apps" class="hero-btn">
-      EXPLORE THE UNDERGROUND →
-    </a>
-  </section>
+      <h1>
+        WELCOME TO<br>
+        <span>HEXCLØWN</span>
+      </h1>
 
-  <div class="status-line">
-    <span class="status-dot"></span>
-    SYSTEM ONLINE — ALL INTERFACES READY
-  </div>
+      <h2>ENTER THE DIGITAL UNDERGROUND</h2>
 
-  <section class="stats">
-    <div class="stat">
-      <h2 id="appCount">0</h2>
-      <p>APPLICATIONS</p>
-    </div>
+      <p>
+        Explore a different side of the digital world.
+        Discover games, creative tools, music, learning
+        experiences and more — all in one underground hub.
+      </p>
 
-    <div class="stat">
-      <h2 id="categoryCount">0</h2>
-      <p>CATEGORIES</p>
-    </div>
+      <div class="hero-actions">
+        <a href="#apps" class="btn btn-primary">
+          EXPLORE THE HUB
+        </a>
 
-    <div class="stat">
-      <h2 id="favoriteCount">0</h2>
-      <p>FAVORITES</p>
-    </div>
-  </section>
+        <a href="#about" class="btn btn-secondary">
+          ABOUT HEXCLØWN
+        </a>
+      </div>
 
-  <section class="search-box">
-    <input
-      type="search"
-      id="searchInput"
-      placeholder="⌕ Search the underground..."
-      aria-label="Search applications">
-  </section>
-
-  <section id="apps">
-
-    <div class="section-heading">
-      <h2>▣ UNDERGROUND APPLICATIONS</h2>
-      <small>SELECT YOUR DESTINATION</small>
-    </div>
-
-    <div class="categories" id="categories">
-      <button class="active" data-filter="all">ALL</button>
-      <button data-filter="games">GAMES</button>
-      <button data-filter="tools">TOOLS</button>
-      <button data-filter="music">MUSIC</button>
-      <button data-filter="creative">CREATIVE</button>
-      <button data-filter="learning">LEARNING</button>
-      <button data-filter="security">SECURITY</button>
-      <button data-filter="productivity">PRODUCTIVITY</button>
-    </div>
-
-    <div class="app-grid" id="appGrid">
-
-      <article class="app-card" data-category="games">
-        <button class="favorite" aria-label="Toggle Game Zone favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🎮</div>
-        <h3>Game Zone</h3>
-        <p>Discover games and interactive challenges.</p>
-        <a href="gamezone.html" class="open-app">ENTER →</a>
-      </article>
-
-      <article class="app-card" data-category="learning">
-        <button class="favorite" aria-label="Toggle Quiz Centre favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🧠</div>
-        <h3>Quiz Centre</h3>
-        <p>Test your knowledge and challenge your brain.</p>
-        <a href="quiz.html" class="open-app">ENTER →</a>
-      </article>
-
-      <article class="app-card" data-category="productivity">
-        <button class="favorite" aria-label="Toggle Typing Academy favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">⌨️</div>
-        <h3>Typing Academy</h3>
-        <p>Improve your typing speed and accuracy.</p>
-        <a href="typing.html" class="open-app">ENTER →</a>
-      </article>
-
-      <article class="app-card" data-category="tools">
-        <button class="favorite" aria-label="Toggle Tools Hub favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">⚙️</div>
-        <h3>Tools Hub</h3>
-        <p>Useful digital tools for everyday tasks.</p>
-        <a href="tools.html" class="open-app">ENTER →</a>
-      </article>
-
-      <article class="app-card" data-category="music">
-        <button class="favorite" aria-label="Toggle Music Zone favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🎧</div>
-        <h3>Music Zone</h3>
-        <p>Explore sound, beats and audio experiences.</p>
-        <a href="music.html" class="open-app">ENTER →</a>
-      </article>
-
-      <article class="app-card" data-category="tools">
-        <button class="favorite" aria-label="Toggle Bot Centre favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🤖</div>
-        <h3>Bot Centre</h3>
-        <p>Explore helpful interactive digital assistants.</p>
-        <a href="bots.html" class="open-app">ENTER →</a>
-      </article>
-
-      <article class="app-card" data-category="learning">
-        <button class="favorite" aria-label="Toggle Learning Hub favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">📚</div>
-        <h3>Learning Hub</h3>
-        <p>Learn new skills and explore useful knowledge.</p>
-        <a href="learning.html" class="open-app">ENTER →</a>
-      </article>
-
-      <article class="app-card" data-category="tools">
-        <button class="favorite" aria-label="Toggle Web Directory favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🌐</div>
-        <h3>Web Directory</h3>
-        <p>Discover useful websites and online resources.</p>
-        <a href="directory.html" class="open-app">ENTER →</a>
-      </article>
-
-      <article class="app-card" data-category="creative">
-        <button class="favorite" aria-label="Toggle Creative Studio favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🎨</div>
-        <h3>Creative Studio</h3>
-        <p>Build pixel art and explore creative projects.</p>
-        <a href="creative.html" class="open-app">ENTER →</a>
-      </article>
-
-      <article class="app-card" data-category="security">
-        <button class="favorite" aria-label="Toggle Security Lab favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🛡️</div>
-        <h3>Security Lab</h3>
-        <p>Learn digital safety through educational tools.</p>
-        <a href="security.html" class="open-app">ENTER →</a>
-      </article>
-
-      <article class="app-card" data-category="productivity">
-        <button class="favorite" aria-label="Toggle Productivity Hub favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">📋</div>
-        <h3>Productivity Hub</h3>
-        <p>Organise tasks, notes and personal projects.</p>
-        <a href="productivity.html" class="open-app">ENTER →</a>
-      </article>
-
-      <article class="app-card" data-category="music">
-        <button class="favorite" aria-label="Toggle Audio Lab favorite" aria-pressed="false" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🎹</div>
-        <h3>Audio Lab</h3>
-        <p>Create chiptunes and experiment with sounds.</p>
-        <a href="audiolab.html" class="open-app">ENTER →</a>
-      </article>
-
-    </div>
-
-    <div class="empty" id="emptyMessage">
-      <p>⌕ NO APPLICATION FOUND</p>
-      <p>Try another search or category.</p>
     </div>
 
   </section>
 
-  <section class="fav-section" id="favorites">
-    <div class="section-heading">
-      <h2>☆ YOUR FAVORITES</h2>
-      <small class="fav-count" id="favLabel">0 SAVED</small>
-    </div>
+  <!-- STATS -->
 
-    <p style="font-size:12px;color:var(--muted);line-height:1.7">
-      Your saved applications are marked with a glowing green star above.
-    </p>
-  </section>
+  <main class="container">
 
-</main>
+    <section class="stats">
 
-<footer id="about">
-  <strong>HEXCLØWN</strong><br>
-  ENTER THE DIGITAL UNDERGROUND<br>
-  EXPLORE • CREATE • PLAY • DISCOVER
+      <div class="stat">
+        <strong id="appCount">12</strong>
+        <span>HUB CATEGORIES</span>
+      </div>
 
-  <div class="credit">
-    POWERED BY C3CLOWN
-  </div>
+      <div class="stat">
+        <strong id="favoriteCount">0</strong>
+        <span>YOUR FAVOURITES</span>
+      </div>
 
-  <div style="margin-top:10px">
-    © <span id="year"></span> HEXCLØWN. ALL RIGHTS RESERVED.
-  </div>
-</footer>
+      <div class="stat">
+        <strong>24/7</strong>
+        <span>DIGITAL ACCESS</span>
+      </div>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </section>
 
-<script>
+    <!-- APPLICATIONS -->
 
-/* MOBILE MENU */
+    <section class="section" id="apps">
 
-const menuBtn = document.getElementById("menuBtn");
-const mainNav = document.getElementById("mainNav");
+      <div class="section-heading">
+        <h2>EXPLORE THE <span>HUB</span></h2>
+        <p>Choose a destination and enter the digital underground.</p>
+      </div>
 
-menuBtn.addEventListener("click", () => {
-  const isOpen = mainNav.classList.toggle("show");
-  menuBtn.setAttribute("aria-expanded", isOpen);
-});
+      <div class="search-box">
+        <input
+          type="search"
+          id="searchInput"
+          placeholder="Search games, tools, music and more..."
+          autocomplete="off"
+          aria-label="Search hub categories">
+      </div>
 
-mainNav.querySelectorAll("a").forEach(link => {
-  link.addEventListener("click", () => {
-    mainNav.classList.remove("show");
-    menuBtn.setAttribute("aria-expanded", "false");
-  });
-});
+      <div class="filters" id="filters">
 
-/* TOAST NOTIFICATIONS */
+        <button class="filter-btn active" data-filter="all">ALL</button>
+        <button class="filter-btn" data-filter="games">GAMES</button>
+        <button class="filter-btn" data-filter="learning">LEARNING</button>
+        <button class="filter-btn" data-filter="tools">TOOLS</button>
+        <button class="filter-btn" data-filter="music">MUSIC</button>
+        <button class="filter-btn" data-filter="creative">CREATIVE</button>
+        <button class="filter-btn" data-filter="security">SECURITY</button>
+        <button class="filter-btn" data-filter="productivity">PRODUCTIVITY</button>
 
-let toastTimer;
+      </div>
 
-function showToast(message) {
-  const toast = document.getElementById("toast");
-  toast.textContent = message;
-  toast.classList.add("show");
+      <div class="app-grid" id="appGrid">
 
-  clearTimeout(toastTimer);
+        <!-- GAME ZONE -->
 
-  toastTimer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2200);
-}
+        <article class="app-card"
+          data-category="games"
+          data-name="game zone arcade games">
 
-/* FAVORITES SYSTEM */
+          <div class="app-icon">🎮</div>
 
-const FAVORITES_KEY = "hexclown-favorites";
+          <h3>Game Zone</h3>
 
-function getFavorites() {
-  try {
-    const saved = JSON.parse(
-      localStorage.getItem(FAVORITES_KEY) || "[]"
-    );
+          <p>Discover exciting browser games, challenges and arcade experiences.</p>
 
-    return Array.isArray(saved) ? saved : [];
-  } catch {
-    return [];
-  }
-}
+          <div class="card-bottom">
+            <a href="gamezone.html" class="card-link">ENTER ZONE →</a>
 
-function saveFavorites(favorites) {
-  try {
-    localStorage.setItem(
-      FAVORITES_KEY,
-      JSON.stringify(favorites)
-    );
-    return true;
-  } catch {
-    showToast("Could not save favorites on this device.");
-    return false;
-  }
-}
+            <button class="favorite"
+              data-favorite="gamezone"
+              aria-label="Add Game Zone to favourites"
+              aria-pressed="false">☆</button>
+          </div>
 
-function updateFavorites() {
-  const favorites = getFavorites();
+        </article>
 
-  document.querySelectorAll(".app-card").forEach(card => {
-    const button = card.querySelector(".favorite");
-    const name = card.querySelector("h3").textContent;
-    const saved = favorites.includes(name);
+        <!-- QUIZ CENTRE -->
 
-    button.classList.toggle("saved", saved);
-    button.textContent = saved ? "★" : "☆";
-    button.setAttribute("aria-pressed", saved);
-  });
+        <article class="app-card"
+          data-category="learning"
+          data-name="quiz centre trivia questions">
 
-  document.getElementById("favoriteCount").textContent =
-    favorites.length;
+          <div class="app-icon">🧠</div>
 
-  document.getElementById("favLabel").textContent =
-    favorites.length + " SAVED";
-}
+          <h3>Quiz Centre</h3>
 
-function toggleFavorite(button) {
-  const card = button.closest(".app-card");
-  const name = card.querySelector("h3").textContent;
+          <p>Test your knowledge with quizzes, trivia and brain challenges.</p>
 
-  let favorites = getFavorites();
+          <div class="card-bottom">
+            <span class="coming">COMING SOON</span>
 
-  if (favorites.includes(name)) {
-    favorites = favorites.filter(item => item !== name);
-    showToast(name + " removed from favorites");
-  } else {
-    favorites.push(name);
-    showToast(name + " added to favorites");
-  }
+            <button class="favorite"
+              data-favorite="quiz"
+              aria-label="Add Quiz Centre to favourites"
+              aria-pressed="false">☆</button>
+          </div>
 
-  if (saveFavorites(favorites)) {
-    updateFavorites();
-  }
-}
+        </article>
 
-/* CATEGORY FILTERS */
+        <!-- TYPING ACADEMY -->
 
-let activeCategory = "all";
+        <article class="app-card"
+          data-category="learning"
+          data-name="typing academy speed typing">
 
-const categoryButtons = document.querySelectorAll(
-  "#categories button"
-);
+          <div class="app-icon">⌨️</div>
 
-categoryButtons.forEach(button => {
-  button.addEventListener("click", () => {
-    categoryButtons.forEach(btn =>
-      btn.classList.remove("active")
-    );
+          <h3>Typing Academy</h3>
 
-    button.classList.add("active");
-    activeCategory = button.dataset.filter;
+          <p>Improve your typing skills and challenge your speed.</p>
 
-    filterApps();
-  });
-});
+          <div class="card-bottom">
+            <span class="coming">COMING SOON</span>
 
-/* SEARCH */
+            <button class="favorite"
+              data-favorite="typing"
+              aria-label="Add Typing Academy to favourites"
+              aria-pressed="false">☆</button>
+          </div>
 
-const searchInput = document.getElementById("searchInput");
+        </article>
 
-searchInput.addEventListener("input", filterApps);
+        <!-- TOOLS HUB -->
 
-function filterApps() {
-  const searchTerm = searchInput.value.toLowerCase().trim();
-  const cards = document.querySelectorAll(".app-card");
+        <article class="app-card"
+          data-category="tools"
+          data-name="tools hub utilities">
 
-  let visibleCount = 0;
+          <div class="app-icon">🛠️</div>
 
-  cards.forEach(card => {
-    const category = card.dataset.category;
-    const content = card.textContent.toLowerCase();
+          <h3>Tools Hub</h3>
 
-    const matchesCategory =
-      activeCategory === "all" ||
-      category === activeCategory;
+          <p>Explore useful digital utilities and everyday web tools.</p>
 
-    const matchesSearch = content.includes(searchTerm);
+          <div class="card-bottom">
+            <span class="coming">COMING SOON</span>
 
-    const visible = matchesCategory && matchesSearch;
+            <button class="favorite"
+              data-favorite="tools"
+              aria-label="Add Tools Hub to favourites"
+              aria-pressed="false">☆</button>
+          </div>
 
-    card.style.display = visible ? "" : "none";
+        </article>
 
-    if (visible) visibleCount++;
-  });
+        <!-- MUSIC ZONE -->
 
-  document.getElementById("emptyMessage").style.display =
-    visibleCount === 0 ? "block" : "none";
-}
+        <article class="app-card"
+          data-category="music"
+          data-name="music zone audio sound">
 
-/* DASHBOARD STATISTICS */
+          <div class="app-icon">🎧</div>
 
-function updateStats() {
-  const cards = document.querySelectorAll(".app-card");
+          <h3>Music Zone</h3>
 
-  const categories = new Set(
-    Array.from(cards).map(card => card.dataset.category)
-  );
+          <p>Explore audio experiences, sound tools and music projects.</p>
 
-  document.getElementById("appCount").textContent =
-    cards.length;
+          <div class="card-bottom">
+            <span class="coming">COMING SOON</span>
 
-  document.getElementById("categoryCount").textContent =
-    categories.size;
-}
+            <button class="favorite"
+              data-favorite="music"
+              aria-label="Add Music Zone to favourites"
+              aria-pressed="false">☆</button>
+          </div>
 
-/* 
+        </article>
+
+        <!-- BOT CENTRE -->
+
+        <article class="app-card"
+          data-category="tools"
+          data-name="bot centre automation">
+
+          <div class="app-icon">🤖</div>
+
+          <h3>Bot Centre</h3>
+
+          <p>Discover interactive browser-based bot experiments.</p>
+
+          <div class="card-bottom">
+            <span class="coming">COMING SOON</span>
+
+            <button class="favorite"
+              data-favorite="bots"
+              aria-label="Add Bot Centre to favourites"
+              aria-pressed="false">☆</button>
+          </div>
+
+        </article>
+
+        <!-- LEARNING HUB -->
+
+        <article class="app-card"
+          data-category="learning"
+          data-name="learning hub education">
+
+          <div class="app-icon">📚</div>
+
+          <h3>Learning Hub</h3>
+
+          <p>Find educational activities and interactive learning resources.</p>
+
+          <div class="card-bottom">
+            <span class="coming">COMING SOON</span>
+
+            <button class="favorite"
+              data-favorite="learning"
+              aria-label="Add Learning Hub to favourites"
+              aria-pressed="false">☆</button>
+          </div>
+
+        </article>
+
+        <!-- WEB DIRECTORY -->
+
+        <article class="app-card"
+          data-category="tools"
+          data-name="web directory websites">
+
+          <div class="app-icon">🌐</div>
+
+          <h3>Web Directory</h3>
+
+          <p>Discover useful websites and interesting online destinations.</p>
+
+          <div class="card-bottom">
+            <span class="coming">COMING SOON</span>
+
+            <button class="favorite"
+              data-favorite="directory"
+              aria-label="Add Web Directory to favourites"
+              aria-pressed="false">☆</button>
+          </div>
+
+        </article>
+
+        <!-- CREATIVE STUDIO -->
+
+        <article class="app-card"
+          data-category="creative"
+          data-name="creative studio design art">
+
+          <div class="app-icon">🎨</div>
+
+          <h3>Creative Studio</h3>
+
+          <p>Experiment with digital art, creative projects and ideas.</p>
+
+          <div class="card-bottom">
+            <span class="coming">COMING SOON</span>
+
+            <button class="favorite"
+              data-favorite="creative"
+              aria-label="Add Creative Studio to favourites"
+              aria-pressed="false">☆</button>
+          </div>
+
+        </article>
+
+        <!-- SECURITY LAB -->
+
+        <article class="app-card"
+          data-category="security"
+          data-name="security lab cyber safety">
+
+          <div class="app-icon">🔐</div>
+
+          <h3>Security Lab</h3>
+
+          <p>Learn about online safety, privacy and responsible cybersecurity.</p>
+
+          <div class="card-bottom">
+            <span class="coming">COMING SOON</span>
+
+            <button class="favorite"
+              data-favorite="security"
+              aria-label="Add Security Lab to favourites"
+              aria-pressed="false">☆</button>
+          </div>
+
+        </articl
