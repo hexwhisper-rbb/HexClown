@@ -1,1 +1,720 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131b">
+<title>Simulation & Tycoon | HEXCLØWN</title>
+
+<style>
+:root{
+  --bg:#07131b;
+  --panel:#102630;
+  --panel2:#153440;
+  --green:#39ff88;
+  --cyan:#27eaff;
+  --blue:#3985ff;
+  --red:#ff536b;
+  --text:#eafaff;
+  --muted:#91aeb9;
+  --border:#24505c;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#153542,#07131b 60%);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header{
+  padding:17px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  background:#091923;
+  border-bottom:1px solid var(--border);
+}
+.logo{
+  color:var(--green);
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:2px;
+  text-shadow:0 0 12px #39ff8877;
+}
+nav{display:flex;gap:16px;flex-wrap:wrap}
+nav a{
+  color:var(--cyan);
+  text-decoration:none;
+  font-size:13px;
+  font-weight:bold;
+}
+nav a:hover{color:var(--green)}
+.hero{
+  text-align:center;
+  padding:40px 15px 25px;
+}
+.tag{
+  display:inline-block;
+  color:var(--green);
+  border:1px solid var(--green);
+  border-radius:30px;
+  padding:7px 14px;
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:13px;
+}
+.hero h1{
+  color:var(--cyan);
+  font-size:clamp(27px,6vw,43px);
+  margin:0 0 12px;
+  text-shadow:0 0 15px #27eaff55;
+}
+.hero p{
+  color:var(--muted);
+  line-height:1.6;
+}
+.container{width:92%;max-width:1050px;margin:auto}
+.section-title{color:var(--green);font-size:20px;margin:25px 0 14px}
+.game-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:13px;
+  margin-bottom:25px;
+}
+.game-card{
+  background:linear-gradient(145deg,#153440,#0c1d27);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:17px 14px;
+  cursor:pointer;
+  text-align:left;
+  color:var(--text);
+  transition:.2s;
+}
+.game-card:hover,.game-card.active{
+  border-color:var(--green);
+  box-shadow:0 0 15px #39ff8833;
+  transform:translateY(-2px);
+}
+.game-card .emoji{font-size:29px}
+.game-card h3{font-size:15px;margin:10px 0 5px}
+.game-card p{font-size:12px;color:var(--muted);line-height:1.5;margin:0}
+.game-area{
+  background:linear-gradient(145deg,#112833,#0a1a23);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  margin:15px 0 35px;
+  min-height:360px;
+}
+.game-heading{text-align:center;margin-bottom:18px}
+.game-heading h2{color:var(--cyan);margin:5px}
+.game-heading p{color:var(--muted);font-size:13px;line-height:1.5}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(110px,1fr));
+  gap:9px;
+  margin:15px 0;
+}
+.stat{
+  background:#091923;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:12px 8px;
+  text-align:center;
+}
+.stat small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-bottom:6px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.stat strong{color:var(--green);font-size:18px}
+button{
+  background:#153541;
+  border:1px solid var(--cyan);
+  color:var(--cyan);
+  padding:11px 15px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  margin:4px;
+}
+button:hover{background:#1b4b59}
+button.primary{
+  background:var(--green);
+  color:#06150e;
+  border-color:var(--green);
+}
+button.danger{border-color:var(--red);color:var(--red)}
+button:disabled{opacity:.4;cursor:not-allowed}
+.controls{text-align:center;margin:15px 0}
+.status{
+  text-align:center;
+  color:var(--green);
+  min-height:24px;
+  margin:12px 0;
+  font-size:13px;
+}
+.progress{
+  width:100%;
+  height:13px;
+  background:#07131b;
+  border:1px solid var(--border);
+  border-radius:20px;
+  overflow:hidden;
+  margin:10px 0;
+}
+.progress div{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--green),var(--cyan));
+  transition:width .2s;
+}
+.info-box{
+  background:#091923;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:13px;
+  margin:12px 0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+.building{
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:5px;
+  min-height:200px;
+  padding:15px 5px;
+  background:linear-gradient(#0c2733,#091923);
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+}
+.floor{
+  width:38px;
+  min-height:35px;
+  background:linear-gradient(180deg,#1c5361,#10313d);
+  border:1px solid var(--cyan);
+  border-radius:4px 4px 0 0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:var(--green);
+  font-size:10px;
+  font-weight:bold;
+  box-shadow:0 0 8px #27eaff22;
+}
+.floor:nth-child(3n){border-color:var(--green)}
+.floor:nth-child(4n){background:linear-gradient(180deg,#4a2938,#222039);border-color:var(--red)}
+.shop-screen{
+  background:#071923;
+  border:1px solid var(--cyan);
+  border-radius:12px;
+  padding:18px;
+  text-align:center;
+}
+.shop-screen .big-icon{font-size:55px}
+.shop-screen h3{color:var(--green);margin:10px}
+.customer{
+  display:inline-block;
+  background:#153541;
+  border:1px solid var(--border);
+  padding:10px 13px;
+  border-radius:10px;
+  margin:5px;
+  font-size:13px;
+}
+.upgrade-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+.upgrade{
+  background:#0a1c25;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:13px;
+}
+.upgrade h4{margin:0 0 7px;color:var(--cyan);font-size:14px}
+.upgrade p{font-size:11px;color:var(--muted);line-height:1.5}
+.upgrade button{width:100%;margin:4px 0 0}
+.mine-rock{
+  width:150px;
+  height:130px;
+  margin:15px auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:75px;
+  background:radial-gradient(circle,#24566a,#0a1c25);
+  border:2px solid var(--cyan);
+  border-radius:30px;
+  cursor:pointer;
+  user-select:none;
+  transition:.08s;
+}
+.mine-rock:active{transform:scale(.94)}
+.resource{
+  display:inline-block;
+  background:#091923;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:9px 12px;
+  margin:4px;
+  font-size:12px;
+}
+.resource b{color:var(--green)}
+.empty{text-align:center;color:var(--muted);padding:35px 10px}
+footer{
+  text-align:center;
+  padding:25px 10px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.8;
+}
+footer strong{color:var(--green)}
+@media(max-width:500px){
+  header{justify-content:center}
+  nav{justify-content:center}
+  .game-area{padding:13px}
+  .game-list{grid-template-columns:1fr}
+  .floor{width:29px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCLØWN</div>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="GameZone.html">GAME ZONE</a>
+    <a href="#games">SIMULATION</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="tag">BUILD • MANAGE • EXPAND</div>
+  <h1>SIMULATION & TYCOON</h1>
+  <p>Create your own business, build your empire and manage resources.<br>
+  Your decisions shape your progress.</p>
+</section>
+
+<main class="container">
+  <h2 class="section-title" id="games">Choose Your Simulation</h2>
+
+  <div class="game-list">
+    <button class="game-card" onclick="startGame('tower')">
+      <div class="emoji">🏙️</div>
+      <h3>Whisper Tower</h3>
+      <p>Build a tower, add floors and collect rental income.</p>
+    </button>
+
+    <button class="game-card" onclick="startGame('cafe')">
+      <div class="emoji">💻</div>
+      <h3>C3CLOWN Café Internet Shop</h3>
+      <p>Serve customers and grow your cyber café business.</p>
+    </button>
+
+    <button class="game-card" onclick="startGame('mining')">
+      <div class="emoji">⛏️</div>
+      <h3>Whisper Mining</h3>
+      <p>Collect minerals, sell resources and improve your tools.</p>
+    </button>
+  </div>
+
+  <section class="game-area" id="gameArea">
+    <div class="empty">
+      <div style="font-size:48px">🏗️</div>
+      <h2 style="color:var(--cyan)">Welcome to the Tycoon Zone</h2>
+      <p>Choose a simulation above to start building your empire.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>HEXCLØWN</strong><br>
+  CREATED BY TIJANI ALIYU<br>
+  HEXWHISPER / CYBERCODECLOWN<br>
+  © 2026 HEXCLØWN. ALL RIGHTS RESERVED.
+</footer>
+
+<script>
+const area=document.getElementById("gameArea");
+let currentGame="";
+
+const money=n=>"$"+Math.floor(n).toLocaleString();
+
+function shell(title,description,content){
+  area.innerHTML=`
+    <div class="game-heading">
+      <h2>${title}</h2>
+      <p>${description}</p>
+    </div>
+    ${content}
+  `;
+}
+function status(text){
+  const el=document.getElementById("status");
+  if(el)el.textContent=text;
+}
+function save(key,data){
+  try{localStorage.setItem("hexclown_"+key,JSON.stringify(data));}catch(e){}
+}
+function load(key,fallback){
+  try{
+    const value=localStorage.getItem("hexclown_"+key);
+    return value?JSON.parse(value):fallback;
+  }catch(e){return fallback;}
+}
+function selectCard(game){
+  document.querySelectorAll(".game-card").forEach(c=>c.classList.remove("active"));
+  const index=["tower","cafe","mining"].indexOf(game);
+  const cards=document.querySelectorAll(".game-card");
+  if(cards[index])cards[index].classList.add("active");
+}
+function startGame(game){
+  currentGame=game;
+  selectCard(game);
+  if(game==="tower")initTower();
+  if(game==="cafe")initCafe();
+  if(game==="mining")initMining();
+}
+
+/* =================================
+   1. WHISPER TOWER
+================================= */
+let tower;
+
+function initTower(){
+  tower=load("tower",{
+    cash:500,
+    floors:1,
+    rent:25,
+    upgrades:0,
+    name:"Whisper Tower"
+  });
+  renderTower();
+}
+function towerIncome(){
+  return tower.floors*tower.rent;
+}
+function renderTower(){
+  let floors="";
+  for(let i=0;i<tower.floors;i++){
+    floors+=`<div class="floor" style="height:${35+(i%3)*8}px">F${i+1}</div>`;
+  }
+  shell("🏙️ Whisper Tower","Build a growing tower and earn rent from every floor.",`
+    <div class="stats">
+      <div class="stat"><small>Cash</small><strong id="towerCash">${money(tower.cash)}</strong></div>
+      <div class="stat"><small>Floors</small><strong>${tower.floors}</strong></div>
+      <div class="stat"><small>Rent / minute</small><strong>${money(towerIncome())}</strong></div>
+    </div>
+
+    <div class="building">${floors}</div>
+
+    <div class="info-box">
+      <b style="color:var(--cyan)">Tower Management</b><br>
+      Each floor earns ${money(tower.rent)} every minute.
+      Your tower currently has ${tower.floors} floor(s).
+    </div>
+
+    <div class="controls">
+      <button class="primary" onclick="buildFloor()">🏗️ Build New Floor</button>
+      <button onclick="collectRent()">💰 Collect Rent</button>
+    </div>
+
+    <div class="upgrade-list">
+      <div class="upgrade">
+        <h4>🏢 Premium Apartments</h4>
+        <p>Increase rent earned by every floor.</p>
+        <b>Cost: ${money(250+tower.upgrades*200)}</b>
+        <button onclick="upgradeTower()">Upgrade Rent</button>
+      </div>
+    </div>
+
+    <div class="status" id="status">Your tower is ready for expansion.</div>
+    <p class="small-note">Rent is collected manually. Come back and collect whenever you are ready.</p>
+  `);
+}
+function buildFloor(){
+  const cost=100+tower.floors*100;
+  if(tower.cash<cost){status("Not enough cash! You need "+money(cost)+".");return;}
+  tower.cash-=cost;
+  tower.floors++;
+  save("tower",tower);
+  renderTower();
+  status("New floor completed!");
+}
+function collectRent(){
+  const earned=towerIncome();
+  tower.cash+=earned;
+  save("tower",tower);
+  renderTower();
+  status("You collected "+money(earned)+" in rent!");
+}
+function upgradeTower(){
+  const cost=250+tower.upgrades*200;
+  if(tower.cash<cost){status("You need "+money(cost)+" for this upgrade.");return;}
+  tower.cash-=cost;
+  tower.rent+=15;
+  tower.upgrades++;
+  save("tower",tower);
+  renderTower();
+  status("Tower rent increased!");
+}
+
+/* =================================
+   2. C3CLOWN INTERNET CAFÉ
+================================= */
+let cafe;
+let cafeCustomerTimer=null;
+
+function initCafe(){
+  if(cafeCustomerTimer){clearInterval(cafeCustomerTimer);cafeCustomerTimer=null;}
+  cafe=load("cafe",{
+    cash:300,
+    customers:0,
+    served:0,
+    computers:2,
+    price:20,
+    reputation:1,
+    upgrades:0,
+    waiting:0
+  });
+  cafe.waiting=Math.min(cafe.waiting,5);
+  renderCafe();
+}
+function cafeUpgradeCost(){
+  return 150+cafe.upgrades*125;
+}
+function renderCafe(){
+  shell("💻 C3CLOWN Café Internet Shop","Run your own internet café. Serve customers and invest in better equipment.",`
+    <div class="stats">
+      <div class="stat"><small>Cash</small><strong>${money(cafe.cash)}</strong></div>
+      <div class="stat"><small>Computers</small><strong>${cafe.computers}</strong></div>
+      <div class="stat"><small>Customers Served</small><strong>${cafe.served}</strong></div>
+      <div class="stat"><small>Reputation</small><strong>${cafe.reputation} ★</strong></div>
+    </div>
+
+    <div class="shop-screen">
+      <div class="big-icon">🖥️</div>
+      <h3>C3CLOWN CYBER CAFÉ</h3>
+      <p style="color:var(--muted)">Your customers are waiting for service.</p>
+      <div class="customer">👥 Waiting: <b id="waiting">${cafe.waiting}</b></div>
+      <div class="customer">💻 Available PCs: <b>${cafe.computers}</b></div>
+      <div class="customer">💵 Session price: <b>${money(cafe.price)}</b></div>
+    </div>
+
+    <div class="controls">
+      <button class="primary" onclick="serveCustomer()">Serve Customer</button>
+      <button onclick="attractCustomer()">Advertise Café</button>
+    </div>
+
+    <div class="upgrade-list">
+      <div class="upgrade">
+        <h4>🖥️ Buy a Computer</h4>
+        <p>Add one more computer to serve more customers.</p>
+        <b>Cost: ${money(200+cafe.computers*100)}</b>
+        <button onclick="buyComputer()">Buy Computer</button>
+      </div>
+      <div class="upgrade">
+        <h4>⚡ Upgrade Internet</h4>
+        <p>Improve your service price and reputation.</p>
+        <b>Cost: ${money(cafeUpgradeCost())}</b>
+        <button onclick="upgradeCafe()">Upgrade Internet</button>
+      </div>
+      <div class="upgrade">
+        <h4>📢 Marketing Campaign</h4>
+        <p>Attract more customers to your shop.</p>
+        <b>Cost: $100</b>
+        <button onclick="marketCafe()">Run Campaign</button>
+      </div>
+    </div>
+
+    <div class="status" id="status">Welcome to your new cyber café!</div>
+    <div class="info-box">
+      <b style="color:var(--cyan)">Business tip:</b>
+      Advertise to attract customers, serve them to earn money, and reinvest your profit in computers and internet upgrades.
+    </div>
+  `);
+}
+function attractCustomer(){
+  if(cafe.waiting>=5){status("Your waiting area is full! Serve some customers first.");return;}
+  cafe.waiting++;
+  save("cafe",cafe);
+  renderCafe();
+  status("A new customer has arrived!");
+}
+function serveCustomer(){
+  if(cafe.waiting<=0){status("No customers waiting. Advertise your café!");return;}
+  cafe.waiting--;
+  cafe.served++;
+  cafe.customers++;
+  const earning=cafe.price;
+  cafe.cash+=earning;
+  if(cafe.served%5===0)cafe.reputation++;
+  save("cafe",cafe);
+  renderCafe();
+  status("Customer served! You earned "+money(earning)+".");
+}
+function buyComputer(){
+  const cost=200+cafe.computers*100;
+  if(cafe.cash<cost){status("Not enough money. You need "+money(cost)+".");return;}
+  cafe.cash-=cost;
+  cafe.computers++;
+  save("cafe",cafe);
+  renderCafe();
+  status("New computer added to your café!");
+}
+function upgradeCafe(){
+  const cost=cafeUpgradeCost();
+  if(cafe.cash<cost){status("Not enough money. You need "+money(cost)+".");return;}
+  cafe.cash-=cost;
+  cafe.price+=10;
+  cafe.reputation++;
+  cafe.upgrades++;
+  save("cafe",cafe);
+  renderCafe();
+  status("Internet upgraded! Your session price increased.");
+}
+function marketCafe(){
+  if(cafe.cash<100){status("You need $100 for marketing.");return;}
+  if(cafe.waiting>=5){status("Your waiting area is already full.");return;}
+  cafe.cash-=100;
+  cafe.waiting=Math.min(5,cafe.waiting+2);
+  save("cafe",cafe);
+  renderCafe();
+  status("Campaign successful! Customers are arriving.");
+}
+
+/* =================================
+   3. WHISPER MINING
+================================= */
+let mining;
+
+function initMining(){
+  mining=load("mining",{
+    cash:0,
+    ore:0,
+    gems:0,
+    power:1,
+    level:1,
+    upgrade:0,
+    total:0
+  });
+  renderMining();
+}
+function renderMining(){
+  const nextCost=100+mining.upgrade*125;
+  shell("⛏️ Whisper Mining","Mine resources, sell your collection and upgrade your equipment.",`
+    <div class="stats">
+      <div class="stat"><small>Cash</small><strong>${money(mining.cash)}</strong></div>
+      <div class="stat"><small>Ore</small><strong>${mining.ore}</strong></div>
+      <div class="stat"><small>Gems</small><strong>${mining.gems}</strong></div>
+      <div class="stat"><small>Pickaxe Power</small><strong>${mining.power}</strong></div>
+    </div>
+
+    <div class="shop-screen">
+      <div class="big-icon">⛏️</div>
+      <h3>WHISPER MINING FIELD</h3>
+      <p style="color:var(--muted)">Tap the rock to mine resources.</p>
+      <div class="mine-rock" onclick="mineRock()" role="button" aria-label="Mine rock">🪨</div>
+      <div class="resource">⛏️ Power: <b>${mining.power}</b></div>
+      <div class="resource">📦 Total mined: <b>${mining.total}</b></div>
+    </div>
+
+    <div class="controls">
+      <button class="primary" onclick="mineRock()">⛏️ MINE RESOURCE</button>
+      <button onclick="sellOre()">💰 Sell Resources</button>
+    </div>
+
+    <div class="upgrade-list">
+      <div class="upgrade">
+        <h4>⛏️ Stronger Pickaxe</h4>
+        <p>Mine more resources with every tap.</p>
+        <b>Upgrade cost: ${money(nextCost)}</b>
+        <button onclick="upgradePickaxe()">Upgrade Pickaxe</button>
+      </div>
+      <div class="upgrade">
+        <h4>💎 Gem Scanner</h4>
+        <p>Improve your chance of discovering valuable gems.</p>
+        <b>Cost: $300</b>
+        <button onclick="buyScanner()">Buy Gem Scanner</button>
+      </div>
+    </div>
+
+    <div class="status" id="status">Your mining field is ready!</div>
+    <div class="info-box">
+      <b style="color:var(--cyan)">Resource prices:</b><br>
+      One ore = $10<br>
+      One gem = $50<br>
+      Sell your resources to increase your cash balance.
+    </div>
+  `);
+}
+function mineRock(){
+  const amount=mining.power;
+  mining.ore+=amount;
+  mining.total+=amount;
+  let foundGem=false;
+  if(Math.random()<(mining.scanner?0.25:0.08)){
+    mining.gems++;
+    foundGem=true;
+  }
+  save("mining",mining);
+  renderMining();
+  status(foundGem?"Amazing! You discovered a gem!":"You mined "+amount+" ore!");
+}
+function sellOre(){
+  if(mining.ore===0&&mining.gems===0){
+    status("You have no resources to sell.");return;
+  }
+  const earned=mining.ore*10+mining.gems*50;
+  mining.cash+=earned;
+  mining.ore=0;
+  mining.gems=0;
+  save("mining",mining);
+  renderMining();
+  status("Resources sold! You earned "+money(earned)+".");
+}
+function upgradePickaxe(){
+  const cost=100+mining.upgrade*125;
+  if(mining.cash<cost){
+    status("You need "+money(cost)+" for this upgrade.");return;
+  }
+  mining.cash-=cost;
+  mining.power++;
+  mining.upgrade++;
+  save("mining",mining);
+  renderMining();
+  status("Pickaxe upgraded! You now mine "+mining.power+" ore per tap.");
+}
+function buyScanner(){
+  if(mining.scanner){
+    status("You already own the Gem Scanner.");return;
+  }
+  if(mining.cash<300){
+    status("You need $300 for the Gem Scanner.");return;
+  }
+  mining.cash-=300;
+  mining.scanner=true;
+  save("mining",mining);
+  renderMining();
+  status("Gem Scanner activated! Better gem discovery chance.");
+}
+</script>
+</body>
+  </html>
+  
