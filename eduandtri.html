@@ -1,1 +1,617 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131b">
+<title>Educational & Trivia | HEXCLØWN</title>
+
+<style>
+:root{
+  --bg:#07131b;
+  --panel:#102630;
+  --panel2:#153440;
+  --green:#39ff88;
+  --cyan:#27eaff;
+  --blue:#3985ff;
+  --red:#ff536b;
+  --text:#eafaff;
+  --muted:#91aeb9;
+  --border:#24505c;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:radial-gradient(circle at top,#153542,#07131b 60%);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header{
+  padding:17px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  background:#091923;
+  border-bottom:1px solid var(--border);
+}
+.logo{
+  color:var(--green);
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:2px;
+  text-shadow:0 0 12px #39ff8877;
+}
+nav{display:flex;gap:16px;flex-wrap:wrap}
+nav a{
+  color:var(--cyan);
+  text-decoration:none;
+  font-size:13px;
+  font-weight:bold;
+}
+nav a:hover{color:var(--green)}
+.hero{text-align:center;padding:40px 15px 25px}
+.tag{
+  display:inline-block;
+  color:var(--green);
+  border:1px solid var(--green);
+  border-radius:30px;
+  padding:7px 14px;
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:13px;
+}
+.hero h1{
+  color:var(--cyan);
+  font-size:clamp(27px,6vw,43px);
+  margin:0 0 12px;
+  text-shadow:0 0 15px #27eaff55;
+}
+.hero p{color:var(--muted);line-height:1.6}
+.container{width:92%;max-width:1050px;margin:auto}
+.section-title{color:var(--green);font-size:20px;margin:25px 0 14px}
+.game-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:13px;
+  margin-bottom:25px;
+}
+.game-card{
+  background:linear-gradient(145deg,#153440,#0c1d27);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:17px 14px;
+  cursor:pointer;
+  text-align:left;
+  color:var(--text);
+  transition:.2s;
+}
+.game-card:hover,.game-card.active{
+  border-color:var(--green);
+  box-shadow:0 0 15px #39ff8833;
+  transform:translateY(-2px);
+}
+.game-card .emoji{font-size:29px}
+.game-card h3{font-size:14px;margin:10px 0 5px}
+.game-card p{font-size:11px;color:var(--muted);line-height:1.5;margin:0}
+.game-area{
+  background:linear-gradient(145deg,#112833,#0a1a23);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:20px;
+  margin:15px 0 35px;
+  min-height:350px;
+}
+.game-heading{text-align:center;margin-bottom:18px}
+.game-heading h2{color:var(--cyan);margin:5px}
+.game-heading p{color:var(--muted);font-size:13px;line-height:1.5}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(105px,1fr));
+  gap:9px;
+  margin:15px 0;
+}
+.stat{
+  background:#091923;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:12px 8px;
+  text-align:center;
+}
+.stat small{
+  display:block;color:var(--muted);
+  font-size:10px;margin-bottom:6px;
+  text-transform:uppercase;letter-spacing:1px;
+}
+.stat strong{color:var(--green);font-size:18px}
+button{
+  background:#153541;
+  border:1px solid var(--cyan);
+  color:var(--cyan);
+  padding:11px 15px;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:bold;
+  margin:4px;
+}
+button:hover{background:#1b4b59}
+button.primary{
+  background:var(--green);
+  color:#06150e;
+  border-color:var(--green);
+}
+button:disabled{opacity:.45;cursor:not-allowed}
+.controls{text-align:center;margin:15px 0}
+.status{
+  text-align:center;
+  color:var(--green);
+  min-height:24px;
+  margin:12px 0;
+  font-size:13px;
+  line-height:1.5;
+}
+.question{
+  background:#091923;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px;
+  margin:12px 0;
+  text-align:center;
+}
+.question h3{font-size:18px;line-height:1.5}
+.answers{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;
+  margin-top:15px;
+}
+.answers button{
+  margin:0;
+  min-height:48px;
+  line-height:1.4;
+}
+.answers button.correct{background:#12472d;border-color:var(--green);color:var(--green)}
+.answers button.wrong{background:#4b202b;border-color:var(--red);color:#fff}
+.progress{
+  width:100%;height:12px;
+  background:#07131b;
+  border:1px solid var(--border);
+  border-radius:20px;
+  overflow:hidden;margin:10px 0;
+}
+.progress div{
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--green),var(--cyan));
+  transition:width .2s;
+}
+.big-word{
+  color:var(--cyan);
+  font-size:clamp(25px,7vw,42px);
+  font-weight:900;
+  letter-spacing:4px;
+  text-align:center;
+  margin:20px 0;
+  overflow-wrap:anywhere;
+}
+input{
+  width:100%;
+  max-width:500px;
+  padding:13px;
+  border-radius:8px;
+  border:1px solid var(--cyan);
+  background:#071923;
+  color:white;
+  font-size:16px;
+  outline:none;
+}
+input:focus{border-color:var(--green);box-shadow:0 0 8px #39ff8844}
+.input-wrap{text-align:center;margin:15px 0}
+.flag{
+  font-size:clamp(65px,15vw,100px);
+  text-align:center;
+  margin:15px;
+}
+.option-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;
+}
+.option-list button{margin:0;min-height:48px}
+.info-box{
+  background:#091923;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:13px;
+  margin:12px 0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+.small-note{
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
+}
+.empty{text-align:center;color:var(--muted);padding:35px 10px}
+footer{
+  text-align:center;
+  padding:25px 10px;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.8;
+}
+footer strong{color:var(--green)}
+@media(max-width:500px){
+  header{justify-content:center}
+  nav{justify-content:center}
+  .game-area{padding:13px}
+  .game-list{grid-template-columns:1fr}
+  .answers,.option-list{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCLØWN</div>
+  <nav>
+    <a href="index.html">HOME</a>
+    <a href="GameZone.html">GAME ZONE</a>
+    <a href="#games">EDUCATION</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="tag">KNOWLEDGE IS POWER</div>
+  <h1>EDUCATIONAL & TRIVIA</h1>
+  <p>Test your knowledge, sharpen your mind and learn something new.<br>
+  Six challenges. One intelligent arena.</p>
+</section>
+
+<main class="container">
+  <h2 class="section-title" id="games">Choose Your Challenge</h2>
+
+  <div class="game-list">
+    <button class="game-card" onclick="startGame('quiz')">
+      <div class="emoji">🧠</div>
+      <h3>General Knowledge Quiz</h3>
+      <p>Answer questions about science, history, geography and more.</p>
+    </button>
+
+    <button class="game-card" onclick="startGame('typing')">
+      <div class="emoji">⌨️</div>
+      <h3>Typing Speedrun Racer</h3>
+      <p>Test your typing speed and accuracy.</p>
+    </button>
+
+    <button class="game-card" onclick="startGame('math')">
+      <div class="emoji">➗</div>
+      <h3>Math Challenge</h3>
+      <p>Solve quick mathematical problems.</p>
+    </button>
+
+    <button class="game-card" onclick="startGame('flags')">
+      <div class="emoji">🌍</div>
+      <h3>Countries & Flags</h3>
+      <p>Identify countries from their national flags.</p>
+    </button>
+
+    <button class="game-card" onclick="startGame('security')">
+      <div class="emoji">🛡️</div>
+      <h3>C3CLOWN Security: Phishing Detective</h3>
+      <p>Learn to recognise suspicious messages and online scams.</p>
+    </button>
+
+    <button class="game-card" onclick="startGame('words')">
+      <div class="emoji">🔤</div>
+      <h3>Vocabulary Word Scramble</h3>
+      <p>Unscramble words and improve your vocabulary.</p>
+    </button>
+  </div>
+
+  <section class="game-area" id="gameArea">
+    <div class="empty">
+      <div style="font-size:48px">🧠</div>
+      <h2 style="color:var(--cyan)">Welcome to the Learning Arena</h2>
+      <p>Choose a challenge above to begin.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <strong>HEXCLØWN</strong><br>
+  CREATED BY TIJANI ALIYU<br>
+  HEXWHISPER / CYBERCODECLOWN<br>
+  © 2026 HEXCLØWN. ALL RIGHTS RESERVED.
+</footer>
+
+<script>
+const area=document.getElementById("gameArea");
+let currentGame="";
+
+function shell(title,description,content){
+  area.innerHTML=`
+    <div class="game-heading">
+      <h2>${title}</h2>
+      <p>${description}</p>
+    </div>
+    ${content}
+  `;
+}
+function status(text){
+  const el=document.getElementById("status");
+  if(el)el.textContent=text;
+}
+function selectCard(game){
+  document.querySelectorAll(".game-card").forEach(c=>c.classList.remove("active"));
+  const index=["quiz","typing","math","flags","security","words"].indexOf(game);
+  const cards=document.querySelectorAll(".game-card");
+  if(cards[index])cards[index].classList.add("active");
+}
+function startGame(game){
+  currentGame=game;
+  selectCard(game);
+  if(game==="quiz")initQuiz();
+  if(game==="typing")initTyping();
+  if(game==="math")initMath();
+  if(game==="flags")initFlags();
+  if(game==="security")initSecurity();
+  if(game==="words")initWords();
+}
+
+/* ==================================
+   1. GENERAL KNOWLEDGE QUIZ
+================================== */
+const quizQuestions=[
+ {q:"Which planet is known as the Red Planet?",a:["Venus","Mars","Jupiter","Mercury"],c:1,why:"Mars appears reddish because of iron oxide on its surface."},
+ {q:"What is the largest ocean on Earth?",a:["Atlantic","Indian","Pacific","Arctic"],c:2,why:"The Pacific Ocean is the largest ocean on Earth."},
+ {q:"How many sides does a hexagon have?",a:["Five","Six","Seven","Eight"],c:1,why:"A hexagon has six sides."},
+ {q:"Which gas do plants absorb from the atmosphere?",a:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"],c:2,why:"Plants use carbon dioxide during photosynthesis."},
+ {q:"What is the capital city of Japan?",a:["Seoul","Tokyo","Beijing","Bangkok"],c:1,why:"Tokyo is the capital of Japan."},
+ {q:"Who wrote Romeo and Juliet?",a:["Charles Dickens","William Shakespeare","Mark Twain","Jane Austen"],c:1,why:"William Shakespeare wrote this famous tragedy."},
+ {q:"Which is the fastest land animal?",a:["Lion","Horse","Cheetah","Leopard"],c:2,why:"The cheetah is the fastest land animal."},
+ {q:"What is H2O commonly known as?",a:["Salt","Water","Oxygen","Sugar"],c:1,why:"H2O is the chemical formula for water."},
+ {q:"Which continent is Nigeria located in?",a:["Asia","Europe","Africa","South America"],c:2,why:"Nigeria is a country in West Africa."},
+ {q:"How many minutes are in one hour?",a:["30","45","60","90"],c:2,why:"One hour contains 60 minutes."},
+ {q:"Which organ pumps blood around the body?",a:["Liver","Heart","Lung","Kidney"],c:1,why:"The heart pumps blood through the circulatory system."},
+ {q:"What is the closest star to Earth?",a:["Sirius","The Sun","Polaris","Vega"],c:1,why:"The Sun is the closest star to Earth."},
+ {q:"Which language is primarily used to structure web pages?",a:["HTML","SQL","Python","C++"],c:0,why:"HTML provides the structure and content of web pages."},
+ {q:"What is the square root of 81?",a:["7","8","9","10"],c:2,why:"9 × 9 = 81."},
+ {q:"Which instrument measures temperature?",a:["Barometer","Thermometer","Compass","Ruler"],c:1,why:"A thermometer measures temperature."}
+];
+let quizData=[],quizIndex=0,quizScore=0,quizLocked=false;
+
+function initQuiz(){
+  quizData=[...quizQuestions].sort(()=>Math.random()-.5).slice(0,10);
+  quizIndex=0;quizScore=0;quizLocked=false;
+  renderQuiz();
+}
+function renderQuiz(){
+  if(quizIndex>=quizData.length){
+    shell("🧠 Quiz Complete!","You have completed the General Knowledge Challenge.",`
+      <div class="question">
+        <div style="font-size:50px">🏆</div>
+        <h2 style="color:var(--green)">Your final score</h2>
+        <div class="big-word">${quizScore} / ${quizData.length}</div>
+        <p>${quizScore>=8?"Excellent work!":"Good effort! Keep learning and try again."}</p>
+      </div>
+      <div class="controls"><button class="primary" onclick="initQuiz()">Play Again</button></div>
+    `);
+    return;
+  }
+  const q=quizData[quizIndex];
+  shell("🧠 General Knowledge Quiz","Choose the correct answer for each question.",`
+    <div class="stats">
+      <div class="stat"><small>Question</small><strong>${quizIndex+1}/10</strong></div>
+      <div class="stat"><small>Score</small><strong>${quizScore}</strong></div>
+    </div>
+    <div class="progress"><div style="width:${quizIndex/quizData.length*100}%"></div></div>
+    <div class="question">
+      <h3>${q.q}</h3>
+      <div class="answers">
+        ${q.a.map((a,i)=>`<button onclick="answerQuiz(${i})">${a}</button>`).join("")}
+      </div>
+    </div>
+    <div class="status" id="status">Choose your answer.</div>
+    <div class="controls"><button onclick="initQuiz()">Restart Quiz</button></div>
+  `);
+  quizLocked=false;
+}
+function answerQuiz(index){
+  if(quizLocked)return;
+  quizLocked=true;
+  const q=quizData[quizIndex];
+  const buttons=area.querySelectorAll(".answers button");
+  buttons.forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.c)b.classList.add("correct");
+    if(i===index&&i!==q.c)b.classList.add("wrong");
+  });
+  if(index===q.c){
+    quizScore++;
+    status("Correct! "+q.why);
+  }else{
+    status("Not quite. "+q.why);
+  }
+  const controls=document.querySelector(".controls");
+  controls.innerHTML='<button class="primary" onclick="nextQuiz()">Next Question →</button>';
+}
+function nextQuiz(){
+  quizIndex++;
+  renderQuiz();
+}
+
+/* ==================================
+   2. TYPING SPEEDRUN RACER
+================================== */
+const typingTexts=[
+ "The future belongs to those who keep learning.",
+ "Technology connects people across the world.",
+ "Practice every day and improve your skills.",
+ "Great ideas begin with curiosity and courage.",
+ "Coding is a creative way to solve problems.",
+ "Knowledge becomes powerful when you use it.",
+ "Small steps can lead to amazing achievements."
+];
+let typingText="",typingStarted=0,typingTimer=null,typingFinished=false;
+
+function initTyping(){
+  if(typingTimer)clearInterval(typingTimer);
+  typingText=typingTexts[Math.floor(Math.random()*typingTexts.length)];
+  typingStarted=0;typingFinished=false;
+  renderTyping();
+}
+function renderTyping(){
+  shell("⌨️ Typing Speedrun Racer","Type the displayed sentence as quickly and accurately as you can.",`
+    <div class="stats">
+      <div class="stat"><small>Time</small><strong id="typeTime">0s</strong></div>
+      <div class="stat"><small>WPM</small><strong id="typeWpm">0</strong></div>
+      <div class="stat"><small>Accuracy</small><strong id="typeAccuracy">100%</strong></div>
+    </div>
+    <div class="question">
+      <p style="color:var(--muted)">TYPE THIS SENTENCE</p>
+      <h3 id="typingTarget" style="color:var(--cyan);line-height:1.7">${typingText}</h3>
+    </div>
+    <div class="input-wrap">
+      <input id="typingInput" type="text" placeholder="Start typing here..." autocomplete="off" autocapitalize="off">
+    </div>
+    <div class="progress"><div id="typingProgress"></div></div>
+    <div class="status" id="status">The timer starts with your first keystroke.</div>
+    <div class="controls"><button onclick="initTyping()">New Sentence</button></div>
+  `);
+  const input=document.getElementById("typingInput");
+  input.addEventListener("input",typingUpdate);
+  input.focus();
+}
+function typingUpdate(){
+  if(typingFinished)return;
+  const input=document.getElementById("typingInput");
+  const value=input.value;
+  if(!typingStarted&&value.length){
+    typingStarted=Date.now();
+    typingTimer=setInterval(updateTypingStats,250);
+  }
+  let correct=0;
+  for(let i=0;i<value.length;i++){
+    if(value[i]===typingText[i])correct++;
+  }
+  const accuracy=value.length?Math.round(correct/value.length*100):100;
+  document.getElementById("typeAccuracy").textContent=accuracy+"%";
+  document.getElementById("typingProgress").style.width=Math.min(100,value.length/typingText.length*100)+"%";
+  updateTypingStats();
+  if(value===typingText){
+    typingFinished=true;
+    clearInterval(typingTimer);
+    const seconds=Math.max(1,(Date.now()-typingStarted)/1000);
+    const wpm=Math.round((typingText.length/5)/(seconds/60));
+    status("Finished! Your speed: "+wpm+" WPM. Accuracy: "+accuracy+"%.");
+    input.disabled=true;
+  }
+}
+function updateTypingStats(){
+  if(!typingStarted)return;
+  const seconds=(Date.now()-typingStarted)/1000;
+  const value=document.getElementById("typingInput")?.value||"";
+  const wpm=Math.round((value.length/5)/(Math.max(seconds,1)/60));
+  document.getElementById("typeTime").textContent=Math.floor(seconds)+"s";
+  document.getElementById("typeWpm").textContent=wpm;
+}
+
+/* ==================================
+   3. MATH CHALLENGE
+================================== */
+let mathScore=0,mathRound=0,mathAnswer=0,mathLocked=false;
+
+function initMath(){
+  mathScore=0;mathRound=0;
+  newMathQuestion();
+}
+function newMathQuestion(){
+  if(mathRound>=10){
+    shell("➗ Math Challenge Complete","You have completed the maths challenge.",`
+      <div class="question">
+        <div style="font-size:48px">🏆</div>
+        <h2 style="color:var(--green)">Final score</h2>
+        <div class="big-word">${mathScore}/10</div>
+        <p>${mathScore>=8?"Excellent calculation skills!":"Keep practising. You can improve!"}</p>
+      </div>
+      <div class="controls"><button class="primary" onclick="initMath()">Try Again</button></div>
+    `);
+    return;
+  }
+  mathLocked=false;
+  let a=Math.floor(Math.random()*20)+2;
+  let b=Math.floor(Math.random()*12)+2;
+  const operations=["+","-","×"];
+  const op=operations[Math.floor(Math.random()*operations.length)];
+  if(op==="-")if(b>a)[a,b]=[b,a];
+  mathAnswer=op==="+"?a+b:op==="-"?a-b:a*b;
+  let options=new Set([mathAnswer]);
+  while(options.size<4){
+    let offset=Math.floor(Math.random()*15)-7;
+    if(offset!==0)options.add(Math.max(0,mathAnswer+offset));
+  }
+  const shuffled=[...options].sort(()=>Math.random()-.5);
+  shell("➗ Math Challenge","Solve each problem. You have ten rounds.",`
+    <div class="stats">
+      <div class="stat"><small>Round</small><strong>${mathRound+1}/10</strong></div>
+      <div class="stat"><small>Score</small><strong>${mathScore}</strong></div>
+    </div>
+    <div class="question">
+      <p style="color:var(--muted)">SOLVE THIS</p>
+      <div class="big-word">${a} ${op} ${b} = ?</div>
+      <div class="answers">
+        ${shuffled.map(n=>`<button onclick="answerMath(${n})">${n}</button>`).join("")}
+      </div>
+    </div>
+    <div class="status" id="status">Choose the correct answer.</div>
+    <div class="controls"><button onclick="initMath()">Restart</button></div>
+  `);
+}
+function answerMath(value){
+  if(mathLocked)return;
+  mathLocked=true;
+  if(value===mathAnswer){
+    mathScore++;
+    status("Correct! Great calculation.");
+  }else{
+    status("Incorrect. The correct answer is "+mathAnswer+".");
+  }
+  area.querySelectorAll(".answers button").forEach(b=>b.disabled=true);
+  document.querySelector(".controls").innerHTML='<button class="primary" onclick="nextMath()">Next Problem →</button>';
+}
+function nextMath(){
+  mathRound++;
+  newMathQuestion();
+}
+
+/* ==================================
+   4. COUNTRIES & FLAGS
+================================== */
+const countries=[
+ {flag:"🇳🇬",name:"Nigeria"},{flag:"🇬🇭",name:"Ghana"},
+ {flag:"🇰🇪",name:"Kenya"},{flag:"🇿🇦",name:"South Africa"},
+ {flag:"🇯🇵",name:"Japan"},{flag:"🇫🇷",name:"France"},
+ {flag:"🇧🇷",name:"Brazil"},{flag:"🇨🇦",name:"Canada"},
+ {flag:"🇺🇸",name:"United States"},{flag:"🇬🇧",name:"United Kingdom"},
+ {flag:"🇩🇪",name:"Germany"},{flag:"🇮🇳",name:"India"},
+ {flag:"🇪🇬",name:"Egypt"},{flag:"🇦🇺",name:"Australia"},
+ {flag:"🇲🇽",name:"Mexico"},{flag:"🇮🇹",name:"Italy"},
+ {flag:"🇨🇳",name:"China"},{flag:"🇸🇳",name:"Senegal"},
+ {flag:"🇹🇷",name:"Turkey"},{flag:"🇸🇦",name:"Saudi Arabia"}
+];
+let flagData=[],flagIndex=0,flagScore=0,flagLocked=false;
+
+function initFlags(){
+  flagData=[...countries].sort(()=>Math.random()-.5).slice(0,10);
+  flagIndex=0;flagScore=0;flagLocked=false;
+  renderFlag();
+}
+function renderFlag(){
+  if(flagIndex>=flagData.length){
+    shell("🌍 Flag Challenge Complete","You have completed the country identification chal
