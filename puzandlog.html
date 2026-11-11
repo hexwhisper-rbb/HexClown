@@ -11,14 +11,13 @@
 <style>
 :root {
     --bg: #071321;
-    --panel: #102638;
+    --card: #101f30;
     --cyan: #00eaff;
-    --green: #39ff88;
-    --blue: #168cff;
-    --red: #ff5268;
+    --green: #00ff88;
+    --blue: #168bff;
+    --red: #ff426b;
     --text: #eafaff;
-    --muted: #91aebe;
-    --border: #1d5265;
+    --muted: #91a8bb;
 }
 
 * {
@@ -28,442 +27,219 @@
 }
 
 body {
-    min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
-    background:
-        radial-gradient(circle at 10% 5%, #10415a, transparent 35%),
-        radial-gradient(circle at 90% 80%, #102d4a, transparent 35%),
-        var(--bg);
+    font-family: Arial, sans-serif;
+    background: var(--bg);
     color: var(--text);
+    min-height: 100vh;
 }
 
-/* HEADER */
-
-.header {
-    width: 100%;
-    padding: 16px 5%;
+header {
+    padding: 18px 6%;
+    background: #091a2b;
+    border-bottom: 1px solid rgba(0,234,255,.25);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     gap: 12px;
-    background: rgba(7,19,33,.96);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(12px);
 }
 
 .logo {
-    color: var(--green);
     font-size: 25px;
     font-weight: 900;
+    color: var(--green);
+    text-shadow: 0 0 12px var(--green);
     letter-spacing: 2px;
-    text-decoration: none;
-    text-shadow: 0 0 12px #39ff8870;
 }
 
 .logo span {
     color: var(--cyan);
 }
 
-.header-link {
+.home-btn {
+    text-decoration: none;
     color: var(--cyan);
     border: 1px solid var(--cyan);
-    padding: 9px 13px;
+    padding: 10px 16px;
     border-radius: 7px;
-    font-size: 12px;
-    font-weight: bold;
-    text-decoration: none;
+    font-size: 13px;
+    transition: .3s;
 }
 
-.header-link:hover {
+.home-btn:hover {
     background: var(--cyan);
-    color: var(--bg);
+    color: #071321;
+    box-shadow: 0 0 15px var(--cyan);
 }
-
-/* HERO */
 
 .hero {
     text-align: center;
-    padding: 55px 18px 35px;
-}
-
-.hero-tag {
-    display: inline-block;
-    color: var(--green);
-    background: #39ff8815;
-    border: 1px solid #39ff8850;
-    padding: 8px 14px;
-    border-radius: 30px;
-    font-size: 11px;
-    letter-spacing: 2px;
-    margin-bottom: 18px;
+    padding: 48px 15px 30px;
 }
 
 .hero h1 {
-    font-size: clamp(28px, 7vw, 43px);
-    font-weight: 900;
-    line-height: 1.2;
-    margin-bottom: 14px;
-}
-
-.hero h1 span {
+    font-size: clamp(27px, 6vw, 42px);
     color: var(--cyan);
-    text-shadow: 0 0 16px #00eaff50;
+    text-shadow: 0 0 15px rgba(0,234,255,.6);
+    margin-bottom: 12px;
 }
 
 .hero p {
-    max-width: 570px;
-    margin: auto;
     color: var(--muted);
     font-size: 14px;
-    line-height: 1.8;
+    line-height: 1.7;
 }
 
-/* STATISTICS */
-
-.stats {
-    width: 90%;
-    max-width: 650px;
-    margin: 0 auto 30px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+.line {
+    width: 75px;
+    height: 3px;
+    background: var(--green);
+    margin: 20px auto;
+    box-shadow: 0 0 12px var(--green);
 }
 
-.stat-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 15px 8px;
-    text-align: center;
+.search-area {
+    max-width: 550px;
+    margin: 0 auto 35px;
+    padding: 0 18px;
 }
 
-.stat-box strong {
-    display: block;
-    color: var(--green);
-    font-size: 23px;
-    margin-bottom: 5px;
-}
-
-.stat-box span {
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 1px;
-}
-
-/* SEARCH */
-
-.search-section {
-    width: 90%;
-    max-width: 650px;
-    margin: 0 auto 30px;
-}
-
-.search-box {
+.search-area input {
     width: 100%;
-    padding: 15px 17px;
-    border: 1px solid var(--border);
-    background: var(--panel);
-    color: var(--text);
+    padding: 15px;
     border-radius: 9px;
     outline: none;
-    font-size: 14px;
+    border: 1px solid var(--cyan);
+    background: #0d2032;
+    color: white;
+    font-size: 15px;
+    box-shadow: 0 0 10px rgba(0,234,255,.12);
 }
 
-.search-box:focus {
-    border-color: var(--cyan);
-    box-shadow: 0 0 12px #00eaff25;
+.search-area input:focus {
+    box-shadow: 0 0 15px rgba(0,234,255,.4);
 }
 
-.search-box::placeholder {
-    color: #7895a7;
-}
-
-/* GAMES SECTION */
-
-.section {
+.container {
     width: 90%;
-    max-width: 1100px;
-    margin: 0 auto 45px;
+    max-width: 1150px;
+    margin: auto;
+    padding-bottom: 55px;
 }
 
 .section-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 22px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid var(--border);
-}
-
-.section-heading h2 {
-    font-size: 21px;
-    color: var(--cyan);
-}
-
-.section-heading span {
+    font-size: 20px;
     color: var(--green);
-    font-size: 11px;
-    letter-spacing: 1px;
+    margin-bottom: 22px;
 }
-
-/* GAME GRID */
 
 .game-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
 }
 
 .game-card {
-    background: linear-gradient(145deg, #102b40, #0c1e30);
-    border: 1px solid var(--border);
+    background: var(--card);
+    border: 1px solid rgba(0,234,255,.2);
     border-radius: 13px;
+    padding: 23px 18px;
+    text-align: center;
+    transition: .3s ease;
+    position: relative;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    transition: transform .2s, border-color .2s, box-shadow .2s;
 }
 
 .game-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--cyan);
-    box-shadow: 0 0 18px #00eaff20;
+    transform: translateY(-6px);
+    border-color: var(--green);
+    box-shadow: 0 0 18px rgba(0,255,136,.2);
 }
 
 .game-icon {
-    height: 125px;
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 17px;
+    border-radius: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 55px;
-    background: radial-gradient(circle, #16435a, #0b1e2e 75%);
-    border-bottom: 1px solid var(--border);
+    background: #092a3b;
+    border: 1px solid var(--cyan);
+    font-size: 32px;
+    box-shadow: 0 0 13px rgba(0,234,255,.2);
 }
 
-.game-info {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-
-.game-number {
-    color: var(--green);
-    font-size: 10px;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-}
-
-.game-info h3 {
-    font-size: 16px;
-    line-height: 1.4;
-    margin-bottom: 9px;
-}
-
-.game-info p {
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.7;
-    margin-bottom: 13px;
-    flex: 1;
-}
-
-.game-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 5px;
-    margin-bottom: 15px;
-}
-
-.difficulty {
-    font-size: 10px;
-    padding: 5px 8px;
-    border-radius: 5px;
-    background: #39ff8815;
-    color: var(--green);
-    border: 1px solid #39ff8840;
-}
-
-.category {
-    font-size: 10px;
+.game-card h3 {
     color: var(--cyan);
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.game-card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 42px;
+    margin-bottom: 18px;
 }
 
 .play-btn {
     display: block;
     width: 100%;
-    text-align: center;
-    padding: 12px 8px;
-    background: var(--green);
-    color: #071321;
+    padding: 12px;
+    border: 1px solid var(--green);
     border-radius: 7px;
+    color: var(--green);
     text-decoration: none;
-    font-size: 12px;
-    font-weight: 900;
-    letter-spacing: 1px;
-    transition: .2s;
+    font-weight: bold;
+    font-size: 13px;
+    transition: .3s;
 }
 
 .play-btn:hover {
-    background: var(--cyan);
-    box-shadow: 0 0 15px #00eaff60;
+    background: var(--green);
+    color: #071321;
+    box-shadow: 0 0 15px var(--green);
 }
 
 .no-results {
     display: none;
     text-align: center;
-    color: var(--muted);
-    padding: 30px 10px;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    margin-top: 15px;
+    color: var(--red);
+    padding: 35px 10px;
+    font-size: 15px;
 }
 
-/* BOTTOM PANEL */
-
-.bottom-panel {
-    width: 90%;
-    max-width: 1100px;
-    margin: 0 auto 40px;
-    background: linear-gradient(110deg, #10364a, #102638);
-    border: 1px solid var(--border);
-    border-radius: 13px;
-    padding: 25px 20px;
+footer {
     text-align: center;
-}
-
-.bottom-panel h2 {
-    color: var(--green);
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.bottom-panel p {
+    padding: 24px 15px;
+    background: #091a2b;
+    border-top: 1px solid rgba(0,234,255,.2);
     color: var(--muted);
-    font-size: 13px;
-    line-height: 1.7;
-}
-
-/* FOOTER */
-
-.footer {
-    border-top: 1px solid var(--border);
-    background: #06101c;
-    padding: 25px 15px;
-    text-align: center;
-}
-
-.footer-logo {
-    color: var(--green);
-    font-size: 20px;
-    font-weight: 900;
-    letter-spacing: 2px;
-    margin-bottom: 9px;
-}
-
-.footer p {
-    color: var(--muted);
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.8;
 }
 
-.footer a {
-    color: var(--cyan);
-    text-decoration: none;
+footer span {
+    color: var(--green);
 }
 
-/* RESPONSIVE */
-
-@media(max-width: 850px) {
-    .game-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-@media(max-width: 520px) {
-    .header {
-        padding: 14px 4%;
+@media(max-width: 480px) {
+    header {
+        padding: 16px 5%;
     }
 
     .logo {
         font-size: 21px;
     }
 
-    .hero {
-        padding-top: 42px;
-    }
-
     .game-grid {
         grid-template-columns: 1fr;
-        gap: 15px;
     }
 
-    .game-card {
-        flex-direction: row;
-        min-height: 170px;
-    }
-
-    .game-icon {
-        width: 105px;
-        min-width: 105px;
-        height: auto;
-        font-size: 39px;
-        border-bottom: none;
-        border-right: 1px solid var(--border);
-    }
-
-    .game-info {
-        padding: 13px;
-    }
-
-    .game-info h3 {
-        font-size: 14px;
-    }
-
-    .game-info p {
-        font-size: 11px;
-    }
-
-    .game-meta {
-        flex-wrap: wrap;
-    }
-
-    .play-btn {
-        padding: 10px 5px;
-        font-size: 11px;
-    }
-
-    .stats {
-        gap: 7px;
-    }
-
-    .stat-box strong {
-        font-size: 19px;
-    }
-
-    .stat-box span {
-        font-size: 9px;
-    }
-}
-
-@media(max-width: 340px) {
-    .game-card {
-        flex-direction: column;
-    }
-
-    .game-icon {
-        width: 100%;
-        height: 100px;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
+    .hero {
+        padding-top: 35px;
     }
 }
 </style>
@@ -471,354 +247,122 @@ body {
 
 <body>
 
-<!-- HEADER -->
-
-<header class="header">
-
-    <a href="index.html" class="logo">
-        HEXCL<span>ØWN</span>
-    </a>
-
-    <a href="GameZone.html" class="header-link">
-        ← GAME ZONE
-    </a>
-
+<header>
+    <div class="logo">HEXCL<span>Ø</span>WN</div>
+    <a href="GameZone.html" class="home-btn">← GAME ZONE</a>
 </header>
 
-<!-- HERO -->
-
 <section class="hero">
+    <h1>PUZZLE & LOGIC</h1>
 
-    <div class="hero-tag">
-        HEXCLØWN GAME ZONE
-    </div>
-
-    <h1>
-        PUZZLE <span>&</span> LOGIC
-    </h1>
+    <div class="line"></div>
 
     <p>
-        Challenge your mind, sharpen your thinking and
-        solve exciting puzzles. Explore the Puzzle & Logic
-        collection and test your skills!
+        Challenge your mind. Test your intelligence.<br>
+        Enter the world of puzzles and strategic thinking.
     </p>
-
 </section>
 
-<!-- STATISTICS -->
-
-<section class="stats">
-
-    <div class="stat-box">
-        <strong>06</strong>
-        <span>GAMES</span>
-    </div>
-
-    <div class="stat-box">
-        <strong>FREE</strong>
-        <span>TO PLAY</span>
-    </div>
-
-    <div class="stat-box">
-        <strong>∞</strong>
-        <span>CHALLENGES</span>
-    </div>
-
-</section>
-
-<!-- SEARCH -->
-
-<section class="search-section">
-
+<div class="search-area">
     <input
         type="search"
-        class="search-box"
         id="gameSearch"
-        placeholder="🔍 Search puzzle games..."
+        placeholder="⌕ Search puzzle games..."
         autocomplete="off"
-        aria-label="Search puzzle games"
     >
+</div>
 
-</section>
+<main class="container">
 
-<!-- GAMES -->
-
-<section class="section">
-
-    <div class="section-heading">
-        <h2>AVAILABLE GAMES</h2>
-        <span>06 GAMES</span>
-    </div>
+    <h2 class="section-heading">AVAILABLE GAMES</h2>
 
     <div class="game-grid" id="gameGrid">
 
-        <!-- GAME 1 -->
-
-        <article class="game-card"
-        data-name="2048 number tile merger number puzzle">
-
+        <article class="game-card">
             <div class="game-icon">🔢</div>
-
-            <div class="game-info">
-
-                <div class="game-number">GAME 01</div>
-
-                <h3>2048 Number Tile Merger</h3>
-
-                <p>
-                    Combine matching number tiles to reach
-                    the legendary 2048 tile. Think ahead
-                    and beat your high score!
-                </p>
-
-                <div class="game-meta">
-                    <span class="difficulty">EASY / MEDIUM</span>
-                    <span class="category">NUMBER PUZZLE</span>
-                </div>
-
-                <a href="2048.html" class="play-btn">
-                    PLAY GAME →
-                </a>
-
-            </div>
+            <h3>2048</h3>
+            <p>Combine matching numbers and reach the 2048 tile.</p>
+            <a href="2048.html" class="play-btn">PLAY GAME →</a>
         </article>
 
-        <!-- GAME 2 -->
-
-        <article class="game-card"
-        data-name="minesweeper classic mines strategy">
-
+        <article class="game-card">
             <div class="game-icon">💣</div>
-
-            <div class="game-info">
-
-                <div class="game-number">GAME 02</div>
-
-                <h3>Minesweeper Classic</h3>
-
-                <p>
-                    Discover safe squares, use number
-                    clues and mark hidden mines.
-                    Can you clear the board?
-                </p>
-
-                <div class="game-meta">
-                    <span class="difficulty">MEDIUM / HARD</span>
-                    <span class="category">STRATEGY</span>
-                </div>
-
-                <a href="minesweeper.html" class="play-btn">
-                    PLAY GAME →
-                </a>
-
-            </div>
+            <h3>Minesweeper</h3>
+            <p>Find safe squares and avoid hidden mines.</p>
+            <a href="minesweeper.html" class="play-btn">PLAY GAME →</a>
         </article>
 
-        <!-- GAME 3 -->
-
-        <article class="game-card"
-        data-name="wordle challenge word guessing">
-
+        <article class="game-card">
             <div class="game-icon">🔤</div>
-
-            <div class="game-info">
-
-                <div class="game-number">GAME 03</div>
-
-                <h3>Wordle Challenge</h3>
-
-                <p>
-                    Guess the hidden five-letter word
-                    in six attempts. Use colour clues
-                    to discover the answer!
-                </p>
-
-                <div class="game-meta">
-                    <span class="difficulty">EASY / MEDIUM</span>
-                    <span class="category">WORD PUZZLE</span>
-                </div>
-
-                <a href="wordle.html" class="play-btn">
-                    PLAY GAME →
-                </a>
-
-            </div>
+            <h3>Wordle</h3>
+            <p>Guess the hidden word using your vocabulary.</p>
+            <a href="wordle.html" class="play-btn">PLAY GAME →</a>
         </article>
 
-        <!-- GAME 4 -->
-
-        <article class="game-card"
-        data-name="sudoku grid challenge numbers logic">
-
+        <article class="game-card">
             <div class="game-icon">🧩</div>
-
-            <div class="game-info">
-
-                <div class="game-number">GAME 04</div>
-
-                <h3>Sudoku Grid Challenge</h3>
-
-                <p>
-                    Fill the 9×9 grid with numbers.
-                    Every row, column and square must
-                    contain the correct numbers.
-                </p>
-
-                <div class="game-meta">
-                    <span class="difficulty">MEDIUM / HARD</span>
-                    <span class="category">LOGIC</span>
-                </div>
-
-                <a href="sudoku.html" class="play-btn">
-                    PLAY GAME →
-                </a>
-
-            </div>
+            <h3>Sudoku</h3>
+            <p>Complete the number grid using logical thinking.</p>
+            <a href="sudoku.html" class="play-btn">PLAY GAME →</a>
         </article>
 
-        <!-- GAME 5 -->
-
-        <article class="game-card"
-        data-name="tetris falling blocks block puzzle">
-
+        <article class="game-card">
             <div class="game-icon">🟦</div>
-
-            <div class="game-info">
-
-                <div class="game-number">GAME 05</div>
-
-                <h3>Tetris Falling Blocks</h3>
-
-                <p>
-                    Rotate and arrange falling blocks
-                    to complete horizontal lines.
-                    Keep the board from filling up!
-                </p>
-
-                <div class="game-meta">
-                    <span class="difficulty">MEDIUM</span>
-                    <span class="category">BLOCK PUZZLE</span>
-                </div>
-
-                <a href="tetris.html" class="play-btn">
-                    PLAY GAME →
-                </a>
-
-            </div>
+            <h3>Tetris</h3>
+            <p>Arrange falling blocks and clear complete lines.</p>
+            <a href="tetris.html" class="play-btn">PLAY GAME →</a>
         </article>
 
-        <!-- GAME 6 -->
-
-        <article class="game-card"
-        data-name="block slide puzzle sliding numbers">
-
+        <article class="game-card">
             <div class="game-icon">🔲</div>
+            <h3>Block Slide</h3>
+            <p>Move blocks strategically to solve the puzzle.</p>
+            <a href="blockslide.html" class="play-btn">PLAY GAME →</a>
+        </article>
 
-            <div class="game-info">
-
-                <div class="game-number">GAME 06</div>
-
-                <h3>Block Slide Puzzle</h3>
-
-                <p>
-                    Slide numbered blocks into the
-                    correct order. Complete the
-                    4×4 puzzle using smart moves!
-                </p>
-
-                <div class="game-meta">
-                    <span class="difficulty">MEDIUM / HARD</span>
-                    <span class="category">BLOCK PUZZLE</span>
-                </div>
-
-                <a href="blockslide.html" class="play-btn">
-                    PLAY GAME →
-                </a>
-
-            </div>
+        <article class="game-card">
+            <div class="game-icon">🏯</div>
+            <h3>Tower of Hanoi</h3>
+            <p>Move the discs and solve this classic logic puzzle.</p>
+            <a href="towerofhanoi.html" class="play-btn">PLAY GAME →</a>
         </article>
 
     </div>
 
     <div class="no-results" id="noResults">
-        No matching game found. Try another search.
+        NO GAMES FOUND. TRY ANOTHER SEARCH.
     </div>
 
-</section>
+</main>
 
-<!-- BOTTOM PANEL -->
-
-<section class="bottom-panel">
-
-    <h2>THINK. SOLVE. WIN.</h2>
-
-    <p>
-        Welcome to the HEXCLØWN Puzzle & Logic arena.
-        Every game is a new challenge. Choose your game,
-        test your brain and beat your best score!
-    </p>
-
-</section>
-
-<!-- FOOTER -->
-
-<footer class="footer">
-
-    <div class="footer-logo">
-        HEXCLØWN
-    </div>
-
-    <p>
-        Gaming beyond limits.
-        <br>
-        © 2026 HEXCLØWN. All rights reserved.
-        <br>
-        <a href="GameZone.html">Game Zone</a>
-        |
-        <a href="index.html">Home</a>
-    </p>
-
+<footer>
+    <p>© 2026 <span>HEXCLØWN</span> — ALL RIGHTS RESERVED.</p>
+    <p>THINK DIFFERENT. PLAY SMART. STAY CURIOUS.</p>
 </footer>
 
-<!-- SEARCH FUNCTION -->
-
 <script>
-
 const searchInput = document.getElementById("gameSearch");
-const gameCards = document.querySelectorAll(".game-card");
+const cards = document.querySelectorAll(".game-card");
 const noResults = document.getElementById("noResults");
 
 searchInput.addEventListener("input", function() {
-
     const searchText = this.value.toLowerCase().trim();
+    let visibleCount = 0;
 
-    let visibleGames = 0;
+    cards.forEach(function(card) {
+        const gameName = card.textContent.toLowerCase();
 
-    gameCards.forEach(function(card) {
-
-        const gameName =
-            card.getAttribute("data-name").toLowerCase();
-
-        const gameContent =
-            card.textContent.toLowerCase();
-
-        const matches =
-            gameName.includes(searchText) ||
-            gameContent.includes(searchText);
-
-        card.style.display = matches ? "" : "none";
-
-        if (matches) {
-            visibleGames++;
+        if (gameName.includes(searchText)) {
+            card.style.display = "";
+            visibleCount++;
+        } else {
+            card.style.display = "none";
         }
-
     });
 
     noResults.style.display =
-        visibleGames === 0 ? "block" : "none";
-
+        visibleCount === 0 ? "block" : "none";
 });
-
 </script>
 
 </body>
