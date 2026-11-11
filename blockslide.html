@@ -1,1 +1,592 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Block Slide Puzzle | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #071321;
+    --panel: #102638;
+    --cyan: #00eaff;
+    --green: #39ff88;
+    --blue: #168cff;
+    --text: #eafaff;
+    --muted: #91aebe;
+    --border: #1d5265;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    padding: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(circle at top left, #10334a, transparent 38%),
+        radial-gradient(circle at bottom right, #102a43, transparent 35%),
+        var(--bg);
+}
+
+.container {
+    max-width: 480px;
+    width: 100%;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    padding: 16px 5px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
+}
+
+.brand {
+    color: var(--green);
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px #39ff8870;
+}
+
+.subtitle {
+    color: var(--cyan);
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin-top: 5px;
+}
+
+header h2 {
+    margin-top: 18px;
+    font-size: 22px;
+    letter-spacing: 2px;
+}
+
+.description {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-top: 8px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+    margin-bottom: 18px;
+}
+
+.stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+    padding: 12px 5px;
+}
+
+.stat-label {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-bottom: 7px;
+}
+
+.stat-value {
+    color: var(--cyan);
+    font-size: 22px;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+}
+
+.message {
+    min-height: 45px;
+    text-align: center;
+    color: var(--green);
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+}
+
+.game-board {
+    width: min(100%, 350px);
+    aspect-ratio: 1 / 1;
+    margin: 8px auto 20px;
+    padding: 9px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 7px;
+    background: #0b1e2d;
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 0 22px #00eaff12;
+}
+
+.tile {
+    border: 1px solid #168cff;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #123e57, #102b42);
+    color: var(--cyan);
+    font-size: clamp(20px, 7vw, 30px);
+    font-weight: 900;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background .15s, transform .1s;
+}
+
+.tile:active {
+    transform: scale(.94);
+}
+
+.tile.empty {
+    background: #06121d;
+    border: 1px dashed #315064;
+    cursor: default;
+}
+
+.tile:not(.empty):hover {
+    border-color: var(--green);
+    color: var(--green);
+}
+
+.tile.movable {
+    box-shadow: inset 0 0 12px #00eaff20;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px 0;
+}
+
+.btn {
+    border: 1px solid var(--cyan);
+    background: transparent;
+    color: var(--cyan);
+    border-radius: 8px;
+    padding: 13px 17px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.btn.primary {
+    background: var(--green);
+    color: #06151b;
+    border-color: var(--green);
+}
+
+.btn:active {
+    transform: scale(.96);
+}
+
+.instructions {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 22px;
+}
+
+.instructions h3 {
+    color: var(--cyan);
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.instructions p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.instructions strong {
+    color: var(--green);
+}
+
+.back-link {
+    display: block;
+    text-align: center;
+    margin: 25px 0 12px;
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.back-link:hover {
+    color: var(--green);
+}
+
+footer {
+    text-align: center;
+    color: #688394;
+    font-size: 11px;
+    padding: 10px 0 20px;
+}
+
+@media(max-width: 380px) {
+    body {
+        padding: 10px;
+    }
+
+    .game-board {
+        gap: 5px;
+        padding: 6px;
+    }
+
+    .tile {
+        border-radius: 6px;
+    }
+
+    .btn {
+        padding: 12px;
+        font-size: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="brand">HEXCLØWN</div>
+        <div class="subtitle">GAMING NETWORK</div>
+
+        <h2>BLOCK SLIDE PUZZLE</h2>
+
+        <p class="description">
+            Slide the numbered blocks into the correct order.
+            Complete the puzzle to win!
+        </p>
+    </header>
+
+    <div class="stats">
+
+        <div class="stat">
+            <div class="stat-label">MOVES</div>
+            <div class="stat-value" id="moves">0</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">TIME</div>
+            <div class="stat-value" id="timer">00:00</div>
+        </div>
+
+        <div class="stat">
+            <div class="stat-label">STATUS</div>
+            <div class="stat-value" id="status" style="font-size:15px">
+                PLAY
+            </div>
+        </div>
+
+    </div>
+
+    <div class="message" id="message" aria-live="polite">
+        Arrange the numbers from 1 to 15!
+    </div>
+
+    <div class="game-board" id="gameBoard"></div>
+
+    <div class="controls">
+        <button class="btn primary" onclick="shuffleBoard()">
+            ↻ SHUFFLE
+        </button>
+
+        <button class="btn" onclick="restartGame()">
+            RESTART
+        </button>
+    </div>
+
+    <div class="instructions">
+
+        <h3>HOW TO PLAY</h3>
+
+        <p>
+            1. Tap a numbered tile beside the empty space to move it.
+            <br>
+            2. Arrange the numbers in ascending order.
+            <br>
+            3. The final position should have an empty space after 15.
+            <br>
+            4. Complete the board to win!
+            <br><br>
+            <strong>TIP:</strong> Plan your moves carefully. Every move counts!
+        </p>
+
+    </div>
+
+    <a href="puzandlog.html" class="back-link">
+        ← BACK TO PUZZLE & LOGIC
+    </a>
+
+    <footer>
+        © HEXCLØWN GAMING NETWORK
+    </footer>
+
+</div>
+
+<script>
+const boardElement = document.getElementById("gameBoard");
+const movesElement = document.getElementById("moves");
+const timerElement = document.getElementById("timer");
+const statusElement = document.getElementById("status");
+const messageElement = document.getElementById("message");
+
+let board = [];
+let moves = 0;
+let seconds = 0;
+let timerInterval = null;
+let gameStarted = false;
+let gameWon = false;
+
+const solvedBoard = [
+    1, 2, 3, 4,
+    5, 6, 7, 8,
+    9, 10, 11, 12,
+    13, 14, 15, 0
+];
+
+/* CHECK IF TWO POSITIONS ARE NEIGHBOURS */
+
+function areNeighbours(index1, index2) {
+    const row1 = Math.floor(index1 / 4);
+    const col1 = index1 % 4;
+
+    const row2 = Math.floor(index2 / 4);
+    const col2 = index2 % 4;
+
+    const rowDifference = Math.abs(row1 - row2);
+    const colDifference = Math.abs(col1 - col2);
+
+    return rowDifference + colDifference === 1;
+}
+
+/* DRAW BOARD */
+
+function drawBoard() {
+    boardElement.innerHTML = "";
+
+    board.forEach((number, index) => {
+        const tile = document.createElement("button");
+
+        tile.type = "button";
+        tile.className = "tile";
+
+        if (number === 0) {
+            tile.classList.add("empty");
+            tile.textContent = "";
+            tile.setAttribute("aria-label", "Empty space");
+            tile.disabled = true;
+        } else {
+            tile.textContent = number;
+            tile.setAttribute("aria-label", "Move tile " + number);
+
+            const emptyIndex = board.indexOf(0);
+
+            if (areNeighbours(index, emptyIndex)) {
+                tile.classList.add("movable");
+            }
+
+            tile.addEventListener("click", function() {
+                moveTile(index);
+            });
+        }
+
+        boardElement.appendChild(tile);
+    });
+}
+
+/* UPDATE STATISTICS */
+
+function updateStats() {
+    movesElement.textContent = moves;
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    timerElement.textContent =
+        String(minutes).padStart(2, "0") + ":" +
+        String(remainingSeconds).padStart(2, "0");
+}
+
+/* START TIMER */
+
+function startTimer() {
+    if (gameStarted || gameWon) return;
+
+    gameStarted = true;
+    statusElement.textContent = "PLAY";
+
+    timerInterval = setInterval(function() {
+        if (!gameWon) {
+            seconds++;
+            updateStats();
+        }
+    }, 1000);
+}
+
+/* STOP TIMER */
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+}
+
+/* MOVE TILE */
+
+function moveTile(index) {
+    if (gameWon) return;
+
+    const emptyIndex = board.indexOf(0);
+
+    if (!areNeighbours(index, emptyIndex)) {
+        return;
+    }
+
+    startTimer();
+
+    // Swap tile with empty space
+    [board[index], board[emptyIndex]] =
+        [board[emptyIndex], board[index]];
+
+    moves++;
+
+    updateStats();
+    drawBoard();
+
+    if (checkWin()) {
+        winGame();
+    }
+}
+
+/* CHECK WIN */
+
+function checkWin() {
+    return board.every((number, index) => {
+        return number === solvedBoard[index];
+    });
+}
+
+/* WIN GAME */
+
+function winGame() {
+    gameWon = true;
+
+    stopTimer();
+
+    statusElement.textContent = "WON";
+    messageElement.textContent =
+        "🎉 PUZZLE SOLVED! You completed it in " +
+        moves + " moves!";
+
+    drawBoard();
+}
+
+/* SHUFFLE BOARD */
+
+/*
+   Shuffle by making legal moves from the solved board.
+   This guarantees that the puzzle can always be solved.
+*/
+
+function shuffleBoard() {
+    stopTimer();
+
+    board = [...solvedBoard];
+
+    moves = 0;
+    seconds = 0;
+    gameStarted = false;
+    gameWon = false;
+
+    statusElement.textContent = "PLAY";
+
+    let previousEmptyIndex = -1;
+
+    // Perform many legal random moves
+    for (let i = 0; i < 250; i++) {
+        const emptyIndex = board.indexOf(0);
+
+        const possibleMoves = [];
+
+        for (let j = 0; j < 16; j++) {
+            if (
+                areNeighbours(j, emptyIndex) &&
+                j !== previousEmptyIndex
+            ) {
+                possibleMoves.push(j);
+            }
+        }
+
+        const selectedIndex =
+            possibleMoves[
+                Math.floor(Math.random() * possibleMoves.length)
+            ];
+
+        previousEmptyIndex = emptyIndex;
+
+        [board[selectedIndex], board[emptyIndex]] =
+            [board[emptyIndex], board[selectedIndex]];
+    }
+
+    // Avoid accidentally starting with a solved board
+    if (checkWin()) {
+        shuffleBoard();
+        return;
+    }
+
+    updateStats();
+    drawBoard();
+
+    messageElement.textContent =
+        "New puzzle ready! Start sliding the blocks.";
+}
+
+/* RESTART GAME */
+
+function restartGame() {
+    shuffleBoard();
+}
+
+/* INITIALISE GAME */
+
+function initGame() {
+    board = [...solvedBoard];
+
+    moves = 0;
+    seconds = 0;
+    gameStarted = false;
+    gameWon = false;
+
+    updateStats();
+    drawBoard();
+    shuffleBoard();
+}
+
+initGame();
+</script>
+
+</body>
+  </html>
+
