@@ -6,13 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#071321">
 
-<title>Puzzle & Logic Games | HEXCLØWN</title>
+<title>Puzzle & Logic | HEXCLØWN</title>
 
 <style>
 :root {
     --bg: #071321;
     --panel: #102638;
-    --panel2: #14344a;
     --cyan: #00eaff;
     --green: #39ff88;
     --blue: #168cff;
@@ -30,25 +29,25 @@
 
 body {
     min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
     background:
-        radial-gradient(circle at 10% 5%, #10415a 0, transparent 35%),
-        radial-gradient(circle at 90% 80%, #102d4a 0, transparent 35%),
+        radial-gradient(circle at 10% 5%, #10415a, transparent 35%),
+        radial-gradient(circle at 90% 80%, #102d4a, transparent 35%),
         var(--bg);
     color: var(--text);
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* HEADER */
 
 .header {
     width: 100%;
-    background: rgba(7, 19, 33, .95);
-    border-bottom: 1px solid var(--border);
-    padding: 17px 5%;
+    padding: 16px 5%;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 15px;
+    align-items: center;
+    gap: 12px;
+    background: rgba(7,19,33,.96);
+    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -62,7 +61,6 @@ body {
     letter-spacing: 2px;
     text-decoration: none;
     text-shadow: 0 0 12px #39ff8870;
-    white-space: nowrap;
 }
 
 .logo span {
@@ -71,17 +69,17 @@ body {
 
 .header-link {
     color: var(--cyan);
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: bold;
     border: 1px solid var(--cyan);
     padding: 9px 13px;
     border-radius: 7px;
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .header-link:hover {
     background: var(--cyan);
-    color: #071321;
+    color: var(--bg);
 }
 
 /* HERO */
@@ -106,7 +104,6 @@ body {
 .hero h1 {
     font-size: clamp(28px, 7vw, 43px);
     font-weight: 900;
-    letter-spacing: 1px;
     line-height: 1.2;
     margin-bottom: 14px;
 }
@@ -124,7 +121,7 @@ body {
     line-height: 1.8;
 }
 
-/* STATS */
+/* STATISTICS */
 
 .stats {
     width: 90%;
@@ -184,7 +181,7 @@ body {
     color: #7895a7;
 }
 
-/* SECTION */
+/* GAMES SECTION */
 
 .section {
     width: 90%;
@@ -194,8 +191,8 @@ body {
 
 .section-heading {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 22px;
@@ -245,8 +242,7 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 55px;
-    background:
-        radial-gradient(circle, #16435a, #0b1e2e 75%);
+    background: radial-gradient(circle, #16435a, #0b1e2e 75%);
     border-bottom: 1px solid var(--border);
 }
 
@@ -509,23 +505,23 @@ body {
 
 </section>
 
-<!-- STATS -->
+<!-- STATISTICS -->
 
 <section class="stats">
 
     <div class="stat-box">
-        <strong>07</strong>
+        <strong>06</strong>
         <span>GAMES</span>
-    </div>
-
-    <div class="stat-box">
-        <strong>100%</strong>
-        <span>CHALLENGE</span>
     </div>
 
     <div class="stat-box">
         <strong>FREE</strong>
         <span>TO PLAY</span>
+    </div>
+
+    <div class="stat-box">
+        <strong>∞</strong>
+        <span>CHALLENGES</span>
     </div>
 
 </section>
@@ -551,17 +547,20 @@ body {
 
     <div class="section-heading">
         <h2>AVAILABLE GAMES</h2>
-        <span>07 GAMES ONLINE</span>
+        <span>06 GAMES</span>
     </div>
 
     <div class="game-grid" id="gameGrid">
 
         <!-- GAME 1 -->
 
-        <article class="game-card" data-name="2048 number tile merger">
+        <article class="game-card"
+        data-name="2048 number tile merger number puzzle">
+
             <div class="game-icon">🔢</div>
 
             <div class="game-info">
+
                 <div class="game-number">GAME 01</div>
 
                 <h3>2048 Number Tile Merger</h3>
@@ -580,70 +579,20 @@ body {
                 <a href="2048.html" class="play-btn">
                     PLAY GAME →
                 </a>
+
             </div>
         </article>
 
         <!-- GAME 2 -->
 
-        <article class="game-card" data-name="sudoku grid challenge">
-            <div class="game-icon">🧩</div>
+        <article class="game-card"
+        data-name="minesweeper classic mines strategy">
 
-            <div class="game-info">
-                <div class="game-number">GAME 02</div>
-
-                <h3>Sudoku Grid Challenge</h3>
-
-                <p>
-                    Fill the 9×9 grid with numbers.
-                    Every row, column and square must
-                    contain the correct numbers.
-                </p>
-
-                <div class="game-meta">
-                    <span class="difficulty">MEDIUM / HARD</span>
-                    <span class="category">LOGIC</span>
-                </div>
-
-                <a href="sudoku.html" class="play-btn">
-                    PLAY GAME →
-                </a>
-            </div>
-        </article>
-
-        <!-- GAME 3 -->
-
-        <article class="game-card" data-name="tetris falling blocks">
-            <div class="game-icon">🟦</div>
-
-            <div class="game-info">
-                <div class="game-number">GAME 03</div>
-
-                <h3>Tetris Falling Blocks</h3>
-
-                <p>
-                    Rotate and arrange falling blocks
-                    to complete horizontal lines.
-                    Keep the board from filling up!
-                </p>
-
-                <div class="game-meta">
-                    <span class="difficulty">MEDIUM</span>
-                    <span class="category">BLOCK PUZZLE</span>
-                </div>
-
-                <a href="tetris.html" class="play-btn">
-                    PLAY GAME →
-                </a>
-            </div>
-        </article>
-
-        <!-- GAME 4 -->
-
-        <article class="game-card" data-name="minesweeper classic">
             <div class="game-icon">💣</div>
 
             <div class="game-info">
-                <div class="game-number">GAME 04</div>
+
+                <div class="game-number">GAME 02</div>
 
                 <h3>Minesweeper Classic</h3>
 
@@ -661,23 +610,27 @@ body {
                 <a href="minesweeper.html" class="play-btn">
                     PLAY GAME →
                 </a>
+
             </div>
         </article>
 
-        <!-- GAME 5 -->
+        <!-- GAME 3 -->
 
-        <article class="game-card" data-name="wordle challenge">
+        <article class="game-card"
+        data-name="wordle challenge word guessing">
+
             <div class="game-icon">🔤</div>
 
             <div class="game-info">
-                <div class="game-number">GAME 05</div>
+
+                <div class="game-number">GAME 03</div>
 
                 <h3>Wordle Challenge</h3>
 
                 <p>
                     Guess the hidden five-letter word
-                    in six attempts. Use the colour
-                    clues to find the answer!
+                    in six attempts. Use colour clues
+                    to discover the answer!
                 </p>
 
                 <div class="game-meta">
@@ -688,15 +641,81 @@ body {
                 <a href="wordle.html" class="play-btn">
                     PLAY GAME →
                 </a>
+
+            </div>
+        </article>
+
+        <!-- GAME 4 -->
+
+        <article class="game-card"
+        data-name="sudoku grid challenge numbers logic">
+
+            <div class="game-icon">🧩</div>
+
+            <div class="game-info">
+
+                <div class="game-number">GAME 04</div>
+
+                <h3>Sudoku Grid Challenge</h3>
+
+                <p>
+                    Fill the 9×9 grid with numbers.
+                    Every row, column and square must
+                    contain the correct numbers.
+                </p>
+
+                <div class="game-meta">
+                    <span class="difficulty">MEDIUM / HARD</span>
+                    <span class="category">LOGIC</span>
+                </div>
+
+                <a href="sudoku.html" class="play-btn">
+                    PLAY GAME →
+                </a>
+
+            </div>
+        </article>
+
+        <!-- GAME 5 -->
+
+        <article class="game-card"
+        data-name="tetris falling blocks block puzzle">
+
+            <div class="game-icon">🟦</div>
+
+            <div class="game-info">
+
+                <div class="game-number">GAME 05</div>
+
+                <h3>Tetris Falling Blocks</h3>
+
+                <p>
+                    Rotate and arrange falling blocks
+                    to complete horizontal lines.
+                    Keep the board from filling up!
+                </p>
+
+                <div class="game-meta">
+                    <span class="difficulty">MEDIUM</span>
+                    <span class="category">BLOCK PUZZLE</span>
+                </div>
+
+                <a href="tetris.html" class="play-btn">
+                    PLAY GAME →
+                </a>
+
             </div>
         </article>
 
         <!-- GAME 6 -->
 
-        <article class="game-card" data-name="block slide puzzle">
+        <article class="game-card"
+        data-name="block slide puzzle sliding numbers">
+
             <div class="game-icon">🔲</div>
 
             <div class="game-info">
+
                 <div class="game-number">GAME 06</div>
 
                 <h3>Block Slide Puzzle</h3>
@@ -715,33 +734,7 @@ body {
                 <a href="blockslide.html" class="play-btn">
                     PLAY GAME →
                 </a>
-            </div>
-        </article>
 
-        <!-- GAME 7 -->
-
-        <article class="game-card" data-name="tower of hanoi">
-            <div class="game-icon">🗼</div>
-
-            <div class="game-info">
-                <div class="game-number">GAME 07</div>
-
-                <h3>Tower of Hanoi</h3>
-
-                <p>
-                    Move all discs from one tower
-                    to another without placing
-                    bigger discs on smaller ones.
-                </p>
-
-                <div class="game-meta">
-                    <span class="difficulty">HARD</span>
-                    <span class="category">LOGIC STRATEGY</span>
-                </div>
-
-                <a href="towerofhanoi.html" class="play-btn">
-                    PLAY GAME →
-                </a>
             </div>
         </article>
 
@@ -787,7 +780,7 @@ body {
 
 </footer>
 
-<!-- SEARCH SCRIPT -->
+<!-- SEARCH FUNCTION -->
 
 <script>
 
