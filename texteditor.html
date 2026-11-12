@@ -1,0 +1,875 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+<title>Text Editor | HEXCLØWN</title>
+
+<style>
+:root {
+  --bg:#07131a;
+  --panel:#0d2029;
+  --panel2:#102832;
+  --line:#1b3b45;
+  --green:#b5ff4a;
+  --cyan:#42e8dc;
+  --text:#e8f4f2;
+  --muted:#8ba6a8;
+  --red:#ff7777;
+}
+
+* {box-sizing:border-box}
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+
+header {
+  background:#091a21;
+  border-bottom:1px solid var(--line);
+  padding:16px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.logo {
+  color:var(--green);
+  font-weight:bold;
+  letter-spacing:2px;
+  font-size:19px;
+}
+
+header a {
+  color:var(--cyan);
+  text-decoration:none;
+  font-size:13px;
+}
+
+.container {
+  width:92%;
+  max-width:1050px;
+  margin:30px auto;
+}
+
+.hero {
+  margin-bottom:22px;
+}
+
+.hero h1 {
+  color:var(--green);
+  font-size:28px;
+  margin:0 0 8px;
+}
+
+.hero p {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+
+.panel {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:16px;
+  margin-bottom:16px;
+}
+
+.topbar {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:13px;
+}
+
+input, select, button {
+  font:inherit;
+}
+
+#docName {
+  background:transparent;
+  color:var(--text);
+  border:1px solid var(--line);
+  padding:10px;
+  border-radius:7px;
+  width:min(100%,280px);
+  outline:none;
+}
+
+#docName:focus {
+  border-color:var(--cyan);
+}
+
+.save-status {
+  color:var(--green);
+  font-size:12px;
+}
+
+.toolbar {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  padding:10px;
+  background:#081820;
+  border:1px solid var(--line);
+  border-radius:9px 9px 0 0;
+}
+
+.toolbar button,
+.action-btn {
+  background:var(--panel2);
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:9px 11px;
+  cursor:pointer;
+  font-size:13px;
+}
+
+.toolbar button:hover,
+.action-btn:hover {
+  border-color:var(--green);
+  color:var(--green);
+}
+
+.toolbar select {
+  background:var(--panel2);
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:8px;
+}
+
+.editor {
+  min-height:400px;
+  padding:20px;
+  background:#081820;
+  border:1px solid var(--line);
+  border-top:none;
+  border-radius:0 0 9px 9px;
+  outline:none;
+  font-size:16px;
+  line-height:1.8;
+  overflow-wrap:anywhere;
+}
+
+.editor:focus {
+  border-color:var(--cyan);
+}
+
+.editor:empty:before {
+  content:"Start writing your thoughts here...";
+  color:#607b80;
+  pointer-events:none;
+}
+
+.editor h1,.editor h2,.editor h3 {
+  color:var(--green);
+}
+
+.editor blockquote {
+  border-left:3px solid var(--cyan);
+  padding-left:14px;
+  color:#a8c4c3;
+}
+
+.editor a {color:var(--cyan)}
+
+.editor pre {
+  white-space:pre-wrap;
+  background:#102832;
+  padding:12px;
+  border-radius:7px;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+  margin-top:13px;
+}
+
+.stat {
+  background:#081820;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:12px 7px;
+  text-align:center;
+}
+
+.stat strong {
+  display:block;
+  color:var(--green);
+  font-size:19px;
+}
+
+.stat span {
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+}
+
+.section-title {
+  color:var(--cyan);
+  font-size:15px;
+  margin:0 0 13px;
+}
+
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.primary {
+  background:var(--green);
+  color:#07131a;
+  border-color:var(--green);
+  font-weight:bold;
+}
+
+.danger {
+  color:var(--red);
+}
+
+.history-item {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  background:#081820;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:12px;
+  margin-top:9px;
+}
+
+.history-item small {
+  display:block;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.history-item button {
+  margin:3px;
+}
+
+.note {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+footer {
+  text-align:center;
+  color:var(--muted);
+  padding:25px 10px;
+  font-size:12px;
+}
+
+@media(max-width:600px) {
+  .container {width:94%;margin:20px auto}
+  .hero h1 {font-size:23px}
+  .editor {min-height:350px;padding:14px;font-size:15px}
+  .stats {grid-template-columns:repeat(2,1fr)}
+  .toolbar button {padding:9px}
+  header {padding:14px 4%}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCLØWN</div>
+  <a href="index.html">← BACK TO HOME</a>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <h1>TEXT EDITOR</h1>
+    <p>
+      Your personal writing workspace. Create, format, save,
+      recover and export your documents.
+    </p>
+  </section>
+
+  <section class="panel">
+
+    <div class="topbar">
+      <input id="docName" type="text" value="Untitled Document"
+        maxlength="100" aria-label="Document name">
+
+      <span class="save-status" id="saveStatus">● Ready</span>
+    </div>
+
+    <div class="toolbar">
+
+      <select id="formatBlock" aria-label="Text style">
+        <option value="p">Normal text</option>
+        <option value="h1">Heading 1</option>
+        <option value="h2">Heading 2</option>
+        <option value="h3">Heading 3</option>
+        <option value="blockquote">Quote</option>
+        <option value="pre">Code block</option>
+      </select>
+
+      <button type="button" data-command="bold"><b>B</b></button>
+      <button type="button" data-command="italic"><i>I</i></button>
+      <button type="button" data-command="underline"><u>U</u></button>
+      <button type="button" data-command="strikeThrough"><s>S</s></button>
+
+      <button type="button" data-command="insertUnorderedList">• List</button>
+      <button type="button" data-command="insertOrderedList">1. List</button>
+
+      <button type="button" id="linkBtn">🔗 Link</button>
+      <button type="button" id="undoBtn">↶ Undo</button>
+      <button type="button" id="redoBtn">↷ Redo</button>
+      <button type="button" id="clearFormat">Clear format</button>
+
+    </div>
+
+    <div
+      id="editor"
+      class="editor"
+      contenteditable="true"
+      spellcheck="true"
+      role="textbox"
+      aria-label="Document writing area"
+      aria-multiline="true">
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <strong id="wordCount">0</strong>
+        <span>WORDS</span>
+      </div>
+
+      <div class="stat">
+        <strong id="charCount">0</strong>
+        <span>CHARACTERS</span>
+      </div>
+
+      <div class="stat">
+        <strong id="readingTime">0</strong>
+        <span>READING MIN</span>
+      </div>
+
+      <div class="stat">
+        <strong id="paragraphCount">0</strong>
+        <span>PARAGRAPHS</span>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="panel">
+    <h3 class="section-title">DOCUMENT EXPORT</h3>
+
+    <div class="actions">
+      <button class="action-btn primary" id="exportTxt">↓ Export TXT</button>
+      <button class="action-btn" id="exportMd">↓ Export Markdown</button>
+      <button class="action-btn" id="exportHtml">↓ Export HTML</button>
+    </div>
+
+    <p class="note">
+      Export your document to keep a separate copy outside this browser.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h3 class="section-title">DOCUMENT RECOVERY & VERSION HISTORY</h3>
+
+    <div class="actions">
+      <button class="action-btn" id="saveVersion">＋ Save Version</button>
+      <button class="action-btn danger" id="clearHistory">Clear History</button>
+    </div>
+
+    <p class="note">
+      Previous versions are stored in this browser. Save a version
+      before making major changes. The editor also keeps your latest
+      document automatically.
+    </p>
+
+    <div id="historyList"></div>
+  </section>
+
+  <section class="panel">
+    <h3 class="section-title">EDITOR SETTINGS</h3>
+
+    <div class="actions">
+      <button class="action-btn" id="newDocument">＋ New Document</button>
+      <button class="action-btn danger" id="clearDocument">Clear Editor</button>
+    </div>
+
+    <p class="note">
+      Your latest document is saved automatically in browser LocalStorage.
+      Clearing browser data or using another browser/device may remove
+      or hide locally saved documents. Export important work as a backup.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  HEXCLØWN TEXT EDITOR • WRITE WITHOUT LIMITS
+</footer>
+
+<script>
+const editor = document.getElementById("editor");
+const docName = document.getElementById("docName");
+const saveStatus = document.getElementById("saveStatus");
+
+const DOC_KEY = "hexclown_texteditor_document";
+const HISTORY_KEY = "hexclown_texteditor_history";
+
+let saveTimer;
+let savedRange = null;
+
+function getPlainText() {
+  return editor.innerText || "";
+}
+
+function getDocument() {
+  return {
+    name: docName.value.trim() || "Untitled Document",
+    content: editor.innerHTML,
+    updated: new Date().toISOString()
+  };
+}
+
+/* AUTO SAVE */
+
+function saveDocument() {
+  try {
+    localStorage.setItem(DOC_KEY, JSON.stringify(getDocument()));
+    saveStatus.textContent = "● Saved automatically";
+  } catch (error) {
+    saveStatus.textContent = "● Save failed — export a backup";
+  }
+}
+
+function scheduleSave() {
+  saveStatus.textContent = "● Saving...";
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveDocument, 400);
+}
+
+function loadDocument() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(DOC_KEY) || "null");
+
+    if (saved) {
+      docName.value = saved.name || "Untitled Document";
+      editor.innerHTML = saved.content || "";
+    }
+  } catch (error) {
+    saveStatus.textContent = "● Could not load saved document";
+  }
+
+  updateStats();
+}
+
+editor.addEventListener("input", () => {
+  updateStats();
+  scheduleSave();
+});
+
+docName.addEventListener("input", scheduleSave);
+
+/* FORMATTING TOOLBAR */
+
+function rememberSelection() {
+  const selection = window.getSelection();
+
+  if (selection && selection.rangeCount) {
+    savedRange = selection.getRangeAt(0).cloneRange();
+  }
+}
+
+editor.addEventListener("keyup", rememberSelection);
+editor.addEventListener("mouseup", rememberSelection);
+
+function restoreSelection() {
+  if (!savedRange) return;
+
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(savedRange);
+}
+
+document.querySelectorAll("[data-command]").forEach(button => {
+  button.addEventListener("mousedown", event => event.preventDefault());
+
+  button.addEventListener("click", () => {
+    editor.focus();
+    restoreSelection();
+    document.execCommand(button.dataset.command, false, null);
+    rememberSelection();
+    updateStats();
+    scheduleSave();
+  });
+});
+
+document.getElementById("formatBlock").addEventListener("change", event => {
+  editor.focus();
+  restoreSelection();
+  document.execCommand("formatBlock", false, event.target.value);
+  rememberSelection();
+  scheduleSave();
+});
+
+document.getElementById("linkBtn").addEventListener("click", () => {
+  editor.focus();
+  restoreSelection();
+
+  const url = prompt("Enter the link URL:");
+
+  if (url) {
+    try {
+      const parsed = new URL(url);
+
+      if (!["http:", "https:", "mailto:"].includes(parsed.protocol)) {
+        alert("Please enter a valid web or email link.");
+        return;
+      }
+
+      document.execCommand("createLink", false, parsed.href);
+      rememberSelection();
+      scheduleSave();
+    } catch (error) {
+      alert("Please enter a valid link.");
+    }
+  }
+});
+
+document.getElementById("undoBtn").onclick = () => {
+  editor.focus();
+  document.execCommand("undo");
+  updateStats();
+  scheduleSave();
+};
+
+document.getElementById("redoBtn").onclick = () => {
+  editor.focus();
+  document.execCommand("redo");
+  updateStats();
+  scheduleSave();
+};
+
+document.getElementById("clearFormat").onclick = () => {
+  editor.focus();
+  restoreSelection();
+  document.execCommand("removeFormat");
+  document.execCommand("unlink");
+  scheduleSave();
+};
+
+/* LIVE WRITING STATISTICS */
+
+function updateStats() {
+  const text = getPlainText().trim();
+  const words = text ? text.split(/\s+/).filter(Boolean).length : 0;
+  const chars = getPlainText().length;
+  const paragraphs = text
+    ? text.split(/\n+/).filter(line => line.trim()).length
+    : 0;
+
+  document.getElementById("wordCount").textContent = words;
+  document.getElementById("charCount").textContent = chars;
+  document.getElementById("readingTime").textContent =
+    words ? Math.ceil(words / 200) : 0;
+  document.getElementById("paragraphCount").textContent = paragraphs;
+}
+
+/* EXPORT HELPERS */
+
+function downloadFile(filename, content, type) {
+  const blob = new Blob([content], {type});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function safeFilename() {
+  return (docName.value.trim() || "document")
+    .replace(/[\\/:*?"<>|]/g, "-")
+    .replace(/\s+/g, "-");
+}
+
+document.getElementById("exportTxt").onclick = () => {
+  downloadFile(
+    safeFilename() + ".txt",
+    getPlainText(),
+    "text/plain;charset=utf-8"
+  );
+};
+
+function escapeHtml(text) {
+  return text.replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
+}
+
+/* BASIC HTML TO MARKDOWN CONVERSION */
+
+function nodeToMarkdown(node) {
+  if (node.nodeType === Node.TEXT_NODE) {
+    return node.textContent;
+  }
+
+  if (node.nodeType !== Node.ELEMENT_NODE) {
+    return "";
+  }
+
+  const tag = node.tagName.toLowerCase();
+  const inner = Array.from(node.childNodes)
+    .map(nodeToMarkdown).join("");
+
+  if (tag === "strong" || tag === "b") return "**" + inner + "**";
+  if (tag === "em" || tag === "i") return "*" + inner + "*";
+  if (tag === "u") return "<u>" + inner + "</u>";
+  if (tag === "s" || tag === "strike") return "~~" + inner + "~~";
+  if (tag === "h1") return "# " + inner + "\n\n";
+  if (tag === "h2") return "## " + inner + "\n\n";
+  if (tag === "h3") return "### " + inner + "\n\n";
+  if (tag === "p" || tag === "div") return inner + "\n\n";
+  if (tag === "br") return "\n";
+  if (tag === "blockquote") return inner.split("\n").map(x => "> " + x).join("\n") + "\n\n";
+  if (tag === "pre" || tag === "code") return "```\n" + inner + "\n```\n\n";
+
+  if (tag === "a") {
+    return "[" + inner + "](" + (node.getAttribute("href") || "") + ")";
+  }
+
+  if (tag === "ul" || tag === "ol") {
+    return Array.from(node.children).map((item, index) => {
+      const prefix = tag === "ol" ? (index + 1) + ". " : "- ";
+      return prefix + nodeToMarkdown(item).trim() + "\n";
+    }).join("") + "\n";
+  }
+
+  if (tag === "li") return inner;
+
+  return inner;
+}
+
+document.getElementById("exportMd").onclick = () => {
+  const markdown = Array.from(editor.childNodes)
+    .map(nodeToMarkdown).join("").trim();
+
+  downloadFile(
+    safeFilename() + ".md",
+    markdown,
+    "text/markdown;charset=utf-8"
+  );
+};
+
+document.getElementById("exportHtml").onclick = () => {
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(docName.value)}</title>
+</head>
+<body>
+${editor.innerHTML}
+</body>
+</html>`;
+
+  downloadFile(
+    safeFilename() + ".html",
+    html,
+    "text/html;charset=utf-8"
+  );
+};
+
+/* VERSION HISTORY */
+
+function getHistory() {
+  try {
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+    return Array.isArray(history) ? history : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveHistory(history) {
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+    return true;
+  } catch (error) {
+    alert("There is not enough browser storage for this version.");
+    return false;
+  }
+}
+
+function createVersion() {
+  const history = getHistory();
+
+  const version = {
+    id: Date.now(),
+    name: docName.value.trim() || "Untitled Document",
+    content: editor.innerHTML,
+    date: new Date().toLocaleString()
+  };
+
+  history.unshift(version);
+
+  // Keep the latest 20 versions.
+  const limited = history.slice(0, 20);
+
+  if (saveHistory(limited)) {
+    renderHistory();
+    alert("Version saved successfully!");
+  }
+}
+
+document.getElementById("saveVersion").onclick = createVersion;
+
+function restoreVersion(id) {
+  const version = getHistory().find(item => item.id === id);
+  if (!version) return;
+
+  if (!confirm("Restore this version? Your current document will be replaced.")) {
+    return;
+  }
+
+  // Preserve the current document before restoring.
+  createBackupBeforeRestore();
+
+  docName.value = version.name;
+  editor.innerHTML = version.content;
+
+  updateStats();
+  saveDocument();
+  alert("Previous version restored.");
+}
+
+function createBackupBeforeRestore() {
+  const history = getHistory();
+
+  history.unshift({
+    id: Date.now(),
+    name: docName.value.trim() || "Untitled Document",
+    content: editor.innerHTML,
+    date: new Date().toLocaleString() + " (before restore)"
+  });
+
+  saveHistory(history.slice(0, 20));
+}
+
+function deleteVersion(id) {
+  if (!confirm("Delete this saved version?")) return;
+
+  const history = getHistory().filter(item => item.id !== id);
+  saveHistory(history);
+  renderHistory();
+}
+
+function renderHistory() {
+  const container = document.getElementById("historyList");
+  const history = getHistory();
+
+  container.innerHTML = "";
+
+  if (!history.length) {
+    container.innerHTML =
+      '<p class="note">No saved versions yet. Use the Save Version button to create one.</p>';
+    return;
+  }
+
+  history.forEach(version => {
+    const item = document.createElement("div");
+    item.className = "history-item";
+
+    const details = document.createElement("div");
+    const title = document.createElement("strong");
+    const date = document.createElement("small");
+
+    title.textContent = version.name;
+    date.textContent = version.date;
+
+    details.append(title, date);
+
+    const buttons = document.createElement("div");
+
+    const restore = document.createElement("button");
+    restore.className = "action-btn";
+    restore.textContent = "Restore";
+    restore.onclick = () => restoreVersion(version.id);
+
+    const remove = document.createElement("button");
+    remove.className = "action-btn danger";
+    remove.textContent = "Delete";
+    remove.onclick = () => deleteVersion(version.id);
+
+    buttons.append(restore, remove);
+    item.append(details, buttons);
+    container.appendChild(item);
+  });
+}
+
+document.getElementById("clearHistory").onclick = () => {
+  if (!confirm("Delete all saved versions? This cannot be undone.")) return;
+
+  localStorage.removeItem(HISTORY_KEY);
+  renderHistory();
+};
+
+/* DOCUMENT CONTROLS */
+
+document.getElementById("clearDocument").onclick = () => {
+  if (!confirm("Clear all text in the current document?")) return;
+
+  editor.innerHTML = "";
+  updateStats();
+  scheduleSave();
+};
+
+document.getElementById("newDocument").onclick = () => {
+  if (!confirm("Start a new document? Save or export your current work first.")) {
+    return;
+  }
+
+  docName.value = "Untitled Document";
+  editor.innerHTML = "";
+
+  updateStats();
+  scheduleSave();
+};
+
+/* START */
+
+loadDocument();
+renderHistory();
+saveStatus.textContent = "● Ready";
+</script>
+
+</body>
+</html>
