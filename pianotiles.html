@@ -1,1 +1,672 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Piano Tiles | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #071321;
+    --panel: #0d2032;
+    --green: #39ff88;
+    --cyan: #00eaff;
+    --blue: #168bff;
+    --red: #ff426b;
+    --white: #f5faff;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    padding: 15px;
+}
+
+header {
+    max-width: 600px;
+    margin: auto;
+    text-align: center;
+    padding: 15px 0 20px;
+}
+
+.logo {
+    color: var(--green);
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px var(--green);
+}
+
+header p {
+    color: #9ab4c8;
+    font-size: 13px;
+    margin-top: 7px;
+}
+
+nav {
+    max-width: 600px;
+    margin: 0 auto 18px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 9px;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--cyan);
+    border: 1px solid #00eaff55;
+    background: #0d2032;
+    padding: 9px 13px;
+    border-radius: 7px;
+    font-size: 12px;
+}
+
+nav a:hover {
+    background: #12364b;
+}
+
+.container {
+    max-width: 470px;
+    margin: auto;
+    background: var(--panel);
+    border: 1px solid #00eaff55;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 0 20px #00eaff12;
+}
+
+h1 {
+    text-align: center;
+    color: var(--cyan);
+    font-size: 23px;
+    margin-bottom: 7px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #9ab4c8;
+    font-size: 12px;
+    margin-bottom: 16px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 13px;
+}
+
+.stat {
+    background: #071321;
+    border: 1px solid #168bff55;
+    border-radius: 8px;
+    text-align: center;
+    padding: 10px 3px;
+}
+
+.stat small {
+    display: block;
+    color: #91aabd;
+    font-size: 10px;
+    margin-bottom: 5px;
+}
+
+.stat strong {
+    color: var(--green);
+    font-size: 20px;
+}
+
+#game {
+    position: relative;
+    width: 100%;
+    height: min(64vh, 520px);
+    min-height: 340px;
+    overflow: hidden;
+    background: #dce7ef;
+    border: 3px solid var(--cyan);
+    border-radius: 9px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    touch-action: none;
+    user-select: none;
+}
+
+.lane {
+    position: relative;
+    height: 100%;
+    border-right: 1px solid #8297a8;
+    background: #f4f8fc;
+}
+
+.lane:last-child {
+    border-right: none;
+}
+
+.tile {
+    position: absolute;
+    left: 3px;
+    right: 3px;
+    height: 105px;
+    top: 0;
+    background: #071321;
+    border: 2px solid var(--cyan);
+    border-radius: 5px;
+    box-shadow: 0 0 12px #00eaff55;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.tile.hit {
+    background: var(--green);
+    border-color: var(--green);
+    box-shadow: 0 0 18px var(--green);
+}
+
+.tile.missed {
+    background: var(--red);
+    border-color: var(--red);
+}
+
+#overlay {
+    position: absolute;
+    inset: 0;
+    background: #071321eF;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.overlay-box h2 {
+    color: var(--green);
+    font-size: 25px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px #39ff88;
+}
+
+.overlay-box p {
+    color: #b6cbd9;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 17px;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 19px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.primary {
+    color: #071321;
+    background: var(--green);
+    box-shadow: 0 0 12px #39ff8866;
+}
+
+.primary:active {
+    transform: scale(.96);
+}
+
+.controls {
+    display: flex;
+    gap: 9px;
+    margin-top: 13px;
+}
+
+.controls button {
+    flex: 1;
+}
+
+.secondary {
+    color: var(--cyan);
+    background: transparent;
+    border: 1px solid var(--cyan);
+}
+
+.message {
+    text-align: center;
+    min-height: 20px;
+    margin-top: 10px;
+    color: var(--cyan);
+    font-size: 12px;
+}
+
+.instructions {
+    margin-top: 18px;
+    padding: 13px;
+    background: #071321;
+    border-radius: 9px;
+    border: 1px solid #168bff44;
+}
+
+.instructions h3 {
+    color: var(--green);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.instructions p {
+    color: #a9c0d0;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+footer {
+    text-align: center;
+    color: #70899b;
+    font-size: 11px;
+    padding: 25px 0 10px;
+}
+
+@media(max-width: 380px) {
+    body {
+        padding: 8px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    #game {
+        min-height: 320px;
+    }
+
+    .tile {
+        height: 90px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEXCLØWN</div>
+    <p>ENTER THE WORLD OF DIGITAL GAMES</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="GameZone.html">Game Zone</a>
+    <a href="rhyandaud.html">Rhythm & Audio</a>
+</nav>
+
+<main class="container">
+
+    <h1>🎹 PIANO TILES</h1>
+    <p class="subtitle">Tap the black tiles. Don't miss one!</p>
+
+    <section class="stats">
+        <div class="stat">
+            <small>SCORE</small>
+            <strong id="score">0</strong>
+        </div>
+
+        <div class="stat">
+            <small>BEST</small>
+            <strong id="best">0</strong>
+        </div>
+
+        <div class="stat">
+            <small>SPEED</small>
+            <strong id="speed">1x</strong>
+        </div>
+    </section>
+
+    <div id="game">
+        <div class="lane" data-lane="0"></div>
+        <div class="lane" data-lane="1"></div>
+        <div class="lane" data-lane="2"></div>
+        <div class="lane" data-lane="3"></div>
+
+        <div id="overlay">
+            <div class="overlay-box">
+                <h2 id="overlayTitle">PIANO TILES</h2>
+                <p id="overlayText">
+                    Tap the black tiles before they reach the bottom.
+                    Missing a tile ends the game!
+                </p>
+                <button class="primary" id="startBtn">START GAME</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="message" id="message">
+        Ready to play?
+    </div>
+
+    <div class="controls">
+        <button class="secondary" id="restartBtn">RESTART</button>
+        <button class="secondary" id="soundBtn">SOUND: ON</button>
+    </div>
+
+    <section class="instructions">
+        <h3>HOW TO PLAY</h3>
+        <p>
+            • Tap the black tiles as they appear.<br>
+            • Don't let a black tile reach the bottom.<br>
+            • Never tap the white spaces.<br>
+            • Your score increases with every successful tap.<br>
+            • The game gets faster as your score increases.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    © 2026 HEXCLØWN. ALL RIGHTS RESERVED.
+</footer>
+
+<script>
+(() => {
+    "use strict";
+
+    const game = document.getElementById("game");
+    const lanes = Array.from(document.querySelectorAll(".lane"));
+    const overlay = document.getElementById("overlay");
+    const overlayTitle = document.getElementById("overlayTitle");
+    const overlayText = document.getElementById("overlayText");
+    const startBtn = document.getElementById("startBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const soundBtn = document.getElementById("soundBtn");
+    const scoreDisplay = document.getElementById("score");
+    const bestDisplay = document.getElementById("best");
+    const speedDisplay = document.getElementById("speed");
+    const message = document.getElementById("message");
+
+    let tiles = [];
+    let score = 0;
+    let best = 0;
+    let running = false;
+    let soundOn = true;
+    let lastTime = 0;
+    let spawnTimer = 0;
+    let spawnInterval = 850;
+    let animationId = null;
+    let audioContext = null;
+
+    const tileHeight = 105;
+    const storageKey = "hexclownPianoTilesBest";
+
+    try {
+        best = Number(localStorage.getItem(storageKey)) || 0;
+    } catch (e) {
+        best = 0;
+    }
+
+    bestDisplay.textContent = best;
+
+    function getAudio() {
+        if (!audioContext) {
+            const AudioClass = window.AudioContext || window.webkitAudioContext;
+            if (!AudioClass) return null;
+            audioContext = new AudioClass();
+        }
+
+        if (audioContext.state === "suspended") {
+            audioContext.resume();
+        }
+
+        return audioContext;
+    }
+
+    function playNote(lane) {
+        if (!soundOn) return;
+
+        const ctx = getAudio();
+        if (!ctx) return;
+
+        const frequencies = [261.63, 293.66, 329.63, 392.00];
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.value = frequencies[lane];
+
+        gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.16, ctx.currentTime + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.32);
+
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+
+        oscillator.start();
+        oscillator.stop(ctx.currentTime + 0.34);
+    }
+
+    function updateStats() {
+        scoreDisplay.textContent = score;
+
+        const multiplier = Math.min(3, 1 + Math.floor(score / 10) * 0.25);
+        speedDisplay.textContent = multiplier.toFixed(2).replace(/0$/, "") + "x";
+    }
+
+    function createTile() {
+        if (!running) return;
+
+        const laneIndex = Math.floor(Math.random() * 4);
+        const lane = lanes[laneIndex];
+
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.style.top = -tileHeight + "px";
+
+        const tileData = {
+            element: tile,
+            lane: laneIndex,
+            y: -tileHeight,
+            hit: false
+        };
+
+        tile.addEventListener("pointerdown", function(event) {
+            event.preventDefault();
+            hitTile(tileData);
+        });
+
+        lane.appendChild(tile);
+        tiles.push(tileData);
+    }
+
+    function hitTile(tile) {
+        if (!running || tile.hit) return;
+
+        tile.hit = true;
+        tile.element.classList.add("hit");
+
+        score++;
+        updateStats();
+        playNote(tile.lane);
+
+        message.textContent = "NICE! KEEP GOING!";
+
+        if (score > best) {
+            best = score;
+            bestDisplay.textContent = best;
+
+            try {
+                localStorage.setItem(storageKey, best);
+            } catch (e) {}
+        }
+
+        setTimeout(() => {
+            if (tile.element.parentNode) {
+                tile.element.remove();
+            }
+            tiles = tiles.filter(item => item !== tile);
+        }, 80);
+    }
+
+    function gameOver(reason) {
+        if (!running) return;
+
+        running = false;
+
+        if (animationId !== null) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+        }
+
+        overlay.style.display = "flex";
+        overlayTitle.textContent = "GAME OVER!";
+        overlayText.innerHTML =
+            reason + "<br><br>Your score: <strong>" + score +
+            "</strong><br>Best score: <strong>" + best + "</strong>";
+
+        startBtn.textContent = "PLAY AGAIN";
+        message.textContent = "Game over! Try again.";
+    }
+
+    function updateGame(timestamp) {
+        if (!running) return;
+
+        if (!lastTime) lastTime = timestamp;
+
+        const delta = Math.min(timestamp - lastTime, 40);
+        lastTime = timestamp;
+
+        spawnTimer += delta;
+
+        if (spawnTimer >= spawnInterval) {
+            spawnTimer = 0;
+            createTile();
+        }
+
+        const speed = 230 + Math.min(score * 7, 390);
+        const gameHeight = game.clientHeight;
+
+        for (let i = tiles.length - 1; i >= 0; i--) {
+            const tile = tiles[i];
+
+            if (tile.hit) continue;
+
+            tile.y += speed * delta / 1000;
+            tile.element.style.top = tile.y + "px";
+
+            if (tile.y + tileHeight >= gameHeight) {
+                gameOver("You missed a black tile!");
+                return;
+            }
+        }
+
+        animationId = requestAnimationFrame(updateGame);
+    }
+
+    function clearTiles() {
+        tiles.forEach(tile => {
+            if (tile.element.parentNode) {
+                tile.element.remove();
+            }
+        });
+
+        tiles = [];
+    }
+
+    function startGame() {
+        if (running) return;
+
+        getAudio();
+
+        if (animationId !== null) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+        }
+
+        clearTiles();
+
+        score = 0;
+        lastTime = 0;
+        spawnTimer = 0;
+        spawnInterval = 850;
+
+        updateStats();
+
+        overlay.style.display = "none";
+        message.textContent = "Tap the black tiles!";
+        running = true;
+
+        createTile();
+
+        animationId = requestAnimationFrame(updateGame);
+    }
+
+    function restartGame() {
+        if (running) {
+            running = false;
+
+            if (animationId !== null) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        }
+
+        startGame();
+    }
+
+    function toggleSound() {
+        soundOn = !soundOn;
+        soundBtn.textContent = soundOn ? "SOUND: ON" : "SOUND: OFF";
+
+        if (soundOn) getAudio();
+    }
+
+    // Prevent taps on white spaces.
+    game.addEventListener("pointerdown", function(event) {
+        if (!running || event.target.closest(".tile")) return;
+
+        if (event.target.closest(".lane")) {
+            gameOver("You tapped a white tile!");
+        }
+    });
+
+    // Keyboard support: D, F, J and K.
+    document.addEventListener("keydown", function(event) {
+        if (!running) return;
+
+        const keys = {
+            "d": 0,
+            "f": 1,
+            "j": 2,
+            "k": 3
+        };
+
+        const laneIndex = keys[event.key.toLowerCase()];
+
+        if (laneIndex === undefined) return;
+
+        const laneTiles = tiles
+            .filter(tile => tile.lane === laneIndex && !tile.hit)
+            .sort((a, b) => b.y - a.y);
+
+        if (laneTiles.length > 0) {
+            hitTile(laneTiles[0]);
+        } else {
+            gameOver("You pressed an empty lane!");
+        }
+    });
+
+    startBtn.addEventListener("click", startGame);
+    restartBtn.addEventListener("click", restartGame);
+    soundBtn.addEventListener("click", toggleSound);
+
+})();
+</script>
+
+</body>
+  </html>
+  
