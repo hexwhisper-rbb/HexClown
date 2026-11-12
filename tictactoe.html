@@ -1,1 +1,661 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Tic-Tac-Toe | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #071321;
+    --panel: #0c1d30;
+    --cyan: #00eaff;
+    --green: #00ff88;
+    --blue: #168bff;
+    --red: #ff405d;
+    --text: #eafaff;
+    --muted: #91aabd;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    padding: 18px 12px 35px;
+    background:
+        radial-gradient(circle at top, #102c45 0%, transparent 45%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    max-width: 550px;
+    width: 100%;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--green);
+    text-shadow: 0 0 12px var(--green);
+}
+
+.logo span {
+    color: var(--cyan);
+    text-shadow: 0 0 12px var(--cyan);
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-top: 7px;
+}
+
+.back-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 18px 0;
+}
+
+.back-links a {
+    color: var(--cyan);
+    text-decoration: none;
+    border: 1px solid #087d91;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.back-links a:hover {
+    background: #06384a;
+    box-shadow: 0 0 12px #00eaff55;
+}
+
+.game-panel {
+    background: linear-gradient(145deg, #10263b, #091827);
+    border: 1px solid #16415a;
+    border-radius: 18px;
+    padding: 20px 15px;
+    box-shadow: 0 0 25px #001b2d;
+}
+
+h1 {
+    text-align: center;
+    color: var(--cyan);
+    font-size: 25px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px #00eaff66;
+    margin-bottom: 8px;
+}
+
+.description {
+    color: var(--muted);
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.scoreboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 17px;
+}
+
+.score-card {
+    text-align: center;
+    padding: 13px 8px;
+    background: #071522;
+    border: 1px solid #244158;
+    border-radius: 12px;
+    transition: .2s;
+}
+
+.score-card.active {
+    border-color: var(--green);
+    box-shadow: 0 0 13px #00ff8840;
+}
+
+.player-name {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.x-name {
+    color: var(--red);
+}
+
+.o-name {
+    color: var(--green);
+}
+
+.score {
+    font-size: 27px;
+    font-weight: 900;
+}
+
+.status {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 18px;
+    background: #061522;
+    border: 1px solid #1c5269;
+    border-radius: 10px;
+    color: var(--cyan);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.status.winner {
+    color: var(--green);
+    border-color: var(--green);
+    box-shadow: 0 0 12px #00ff8840;
+}
+
+.status.draw {
+    color: #ffe45c;
+    border-color: #ffe45c;
+}
+
+.board {
+    width: 100%;
+    max-width: 390px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+}
+
+.cell {
+    aspect-ratio: 1;
+    background: #071522;
+    border: 2px solid #15506b;
+    border-radius: 13px;
+    color: var(--cyan);
+    font-size: clamp(45px, 13vw, 75px);
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .18s;
+    text-shadow: 0 0 15px currentColor;
+    touch-action: manipulation;
+}
+
+.cell:hover:not(:disabled) {
+    background: #0b2d44;
+    border-color: var(--cyan);
+    box-shadow: 0 0 12px #00eaff55;
+}
+
+.cell:active:not(:disabled) {
+    transform: scale(.95);
+}
+
+.cell.x {
+    color: var(--red);
+    border-color: #a82d45;
+}
+
+.cell.o {
+    color: var(--green);
+    border-color: #008b53;
+}
+
+.cell.winning {
+    background: #073d31;
+    border-color: var(--green);
+    box-shadow: 0 0 18px #00ff8877;
+    animation: pulse .8s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(.95); }
+}
+
+.cell:disabled {
+    cursor: default;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.action-btn {
+    padding: 12px 8px;
+    border: 1px solid var(--cyan);
+    border-radius: 9px;
+    background: #08243a;
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.action-btn:hover:not(:disabled) {
+    background: #075071;
+    box-shadow: 0 0 12px #00eaff55;
+}
+
+.action-btn.restart {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+.action-btn.restart:hover:not(:disabled) {
+    background: #063b2a;
+}
+
+.action-btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+.rules {
+    margin-top: 20px;
+    padding: 14px;
+    background: #071522;
+    border: 1px solid #193c55;
+    border-radius: 10px;
+}
+
+.rules h3 {
+    color: var(--green);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.rules p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+footer {
+    text-align: center;
+    color: #607d91;
+    font-size: 11px;
+    margin-top: 22px;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 380px) {
+    .game-panel {
+        padding: 15px 10px;
+    }
+
+    .board {
+        gap: 6px;
+    }
+
+    .cell {
+        border-radius: 9px;
+    }
+
+    h1 {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="logo">HEX<span>CLØWN</span></div>
+        <div class="subtitle">NEON GAMING NETWORK</div>
+
+        <nav class="back-links">
+            <a href="boaandstr.html">← Board & Strategy</a>
+            <a href="GameZone.html">GameZone</a>
+        </nav>
+    </header>
+
+    <main class="game-panel">
+
+        <h1>TIC-TAC-TOE</h1>
+
+        <p class="description">
+            Challenge a friend! Get three symbols in a row
+            horizontally, vertically or diagonally.
+        </p>
+
+        <section class="scoreboard">
+
+            <div class="score-card active" id="xCard">
+                <div class="player-name x-name">❌ PLAYER X</div>
+                <div class="score" id="xScore">0</div>
+            </div>
+
+            <div class="score-card" id="oCard">
+                <div class="player-name o-name">⭕ PLAYER O</div>
+                <div class="score" id="oScore">0</div>
+            </div>
+
+        </section>
+
+        <div class="status" id="status" aria-live="polite">
+            ❌ Player X's turn!
+        </div>
+
+        <div class="board" id="board" role="grid" aria-label="Tic-Tac-Toe board">
+
+            <button class="cell" data-index="0" aria-label="Top left"></button>
+            <button class="cell" data-index="1" aria-label="Top middle"></button>
+            <button class="cell" data-index="2" aria-label="Top right"></button>
+
+            <button class="cell" data-index="3" aria-label="Middle left"></button>
+            <button class="cell" data-index="4" aria-label="Center"></button>
+            <button class="cell" data-index="5" aria-label="Middle right"></button>
+
+            <button class="cell" data-index="6" aria-label="Bottom left"></button>
+            <button class="cell" data-index="7" aria-label="Bottom middle"></button>
+            <button class="cell" data-index="8" aria-label="Bottom right"></button>
+
+        </div>
+
+        <div class="controls">
+            <button class="action-btn" id="undoBtn" onclick="undoMove()" disabled>
+                ↶ UNDO MOVE
+            </button>
+
+            <button class="action-btn restart" onclick="newGame()">
+                ⟳ NEW GAME
+            </button>
+        </div>
+
+        <div class="controls">
+            <button class="action-btn" onclick="resetScores()">
+                RESET SCORES
+            </button>
+
+            <button class="action-btn" onclick="showInfo()">
+                GAME INFO
+            </button>
+        </div>
+
+        <section class="rules">
+            <h3>HOW TO PLAY</h3>
+            <p>
+                1. Player X starts the game.<br>
+                2. Players take turns selecting empty squares.<br>
+                3. Connect three matching symbols in a straight line to win.<br>
+                4. If all nine squares are filled without a winner, it's a draw.<br>
+                5. Use Undo to take back the last move.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        © 2026 HEXCLØWN • THINK SMART. PLAY DIFFERENT.
+    </footer>
+
+</div>
+
+<script>
+"use strict";
+
+let cells = Array(9).fill("");
+let currentPlayer = "X";
+let gameOver = false;
+let winningLine = [];
+let history = [];
+
+let scores = {
+    X: 0,
+    O: 0
+};
+
+const board = document.getElementById("board");
+const cellButtons = document.querySelectorAll(".cell");
+const statusElement = document.getElementById("status");
+const undoButton = document.getElementById("undoBtn");
+
+const WINNING_COMBINATIONS = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+
+    [0, 4, 8],
+    [2, 4, 6]
+];
+
+function saveState() {
+    history.push({
+        cells: [...cells],
+        currentPlayer,
+        gameOver,
+        winningLine: [...winningLine],
+        scores: { ...scores }
+    });
+
+    undoButton.disabled = history.length === 0;
+}
+
+function renderBoard() {
+    cellButtons.forEach((button, index) => {
+
+        const value = cells[index];
+
+        button.textContent = value;
+        button.className = "cell";
+
+        if (value === "X") {
+            button.classList.add("x");
+        }
+
+        if (value === "O") {
+            button.classList.add("o");
+        }
+
+        if (winningLine.includes(index)) {
+            button.classList.add("winning");
+        }
+
+        button.disabled = gameOver || value !== "";
+
+        button.setAttribute(
+            "aria-label",
+            value ? "Square " + (index + 1) + ": " + value : "Empty square " + (index + 1)
+        );
+    });
+
+    updateScoreboard();
+}
+
+function updateScoreboard() {
+    document.getElementById("xScore").textContent = scores.X;
+    document.getElementById("oScore").textContent = scores.O;
+
+    document.getElementById("xCard").classList.toggle(
+        "active",
+        !gameOver && currentPlayer === "X"
+    );
+
+    document.getElementById("oCard").classList.toggle(
+        "active",
+        !gameOver && currentPlayer === "O"
+    );
+}
+
+function setStatus(message, type = "") {
+    statusElement.textContent = message;
+    statusElement.className = "status";
+
+    if (type) {
+        statusElement.classList.add(type);
+    }
+}
+
+function checkWinner() {
+    for (const combination of WINNING_COMBINATIONS) {
+
+        const [a, b, c] = combination;
+
+        if (
+            cells[a] !== "" &&
+            cells[a] === cells[b] &&
+            cells[b] === cells[c]
+        ) {
+            return combination;
+        }
+    }
+
+    return null;
+}
+
+function playMove(index) {
+    if (gameOver || cells[index] !== "") return;
+
+    saveState();
+
+    cells[index] = currentPlayer;
+
+    const winner = checkWinner();
+
+    if (winner) {
+
+        winningLine = winner;
+        gameOver = true;
+        scores[currentPlayer]++;
+
+        setStatus(
+            "🏆 PLAYER " + currentPlayer + " WINS!",
+            "winner"
+        );
+
+    } else if (cells.every(cell => cell !== "")) {
+
+        gameOver = true;
+
+        setStatus(
+            "🤝 IT'S A DRAW! WELL PLAYED!",
+            "draw"
+        );
+
+    } else {
+
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
+
+        setStatus(
+            (currentPlayer === "X" ? "❌" : "⭕") +
+            " Player " + currentPlayer + "'s turn!"
+        );
+    }
+
+    renderBoard();
+}
+
+function undoMove() {
+    if (history.length === 0) return;
+
+    const previous = history.pop();
+
+    cells = [...previous.cells];
+    currentPlayer = previous.currentPlayer;
+    gameOver = previous.gameOver;
+    winningLine = [...previous.winningLine];
+    scores = { ...previous.scores };
+
+    undoButton.disabled = history.length === 0;
+
+    if (gameOver) {
+        setStatus("Move undone. Previous result restored.", "winner");
+    } else {
+        setStatus(
+            (currentPlayer === "X" ? "❌" : "⭕") +
+            " Player " + currentPlayer + "'s turn!"
+        );
+    }
+
+    renderBoard();
+}
+
+function newGame() {
+    cells = Array(9).fill("");
+    currentPlayer = "X";
+    gameOver = false;
+    winningLine = [];
+    history = [];
+
+    undoButton.disabled = true;
+
+    setStatus("❌ Player X's turn!");
+
+    renderBoard();
+}
+
+function resetScores() {
+    scores = {
+        X: 0,
+        O: 0
+    };
+
+    renderBoard();
+
+    if (gameOver) {
+        setStatus("Scores reset. Start a new game!", "winner");
+    }
+}
+
+function showInfo() {
+    alert(
+        "HEXCLØWN TIC-TAC-TOE\n\n" +
+        "Players: 2\n" +
+        "Board: 3 × 3\n" +
+        "Player X starts.\n\n" +
+        "Connect three matching symbols in a straight line to win!"
+    );
+}
+
+// Add click events to all nine squares.
+cellButtons.forEach((button, index) => {
+    button.addEventListener("click", () => {
+        playMove(index);
+    });
+});
+
+// Start the game.
+newGame();
+
+</script>
+
+</body>
+  </html>
+  
