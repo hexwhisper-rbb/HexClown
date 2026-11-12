@@ -1,1 +1,871 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+
+<title>Word Scramble | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #071321;
+    --panel: #0d2032;
+    --green: #39ff88;
+    --cyan: #00eaff;
+    --blue: #168bff;
+    --red: #ff426b;
+    --text: #eafaff;
+    --muted: #9bb2c2;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, #12304a, transparent 40%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    padding-bottom: 30px;
+}
+
+header {
+    text-align: center;
+    padding: 22px 12px;
+    background: rgba(4,15,27,.9);
+    border-bottom: 1px solid rgba(0,234,255,.25);
+}
+
+.logo {
+    color: var(--green);
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px rgba(57,255,136,.5);
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+header p {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-top: 7px;
+}
+
+nav {
+    text-align: center;
+    padding: 13px 8px;
+    background: #091a2a;
+    border-bottom: 1px solid rgba(57,255,136,.15);
+}
+
+nav a {
+    display: inline-block;
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 12px;
+    padding: 8px 12px;
+    margin: 3px;
+    border: 1px solid rgba(0,234,255,.3);
+    border-radius: 6px;
+}
+
+nav a:hover {
+    background: var(--cyan);
+    color: #071321;
+}
+
+.container {
+    width: 92%;
+    max-width: 620px;
+    margin: 30px auto;
+}
+
+.intro {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.intro h1 {
+    color: var(--green);
+    font-size: 29px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 12px rgba(57,255,136,.3);
+}
+
+.intro p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.game-card {
+    background: linear-gradient(145deg, #10283b, #091725);
+    border: 1px solid rgba(0,234,255,.3);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 0 22px rgba(0,234,255,.07);
+}
+
+.setting-label {
+    display: block;
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.difficulty-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+    margin-bottom: 20px;
+}
+
+.difficulty-btn {
+    padding: 13px 5px;
+    border: 1px solid rgba(0,234,255,.3);
+    border-radius: 7px;
+    background: #10283b;
+    color: var(--text);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.difficulty-btn.active {
+    color: #061321;
+    background: var(--green);
+    border-color: var(--green);
+    box-shadow: 0 0 12px rgba(57,255,136,.25);
+}
+
+.start-btn,
+.action-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 7px;
+    background: var(--cyan);
+    color: #061321;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.start-btn:hover,
+.action-btn:hover {
+    background: var(--green);
+    box-shadow: 0 0 14px rgba(57,255,136,.3);
+}
+
+.game-area {
+    display: none;
+}
+
+.top-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    margin-bottom: 14px;
+}
+
+.question-count {
+    color: var(--cyan);
+}
+
+.score {
+    color: var(--green);
+    font-weight: bold;
+}
+
+.timer {
+    color: #ffca65;
+    font-weight: bold;
+}
+
+.timer.warning {
+    color: var(--red);
+}
+
+.progress-track {
+    height: 8px;
+    background: #20364a;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--cyan));
+    transition: width .3s;
+}
+
+.scramble-label {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 13px;
+}
+
+.scrambled-word {
+    text-align: center;
+    color: var(--cyan);
+    font-size: clamp(25px, 7vw, 39px);
+    font-weight: 900;
+    letter-spacing: 8px;
+    padding: 25px 8px;
+    margin-bottom: 18px;
+    background: rgba(0,234,255,.06);
+    border: 1px solid rgba(0,234,255,.2);
+    border-radius: 10px;
+    overflow-wrap: anywhere;
+    text-shadow: 0 0 12px rgba(0,234,255,.3);
+}
+
+.hint {
+    text-align: center;
+    color: #ffca65;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+    min-height: 20px;
+}
+
+.answer-input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid rgba(0,234,255,.4);
+    border-radius: 8px;
+    background: #071827;
+    color: white;
+    outline: none;
+    text-align: center;
+    font-size: 17px;
+    text-transform: uppercase;
+}
+
+.answer-input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 12px rgba(57,255,136,.2);
+}
+
+.action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 13px;
+}
+
+.action-row .action-btn {
+    margin-top: 0;
+}
+
+.hint-btn {
+    background: #20364a;
+    color: #ffca65;
+}
+
+.skip-btn {
+    background: #20364a;
+    color: var(--cyan);
+}
+
+.feedback {
+    text-align: center;
+    min-height: 25px;
+    margin-top: 18px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.feedback.good {
+    color: var(--green);
+}
+
+.feedback.bad {
+    color: var(--red);
+}
+
+.result {
+    display: none;
+    text-align: center;
+}
+
+.result h2 {
+    color: var(--green);
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+.final-score {
+    font-size: 46px;
+    color: var(--cyan);
+    font-weight: bold;
+    margin: 20px 0;
+    text-shadow: 0 0 15px rgba(0,234,255,.4);
+}
+
+.result p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.result-message {
+    color: var(--green) !important;
+    font-size: 18px !important;
+    margin: 12px 0;
+}
+
+.best-score {
+    color: #ffca65 !important;
+    margin-top: 12px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.back-area {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.back-area a {
+    color: var(--green);
+    text-decoration: none;
+    border: 1px solid var(--green);
+    border-radius: 7px;
+    padding: 11px 18px;
+    display: inline-block;
+    font-size: 13px;
+}
+
+.back-area a:hover {
+    background: var(--green);
+    color: #071321;
+}
+
+footer {
+    text-align: center;
+    padding: 20px 10px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+footer strong {
+    color: var(--green);
+}
+
+@media(max-width: 400px) {
+    .game-card {
+        padding: 16px;
+    }
+
+    .scrambled-word {
+        letter-spacing: 4px;
+    }
+
+    .intro h1 {
+        font-size: 25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEXCL<span>Ø</span>WN</div>
+    <p>LEARN • THINK • CONQUER</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="GameZone.html">GameZone</a>
+    <a href="eduandtri.html">Education & Trivia</a>
+</nav>
+
+<main class="container">
+
+    <section class="intro">
+        <h1>🔤 WORD SCRAMBLE</h1>
+        <p>
+            Hidden words are waiting to be discovered.
+            Rearrange the letters, solve the clues and test your vocabulary!
+        </p>
+    </section>
+
+    <section class="game-card">
+
+        <div id="setupArea">
+
+            <label class="setting-label">SELECT DIFFICULTY</label>
+
+            <div class="difficulty-options">
+
+                <button class="difficulty-btn active"
+                    onclick="setDifficulty('easy', this)">
+                    EASY
+                </button>
+
+                <button class="difficulty-btn"
+                    onclick="setDifficulty('medium', this)">
+                    MEDIUM
+                </button>
+
+                <button class="difficulty-btn"
+                    onclick="setDifficulty('hard', this)">
+                    HARD
+                </button>
+
+            </div>
+
+            <p style="color:#9bb2c2;font-size:13px;line-height:1.7;margin-bottom:18px">
+                EASY: Short and familiar words<br>
+                MEDIUM: Everyday and descriptive words<br>
+                HARD: Longer and more challenging words
+            </p>
+
+            <button class="start-btn" onclick="startGame()">
+                START GAME →
+            </button>
+
+        </div>
+
+        <div id="gameArea" class="game-area">
+
+            <div class="top-info">
+                <span class="question-count" id="questionCount">
+                    WORD 1 / 20
+                </span>
+
+                <span class="score" id="scoreDisplay">
+                    SCORE: 0
+                </span>
+
+                <span class="timer" id="timerDisplay">
+                    TIME: 30s
+                </span>
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <p class="scramble-label">UNSCRAMBLE THIS WORD</p>
+
+            <div class="scrambled-word" id="scrambledWord">
+                RTAE
+            </div>
+
+            <div class="hint" id="hintText">
+                Hint: Something you drink
+            </div>
+
+            <input
+                type="text"
+                id="answerInput"
+                class="answer-input"
+                placeholder="TYPE YOUR ANSWER"
+                autocomplete="off"
+                autocapitalize="characters"
+                aria-label="Your word answer"
+            >
+
+            <div class="action-row">
+                <button class="action-btn hint-btn" onclick="showHint()">
+                    SHOW HINT
+                </button>
+
+                <button class="action-btn skip-btn" onclick="skipWord()">
+                    SKIP WORD →
+                </button>
+            </div>
+
+            <button class="action-btn" onclick="checkAnswer()"
+                style="margin-top:12px">
+                SUBMIT ANSWER
+            </button>
+
+            <div class="feedback" id="feedback"></div>
+
+        </div>
+
+        <div id="resultArea" class="result">
+
+            <h2>GAME COMPLETED!</h2>
+
+            <div class="final-score" id="finalScore">
+                0 / 20
+            </div>
+
+            <p id="percentage"></p>
+
+            <p class="result-message" id="resultMessage"></p>
+
+            <p class="best-score" id="bestScore"></p>
+
+            <button class="action-btn" onclick="restartGame()">
+                PLAY AGAIN ↻
+            </button>
+
+            <button class="action-btn" onclick="backToSetup()"
+                style="background:#20364a;color:#eafaff;margin-top:12px">
+                CHANGE DIFFICULTY
+            </button>
+
+        </div>
+
+    </section>
+
+    <div class="back-area">
+        <a href="eduandtri.html">← BACK TO EDUCATION & TRIVIA</a>
+    </div>
+
+</main>
+
+<footer>
+    <strong>HEXCLØWN</strong><br>
+    Your world of games, skills and entertainment.<br>
+    © 2026 HEXCLØWN. All rights reserved.
+</footer>
+
+<script>
+
+const wordBank = {
+
+    easy: [
+        {word:"APPLE", hint:"A popular fruit"},
+        {word:"HOUSE", hint:"A place where people live"},
+        {word:"WATER", hint:"Something you drink"},
+        {word:"CHAIR", hint:"Something you sit on"},
+        {word:"BREAD", hint:"A common breakfast food"},
+        {word:"TIGER", hint:"A striped wild animal"},
+        {word:"CLOUD", hint:"You can see it in the sky"},
+        {word:"MUSIC", hint:"You listen to it"},
+        {word:"PLANT", hint:"A living thing that grows"},
+        {word:"SMILE", hint:"A happy facial expression"},
+        {word:"TRAIN", hint:"A vehicle that runs on tracks"},
+        {word:"LIGHT", hint:"It helps you see"},
+        {word:"SWEET", hint:"The opposite of sour"},
+        {word:"BEACH", hint:"A sandy place beside the sea"},
+        {word:"FRUIT", hint:"An edible part of many plants"},
+        {word:"PHONE", hint:"A device used for communication"},
+        {word:"TABLE", hint:"Furniture with a flat top"},
+        {word:"GREEN", hint:"The colour of many leaves"},
+        {word:"DANCE", hint:"Moving your body to music"},
+        {word:"RIVER", hint:"A natural flowing body of water"}
+    ],
+
+    medium: [
+        {word:"PLANET", hint:"A large object orbiting a star"},
+        {word:"GARDEN", hint:"A place where flowers grow"},
+        {word:"DOCTOR", hint:"A person who treats sick people"},
+        {word:"SCHOOL", hint:"A place where students learn"},
+        {word:"JOURNEY", hint:"An act of travelling"},
+        {word:"RAINBOW", hint:"A colourful arc in the sky"},
+        {word:"LIBRARY", hint:"A place full of books"},
+        {word:"PICTURE", hint:"An image or photograph"},
+        {word:"CAPTAIN", hint:"The leader of a ship or team"},
+        {word:"KITCHEN", hint:"A room where food is prepared"},
+        {word:"ANIMAL", hint:"A living creature"},
+        {word:"MARKET", hint:"A place where goods are sold"},
+        {word:"FAMILY", hint:"A group of related people"},
+        {word:"COUNTRY", hint:"A nation with its own government"},
+        {word:"COMPUTER", hint:"An electronic machine for processing data"},
+        {word:"MOUNTAIN", hint:"A very high natural landform"},
+        {word:"FREEDOM", hint:"The state of being free"},
+        {word:"HISTORY", hint:"The study of past events"},
+        {word:"DIAMOND", hint:"A very hard precious stone"},
+        {word:"KEYBOARD", hint:"An input device with keys"}
+    ],
+
+    hard: [
+        {word:"KNOWLEDGE", hint:"Information and understanding gained through learning"},
+        {word:"ADVENTURE", hint:"An exciting or unusual experience"},
+        {word:"EDUCATION", hint:"The process of teaching and learning"},
+        {word:"CHALLENGE", hint:"A difficult task that tests your ability"},
+        {word:"DISCOVERY", hint:"Finding something previously unknown"},
+        {word:"TECHNOLOGY", hint:"The use of scientific knowledge for practical purposes"},
+        {word:"CREATIVITY", hint:"The ability to produce original ideas"},
+        {word:"ENVIRONMENT", hint:"The natural world around us"},
+        {word:"IMAGINATION", hint:"The ability to form ideas in your mind"},
+        {word:"INTELLIGENCE", hint:"The ability to learn and understand"},
+        {word:"CELEBRATION", hint:"An event marking a special occasion"},
+        {word:"COMMUNICATION", hint:"The exchange of information"},
+        {word:"DEVELOPMENT", hint:"The process of growth or progress"},
+        {word:"INDEPENDENT", hint:"Not controlled by another person or thing"},
+        {word:"OPPORTUNITY", hint:"A chance to do something"},
+        {word:"EXPERIENCE", hint:"Knowledge gained from doing something"},
+        {word:"INNOVATION", hint:"A new idea or method"},
+        {word:"CURIOSITY", hint:"A strong desire to learn or know something"},
+        {word:"RESPONSIBILITY", hint:"A duty or obligation"},
+        {word:"DETERMINATION", hint:"The quality of continuing despite difficulties"}
+    ]
+};
+
+let difficulty = "easy";
+let gameWords = [];
+let currentWord = 0;
+let score = 0;
+let timeLeft = 30;
+let timerInterval = null;
+let answered = false;
+let hintUsed = false;
+
+const TOTAL_WORDS = 20;
+
+const setupArea = document.getElementById("setupArea");
+const gameArea = document.getElementById("gameArea");
+const resultArea = document.getElementById("resultArea");
+const answerInput = document.getElementById("answerInput");
+const scrambledWord = document.getElementById("scrambledWord");
+const feedback = document.getElementById("feedback");
+const progressBar = document.getElementById("progressBar");
+const timerDisplay = document.getElementById("timerDisplay");
+
+function setDifficulty(level, button) {
+
+    difficulty = level;
+
+    document.querySelectorAll(".difficulty-btn").forEach(function(btn) {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+}
+
+function shuffleWord(word) {
+
+    let letters = word.split("");
+
+    for (let i = letters.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [letters[i], letters[j]] = [letters[j], letters[i]];
+    }
+
+    let result = letters.join("");
+
+    // Try again if the scrambled word is identical.
+    if (result === word && word.length > 1) {
+        const first = letters[0];
+        letters[0] = letters[1];
+        letters[1] = first;
+        result = letters.join("");
+    }
+
+    return result;
+}
+
+function startGame() {
+
+    clearInterval(timerInterval);
+
+    gameWords = wordBank[difficulty].map(function(item) {
+        return {
+            word: item.word,
+            hint: item.hint
+        };
+    });
+
+    currentWord = 0;
+    score = 0;
+
+    setupArea.style.display = "none";
+    resultArea.style.display = "none";
+    gameArea.style.display = "block";
+
+    loadWord();
+}
+
+function loadWord() {
+
+    clearInterval(timerInterval);
+
+    answered = false;
+    hintUsed = false;
+    timeLeft = 30;
+
+    feedback.textContent = "";
+    feedback.className = "feedback";
+
+    answerInput.disabled = false;
+    answerInput.value = "";
+
+    const item = gameWords[currentWord];
+
+    scrambledWord.textContent = shuffleWord(item.word);
+
+    document.getElementById("hintText").textContent =
+        "Hint: " + item.hint;
+
+    document.getElementById("questionCount").textContent =
+        "WORD " + (currentWord + 1) + " / " + TOTAL_WORDS;
+
+    document.getElementById("scoreDisplay").textContent =
+        "SCORE: " + score;
+
+    progressBar.style.width =
+        (currentWord / TOTAL_WORDS * 100) + "%";
+
+    timerDisplay.textContent = "TIME: " + timeLeft + "s";
+    timerDisplay.classList.remove("warning");
+
+    answerInput.focus();
+
+    timerInterval = setInterval(function() {
+
+        if (answered) return;
+
+        timeLeft--;
+
+        timerDisplay.textContent = "TIME: " + timeLeft + "s";
+
+        if (timeLeft <= 5) {
+            timerDisplay.classList.add("warning");
+        }
+
+        if (timeLeft <= 0) {
+            timeUp();
+        }
+
+    }, 1000);
+}
+
+function showHint() {
+
+    if (answered || hintUsed) return;
+
+    hintUsed = true;
+
+    document.getElementById("hintText").textContent =
+        "Hint: " + gameWords[currentWord].hint +
+        " (Hint used: reduced points)";
+
+}
+
+function checkAnswer() {
+
+    if (answered) return;
+
+    const userAnswer = answerInput.value.trim().toUpperCase();
+
+    if (!userAnswer) {
+        feedback.textContent = "Enter a word first!";
+        feedback.className = "feedback bad";
+        return;
+    }
+
+    const correctWord = gameWords[currentWord].word;
+
+    if (userAnswer === correctWord) {
+
+        answered = true;
+        clearInterval(timerInterval);
+
+        const points = hintUsed ? 5 : 10;
+
+        score += points;
+
+        feedback.textContent =
+            "✓ CORRECT! +" + points + " POINTS";
+
+        feedback.className = "feedback good";
+
+        finishWord();
+
+    } else {
+
+        feedback.textContent =
+            "✗ NOT QUITE! Try again!";
+
+        feedback.className = "feedback bad";
+
+        answerInput.value = "";
+        answerInput.focus();
+    }
+}
+
+function timeUp() {
+
+    if (answered) return;
+
+    answered = true;
+    clearInterval(timerInterval);
+
+    feedback.textContent =
+        "⌛ TIME'S UP! The word was " +
+        gameWords[currentWord].word;
+
+    feedback.className = "feedback bad";
+
+    answerInput.disabled = true;
+
+    finishWord();
+}
+
+function skipWord() {
+
+    if (answered) return;
+
+    answered = true;
+    clearInterval(timerInterval);
+
+    feedback.textContent =
+        "Skipped! The word was " +
+        gameWords[currentWord].word;
+
+    feedback.className = "feedback bad";
+
+    answerInput.disabled = true;
+
+    finishWord();
+}
+
+function finishWord() {
+
+    answerInput.disabled = true;
+
+    document.getElementById("scoreDisplay").textContent =
+        "SCORE: " + score;
+
+    progressBar.style.width =
+        ((currentWord + 1) / TOTAL_WORDS * 100) + "%";
+
+    setTimeout(function() {
+
+        if (currentWord < TOTAL_WORDS - 1) {
+            currentWord++;
+            loadWord();
+        } else {
+            showResults();
+        }
+
+    }, 1300);
+}
+
+function showResults() {
+
+    clearInterval(timerInterval);
+
+    gameArea.style.display = "none";
+    resultA
