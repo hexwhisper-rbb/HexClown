@@ -1,1 +1,876 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+
+<title>Checkers Classic | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #071321;
+    --panel: #102337;
+    --cyan: #00eaff;
+    --green: #00ff88;
+    --blue: #168bff;
+    --red: #ff426b;
+    --text: #eafaff;
+    --muted: #91a8bb;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    padding: 17px 5%;
+    background: #091a2b;
+    border-bottom: 1px solid #174257;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--green);
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px var(--green);
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+.nav {
+    display: flex;
+    gap: 8px;
+}
+
+.nav a {
+    color: var(--cyan);
+    text-decoration: none;
+    border: 1px solid var(--cyan);
+    padding: 9px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.nav a:hover {
+    background: var(--cyan);
+    color: #071321;
+}
+
+.hero {
+    text-align: center;
+    padding: 30px 15px 20px;
+}
+
+.hero h1 {
+    font-size: clamp(27px, 6vw, 40px);
+    color: var(--cyan);
+    text-shadow: 0 0 15px #00eaff66;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-top: 12px;
+}
+
+.line {
+    width: 70px;
+    height: 3px;
+    background: var(--green);
+    margin: 17px auto;
+    box-shadow: 0 0 12px var(--green);
+}
+
+.container {
+    width: 94%;
+    max-width: 600px;
+    margin: auto;
+    padding-bottom: 35px;
+}
+
+.game-panel {
+    background: var(--panel);
+    border: 1px solid #174257;
+    border-radius: 14px;
+    padding: 18px 12px;
+    box-shadow: 0 0 20px #00eaff0d;
+}
+
+.scoreboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 17px;
+}
+
+.player {
+    background: #0a1b2b;
+    border: 1px solid #24506a;
+    border-radius: 9px;
+    padding: 13px 8px;
+    text-align: center;
+}
+
+.player.active {
+    border-color: var(--green);
+    box-shadow: 0 0 12px #00ff8830;
+}
+
+.player h3 {
+    font-size: 14px;
+    margin-bottom: 7px;
+}
+
+.player.red h3 {
+    color: var(--red);
+}
+
+.player.blue h3 {
+    color: var(--blue);
+}
+
+.player p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+#turnStatus {
+    text-align: center;
+    padding: 13px 8px;
+    color: var(--green);
+    font-size: 14px;
+    font-weight: bold;
+    min-height: 44px;
+    line-height: 1.5;
+}
+
+.board-wrap {
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+    padding: 5px;
+    background: #091a2b;
+    border: 2px solid var(--cyan);
+    border-radius: 7px;
+    box-shadow: 0 0 16px #00eaff25;
+}
+
+.board {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+}
+
+.square {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.light {
+    background: #b9cbd1;
+}
+
+.dark {
+    background: #163c52;
+}
+
+.square.selected {
+    outline: 3px solid var(--green);
+    outline-offset: -3px;
+    background: #276c59;
+}
+
+.square.valid::after {
+    content: "";
+    width: 25%;
+    height: 25%;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--green);
+}
+
+.piece {
+    width: 78%;
+    height: 78%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(13px, 3vw, 23px);
+    font-weight: bold;
+    border: 3px solid rgba(255,255,255,.55);
+    box-shadow: inset 0 -4px 5px #0006,
+                0 3px 5px #0008;
+    pointer-events: none;
+}
+
+.red-piece {
+    color: white;
+    background: radial-gradient(circle at 30% 25%, #ff9aa9, #e71949 65%, #870b2b);
+    box-shadow: 0 0 9px #ff426b88, inset 0 -4px 5px #0006;
+}
+
+.blue-piece {
+    color: white;
+    background: radial-gradient(circle at 30% 25%, #9deaff, #0879e8 65%, #064080);
+    box-shadow: 0 0 9px #168bff88, inset 0 -4px 5px #0006;
+}
+
+.king {
+    border-color: #ffe66b;
+    color: #ffe66b;
+    text-shadow: 0 0 5px #ffe66b;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.control-btn {
+    padding: 12px 16px;
+    background: #0b2a3e;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.control-btn:hover {
+    background: var(--cyan);
+    color: #071321;
+}
+
+.rules {
+    margin-top: 22px;
+    padding: 15px;
+    background: #0a1b2b;
+    border-radius: 9px;
+    border: 1px solid #174257;
+}
+
+.rules h3 {
+    color: var(--green);
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.rules p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+.rules strong {
+    color: var(--cyan);
+}
+
+footer {
+    text-align: center;
+    background: #091a2b;
+    border-top: 1px solid #174257;
+    padding: 22px 10px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+footer span {
+    color: var(--green);
+}
+
+button:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 2px;
+}
+
+@media(max-width:400px) {
+    .game-panel {
+        padding: 12px 7px;
+    }
+
+    .piece {
+        border-width: 2px;
+    }
+
+    .control-btn {
+        padding: 11px 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEXCL<span>Ø</span>WN</div>
+
+    <nav class="nav">
+        <a href="boaandstr.html">← BOARD GAMES</a>
+        <a href="GameZone.html">GAME ZONE</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <h1>CHECKERS CLASSIC</h1>
+
+    <div class="line"></div>
+
+    <p>
+        Think ahead. Capture your opponent.<br>
+        Become the master of the board.
+    </p>
+</section>
+
+<main class="container">
+
+<div class="game-panel">
+
+    <div class="scoreboard">
+
+        <div class="player red active" id="redPlayer">
+            <h3>🔴 RED PLAYER</h3>
+            <p>Pieces: <span id="redCount">12</span></p>
+        </div>
+
+        <div class="player blue" id="bluePlayer">
+            <h3>🔵 BLUE PLAYER</h3>
+            <p>Pieces: <span id="blueCount">12</span></p>
+        </div>
+
+    </div>
+
+    <div id="turnStatus" aria-live="polite">
+        RED PLAYER'S TURN
+    </div>
+
+    <div class="board-wrap">
+        <div class="board" id="board"></div>
+    </div>
+
+    <div class="controls">
+
+        <button class="control-btn" onclick="newGame()">
+            ↻ NEW GAME
+        </button>
+
+        <button class="control-btn" onclick="undoMove()">
+            ↶ UNDO MOVE
+        </button>
+
+    </div>
+
+    <div class="rules">
+
+        <h3>HOW TO PLAY</h3>
+
+        <p>
+            <strong>1.</strong> Red moves first.<br>
+            <strong>2.</strong> Select one of your pieces, then tap a highlighted square to move.<br>
+            <strong>3.</strong> Regular pieces move diagonally forward by one square.<br>
+            <strong>4.</strong> Jump over an opponent's piece to capture it.<br>
+            <strong>5.</strong> Captures are compulsory. If a capture is available, you must make one.<br>
+            <strong>6.</strong> Multiple captures are possible in one turn.<br>
+            <strong>7.</strong> Reach the opposite end to become a KING. Kings move diagonally in both directions.<br>
+            <strong>8.</strong> Capture all your opponent's pieces or leave them with no legal moves to win.
+        </p>
+
+    </div>
+
+</div>
+
+</main>
+
+<footer>
+    <p>© 2026 <span>HEXCLØWN</span> — ALL RIGHTS RESERVED.</p>
+    <p>THINK DIFFERENT. PLAY SMART. STAY CURIOUS.</p>
+</footer>
+
+<script>
+
+const boardElement = document.getElementById("board");
+const turnStatus = document.getElementById("turnStatus");
+
+let board = [];
+let turn = "red";
+let selected = null;
+let legalMoves = [];
+let forcedPiece = null;
+let gameOver = false;
+let history = [];
+
+function createEmptyBoard() {
+    return Array.from({length:8}, () => Array(8).fill(null));
+}
+
+function newGame() {
+
+    board = createEmptyBoard();
+
+    turn = "red";
+    selected = null;
+    legalMoves = [];
+    forcedPiece = null;
+    gameOver = false;
+    history = [];
+
+    // Blue pieces at the top.
+    for(let r=0; r<3; r++) {
+        for(let c=0; c<8; c++) {
+            if((r+c)%2===1) {
+                board[r][c] = {
+                    color:"blue",
+                    king:false
+                };
+            }
+        }
+    }
+
+    // Red pieces at the bottom.
+    for(let r=5; r<8; r++) {
+        for(let c=0; c<8; c++) {
+            if((r+c)%2===1) {
+                board[r][c] = {
+                    color:"red",
+                    king:false
+                };
+            }
+        }
+    }
+
+    renderBoard();
+    updateStatus("RED PLAYER'S TURN");
+}
+
+function saveHistory() {
+    history.push({
+        board: board.map(row =>
+            row.map(piece =>
+                piece ? {...piece} : null
+            )
+        ),
+        turn,
+        forcedPiece: forcedPiece ? {...forcedPiece} : null,
+        gameOver
+    });
+}
+
+function undoMove() {
+
+    if(history.length===0) {
+        updateStatus("NO MOVES TO UNDO!");
+        return;
+    }
+
+    const previous = history.pop();
+
+    board = previous.board;
+    turn = previous.turn;
+    forcedPiece = previous.forcedPiece;
+    gameOver = previous.gameOver;
+
+    selected = null;
+    legalMoves = [];
+
+    renderBoard();
+    updateStatus(
+        gameOver ? "GAME OVER" : turn.toUpperCase()+" PLAYER'S TURN"
+    );
+}
+
+function getDirections(piece) {
+
+    if(piece.king) {
+        return [-1,1];
+    }
+
+    return piece.color==="red" ? [-1] : [1];
+}
+
+function inside(r,c) {
+    return r>=0 && r<8 && c>=0 && c<8;
+}
+
+function getPieceMoves(r,c,capturesOnly=false) {
+
+    const piece = board[r][c];
+
+    if(!piece) return [];
+
+    let moves = [];
+    const directions = getDirections(piece);
+
+    for(const dr of directions) {
+
+        for(const dc of [-1,1]) {
+
+            const nr = r+dr;
+            const nc = c+dc;
+
+            if(!inside(nr,nc)) continue;
+
+            if(!board[nr][nc]) {
+
+                if(!capturesOnly) {
+                    moves.push({
+                        fromR:r,
+                        fromC:c,
+                        toR:nr,
+                        toC:nc,
+                        capture:false
+                    });
+                }
+
+            } else if(board[nr][nc].color!==piece.color) {
+
+                const jr = r+dr*2;
+                const jc = c+dc*2;
+
+                if(inside(jr,jc) && !board[jr][jc]) {
+
+                    moves.push({
+                        fromR:r,
+                        fromC:c,
+                        toR:jr,
+                        toC:jc,
+                        capture:true,
+                        capturedR:nr,
+                        capturedC:nc
+                    });
+
+                }
+            }
+        }
+    }
+
+    return moves;
+}
+
+function getAllMoves(color) {
+
+    let moves = [];
+    let captures = [];
+
+    for(let r=0;r<8;r++) {
+        for(let c=0;c<8;c++) {
+
+            const piece = board[r][c];
+
+            if(!piece || piece.color!==color) continue;
+
+            const pieceMoves = getPieceMoves(r,c);
+
+            moves.push(...pieceMoves);
+
+            captures.push(
+                ...pieceMoves.filter(move=>move.capture)
+            );
+        }
+    }
+
+    // Captures are compulsory.
+    return captures.length ? captures : moves;
+}
+
+function handleSquareClick(r,c) {
+
+    if(gameOver) return;
+
+    const piece = board[r][c];
+
+    // During a multiple jump, only the moving piece can be selected.
+    if(forcedPiece) {
+
+        if(selected &&
+           legalMoves.some(m=>m.toR===r && m.toC===c)) {
+            makeMove(legalMoves.find(m=>m.toR===r && m.toC===c));
+            return;
+        }
+
+        return;
+    }
+
+    // If a piece is already selected, try to move.
+    if(selected) {
+
+        const move = legalMoves.find(
+            m=>m.toR===r && m.toC===c
+        );
+
+        if(move) {
+            makeMove(move);
+            return;
+        }
+
+    }
+
+    // Select a current player's piece.
+    if(piece && piece.color===turn) {
+
+        const allMoves = getAllMoves(turn);
+
+        if(!allMoves.some(m=>m.fromR===r && m.fromC===c)) {
+            updateStatus("THAT PIECE CANNOT MOVE!");
+            return;
+        }
+
+        selected = {r,c};
+
+        legalMoves = allMoves.filter(
+            m=>m.fromR===r && m.fromC===c
+        );
+
+        renderBoard();
+
+        if(legalMoves.some(m=>m.capture)) {
+            updateStatus("SELECT A HIGHLIGHTED CAPTURE!");
+        } else {
+            updateStatus("SELECT A HIGHLIGHTED SQUARE!");
+        }
+
+        return;
+    }
+
+    selected = null;
+    legalMoves = [];
+
+    renderBoard();
+
+    updateStatus(turn.toUpperCase()+" PLAYER'S TURN");
+}
+
+function makeMove(move) {
+
+    saveHistory();
+
+    const piece = board[move.fromR][move.fromC];
+
+    board[move.fromR][move.fromC] = null;
+    board[move.toR][move.toC] = piece;
+
+    if(move.capture) {
+        board[move.capturedR][move.capturedC] = null;
+    }
+
+    // King promotion.
+    if(
+        (piece.color==="red" && move.toR===0) ||
+        (piece.color==="blue" && move.toR===7)
+    ) {
+        piece.king = true;
+
+        // In standard American checkers, promotion ends the turn.
+        forcedPiece = null;
+        finishTurn();
+        return;
+    }
+
+    // Check for additional jumps.
+    if(move.capture) {
+
+        const nextCaptures = getPieceMoves(
+            move.toR,
+            move.toC,
+            true
+        );
+
+        if(nextCaptures.length) {
+
+            forcedPiece = {
+                r:move.toR,
+                c:move.toC
+            };
+
+            selected = forcedPiece;
+
+            legalMoves = nextCaptures;
+
+            renderBoard();
+
+            updateStatus(
+                turn.toUpperCase()+
+                " PLAYER: MAKE ANOTHER JUMP!"
+            );
+
+            return;
+        }
+    }
+
+    forcedPiece = null;
+
+    finishTurn();
+}
+
+function finishTurn() {
+
+    selected = null;
+    legalMoves = [];
+
+    turn = turn==="red" ? "blue" : "red";
+
+    const redCount = board.flat().filter(
+        p=>p && p.color==="red"
+    ).length;
+
+    const blueCount = board.flat().filter(
+        p=>p && p.color==="blue"
+    ).length;
+
+    renderBoard();
+
+    if(redCount===0) {
+        endGame("BLUE PLAYER WINS!");
+        return;
+    }
+
+    if(blueCount===0) {
+        endGame("RED PLAYER WINS!");
+        return;
+    }
+
+    const remainingMoves = getAllMoves(turn);
+
+    if(remainingMoves.length===0) {
+        endGame(
+            (turn==="red"?"BLUE":"RED")+
+            " PLAYER WINS!"
+        );
+        return;
+    }
+
+    updateStatus(turn.toUpperCase()+" PLAYER'S TURN");
+}
+
+function endGame(message) {
+
+    gameOver = true;
+
+    selected = null;
+    legalMoves = [];
+
+    renderBoard();
+
+    updateStatus("🏆 "+message+" — START A NEW GAME!");
+}
+
+function updateStatus(message) {
+    turnStatus.textContent = message;
+
+    document.getElementById("redPlayer")
+        .classList.toggle("active",turn==="red"&&!gameOver);
+
+    document.getElementById("bluePlayer")
+        .classList.toggle("active",turn==="blue"&&!gameOver);
+}
+
+function renderBoard() {
+
+    boardElement.innerHTML = "";
+
+    let redCount = 0;
+    let blueCount = 0;
+
+    for(let r=0;r<8;r++) {
+
+        for(let c=0;c<8;c++) {
+
+            const square = document.createElement("button");
+
+            square.type = "button";
+            square.className = "square "+
+                ((r+c)%2===0 ? "light":"dark");
+
+            const piece = board[r][c];
+
+            if(piece) {
+
+                if(piece.color==="red") redCount++;
+                else blueCount++;
+
+                const disc = document.createElement("div");
+
+                disc.className =
+                    "piece "+
+                    (piece.color==="red"?"red-piece":"blue-piece")+
+                    (piece.king?" king":"");
+
+                disc.textContent = piece.king ? "♛" : "";
+
+                square.appendChild(disc);
+            }
+
+            if(
+                selected &&
+                selected.r===r &&
+                selected.c===c
+            ) {
+                square.classList.add("selected");
+            }
+
+            const validMove = legalMoves.some(
+                m=>m.toR===r && m.toC===c
+            );
+
+            if(validMove) {
+                square.classList.add("valid");
+            }
+
+            square.setAttribute(
+                "aria-label",
+                (piece ? piece.color+" piece" : "Empty square")+
+                " row "+(r+1)+" column "+(c+1)
+            );
+
+            square.addEventListener("click",()=>{
+                handleSquareClick(r,c);
+            });
+
+            boardElement.appendChild(square);
+        }
+    }
+
+    document.getElementById("redCount").textContent=redCount;
+    document.getElementById("blueCount").textContent=blueCount;
+}
+
+// Start the game immediately.
+newGame();
+
+</script>
+
+</body>
+      </html>
+
