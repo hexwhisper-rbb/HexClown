@@ -1,0 +1,691 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+
+<title>Learning Hub | HEXCLØWN</title>
+
+<meta name="description" content="HEXCLØWN Learning Hub - interactive study tools, flashcards, quizzes, revision, progress tracking and exam preparation.">
+
+<style>
+:root{
+  --bg:#07131a;
+  --panel:#0d2029;
+  --panel2:#102a34;
+  --line:#1c3c48;
+  --text:#e7f5f5;
+  --muted:#8ba7ad;
+  --cyan:#35e0dc;
+  --green:#8cff75;
+  --yellow:#ffd36b;
+}
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+button,input{font:inherit}
+button{cursor:pointer}
+
+header{
+  padding:16px 5%;
+  background:#091921;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+
+.logo{
+  color:var(--cyan);
+  font-size:21px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+.logo span{color:var(--green)}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+
+.header-btn{
+  text-decoration:none;
+  color:var(--cyan);
+  border:1px solid var(--line);
+  padding:9px 13px;
+  border-radius:8px;
+  font-size:12px;
+  background:transparent;
+}
+
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:25px 15px 50px;
+}
+
+.hero{
+  text-align:center;
+  padding:32px 15px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:
+    radial-gradient(circle at 50% 0%,#16404a 0%,#0d2029 45%,#091921 100%);
+}
+
+.system{
+  display:inline-block;
+  border:1px solid #28534d;
+  color:var(--green);
+  background:#102a25;
+  border-radius:30px;
+  padding:7px 12px;
+  font-size:10px;
+  letter-spacing:1px;
+  margin-bottom:15px;
+}
+
+.hero h1{
+  margin:0;
+  font-size:clamp(28px,6vw,45px);
+  letter-spacing:2px;
+}
+.hero h1 span{color:var(--cyan)}
+
+.hero p{
+  max-width:600px;
+  margin:13px auto 0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.7;
+}
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin:20px 0 25px;
+}
+
+.stat{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:15px;
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  color:var(--green);
+  font-size:24px;
+}
+.stat span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+}
+
+.section-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin:27px 0 15px;
+}
+
+.section-heading h2{
+  margin:0;
+  font-size:20px;
+}
+
+.section-heading p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.search-area{
+  display:flex;
+  gap:10px;
+  margin:17px 0 12px;
+}
+
+.search-area input{
+  flex:1;
+  min-width:0;
+  padding:13px;
+  border-radius:9px;
+  border:1px solid var(--line);
+  background:#061117;
+  color:var(--text);
+  outline:none;
+}
+
+.search-area input:focus{border-color:var(--cyan)}
+
+.search-area button{
+  background:var(--panel2);
+  border:1px solid var(--line);
+  color:var(--cyan);
+  border-radius:9px;
+  padding:0 15px;
+}
+
+.filters{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:19px;
+}
+
+.filter{
+  background:var(--panel);
+  color:var(--muted);
+  border:1px solid var(--line);
+  border-radius:30px;
+  padding:8px 13px;
+  font-size:11px;
+}
+
+.filter.active{
+  color:var(--green);
+  border-color:var(--green);
+  background:#102a25;
+}
+
+.page-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:14px;
+}
+
+.page-card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:13px;
+  padding:17px;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  transition:transform .2s,border-color .2s;
+}
+
+.page-card:hover{
+  transform:translateY(-3px);
+  border-color:var(--cyan);
+}
+
+.card-top{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.card-icon{
+  width:45px;
+  height:45px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--panel2);
+  border:1px solid var(--line);
+  border-radius:11px;
+  font-size:22px;
+  flex-shrink:0;
+}
+
+.card-title{
+  font-size:16px;
+  font-weight:bold;
+  margin:0;
+}
+
+.card-label{
+  color:var(--cyan);
+  font-size:10px;
+  margin-top:5px;
+}
+
+.card-description{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  margin:0 0 14px;
+  flex:1;
+}
+
+.feature-list{
+  list-style:none;
+  padding:0;
+  margin:0 0 15px;
+}
+
+.feature-list li{
+  color:#c4d8dc;
+  font-size:12px;
+  padding:7px 0;
+  border-bottom:1px solid #18313b;
+}
+
+.feature-list li:last-child{border-bottom:0}
+
+.feature-list li::before{
+  content:"✓";
+  color:var(--green);
+  margin-right:8px;
+}
+
+.open-btn{
+  display:block;
+  text-align:center;
+  text-decoration:none;
+  background:var(--cyan);
+  color:#061117;
+  padding:11px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:bold;
+}
+
+.open-btn:hover{background:var(--green)}
+
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  padding:25px;
+  color:var(--muted);
+  border:1px dashed var(--line);
+  border-radius:12px;
+  font-size:13px;
+}
+
+.info-panel{
+  margin-top:25px;
+  padding:18px;
+  border:1px solid var(--line);
+  background:#091921;
+  border-radius:13px;
+}
+
+.info-panel h3{
+  margin:0 0 8px;
+  font-size:16px;
+  color:var(--cyan);
+}
+
+.info-panel p{
+  margin:0;
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+}
+
+footer{
+  border-top:1px solid var(--line);
+  padding:22px 15px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+}
+
+@media(max-width:500px){
+  main{padding:17px 11px 35px}
+  .hero{padding:25px 12px}
+  .stats{gap:7px}
+  .stat{padding:11px 5px}
+  .stat strong{font-size:20px}
+  .stat span{font-size:10px}
+  .page-grid{grid-template-columns:1fr}
+  .search-area button{padding:0 11px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCL<span>Ø</span>WN</div>
+
+  <div class="header-actions">
+    <a class="header-btn" href="index.html">← Home</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="system">● LEARNING SYSTEM ONLINE</div>
+
+    <h1>LEARNING <span>HUB</span></h1>
+
+    <p>
+      A digital learning environment for curious minds.
+      Practise, revise, organise your knowledge and prepare
+      for your next academic challenge.
+    </p>
+
+  </section>
+
+  <!-- STATISTICS -->
+  <section class="stats">
+
+    <div class="stat">
+      <strong>05</strong>
+      <span>Learning Modules</span>
+    </div>
+
+    <div class="stat">
+      <strong>10</strong>
+      <span>Study Features</span>
+    </div>
+
+    <div class="stat">
+      <strong>24/7</strong>
+      <span>Learning Access</span>
+    </div>
+
+  </section>
+
+  <!-- MODULES -->
+  <div class="section-heading">
+    <div>
+      <h2>Learning Modules</h2>
+      <p>Select a module to enter its workspace.</p>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-area">
+    <input
+      type="search"
+      id="searchInput"
+      placeholder="Search learning modules..."
+      autocomplete="off"
+    >
+    <button id="clearSearch" type="button">Clear</button>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters" id="filters">
+
+    <button class="filter active" data-filter="all">All Modules</button>
+
+    <button class="filter" data-filter="practice">Practice</button>
+
+    <button class="filter" data-filter="memory">Memory</button>
+
+    <button class="filter" data-filter="progress">Progress</button>
+
+    <button class="filter" data-filter="exam">Exams</button>
+
+    <button class="filter" data-filter="organisation">Organisation</button>
+
+  </div>
+
+  <!-- MODULE CARDS -->
+  <div class="page-grid" id="moduleGrid">
+
+    <!-- STUDY & PRACTICE -->
+    <article class="page-card" data-category="practice">
+
+      <div class="card-top">
+        <div class="card-icon">🎯</div>
+
+        <div>
+          <h3 class="card-title">Study & Practice</h3>
+          <div class="card-label">MODULE 01 · PRACTICE</div>
+        </div>
+      </div>
+
+      <p class="card-description">
+        Build your own revision cards and test your knowledge
+        using interactive subject quizzes.
+      </p>
+
+      <ul class="feature-list">
+        <li>Interactive Flashcard Deck Builder</li>
+        <li>Multi-Subject Quiz Engine</li>
+        <li>Instant Scoring & Feedback</li>
+      </ul>
+
+      <a href="studypractice.html" class="open-btn">Open Study & Practice →</a>
+
+    </article>
+
+    <!-- MEMORY & LEARNING -->
+    <article class="page-card" data-category="memory">
+
+      <div class="card-top">
+        <div class="card-icon">🧠</div>
+
+        <div>
+          <h3 class="card-title">Memory & Learning</h3>
+          <div class="card-label">MODULE 02 · MEMORY</div>
+        </div>
+      </div>
+
+      <p class="card-description">
+        Strengthen your learning with scheduled revision
+        and a built-in text-to-speech reader.
+      </p>
+
+      <ul class="feature-list">
+        <li>Spaced Repetition Study Mode</li>
+        <li>Audio Pronunciation Reader</li>
+        <li>Text-to-Speech Controls</li>
+      </ul>
+
+      <a href="memorylearning.html" class="open-btn">Open Memory & Learning →</a>
+
+    </article>
+
+    <!-- PROGRESS & REWARDS -->
+    <article class="page-card" data-category="progress">
+
+      <div class="card-top">
+        <div class="card-icon">🏆</div>
+
+        <div>
+          <h3 class="card-title">Progress & Rewards</h3>
+          <div class="card-label">MODULE 03 · ACHIEVEMENT</div>
+        </div>
+      </div>
+
+      <p class="card-description">
+        Monitor your subject mastery, track completed topics
+        and create personal study achievement certificates.
+      </p>
+
+      <ul class="feature-list">
+        <li>Progress Tracker & Mastery Bar</li>
+        <li>Subject Progress Monitoring</li>
+        <li>Printable Study Certificates</li>
+      </ul>
+
+      <a href="progressrewards.html" class="open-btn">Open Progress & Rewards →</a>
+
+    </article>
+
+    <!-- EXAM & WORKSPACE -->
+    <article class="page-card" data-category="exam">
+
+      <div class="card-top">
+        <div class="card-icon">🧮</div>
+
+        <div>
+          <h3 class="card-title">Exam & Workspace</h3>
+          <div class="card-label">MODULE 04 · EXAM PREPARATION</div>
+        </div>
+      </div>
+
+      <p class="card-description">
+        Calculate, write your working notes and keep track
+        of upcoming examination dates.
+      </p>
+
+      <ul class="feature-list">
+        <li>Scientific Calculator & Scratchpad</li>
+        <li>Calculation History</li>
+        <li>Exam Countdown Timer</li>
+      </ul>
+
+      <a href="examworkspace.html" class="open-btn">Open Exam Workspace →</a>
+
+    </article>
+
+    <!-- STUDY ORGANISATION -->
+    <article class="page-card" data-category="organisation">
+
+      <div class="card-top">
+        <div class="card-icon">📚</div>
+
+        <div>
+          <h3 class="card-title">Study Organisation</h3>
+          <div class="card-label">MODULE 05 · ORGANISATION</div>
+        </div>
+      </div>
+
+      <p class="card-description">
+        Keep your revision materials organised and build
+        a daily study routine with manageable goals.
+      </p>
+
+      <ul class="feature-list">
+        <li>Study Notes & Revision Library</li>
+        <li>Daily Study Planner</li>
+        <li>Focus Goals & Progress Tracking</li>
+      </ul>
+
+      <a href="studyorganisation.html" class="open-btn">Open Study Organisation →</a>
+
+    </article>
+
+  </div>
+
+  <!-- INFORMATION -->
+  <section class="info-panel">
+    <h3>HEXCLØWN Learning Environment</h3>
+
+    <p>
+      Your learning workspace is designed to help you practise,
+      revise and organise your academic activities.
+      Most saved information stays in your current browser,
+      so remember to export important notes and keep backups.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  HEXCLØWN © 2026 — Knowledge Is Your Power.
+</footer>
+
+<script>
+const searchInput = document.getElementById("searchInput");
+const clearSearch = document.getElementById("clearSearch");
+const cards = Array.from(document.querySelectorAll(".page-card"));
+const filters = document.querySelectorAll(".filter");
+const moduleGrid = document.getElementById("moduleGrid");
+
+let activeFilter = "all";
+
+function filterModules(){
+
+  const search = searchInput.value.trim().toLowerCase();
+
+  let visibleCount = 0;
+
+  cards.forEach(card=>{
+
+    const category = card.dataset.category;
+
+    const matchesCategory =
+      activeFilter === "all" || category === activeFilter;
+
+    const matchesSearch =
+      card.textContent.toLowerCase().includes(search);
+
+    const visible = matchesCategory && matchesSearch;
+
+    card.style.display = visible ? "flex" : "none";
+
+    if(visible) visibleCount++;
+
+  });
+
+  let empty = document.getElementById("noResults");
+
+  if(visibleCount === 0){
+
+    if(!empty){
+      empty = document.createElement("div");
+      empty.id = "noResults";
+      empty.className = "empty";
+      empty.textContent = "No learning modules found. Try another search.";
+      moduleGrid.appendChild(empty);
+    }
+
+  }else if(empty){
+    empty.remove();
+  }
+
+}
+
+searchInput.addEventListener("input",filterModules);
+
+clearSearch.addEventListener("click",()=>{
+  searchInput.value = "";
+  activeFilter = "all";
+
+  filters.forEach(button=>{
+    button.classList.toggle(
+      "active",
+      button.dataset.filter === "all"
+    );
+  });
+
+  filterModules();
+  searchInput.focus();
+});
+
+filters.forEach(button=>{
+
+  button.addEventListener("click",()=>{
+
+    activeFilter = button.dataset.filter;
+
+    filters.forEach(item=>{
+      item.classList.toggle("active",item === button);
+    });
+
+    filterModules();
+
+  });
+
+});
+
+filterModules();
+</script>
+
+</body>
+      </html>
+      
