@@ -16,13 +16,13 @@
   --green:#00ff9d;
   --text:#e8faff;
   --muted:#91aab4;
-  --border:rgba(0,229,255,.18);
+  --border:rgba(0,229,255,.2);
   --danger:#ff617c;
 }
 *{box-sizing:border-box}
 body{
   margin:0;
-  background:radial-gradient(circle at top,#102b37 0,#07131a 48%,#050d12 100%);
+  background:radial-gradient(circle at top,#102b37,#07131a 55%,#050d12);
   color:var(--text);
   font-family:Arial,Helvetica,sans-serif;
   min-height:100vh;
@@ -31,228 +31,98 @@ header{
   position:sticky;
   top:0;
   z-index:10;
-  background:rgba(5,15,21,.94);
+  background:rgba(5,15,21,.96);
   border-bottom:1px solid var(--border);
   padding:15px 5%;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  backdrop-filter:blur(12px);
 }
-.logo{
-  color:var(--green);
-  font-size:20px;
-  font-weight:900;
-  letter-spacing:2px;
-}
+.logo{color:var(--green);font-size:20px;font-weight:900;letter-spacing:2px}
 .logo span{color:var(--cyan)}
 nav{display:flex;gap:15px;flex-wrap:wrap}
-nav a{
-  color:var(--muted);
-  text-decoration:none;
-  font-size:13px;
-}
+nav a{color:var(--muted);text-decoration:none;font-size:13px}
 nav a:hover{color:var(--green)}
 main{max-width:1050px;margin:auto;padding:25px 16px 55px}
 .hero{text-align:center;padding:25px 10px 30px}
-.eyebrow{
-  color:var(--green);
-  font-size:11px;
-  letter-spacing:3px;
-  font-weight:bold;
-}
+.eyebrow{color:var(--green);font-size:11px;letter-spacing:3px;font-weight:bold}
 h1{font-size:clamp(28px,6vw,43px);margin:12px 0}
 .hero p{color:var(--muted);line-height:1.6;margin:auto;max-width:650px}
 .section{
-  background:rgba(13,32,41,.92);
+  background:rgba(13,32,41,.94);
   border:1px solid var(--border);
   border-radius:17px;
   padding:20px;
   margin:20px 0;
   box-shadow:0 12px 35px rgba(0,0,0,.18);
 }
-.section-heading{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:17px;
-}
+.section-heading{display:flex;align-items:center;gap:12px;margin-bottom:17px}
 .section-icon{
-  width:42px;height:42px;
-  display:grid;place-items:center;
-  border-radius:12px;
-  background:rgba(0,229,255,.1);
-  font-size:21px;
+  width:42px;height:42px;display:grid;place-items:center;
+  border-radius:12px;background:rgba(0,229,255,.1);font-size:21px;
 }
 h2{font-size:21px;margin:0}
 .section-heading p{margin:5px 0 0;color:var(--muted);font-size:13px}
 h3{font-size:15px;margin:18px 0 10px}
 label{display:block;color:var(--muted);font-size:12px;margin:12px 0 6px}
 input,select,textarea{
-  width:100%;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:9px;
-  background:#071820;
-  color:var(--text);
-  outline:none;
-  font:inherit;
-  font-size:14px;
+  width:100%;padding:12px;border:1px solid var(--border);
+  border-radius:9px;background:#071820;color:var(--text);
+  outline:none;font:inherit;font-size:14px;
 }
 input:focus,select:focus,textarea:focus{border-color:var(--cyan)}
 textarea{resize:vertical;min-height:75px}
 button{
-  border:0;
-  border-radius:9px;
-  padding:11px 15px;
-  background:var(--cyan);
-  color:#031116;
-  font-weight:bold;
-  cursor:pointer;
-  font-size:13px;
+  border:0;border-radius:9px;padding:11px 15px;
+  background:var(--cyan);color:#031116;font-weight:bold;
+  cursor:pointer;font-size:13px;
 }
 button:hover{filter:brightness(1.1)}
 button:disabled{opacity:.4;cursor:not-allowed}
 .btn-green{background:var(--green)}
-.btn-dark{
-  background:#17333e;
-  color:var(--text);
-  border:1px solid var(--border);
-}
-.btn-danger{
-  background:rgba(255,97,124,.12);
-  color:#ff91a4;
-  border:1px solid rgba(255,97,124,.3);
-}
+.btn-dark{background:#17333e;color:var(--text);border:1px solid var(--border)}
+.btn-danger{background:rgba(255,97,124,.12);color:#ff91a4;border:1px solid rgba(255,97,124,.3)}
 .btn-small{padding:8px 11px;font-size:12px}
 .button-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.grid-two{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:13px;
-}
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
+.grid-two,.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
 .muted{color:var(--muted);font-size:13px;line-height:1.5}
-.status{
-  min-height:20px;
-  color:var(--green);
-  font-size:12px;
-  margin-top:9px;
-}
+.status{min-height:20px;color:var(--green);font-size:12px;margin-top:9px}
 .flashcard{
-  min-height:205px;
-  border:1px solid rgba(0,229,255,.35);
-  border-radius:15px;
-  background:linear-gradient(145deg,#102e3a,#091820);
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  padding:24px;
-  text-align:center;
-  cursor:pointer;
-  margin-top:15px;
+  min-height:205px;border:1px solid rgba(0,229,255,.35);
+  border-radius:15px;background:linear-gradient(145deg,#102e3a,#091820);
+  display:flex;flex-direction:column;justify-content:center;
+  align-items:center;padding:24px;text-align:center;
+  cursor:pointer;margin-top:15px;
 }
-.flashcard .side-label{
-  color:var(--green);
-  font-size:10px;
-  letter-spacing:2px;
-  margin-bottom:15px;
-}
-.flashcard .card-content{
-  font-size:clamp(18px,4vw,24px);
-  line-height:1.5;
-  overflow-wrap:anywhere;
-}
-.flashcard .tap-hint{font-size:11px;color:var(--muted);margin-top:20px}
+.side-label{color:var(--green);font-size:10px;letter-spacing:2px;margin-bottom:15px}
+.card-content{font-size:clamp(18px,4vw,24px);line-height:1.5;overflow-wrap:anywhere}
+.tap-hint{font-size:11px;color:var(--muted);margin-top:20px}
 .card-count{text-align:center;color:var(--muted);font-size:12px;margin-top:12px}
-.deck-list{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:10px;
-}
+.deck-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .deck-chip{
-  background:#102a34;
-  border:1px solid var(--border);
-  color:var(--text);
-  border-radius:30px;
-  padding:8px 12px;
-  font-size:12px;
+  background:#102a34;border:1px solid var(--border);color:var(--text);
+  border-radius:30px;padding:8px 12px;font-size:12px;
 }
 .deck-chip.active{border-color:var(--green);color:var(--green)}
-.quiz-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  color:var(--muted);
-  font-size:12px;
-  margin:15px 0 10px;
-}
-.progress-track{
-  height:7px;
-  background:#18323d;
-  border-radius:20px;
-  overflow:hidden;
-}
-.progress-fill{
-  height:100%;
-  width:0;
-  background:linear-gradient(90deg,var(--cyan),var(--green));
-  transition:width .25s;
-}
-.question{
-  font-size:19px;
-  line-height:1.5;
-  margin:20px 0;
-}
+.quiz-top{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px;margin:15px 0 10px}
+.progress-track{height:7px;background:#18323d;border-radius:20px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));transition:width .25s}
+.question{font-size:19px;line-height:1.5;margin:20px 0}
 .answers{display:grid;gap:9px}
 .answer-option{
-  background:#102a34;
-  color:var(--text);
-  border:1px solid var(--border);
-  text-align:left;
-  padding:13px;
-  line-height:1.4;
+  background:#102a34;color:var(--text);border:1px solid var(--border);
+  text-align:left;padding:13px;line-height:1.4;
 }
-.answer-option.correct{
-  border-color:var(--green);
-  background:rgba(0,255,157,.12);
-}
-.answer-option.wrong{
-  border-color:var(--danger);
-  background:rgba(255,97,124,.12);
-}
-.feedback{
-  margin-top:13px;
-  padding:12px;
-  border-radius:9px;
-  background:#102a34;
-  font-size:13px;
-  line-height:1.5;
-  display:none;
-}
+.answer-option.correct{border-color:var(--green);background:rgba(0,255,157,.12)}
+.answer-option.wrong{border-color:var(--danger);background:rgba(255,97,124,.12)}
+.feedback{margin-top:13px;padding:12px;border-radius:9px;background:#102a34;font-size:13px;line-height:1.5;display:none}
 .feedback.show{display:block}
 .quiz-result{text-align:center;padding:20px 5px}
-.score-number{
-  color:var(--green);
-  font-size:48px;
-  font-weight:900;
-  margin:15px 0;
-}
+.score-number{color:var(--green);font-size:48px;font-weight:900;margin:15px 0}
 .hidden{display:none!important}
-footer{
-  text-align:center;
-  padding:25px 12px;
-  color:var(--muted);
-  border-top:1px solid var(--border);
-  font-size:12px;
-}
+.divider{height:1px;background:var(--border);margin:20px 0}
+footer{text-align:center;padding:25px 12px;color:var(--muted);border-top:1px solid var(--border);font-size:12px}
 @media(max-width:650px){
   header{padding:13px 4%;align-items:flex-start;flex-direction:column}
   nav{gap:12px}
@@ -277,142 +147,143 @@ footer{
 
 <main>
 
-  <section class="hero">
-    <div class="eyebrow">LEARNING HUB / MODULE 01</div>
-    <h1>Study & <span style="color:var(--green)">Practice</span></h1>
-    <p>Create your own flashcards, test your knowledge across different subjects and improve your learning one question at a time.</p>
-  </section>
+<section class="hero">
+  <div class="eyebrow">LEARNING HUB / MODULE 01</div>
+  <h1>Study & <span style="color:var(--green)">Practice</span></h1>
+  <p>Create your own flashcards, test your knowledge across different subjects and improve your learning one question at a time.</p>
+</section>
 
-  <!-- FLASHCARD BUILDER -->
-  <section class="section" id="flashcards">
-    <div class="section-heading">
-      <div class="section-icon">🗂️</div>
+<!-- FLASHCARD BUILDER -->
+<section class="section" id="flashcards">
+  <div class="section-heading">
+    <div class="section-icon">🗂️</div>
+    <div>
+      <h2>Flashcard Deck Builder</h2>
+      <p>Create and practise your own study cards.</p>
+    </div>
+  </div>
+
+  <label for="deckName">New deck name</label>
+  <div class="grid-two">
+    <input id="deckName" type="text" placeholder="Example: Biology Revision">
+    <button class="btn-green" id="createDeckBtn">+ Create Deck</button>
+  </div>
+
+  <div id="deckStatus" class="status" aria-live="polite"></div>
+
+  <h3>Your Flashcard Decks</h3>
+  <div id="deckList" class="deck-list">
+    <p class="muted">No decks created yet.</p>
+  </div>
+
+  <div id="deckWorkspace" class="hidden">
+    <div class="divider"></div>
+    <h3 id="selectedDeckTitle">Selected Deck</h3>
+    <p class="muted" id="deckInfo"></p>
+
+    <div class="form-grid">
       <div>
-        <h2>Flashcard Deck Builder</h2>
-        <p>Create and practise your own study cards.</p>
+        <label for="cardQuestion">Question / Front</label>
+        <textarea id="cardQuestion" placeholder="Enter your question..."></textarea>
       </div>
-    </div>
-
-    <label for="deckName">New deck name</label>
-    <div class="grid-two">
-      <input id="deckName" type="text" placeholder="Example: Biology Revision">
-      <button class="btn-green" id="createDeckBtn">+ Create Deck</button>
-    </div>
-
-    <div id="deckStatus" class="status" aria-live="polite"></div>
-
-    <h3>Your Flashcard Decks</h3>
-    <div id="deckList" class="deck-list">
-      <p class="muted">No decks created yet.</p>
-    </div>
-
-    <div id="deckWorkspace" class="hidden">
-      <div class="divider"></div>
-      <h3 id="selectedDeckTitle">Selected Deck</h3>
-      <p class="muted" id="deckInfo"></p>
-
-      <div class="form-grid">
-        <div>
-          <label for="cardQuestion">Question / Front</label>
-          <textarea id="cardQuestion" placeholder="Enter your question..."></textarea>
-        </div>
-        <div>
-          <label for="cardAnswer">Answer / Back</label>
-          <textarea id="cardAnswer" placeholder="Enter the answer..."></textarea>
-        </div>
-      </div>
-
-      <div class="button-row">
-        <button id="saveCardBtn">+ Add Flashcard</button>
-        <button class="btn-dark" id="cancelEditBtn">Cancel Edit</button>
-        <button class="btn-danger" id="deleteDeckBtn">Delete Deck</button>
-      </div>
-      <div id="cardStatus" class="status" aria-live="polite"></div>
-
-      <div id="flashcard" class="flashcard" role="button" tabindex="0" aria-label="Flashcard. Tap to reveal the answer.">
-        <div class="side-label" id="cardSide">QUESTION</div>
-        <div class="card-content" id="cardContent">Create a card to begin.</div>
-        <div class="tap-hint">Tap the card to flip it</div>
-      </div>
-
-      <div class="card-count" id="cardCount">0 / 0</div>
-
-      <div class="button-row" style="justify-content:center">
-        <button class="btn-dark" id="previousCardBtn">← Previous</button>
-        <button class="btn-green" id="flipCardBtn">Flip Card</button>
-        <button class="btn-dark" id="nextCardBtn">Next →</button>
-      </div>
-
-      <div class="button-row" style="justify-content:center">
-        <button class="btn-dark btn-small" id="editCardBtn">Edit Current Card</button>
-        <button class="btn-danger btn-small" id="deleteCardBtn">Delete Current Card</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- QUIZ ENGINE -->
-  <section class="section" id="quiz">
-    <div class="section-heading">
-      <div class="section-icon">🧠</div>
       <div>
-        <h2>Multi-Subject Quiz Engine</h2>
-        <p>Test yourself and receive instant feedback.</p>
+        <label for="cardAnswer">Answer / Back</label>
+        <textarea id="cardAnswer" placeholder="Enter the answer..."></textarea>
       </div>
     </div>
 
-    <div id="quizSetup">
-      <label for="subjectSelect">Choose a subject</label>
-      <select id="subjectSelect">
-        <option value="Biology">Biology</option>
-        <option value="Chemistry">Chemistry</option>
-        <option value="Physics">Physics</option>
-        <option value="Mathematics">Mathematics</option>
-        <option value="English">English Language</option>
-        <option value="General">General Knowledge</option>
-      </select>
+    <div class="button-row">
+      <button id="saveCardBtn">+ Add Flashcard</button>
+      <button class="btn-dark" id="cancelEditBtn">Cancel Edit</button>
+      <button class="btn-danger" id="deleteDeckBtn">Delete Deck</button>
+    </div>
+    <div id="cardStatus" class="status" aria-live="polite"></div>
 
-      <label for="questionLimit">Number of questions</label>
-      <select id="questionLimit">
-        <option value="5">5 Questions</option>
-        <option value="10">10 Questions</option>
-        <option value="all">All Available Questions</option>
-      </select>
-
-      <p class="muted">Choose a subject and start your quiz. Each answer is marked immediately.</p>
-      <button class="btn-green" id="startQuizBtn">Start Quiz →</button>
+    <div id="flashcard" class="flashcard" role="button" tabindex="0" aria-label="Tap to reveal the answer">
+      <div class="side-label" id="cardSide">QUESTION</div>
+      <div class="card-content" id="cardContent">Create a card to begin.</div>
+      <div class="tap-hint">Tap the card to flip it</div>
     </div>
 
-    <div id="quizArea" class="hidden">
-      <div class="quiz-top">
-        <span id="quizSubjectLabel">Subject</span>
-        <span id="quizProgressLabel">Question 1</span>
-        <span id="quizScoreLabel">Score: 0</span>
-      </div>
-      <div class="progress-track">
-        <div class="progress-fill" id="quizProgressBar"></div>
-      </div>
+    <div class="card-count" id="cardCount">0 / 0</div>
 
-      <div class="question" id="questionText"></div>
-      <div class="answers" id="answerOptions"></div>
-      <div class="feedback" id="answerFeedback" aria-live="polite"></div>
-
-      <div class="button-row">
-        <button class="btn-green hidden" id="nextQuestionBtn">Next Question →</button>
-      </div>
+    <div class="button-row" style="justify-content:center">
+      <button class="btn-dark" id="previousCardBtn">← Previous</button>
+      <button class="btn-green" id="flipCardBtn">Flip Card</button>
+      <button class="btn-dark" id="nextCardBtn">Next →</button>
     </div>
 
-    <div id="quizResult" class="quiz-result hidden">
-      <div class="eyebrow">QUIZ COMPLETED</div>
-      <h2 id="resultTitle">Well done!</h2>
-      <div class="score-number" id="finalScore">0%</div>
-      <p class="muted" id="resultMessage"></p>
-      <p id="resultDetails"></p>
-      <div class="button-row" style="justify-content:center">
-        <button id="retryQuizBtn">Try Again</button>
-        <button class="btn-dark" id="chooseSubjectBtn">Choose Another Subject</button>
-      </div>
+    <div class="button-row" style="justify-content:center">
+      <button class="btn-dark btn-small" id="editCardBtn">Edit Current Card</button>
+      <button class="btn-danger btn-small" id="deleteCardBtn">Delete Current Card</button>
     </div>
-  </section>
+  </div>
+</section>
+
+<!-- QUIZ ENGINE -->
+<section class="section" id="quiz">
+  <div class="section-heading">
+    <div class="section-icon">🧠</div>
+    <div>
+      <h2>Multi-Subject Quiz Engine</h2>
+      <p>Test yourself and receive instant feedback.</p>
+    </div>
+  </div>
+
+  <div id="quizSetup">
+    <label for="subjectSelect">Choose a subject</label>
+    <select id="subjectSelect">
+      <option value="Biology">Biology</option>
+      <option value="Chemistry">Chemistry</option>
+      <option value="Physics">Physics</option>
+      <option value="Mathematics">Mathematics</option>
+      <option value="English">English Language</option>
+      <option value="General">General Knowledge</option>
+    </select>
+
+    <label for="questionLimit">Number of questions</label>
+    <select id="questionLimit">
+      <option value="5">5 Questions</option>
+      <option value="10">10 Questions</option>
+      <option value="all">All Available Questions</option>
+    </select>
+
+    <p class="muted">Choose a subject and start your quiz. Each answer is marked immediately.</p>
+    <button class="btn-green" id="startQuizBtn">Start Quiz →</button>
+    <div id="quizSetupStatus" class="status" aria-live="polite"></div>
+  </div>
+
+  <div id="quizArea" class="hidden">
+    <div class="quiz-top">
+      <span id="quizSubjectLabel">Subject</span>
+      <span id="quizProgressLabel">Question 1</span>
+      <span id="quizScoreLabel">Score: 0</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="quizProgressBar"></div>
+    </div>
+
+    <div class="question" id="questionText"></div>
+    <div class="answers" id="answerOptions"></div>
+    <div class="feedback" id="answerFeedback" aria-live="polite"></div>
+
+    <div class="button-row">
+      <button class="btn-green hidden" id="nextQuestionBtn">Next Question →</button>
+    </div>
+  </div>
+
+  <div id="quizResult" class="quiz-result hidden">
+    <div class="eyebrow">QUIZ COMPLETED</div>
+    <h2 id="resultTitle">Well done!</h2>
+    <div class="score-number" id="finalScore">0%</div>
+    <p class="muted" id="resultMessage"></p>
+    <p id="resultDetails"></p>
+    <div class="button-row" style="justify-content:center">
+      <button id="retryQuizBtn">Try Again</button>
+      <button class="btn-dark" id="chooseSubjectBtn">Choose Another Subject</button>
+    </div>
+  </div>
+</section>
 
 </main>
 
@@ -422,9 +293,11 @@ footer{
 </footer>
 
 <script>
-/* =================================
+"use strict";
+
+/* =====================================
    FLASHCARD DECK BUILDER
-================================= */
+===================================== */
 
 const STORAGE_KEY = "hexclown_studypractice_decks_v1";
 
@@ -434,13 +307,7 @@ let currentCardIndex = 0;
 let showingAnswer = false;
 let editingCardId = null;
 
-const deckNameInput = document.getElementById("deckName");
-const deckList = document.getElementById("deckList");
-const deckWorkspace = document.getElementById("deckWorkspace");
-const deckStatus = document.getElementById("deckStatus");
-const cardStatus = document.getElementById("cardStatus");
-const cardQuestion = document.getElementById("cardQuestion");
-const cardAnswer = document.getElementById("cardAnswer");
+const $ = id => document.getElementById(id);
 
 function createId(){
   return Date.now().toString(36) + Math.random().toString(36).slice(2,8);
@@ -449,14 +316,17 @@ function createId(){
 function saveDecks(){
   try{
     localStorage.setItem(STORAGE_KEY, JSON.stringify(decks));
+    return true;
   }catch(error){
-    deckStatus.textContent = "Could not save. Your browser storage may be full.";
+    $("deckStatus").textContent = "Storage error. Your browser may be out of space.";
+    return false;
   }
 }
 
 function loadDecks(){
   try{
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
     if(Array.isArray(saved)){
       decks = saved.filter(deck =>
         deck &&
@@ -468,6 +338,7 @@ function loadDecks(){
   }catch(error){
     decks = [];
   }
+
   renderDecks();
 }
 
@@ -476,10 +347,10 @@ function getSelectedDeck(){
 }
 
 function createDeck(){
-  const name = deckNameInput.value.trim();
+  const name = $("deckName").value.trim();
 
   if(!name){
-    deckStatus.textContent = "Please enter a name for your deck.";
+    $("deckStatus").textContent = "Please enter a name for your deck.";
     return;
   }
 
@@ -492,39 +363,45 @@ function createDeck(){
   decks.push(deck);
   selectedDeckId = deck.id;
   currentCardIndex = 0;
-  deckNameInput.value = "";
-  deckStatus.textContent = "Deck created successfully!";
+  showingAnswer = false;
+  $("deckName").value = "";
+  $("deckStatus").textContent = "Deck created successfully!";
+
   saveDecks();
   renderDecks();
   renderWorkspace();
 }
 
 function renderDecks(){
-  deckList.replaceChildren();
+  const list = $("deckList");
+  list.replaceChildren();
 
   if(decks.length === 0){
     const message = document.createElement("p");
     message.className = "muted";
     message.textContent = "No decks created yet. Create your first deck above.";
-    deckList.appendChild(message);
-    deckWorkspace.classList.add("hidden");
+    list.appendChild(message);
+    $("deckWorkspace").classList.add("hidden");
     return;
   }
 
   decks.forEach(deck => {
     const button = document.createElement("button");
-    button.className = "deck-chip" + (deck.id === selectedDeckId ? " active" : "");
+    button.className = "deck-chip" +
+      (deck.id === selectedDeckId ? " active" : "");
+
     button.textContent = deck.name + " (" + deck.cards.length + ")";
-    button.addEventListener("click", () => {
+
+    button.addEventListener("click",() => {
       selectedDeckId = deck.id;
       currentCardIndex = 0;
       showingAnswer = false;
-      editingCardId = null;
       clearCardForm();
       renderDecks();
       renderWorkspace();
     });
-    deckList.appendChild(button);
+
+    list.appendChild(button);
   });
 }
 
@@ -532,87 +409,86 @@ function renderWorkspace(){
   const deck = getSelectedDeck();
 
   if(!deck){
-    deckWorkspace.classList.add("hidden");
+    $("deckWorkspace").classList.add("hidden");
     return;
   }
 
-  deckWorkspace.classList.remove("hidden");
-  document.getElementById("selectedDeckTitle").textContent = deck.name;
-  document.getElementById("deckInfo").textContent =
-    deck.cards.length + (deck.cards.length === 1 ? " flashcard" : " flashcards") + " in this deck.";
+  $("deckWorkspace").classList.remove("hidden");
+  $("selectedDeckTitle").textContent = deck.name;
+  $("deckInfo").textContent =
+    deck.cards.length + (deck.cards.length === 1 ?
+    " flashcard in this deck." : " flashcards in this deck.");
 
   renderCurrentCard();
 }
 
 function renderCurrentCard(){
   const deck = getSelectedDeck();
+
   if(!deck) return;
 
   const card = deck.cards[currentCardIndex];
-  const flashcard = document.getElementById("flashcard");
 
   if(!card){
-    document.getElementById("cardSide").textContent = "EMPTY DECK";
-    document.getElementById("cardContent").textContent = "Add your first question and answer above.";
-    document.getElementById("cardCount").textContent = "0 / 0";
-    document.getElementById("previousCardBtn").disabled = true;
-    document.getElementById("nextCardBtn").disabled = true;
-    document.getElementById("flipCardBtn").disabled = true;
-    document.getElementById("editCardBtn").disabled = true;
-    document.getElementById("deleteCardBtn").disabled = true;
+    $("cardSide").textContent = "EMPTY DECK";
+    $("cardContent").textContent = "Add your first question and answer above.";
+    $("cardCount").textContent = "0 / 0";
+
+    $("previousCardBtn").disabled = true;
+    $("nextCardBtn").disabled = true;
+    $("flipCardBtn").disabled = true;
+    $("editCardBtn").disabled = true;
+    $("deleteCardBtn").disabled = true;
+
     return;
   }
 
-  document.getElementById("previousCardBtn").disabled = currentCardIndex === 0;
-  document.getElementById("nextCardBtn").disabled = currentCardIndex === deck.cards.length - 1;
-  document.getElementById("flipCardBtn").disabled = false;
-  document.getElementById("editCardBtn").disabled = false;
-  document.getElementById("deleteCardBtn").disabled = false;
+  $("previousCardBtn").disabled = currentCardIndex === 0;
+  $("nextCardBtn").disabled = currentCardIndex === deck.cards.length - 1;
+  $("flipCardBtn").disabled = false;
+  $("editCardBtn").disabled = false;
+  $("deleteCardBtn").disabled = false;
 
-  document.getElementById("cardSide").textContent =
-    showingAnswer ? "ANSWER" : "QUESTION";
-
-  document.getElementById("cardContent").textContent =
+  $("cardSide").textContent = showingAnswer ? "ANSWER" : "QUESTION";
+  $("cardContent").textContent =
     showingAnswer ? card.answer : card.question;
 
-  document.getElementById("cardCount").textContent =
+  $("cardCount").textContent =
     (currentCardIndex + 1) + " / " + deck.cards.length;
-
-  flashcard.setAttribute(
-    "aria-label",
-    (showingAnswer ? "Answer: " : "Question: ") +
-    (showingAnswer ? card.answer : card.question) +
-    ". Tap to flip."
-  );
 }
 
 function clearCardForm(){
-  cardQuestion.value = "";
-  cardAnswer.value = "";
+  $("cardQuestion").value = "";
+  $("cardAnswer").value = "";
   editingCardId = null;
-  document.getElementById("saveCardBtn").textContent = "+ Add Flashcard";
-  document.getElementById("cancelEditBtn").classList.add("hidden");
+  $("saveCardBtn").textContent = "+ Add Flashcard";
+  $("cancelEditBtn").classList.add("hidden");
 }
 
 function saveCard(){
   const deck = getSelectedDeck();
-  if(!deck) return;
 
-  const question = cardQuestion.value.trim();
-  const answer = cardAnswer.value.trim();
+  if(!deck){
+    $("cardStatus").textContent = "Create or select a deck first.";
+    return;
+  }
+
+  const question = $("cardQuestion").value.trim();
+  const answer = $("cardAnswer").value.trim();
 
   if(!question || !answer){
-    cardStatus.textContent = "Please enter both a question and an answer.";
+    $("cardStatus").textContent = "Please enter both a question and an answer.";
     return;
   }
 
   if(editingCardId){
     const card = deck.cards.find(item => item.id === editingCardId);
+
     if(card){
       card.question = question;
       card.answer = answer;
       currentCardIndex = deck.cards.indexOf(card);
-      cardStatus.textContent = "Flashcard updated!";
+      $("cardStatus").textContent = "Flashcard updated successfully!";
     }
   }else{
     deck.cards.push({
@@ -620,8 +496,9 @@ function saveCard(){
       question:question,
       answer:answer
     });
+
     currentCardIndex = deck.cards.length - 1;
-    cardStatus.textContent = "Flashcard added!";
+    $("cardStatus").textContent = "Flashcard added successfully!";
   }
 
   showingAnswer = false;
@@ -633,81 +510,709 @@ function saveCard(){
 
 function editCurrentCard(){
   const deck = getSelectedDeck();
+
   if(!deck || !deck.cards[currentCardIndex]) return;
 
   const card = deck.cards[currentCardIndex];
-  editingCardId = card.id;
-  cardQuestion.value = card.question;
-  cardAnswer.value = card.answer;
 
-  document.getElementById("saveCardBtn").textContent = "Save Changes";
-  document.getElementById("cancelEditBtn").classList.remove("hidden");
-  cardStatus.textContent = "Editing this flashcard.";
-  cardQuestion.focus();
+  editingCardId = card.id;
+  $("cardQuestion").value = card.question;
+  $("cardAnswer").value = card.answer;
+
+  $("saveCardBtn").textContent = "Save Changes";
+  $("cancelEditBtn").classList.remove("hidden");
+  $("cardStatus").textContent = "Editing this flashcard.";
+
+  $("cardQuestion").focus();
 }
 
 function deleteCurrentCard(){
   const deck = getSelectedDeck();
+
   if(!deck || !deck.cards[currentCardIndex]) return;
 
   if(!confirm("Delete this flashcard?")) return;
 
   deck.cards.splice(currentCardIndex,1);
-  currentCardIndex = Math.min(currentCardIndex, deck.cards.length - 1);
+
+  currentCardIndex = Math.max(
+    0,
+    Math.min(currentCardIndex,deck.cards.length - 1)
+  );
+
   showingAnswer = false;
   clearCardForm();
   saveDecks();
   renderDecks();
   renderWorkspace();
-  cardStatus.textContent = "Flashcard deleted.";
+
+  $("cardStatus").textContent = "Flashcard deleted.";
 }
 
 function deleteDeck(){
   const deck = getSelectedDeck();
+
   if(!deck) return;
 
-  if(!confirm("Delete the deck '" + deck.name + "' and all its flashcards?")) return;
+  if(!confirm("Delete the deck '" + deck.name + "' and all its flashcards?")){
+    return;
+  }
 
   decks = decks.filter(item => item.id !== selectedDeckId);
   selectedDeckId = decks.length ? decks[0].id : null;
   currentCardIndex = 0;
+  showingAnswer = false;
+
   clearCardForm();
   saveDecks();
   renderDecks();
   renderWorkspace();
-  deckStatus.textContent = "Deck deleted.";
+
+  $("deckStatus").textContent = "Deck deleted.";
 }
 
 function flipCard(){
   const deck = getSelectedDeck();
+
   if(!deck || !deck.cards.length) return;
+
   showingAnswer = !showingAnswer;
   renderCurrentCard();
 }
 
 function moveCard(direction){
   const deck = getSelectedDeck();
+
   if(!deck || !deck.cards.length) return;
 
   currentCardIndex = Math.max(
     0,
-    Math.min(deck.cards.length - 1, currentCardIndex + direction)
+    Math.min(deck.cards.length - 1,currentCardIndex + direction)
   );
+
   showingAnswer = false;
   renderCurrentCard();
 }
 
-document.getElementById("createDeckBtn").addEventListener("click",createDeck);
-document.getElementById("saveCardBtn").addEventListener("click",saveCard);
-document.getElementById("cancelEditBtn").addEventListener("click",clearCardForm);
-document.getElementById("deleteDeckBtn").addEventListener("click",deleteDeck);
-document.getElementById("flipCardBtn").addEventListener("click",flipCard);
-document.getElementById("editCardBtn").addEventListener("click",editCurrentCard);
-document.getElementById("deleteCardBtn").addEventListener("click",deleteCurrentCard);
-document.getElementById("previousCardBtn").addEventListener("click",()=>moveCard(-1));
-document.getElementById("nextCardBtn").addEventListener("click",()=>moveCard(1));
+/* Flashcard button connections */
 
-document.getElementById("flashcard").addEventListener("click",flipCard);
-document.getElementById("flashcard").addEventListener("keydown",event=>{
+$("createDeckBtn").addEventListener("click",createDeck);
+$("deckName").addEventListener("keydown",event => {
+  if(event.key === "Enter") createDeck();
+});
+
+$("saveCardBtn").addEventListener("click",saveCard);
+$("cancelEditBtn").addEventListener("click",clearCardForm);
+$("deleteDeckBtn").addEventListener("click",deleteDeck);
+$("flipCardBtn").addEventListener("click",flipCard);
+$("editCardBtn").addEventListener("click",editCurrentCard);
+$("deleteCardBtn").addEventListener("click",deleteCurrentCard);
+$("previousCardBtn").addEventListener("click",() => moveCard(-1));
+$("nextCardBtn").addEventListener("click",() => moveCard(1));
+
+$("flashcard").addEventListener("click",flipCard);
+
+$("flashcard").addEventListener("keydown",event => {
   if(event.key === "Enter" || event.key === " "){
-    event.preventDefau
+    event.preventDefault();
+    flipCard();
+  }
+});
+
+/* =====================================
+   QUIZ QUESTION DATABASE
+===================================== */
+
+const questionBank = {
+
+Biology:[
+{
+q:"Which organelle is known as the powerhouse of the cell?",
+a:["Nucleus","Mitochondrion","Ribosome","Golgi apparatus"],
+c:1,
+e:"Mitochondria release usable energy through cellular respiration."
+},
+{
+q:"What is the basic unit of life?",
+a:["Tissue","Organ","Cell","Atom"],
+c:2,
+e:"The cell is the smallest structural and functional unit of life."
+},
+{
+q:"Which gas do plants absorb during photosynthesis?",
+a:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"],
+c:2,
+e:"Plants absorb carbon dioxide and use it during photosynthesis."
+},
+{
+q:"Which part of a plant absorbs water from the soil?",
+a:["Flower","Root","Leaf","Stem"],
+c:1,
+e:"Roots absorb water and mineral salts from the soil."
+},
+{
+q:"What is the green pigment in plants called?",
+a:["Haemoglobin","Melanin","Chlorophyll","Keratin"],
+c:2,
+e:"Chlorophyll absorbs light energy for photosynthesis."
+},
+{
+q:"Which blood cells help the body fight infection?",
+a:["Red blood cells","White blood cells","Platelets","Plasma"],
+c:1,
+e:"White blood cells help defend the body against pathogens."
+},
+{
+q:"What is the genetic material in most living organisms?",
+a:["DNA","Glucose","Starch","Water"],
+c:0,
+e:"DNA stores hereditary information."
+},
+{
+q:"Which organ pumps blood around the human body?",
+a:["Liver","Lungs","Heart","Kidney"],
+c:2,
+e:"The heart pumps blood through the circulatory system."
+},
+{
+q:"Which process produces two genetically identical daughter cells?",
+a:["Meiosis","Mitosis","Fertilisation","Pollination"],
+c:1,
+e:"Mitosis produces two genetically identical daughter cells."
+},
+{
+q:"Which part of the digestive system absorbs most nutrients?",
+a:["Stomach","Large intestine","Small intestine","Oesophagus"],
+c:2,
+e:"Most nutrient absorption takes place in the small intestine."
+}
+],
+
+Chemistry:[
+{
+q:"What is the chemical symbol for oxygen?",
+a:["Ox","O","Og","Oy"],
+c:1,
+e:"The chemical symbol for oxygen is O."
+},
+{
+q:"What is the pH of a neutral solution at room temperature?",
+a:["0","3","7","14"],
+c:2,
+e:"A neutral solution has a pH of 7 at room temperature."
+},
+{
+q:"Which gas is released when an acid reacts with a carbonate?",
+a:["Oxygen","Hydrogen","Carbon dioxide","Nitrogen"],
+c:2,
+e:"Acid and carbonate reactions release carbon dioxide."
+},
+{
+q:"What is the chemical formula for water?",
+a:["CO2","H2O","NaCl","O2"],
+c:1,
+e:"A water molecule contains two hydrogen atoms and one oxygen atom."
+},
+{
+q:"Which particle has a negative electrical charge?",
+a:["Proton","Neutron","Electron","Nucleus"],
+c:2,
+e:"Electrons carry a negative electrical charge."
+},
+{
+q:"What is the common name for sodium chloride?",
+a:["Sugar","Baking soda","Table salt","Vinegar"],
+c:2,
+e:"Sodium chloride is commonly called table salt."
+},
+{
+q:"Which of these is a noble gas?",
+a:["Oxygen","Helium","Chlorine","Hydrogen"],
+c:1,
+e:"Helium belongs to Group 18, the noble gases."
+},
+{
+q:"What is the atomic number equal to?",
+a:["Number of neutrons","Number of protons","Number of shells","Total particles"],
+c:1,
+e:"The atomic number is the number of protons in an atom."
+},
+{
+q:"Which bond involves sharing electron pairs?",
+a:["Ionic","Covalent","Metallic","Hydrogen"],
+c:1,
+e:"Covalent bonds involve the sharing of electron pairs."
+},
+{
+q:"What is the formula for carbon dioxide?",
+a:["CO","CO2","C2O","CaO"],
+c:1,
+e:"Carbon dioxide contains one carbon atom and two oxygen atoms."
+}
+],
+
+Physics:[
+{
+q:"What is the SI unit of force?",
+a:["Joule","Watt","Newton","Pascal"],
+c:2,
+e:"Force is measured in newtons (N)."
+},
+{
+q:"What is the speed of light in a vacuum approximately?",
+a:["300,000 km/s","30 km/s","3,000 km/s","1,000 km/s"],
+c:0,
+e:"Light travels at approximately 300,000 kilometres per second."
+},
+{
+q:"Which instrument measures electric current?",
+a:["Voltmeter","Ammeter","Thermometer","Barometer"],
+c:1,
+e:"An ammeter measures electric current."
+},
+{
+q:"What is the SI unit of energy?",
+a:["Newton","Joule","Ampere","Metre"],
+c:1,
+e:"Energy is measured in joules (J)."
+},
+{
+q:"Which type of energy does a moving object possess?",
+a:["Chemical","Potential","Kinetic","Nuclear"],
+c:2,
+e:"Moving objects possess kinetic energy."
+},
+{
+q:"What is the SI unit of electric current?",
+a:["Volt","Ohm","Ampere","Watt"],
+c:2,
+e:"Electric current is measured in amperes."
+},
+{
+q:"Which force pulls objects towards Earth?",
+a:["Friction","Magnetism","Gravity","Tension"],
+c:2,
+e:"Gravity attracts objects towards the Earth."
+},
+{
+q:"What is the unit of frequency?",
+a:["Hertz","Joule","Newton","Watt"],
+c:0,
+e:"Frequency is measured in hertz (Hz)."
+},
+{
+q:"Which instrument measures temperature?",
+a:["Ammeter","Thermometer","Voltmeter","Hydrometer"],
+c:1,
+e:"A thermometer measures temperature."
+},
+{
+q:"What happens to light when it passes from air into glass?",
+a:["It always stops","It refracts","It disappears","It becomes sound"],
+c:1,
+e:"Light changes direction when it enters a different medium; this is refraction."
+}
+],
+
+Mathematics:[
+{
+q:"What is 12 × 8?",
+a:["86","96","108","88"],
+c:1,
+e:"12 multiplied by 8 equals 96."
+},
+{
+q:"What is the square root of 144?",
+a:["10","11","12","14"],
+c:2,
+e:"12 × 12 = 144."
+},
+{
+q:"What is 25% of 200?",
+a:["25","40","50","75"],
+c:2,
+e:"25% is one quarter. One quarter of 200 is 50."
+},
+{
+q:"What is the value of 7²?",
+a:["14","21","49","77"],
+c:2,
+e:"7 squared means 7 multiplied by 7."
+},
+{
+q:"How many degrees are in a right angle?",
+a:["45°","90°","180°","360°"],
+c:1,
+e:"A right angle measures 90 degrees."
+},
+{
+q:"Solve: 15 + 27.",
+a:["32","40","42","45"],
+c:2,
+e:"15 + 27 = 42."
+},
+{
+q:"What is 3/4 expressed as a percentage?",
+a:["25%","50%","75%","80%"],
+c:2,
+e:"3 divided by 4 multiplied by 100 equals 75%."
+},
+{
+q:"What is the perimeter of a square with side 5 cm?",
+a:["10 cm","15 cm","20 cm","25 cm"],
+c:2,
+e:"Perimeter = 4 × side = 20 cm."
+},
+{
+q:"Solve: 3x = 21.",
+a:["5","6","7","8"],
+c:2,
+e:"Divide both sides by 3. Therefore x = 7."
+},
+{
+q:"What is the next prime number after 7?",
+a:["8","9","10","11"],
+c:3,
+e:"11 is the next prime number after 7."
+}
+],
+
+English:[
+{
+q:"Which word is a noun?",
+a:["Quickly","Beautiful","Teacher","Run"],
+c:2,
+e:"Teacher is a noun because it names a person."
+},
+{
+q:"What is the opposite of 'ancient'?",
+a:["Old","Modern","Historic","Past"],
+c:1,
+e:"Modern means relating to the present or recent times."
+},
+{
+q:"Choose the correct spelling.",
+a:["Definately","Definitely","Definatly","Definetely"],
+c:1,
+e:"The correct spelling is definitely."
+},
+{
+q:"Which punctuation mark ends a direct question?",
+a:["Full stop","Comma","Question mark","Colon"],
+c:2,
+e:"A question mark is used at the end of a direct question."
+},
+{
+q:"What is the past tense of 'go'?",
+a:["Goed","Gone","Went","Going"],
+c:2,
+e:"The simple past tense of go is went."
+},
+{
+q:"Which word is an adjective?",
+a:["Happiness","Beautiful","Carefully","Jump"],
+c:1,
+e:"Beautiful describes a noun, so it is an adjective."
+},
+{
+q:"What is a synonym for 'happy'?",
+a:["Angry","Joyful","Tired","Afraid"],
+c:1,
+e:"Joyful has a similar meaning to happy."
+},
+{
+q:"Which is a conjunction?",
+a:["And","Under","Quickly","Blue"],
+c:0,
+e:"And joins words, phrases or clauses."
+},
+{
+q:"Choose the correct sentence.",
+a:["She go to school.","She goes to school.","She going school.","She gone to school."],
+c:1,
+e:"She goes to school is grammatically correct in the simple present tense."
+},
+{
+q:"What is the plural of 'child'?",
+a:["Childs","Childes","Children","Childrens"],
+c:2,
+e:"The plural form of child is children."
+}
+],
+
+General:[
+{
+q:"What is the capital city of Nigeria?",
+a:["Kano","Abuja","Lagos","Ibadan"],
+c:1,
+e:"Abuja is the capital city of Nigeria."
+},
+{
+q:"How many continents are there?",
+a:["Five","Six","Seven","Eight"],
+c:2,
+e:"There are seven continents."
+},
+{
+q:"Which planet is known as the Red Planet?",
+a:["Venus","Mars","Jupiter","Saturn"],
+c:1,
+e:"Mars appears reddish because of iron oxide on its surface."
+},
+{
+q:"What is the largest ocean on Earth?",
+a:["Atlantic","Indian","Arctic","Pacific"],
+c:3,
+e:"The Pacific Ocean is the largest ocean."
+},
+{
+q:"Which language is primarily used to structure web pages?",
+a:["HTML","SQL","Python","C++"],
+c:0,
+e:"HTML provides the structure and content of web pages."
+},
+{
+q:"How many days are in a leap year?",
+a:["364","365","366","367"],
+c:2,
+e:"A leap year has 366 days."
+},
+{
+q:"Which country is famous for the Great Wall?",
+a:["India","China","Japan","Egypt"],
+c:1,
+e:"The Great Wall is located in China."
+},
+{
+q:"What is the largest mammal?",
+a:["Elephant","Giraffe","Blue whale","Hippopotamus"],
+c:2,
+e:"The blue whale is the largest known animal."
+},
+{
+q:"Which device is used to connect computers to a network?",
+a:["Router","Printer","Scanner","Speaker"],
+c:0,
+e:"A router directs data between networks."
+},
+{
+q:"What is the freezing point of water at standard pressure?",
+a:["0°C","10°C","50°C","100°C"],
+c:0,
+e:"Water freezes at 0 degrees Celsius under standard pressure."
+}
+]
+
+};
+
+/* =====================================
+   QUIZ ENGINE
+===================================== */
+
+let currentQuiz = [];
+let currentQuestionIndex = 0;
+let quizScore = 0;
+let quizAnswered = false;
+let lastSubject = "Biology";
+let lastLimit = "5";
+
+function shuffleArray(array){
+  const result = [...array];
+
+  for(let i = result.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i],result[j]] = [result[j],result[i]];
+  }
+
+  return result;
+}
+
+function startQuiz(){
+  const subject = $("subjectSelect").value;
+  const limit = $("questionLimit").value;
+  const available = questionBank[subject];
+
+  if(!available || !available.length){
+    $("quizSetupStatus").textContent = "No questions are available for this subject.";
+    return;
+  }
+
+  lastSubject = subject;
+  lastLimit = limit;
+
+  const shuffled = shuffleArray(available);
+
+  currentQuiz = limit === "all"
+    ? shuffled
+    : shuffled.slice(0,Math.min(Number(limit),shuffled.length));
+
+  currentQuestionIndex = 0;
+  quizScore = 0;
+  quizAnswered = false;
+
+  $("quizSetup").classList.add("hidden");
+  $("quizResult").classList.add("hidden");
+  $("quizArea").classList.remove("hidden");
+  $("quizSetupStatus").textContent = "";
+
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const question = currentQuiz[currentQuestionIndex];
+
+  if(!question){
+    finishQuiz();
+    return;
+  }
+
+  quizAnswered = false;
+
+  $("quizSubjectLabel").textContent = lastSubject;
+  $("quizProgressLabel").textContent =
+    "Question " + (currentQuestionIndex + 1) + " of " + currentQuiz.length;
+
+  $("quizScoreLabel").textContent = "Score: " + quizScore;
+
+  $("quizProgressBar").style.width =
+    (currentQuestionIndex / currentQuiz.length * 100) + "%";
+
+  $("questionText").textContent = question.q;
+
+  const options = $("answerOptions");
+  options.replaceChildren();
+
+  $("answerFeedback").classList.remove("show");
+  $("answerFeedback").textContent = "";
+  $("nextQuestionBtn").classList.add("hidden");
+
+  question.a.forEach((answer,index) => {
+    const button = document.createElement("button");
+
+    button.className = "answer-option";
+    button.textContent =
+      String.fromCharCode(65 + index) + ". " + answer;
+
+    button.addEventListener("click",() => checkAnswer(index));
+
+    options.appendChild(button);
+  });
+}
+
+function checkAnswer(selectedIndex){
+  if(quizAnswered) return;
+
+  quizAnswered = true;
+
+  const question = currentQuiz[currentQuestionIndex];
+  const buttons = $("answerOptions").querySelectorAll("button");
+  const feedback = $("answerFeedback");
+
+  buttons.forEach((button,index) => {
+    button.disabled = true;
+
+    if(index === question.c){
+      button.classList.add("correct");
+    }
+
+    if(index === selectedIndex && selectedIndex !== question.c){
+      button.classList.add("wrong");
+    }
+  });
+
+  if(selectedIndex === question.c){
+    quizScore++;
+
+    feedback.textContent = "✓ Correct! " + question.e;
+  }else{
+    feedback.textContent =
+      "✗ Not quite. The correct answer is: " +
+      question.a[question.c] + ". " + question.e;
+  }
+
+  feedback.classList.add("show");
+  $("quizScoreLabel").textContent = "Score: " + quizScore;
+
+  $("nextQuestionBtn").textContent =
+    currentQuestionIndex === currentQuiz.length - 1
+    ? "View Results →"
+    : "Next Question →";
+
+  $("nextQuestionBtn").classList.remove("hidden");
+}
+
+function nextQuestion(){
+  if(!quizAnswered) return;
+
+  currentQuestionIndex++;
+
+  if(currentQuestionIndex >= currentQuiz.length){
+    finishQuiz();
+  }else{
+    renderQuestion();
+  }
+}
+
+function finishQuiz(){
+  $("quizArea").classList.add("hidden");
+  $("quizResult").classList.remove("hidden");
+
+  const percentage = Math.round(
+    (quizScore / currentQuiz.length) * 100
+  );
+
+  $("finalScore").textContent = percentage + "%";
+
+  $("resultTitle").textContent =
+    percentage >= 80 ? "Excellent Work!" :
+    percentage >= 60 ? "Good Effort!" :
+    percentage >= 40 ? "Keep Practising!" :
+    "Keep Learning!";
+
+  $("resultMessage").textContent =
+    percentage >= 80 ? "Excellent performance. Keep up the good work!" :
+    percentage >= 60 ? "You're making progress. A little more practice will help." :
+    percentage >= 40 ? "You're learning. Review the explanations and try again." :
+    "Don't give up. Review the subject and give it another try.";
+
+  $("resultDetails").textContent =
+    "You answered " + quizScore + " out of " +
+    currentQuiz.length + " questions correctly.";
+
+  $("quizProgressBar").style.width = "100%";
+}
+
+function retryQuiz(){
+  $("subjectSelect").value = lastSubject;
+  $("questionLimit").value = lastLimit;
+  startQuiz();
+}
+
+function chooseAnotherSubject(){
+  $("quizResult").classList.add("hidden");
+  $("quizArea").classList.add("hidden");
+  $("quizSetup").classList.remove("hidden");
+}
+
+$("startQuizBtn").addEventListener("click",startQuiz);
+$("nextQuestionBtn").addEventListener("click",nextQuestion);
+$("retryQuizBtn").addEventListener("click",retryQuiz);
+$("chooseSubjectBtn").addEventListener("click",chooseAnotherSubject);
+
+/* =====================================
+   START THE APPLICATION
+===================================== */
+
+loadDecks();
+
+if(decks.length > 0){
+  selectedDeckId = decks[0].id;
+  renderDecks();
+  renderWorkspace();
+}
+
+</script>
+
+</body>
+</html>
+
