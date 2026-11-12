@@ -1,1 +1,940 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Science Quiz | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg:#071321;
+    --panel:#0d2032;
+    --green:#39ff88;
+    --cyan:#00eaff;
+    --blue:#168bff;
+    --red:#ff426b;
+    --text:#eaf7ff;
+    --muted:#91a9bb;
+}
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body {
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial, sans-serif;
+    min-height:100vh;
+    padding:15px;
+}
+
+header {
+    text-align:center;
+    padding:20px 10px;
+    border-bottom:1px solid #17344b;
+    margin-bottom:25px;
+}
+
+.logo {
+    font-size:27px;
+    font-weight:900;
+    color:var(--green);
+    letter-spacing:3px;
+    text-shadow:0 0 12px #39ff8870;
+}
+
+header p {
+    color:var(--muted);
+    font-size:12px;
+    margin-top:7px;
+    letter-spacing:2px;
+}
+
+nav {
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:18px;
+}
+
+nav a {
+    color:var(--cyan);
+    text-decoration:none;
+    border:1px solid #00eaff55;
+    padding:9px 13px;
+    border-radius:7px;
+    font-size:12px;
+}
+
+nav a:hover {
+    background:var(--cyan);
+    color:#071321;
+}
+
+.container {
+    max-width:650px;
+    margin:auto;
+}
+
+.heading {
+    text-align:center;
+    margin-bottom:22px;
+}
+
+.heading h1 {
+    color:var(--cyan);
+    font-size:27px;
+    margin-bottom:9px;
+}
+
+.heading p {
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+}
+
+.card {
+    background:var(--panel);
+    border:1px solid #1b4058;
+    border-radius:14px;
+    padding:22px;
+    box-shadow:0 0 22px #00eaff0c;
+}
+
+.levels {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:20px 0;
+}
+
+.level {
+    padding:15px 5px;
+    background:#091827;
+    border:1px solid #24445a;
+    color:var(--text);
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.level:hover,
+.level.selected {
+    border-color:var(--green);
+    color:var(--green);
+    box-shadow:0 0 12px #39ff8830;
+}
+
+.btn {
+    width:100%;
+    padding:14px;
+    background:var(--green);
+    color:#061321;
+    border:none;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:12px;
+}
+
+.btn:hover {
+    box-shadow:0 0 15px #39ff8880;
+}
+
+.stats {
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
+    color:var(--cyan);
+    font-size:13px;
+    font-weight:bold;
+}
+
+.progress {
+    width:100%;
+    height:8px;
+    background:#071321;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+
+.progress-bar {
+    height:100%;
+    width:0%;
+    background:var(--green);
+    transition:width .3s;
+}
+
+.timer-box {
+    color:var(--red);
+    text-align:center;
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.question {
+    font-size:19px;
+    line-height:1.5;
+    margin-bottom:20px;
+}
+
+.answers {
+    display:grid;
+    gap:11px;
+}
+
+.answer {
+    background:#091827;
+    border:1px solid #24445a;
+    border-radius:8px;
+    color:var(--text);
+    padding:14px;
+    text-align:left;
+    cursor:pointer;
+    font-size:14px;
+    line-height:1.4;
+}
+
+.answer:hover:not(:disabled) {
+    border-color:var(--cyan);
+    background:#10283a;
+}
+
+.answer:disabled {
+    cursor:default;
+    opacity:1;
+}
+
+.answer.correct {
+    border-color:var(--green);
+    background:#123d2a;
+    color:var(--green);
+}
+
+.answer.wrong {
+    border-color:var(--red);
+    background:#401c2a;
+    color:#ff9bb0;
+}
+
+.feedback {
+    min-height:25px;
+    margin-top:15px;
+    font-size:14px;
+    font-weight:bold;
+    line-height:1.5;
+}
+
+.feedback.good {
+    color:var(--green);
+}
+
+.feedback.bad {
+    color:var(--red);
+}
+
+.hidden {
+    display:none !important;
+}
+
+.result {
+    text-align:center;
+}
+
+.result h2 {
+    color:var(--green);
+    font-size:27px;
+    margin-bottom:15px;
+}
+
+.final-score {
+    font-size:42px;
+    color:var(--cyan);
+    font-weight:bold;
+    margin:18px 0;
+}
+
+.result p {
+    color:var(--muted);
+    line-height:1.7;
+    margin-bottom:12px;
+}
+
+.best {
+    color:var(--green) !important;
+}
+
+footer {
+    text-align:center;
+    color:#71889a;
+    font-size:12px;
+    padding:30px 10px 15px;
+}
+
+@media(max-width:420px) {
+    .card {
+        padding:16px;
+    }
+
+    .heading h1 {
+        font-size:23px;
+    }
+
+    .question {
+        font-size:17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEXCLØWN</div>
+    <p>KNOWLEDGE IS POWER</p>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="GameZone.html">GameZone</a>
+        <a href="eduandtri.html">Education & Trivia</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <div class="heading">
+        <h1>SCIENCE QUIZ</h1>
+        <p>Test your knowledge of Biology, Chemistry, Physics, Space and the Human Body.</p>
+    </div>
+
+    <section class="card" id="startScreen">
+
+        <h2 style="color:var(--green);text-align:center;">
+            Select Difficulty
+        </h2>
+
+        <div class="levels">
+            <button class="level selected" data-level="easy">EASY</button>
+            <button class="level" data-level="medium">MEDIUM</button>
+            <button class="level" data-level="hard">HARD</button>
+        </div>
+
+        <p style="color:var(--muted);text-align:center;font-size:13px;line-height:1.6;">
+            20 questions per round<br>
+            15 seconds for each question<br>
+            Earn 10 points for every correct answer.
+        </p>
+
+        <button class="btn" id="startBtn">START SCIENCE QUIZ</button>
+
+    </section>
+
+    <section class="card hidden" id="quizScreen">
+
+        <div class="stats">
+            <span id="questionNumber">Question 1/20</span>
+            <span id="score">Score: 0</span>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="timer-box">
+            TIME LEFT: <span id="timer">15</span>s
+        </div>
+
+        <h2 class="question" id="question"></h2>
+
+        <div class="answers" id="answers"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button class="btn hidden" id="nextBtn">NEXT QUESTION</button>
+
+    </section>
+
+    <section class="card hidden result" id="resultScreen">
+
+        <h2>QUIZ COMPLETED!</h2>
+
+        <p>Your final score:</p>
+
+        <div class="final-score" id="finalScore">0/200</div>
+
+        <p id="resultMessage"></p>
+
+        <p class="best" id="bestScore"></p>
+
+        <button class="btn" id="playAgainBtn">PLAY AGAIN</button>
+        <button class="btn" id="homeBtn" style="background:var(--cyan);">
+            BACK TO MENU
+        </button>
+
+    </section>
+
+</main>
+
+<footer>
+    <p>HEXCLØWN © 2026</p>
+    <p style="margin-top:6px;">LEARN • THINK • DISCOVER</p>
+</footer>
+
+<script>
+const questionBank = {
+
+easy: [
+{
+q:"Which planet is known as the Red Planet?",
+a:["Venus","Mars","Jupiter","Mercury"],
+c:1
+},
+{
+q:"What gas do humans need to breathe?",
+a:["Carbon dioxide","Nitrogen","Oxygen","Hydrogen"],
+c:2
+},
+{
+q:"What is the centre of an atom called?",
+a:["Cell","Nucleus","Molecule","Electron"],
+c:1
+},
+{
+q:"Which organ pumps blood around the body?",
+a:["Lungs","Brain","Heart","Kidney"],
+c:2
+},
+{
+q:"What is the chemical formula for water?",
+a:["CO2","H2O","O2","NaCl"],
+c:1
+},
+{
+q:"Which part of a plant absorbs water from the soil?",
+a:["Flower","Leaf","Stem","Root"],
+c:3
+},
+{
+q:"What force pulls objects towards the Earth?",
+a:["Friction","Gravity","Magnetism","Electricity"],
+c:1
+},
+{
+q:"Which star is closest to Earth?",
+a:["Sirius","The Sun","Polaris","Vega"],
+c:1
+},
+{
+q:"How many legs does an insect have?",
+a:["Four","Six","Eight","Ten"],
+c:1
+},
+{
+q:"Which organ helps humans breathe?",
+a:["Lungs","Stomach","Liver","Heart"],
+c:0
+},
+{
+q:"What do bees collect from flowers?",
+a:["Sand","Nectar","Salt","Oil"],
+c:1
+},
+{
+q:"Which substance do plants take in during photosynthesis?",
+a:["Oxygen","Hydrogen","Carbon dioxide","Helium"],
+c:2
+},
+{
+q:"What is the freezing point of water in Celsius?",
+a:["0°C","10°C","50°C","100°C"],
+c:0
+},
+{
+q:"Which animal is a mammal?",
+a:["Crocodile","Shark","Dolphin","Frog"],
+c:2
+},
+{
+q:"Which sense organ is used for hearing?",
+a:["Eye","Ear","Nose","Tongue"],
+c:1
+},
+{
+q:"What is the largest planet in our solar system?",
+a:["Earth","Saturn","Jupiter","Neptune"],
+c:2
+},
+{
+q:"Which blood cells help fight infections?",
+a:["Red blood cells","White blood cells","Platelets","Plasma"],
+c:1
+},
+{
+q:"What is the main source of energy for Earth?",
+a:["Moon","Sun","Wind","Ocean"],
+c:1
+},
+{
+q:"Which material is attracted to a magnet?",
+a:["Wood","Plastic","Iron","Glass"],
+c:2
+},
+{
+q:"What is the basic unit of life?",
+a:["Atom","Cell","Tissue","Organ"],
+c:1
+}
+],
+
+medium: [
+{
+q:"What is the chemical symbol for gold?",
+a:["Ag","Au","Fe","Go"],
+c:1
+},
+{
+q:"Which part of the cell contains most of its genetic material?",
+a:["Nucleus","Cell wall","Cytoplasm","Ribosome"],
+c:0
+},
+{
+q:"What is the SI unit of force?",
+a:["Joule","Watt","Newton","Pascal"],
+c:2
+},
+{
+q:"Which gas is most abundant in Earth's atmosphere?",
+a:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"],
+c:1
+},
+{
+q:"What is the pH of a neutral solution at room temperature?",
+a:["0","5","7","14"],
+c:2
+},
+{
+q:"Which planet has the most prominent ring system?",
+a:["Mars","Saturn","Earth","Mercury"],
+c:1
+},
+{
+q:"What is the process by which liquid changes into gas?",
+a:["Condensation","Freezing","Evaporation","Melting"],
+c:2
+},
+{
+q:"Which vitamin can the body produce with sunlight exposure?",
+a:["Vitamin A","Vitamin C","Vitamin D","Vitamin K"],
+c:2
+},
+{
+q:"What is the powerhouse of the cell?",
+a:["Nucleus","Mitochondrion","Ribosome","Cell membrane"],
+c:1
+},
+{
+q:"Which blood group is commonly called the universal red-cell donor?",
+a:["AB positive","O negative","A positive","B negative"],
+c:1
+},
+{
+q:"What is the chemical formula of carbon dioxide?",
+a:["CO","CO2","C2O","O2C2"],
+c:1
+},
+{
+q:"Which instrument measures atmospheric pressure?",
+a:["Thermometer","Barometer","Hygrometer","Anemometer"],
+c:1
+},
+{
+q:"What is the speed of light in a vacuum approximately?",
+a:["30,000 km/s","150,000 km/s","300,000 km/s","600,000 km/s"],
+c:2
+},
+{
+q:"Which scientist is associated with the three laws of motion?",
+a:["Isaac Newton","Albert Einstein","Charles Darwin","Louis Pasteur"],
+c:0
+},
+{
+q:"What is the largest internal organ in the human body?",
+a:["Heart","Liver","Kidney","Lung"],
+c:1
+},
+{
+q:"Which particle has a negative electric charge?",
+a:["Proton","Neutron","Electron","Photon"],
+c:2
+},
+{
+q:"What is the process of cell division that produces two identical daughter cells?",
+a:["Meiosis","Mitosis","Fertilisation","Mutation"],
+c:1
+},
+{
+q:"Which layer of Earth is mostly liquid?",
+a:["Crust","Inner core","Outer core","Upper crust"],
+c:2
+},
+{
+q:"Which element has the chemical symbol Na?",
+a:["Nitrogen","Sodium","Neon","Nickel"],
+c:1
+},
+{
+q:"What is the name of the galaxy containing our solar system?",
+a:["Andromeda","Milky Way","Whirlpool","Sombrero"],
+c:1
+}
+],
+
+hard: [
+{
+q:"What is the SI unit of electrical resistance?",
+a:["Volt","Ampere","Ohm","Watt"],
+c:2
+},
+{
+q:"Which organelle is responsible for protein synthesis?",
+a:["Ribosome","Lysosome","Golgi apparatus","Vacuole"],
+c:0
+},
+{
+q:"What is the atomic number of carbon?",
+a:["4","6","8","12"],
+c:1
+},
+{
+q:"Which law states that pressure and volume are inversely related at constant temperature?",
+a:["Charles's law","Boyle's law","Newton's law","Ohm's law"],
+c:1
+},
+{
+q:"What is the approximate pH of human blood?",
+a:["5.5","6.2","7.4","9.0"],
+c:2
+},
+{
+q:"Which subatomic particle has no electric charge?",
+a:["Electron","Proton","Neutron","Positron"],
+c:2
+},
+{
+q:"What is the name of the boundary around a black hole beyond which light cannot escape?",
+a:["Singularity","Event horizon","Photosphere","Magnetosphere"],
+c:1
+},
+{
+q:"Which enzyme begins the digestion of starch in the mouth?",
+a:["Pepsin","Amylase","Lipase","Trypsin"],
+c:1
+},
+{
+q:"What is the SI unit of frequency?",
+a:["Hertz","Joule","Newton","Tesla"],
+c:0
+},
+{
+q:"Which type of bond involves the sharing of electron pairs?",
+a:["Ionic bond","Covalent bond","Metallic bond","Hydrogen bond"],
+c:1
+},
+{
+q:"What is the main function of haemoglobin?",
+a:["Digest fats","Transport oxygen","Produce hormones","Fight bacteria"],
+c:1
+},
+{
+q:"Which scientist proposed the theory of natural selection?",
+a:["Gregor Mendel","Charles Darwin","James Watson","Robert Hooke"],
+c:1
+},
+{
+q:"What is the approximate value of Avogadro's constant?",
+a:["6.022 × 10²³","3.00 × 10⁸","9.81","1.602 × 10⁻¹⁹"],
+c:0
+},
+{
+q:"Which part of the nephron filters blood?",
+a:["Loop of Henle","Glomerulus","Collecting duct","Ureter"],
+c:1
+},
+{
+q:"What is the SI unit of magnetic flux?",
+a:["Tesla","Weber","Henry","Coulomb"],
+c:1
+},
+{
+q:"Which planet has the shortest orbital period around the Sun?",
+a:["Venus","Mercury","Mars","Earth"],
+c:1
+},
+{
+q:"Which nitrogenous base is found in RNA but not DNA?",
+a:["Thymine","Adenine","Uracil","Guanine"],
+c:2
+},
+{
+q:"What is the oxidation state of oxygen in most compounds?",
+a:["+2","-2","0","+1"],
+c:1
+},
+{
+q:"Which wave property describes the number of cycles per second?",
+a:["Amplitude","Wavelength","Frequency","Speed"],
+c:2
+},
+{
+q:"Which blood vessels carry blood away from the heart?",
+a:["Veins","Arteries","Capillaries","Venules"],
+c:1
+}
+]
+
+};
+
+const startScreen = document.getElementById("startScreen");
+const quizScreen = document.getElementById("quizScreen");
+const resultScreen = document.getElementById("resultScreen");
+
+const questionElement = document.getElementById("question");
+const answersElement = document.getElementById("answers");
+const feedbackElement = document.getElementById("feedback");
+const nextBtn = document.getElementById("nextBtn");
+
+let selectedLevel = "easy";
+let questions = [];
+let currentQuestion = 0;
+let score = 0;
+let timeLeft = 15;
+let timerInterval = null;
+let answered = false;
+
+document.querySelectorAll(".level").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".level").forEach(btn => {
+            btn.classList.remove("selected");
+        });
+
+        button.classList.add("selected");
+        selectedLevel = button.dataset.level;
+    });
+});
+
+function shuffle(array) {
+    const copy = [...array];
+
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+
+    return copy;
+}
+
+document.getElementById("startBtn").addEventListener("click", startGame);
+
+function startGame() {
+    clearInterval(timerInterval);
+
+    questions = shuffle(questionBank[selectedLevel]).slice(0, 20);
+
+    currentQuestion = 0;
+    score = 0;
+
+    startScreen.classList.add("hidden");
+    resultScreen.classList.add("hidden");
+    quizScreen.classList.remove("hidden");
+
+    showQuestion();
+}
+
+function showQuestion() {
+    clearInterval(timerInterval);
+
+    answered = false;
+    timeLeft = 15;
+
+    const item = questions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        "Question " + (currentQuestion + 1) + "/20";
+
+    document.getElementById("score").textContent =
+        "Score: " + score;
+
+    document.getElementById("progressBar").style.width =
+        (currentQuestion / questions.length * 100) + "%";
+
+    document.getElementById("timer").textContent = timeLeft;
+
+    questionElement.textContent = item.q;
+
+    answersElement.innerHTML = "";
+    feedbackElement.textContent = "";
+    feedbackElement.className = "feedback";
+
+    nextBtn.classList.add("hidden");
+
+    item.a.forEach((answer, index) => {
+        const button = document.createElement("button");
+
+        button.className = "answer";
+        button.textContent = String.fromCharCode(65 + index) + ". " + answer;
+
+        button.addEventListener("click", () => {
+            selectAnswer(index);
+        });
+
+        answersElement.appendChild(button);
+    });
+
+    timerInterval = setInterval(() => {
+        timeLeft--;
+
+        document.getElementById("timer").textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            timeUp();
+        }
+    }, 1000);
+}
+
+function selectAnswer(index) {
+    if (answered) return;
+
+    answered = true;
+    clearInterval(timerInterval);
+
+    const item = questions[currentQuestion];
+    const buttons = answersElement.querySelectorAll(".answer");
+
+    buttons.forEach((button, i) => {
+        button.disabled = true;
+
+        if (i === item.c) {
+            button.classList.add("correct");
+        }
+    });
+
+    if (index === item.c) {
+        score += 10;
+
+        feedbackElement.textContent = "CORRECT! +10 POINTS";
+        feedbackElement.classList.add("good");
+    } else {
+        buttons[index].classList.add("wrong");
+
+        feedbackElement.textContent =
+            "INCORRECT! Correct answer: " + item.a[item.c];
+
+        feedbackElement.classList.add("bad");
+    }
+
+    document.getElementById("score").textContent =
+        "Score: " + score;
+
+    nextBtn.classList.remove("hidden");
+}
+
+function timeUp() {
+    if (answered) return;
+
+    answered = true;
+
+    const item = questions[currentQuestion];
+    const buttons = answersElement.querySelectorAll(".answer");
+
+    buttons.forEach((button, i) => {
+        button.disabled = true;
+
+        if (i === item.c) {
+            button.classList.add("correct");
+        }
+    });
+
+    feedbackElement.textContent =
+        "TIME UP! Correct answer: " + item.a[item.c];
+
+    feedbackElement.classList.add("bad");
+
+    nextBtn.classList.remove("hidden");
+}
+
+nextBtn.addEventListener("click", () => {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        showQuestion();
+    } else {
+        finishGame();
+    }
+});
+
+function finishGame() {
+    clearInterval(timerInterval);
+
+    quizScreen.classList.add("hidden");
+    resultScreen.classList.remove("hidden");
+
+    document.getElementById("progressBar").style.width = "100%";
+
+    document.getElementById("finalScore").textContent =
+        score + "/200";
+
+    let message = "";
+
+    if (score >= 180) {
+        message = "Excellent! You're a science genius!";
+    } else if (score >= 140) {
+        message = "Great work! You know your science.";
+    } else if (score >= 100) {
+        message = "Good effort! Keep learning and improving.";
+    } else if (score >= 60) {
+        message = "Nice try! More practice will help.";
+    } else {
+        message = "Keep exploring science. You can do better!";
+    }
+
+    document.getElementById("resultMessage").textContent = message;
+
+    const storageKey = "hexclownScienceBest_" + selectedLevel;
+
+    let best = Number(localStorage.getItem(storageKey) || 0);
+
+    if (score > best) {
+        best = score;
+        localStorage.setItem(storageKey, best);
+    }
+
+    document.getElementById("bestScore").textContent =
+        "Your best " + selectedLevel.toUpperCase() +
+        " score: " + best + "/200";
+}
+
+document.getElementById("playAgainBtn").addEventListener("click", startGame);
+
+document.getElementById("homeBtn").addEventListener("click", () => {
+    clearInterval(timerInterval);
+
+    resultScreen.classList.add("hidden");
+    quizScreen.classList.add("hidden");
+    startScreen.classList.remove("hidden");
+});
+</script>
+
+</body>
+  </html>
+  
