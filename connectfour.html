@@ -1,1 +1,741 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Connect Four | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #071321;
+    --panel: #0c1d30;
+    --cyan: #00eaff;
+    --green: #00ff88;
+    --blue: #168bff;
+    --red: #ff405d;
+    --yellow: #ffe45c;
+    --text: #eafaff;
+    --muted: #91aabd;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top, #102c45 0%, transparent 45%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 18px 12px 35px;
+}
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 22px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--green);
+    text-shadow: 0 0 12px var(--green);
+}
+
+.logo span {
+    color: var(--cyan);
+    text-shadow: 0 0 12px var(--cyan);
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-top: 7px;
+}
+
+.back-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px 0;
+    flex-wrap: wrap;
+}
+
+.back-links a {
+    color: var(--cyan);
+    text-decoration: none;
+    border: 1px solid #087d91;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    transition: .2s;
+}
+
+.back-links a:hover {
+    background: #06384a;
+    box-shadow: 0 0 12px #00eaff55;
+}
+
+.game-panel {
+    background: linear-gradient(145deg, #10263b, #091827);
+    border: 1px solid #16415a;
+    border-radius: 18px;
+    padding: 18px 12px;
+    box-shadow: 0 0 25px #001b2d;
+}
+
+h1 {
+    text-align: center;
+    color: var(--cyan);
+    font-size: 25px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px #00eaff66;
+    margin-bottom: 8px;
+}
+
+.description {
+    color: var(--muted);
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.scoreboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.score-card {
+    text-align: center;
+    padding: 13px 8px;
+    background: #071522;
+    border: 1px solid #244158;
+    border-radius: 12px;
+    transition: .2s;
+}
+
+.score-card.active {
+    border-color: var(--green);
+    box-shadow: 0 0 13px #00ff8840;
+}
+
+.player-name {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.red-name {
+    color: var(--red);
+}
+
+.yellow-name {
+    color: var(--yellow);
+}
+
+.score {
+    font-size: 27px;
+    font-weight: 900;
+}
+
+.status {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 14px;
+    background: #061522;
+    border: 1px solid #1c5269;
+    border-radius: 10px;
+    color: var(--cyan);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.status.winner {
+    color: var(--green);
+    border-color: var(--green);
+    box-shadow: 0 0 12px #00ff8840;
+}
+
+.status.draw {
+    color: var(--yellow);
+    border-color: var(--yellow);
+}
+
+.board-wrap {
+    width: 100%;
+    max-width: 490px;
+    margin: 0 auto;
+    padding: 9px;
+    background: linear-gradient(135deg, #087db4, #073a70);
+    border: 2px solid #00cfff;
+    border-radius: 15px;
+    box-shadow:
+        0 0 15px #00cfff55,
+        inset 0 0 12px #001c44;
+}
+
+.drop-controls {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 7px;
+}
+
+.drop-btn {
+    min-width: 0;
+    height: 35px;
+    border: 1px solid #00eaff88;
+    border-radius: 7px;
+    background: #08243c;
+    color: var(--cyan);
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .15s;
+    touch-action: manipulation;
+}
+
+.drop-btn:hover:not(:disabled) {
+    background: #075071;
+    box-shadow: 0 0 10px #00eaff88;
+}
+
+.drop-btn:active:not(:disabled) {
+    transform: scale(.94);
+}
+
+.drop-btn:disabled {
+    opacity: .3;
+    cursor: not-allowed;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.cell {
+    aspect-ratio: 1;
+    min-width: 0;
+    border-radius: 50%;
+    background: #06182d;
+    border: 2px solid #0b2e52;
+    box-shadow: inset 0 3px 7px #000a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.disc {
+    width: 82%;
+    height: 82%;
+    border-radius: 50%;
+    transition: .18s;
+}
+
+.disc.red {
+    background: radial-gradient(circle at 32% 25%, #ff9aa9, #ff405d 48%, #a90029);
+    box-shadow: 0 0 9px #ff405d99;
+}
+
+.disc.yellow {
+    background: radial-gradient(circle at 32% 25%, #fff8b0, #ffe45c 48%, #b88a00);
+    box-shadow: 0 0 9px #ffe45c99;
+}
+
+.cell.winning {
+    border-color: var(--green);
+    box-shadow: 0 0 13px var(--green), inset 0 0 8px #00ff8844;
+}
+
+.cell.winning .disc {
+    animation: glow 0.8s infinite alternate;
+}
+
+@keyframes glow {
+    from { transform: scale(1); }
+    to { transform: scale(.83); }
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.action-btn {
+    padding: 12px 8px;
+    border: 1px solid var(--cyan);
+    border-radius: 9px;
+    background: #08243a;
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.action-btn:hover {
+    background: #075071;
+    box-shadow: 0 0 12px #00eaff55;
+}
+
+.action-btn.restart {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+.action-btn.restart:hover {
+    background: #063b2a;
+}
+
+.action-btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+.rules {
+    margin-top: 20px;
+    padding: 14px;
+    background: #071522;
+    border: 1px solid #193c55;
+    border-radius: 10px;
+}
+
+.rules h3 {
+    color: var(--green);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.rules p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+footer {
+    text-align: center;
+    color: #607d91;
+    font-size: 11px;
+    margin-top: 22px;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 380px) {
+    .game-panel {
+        padding: 14px 8px;
+    }
+
+    .board-wrap {
+        padding: 6px;
+    }
+
+    .board,
+    .drop-controls {
+        gap: 3px;
+    }
+
+    .drop-btn {
+        height: 30px;
+        font-size: 15px;
+    }
+
+    h1 {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <div class="logo">HEX<span>CLØWN</span></div>
+        <div class="subtitle">NEON GAMING NETWORK</div>
+
+        <nav class="back-links">
+            <a href="boaandstr.html">← Board & Strategy</a>
+            <a href="GameZone.html">GameZone</a>
+        </nav>
+    </header>
+
+    <main class="game-panel">
+
+        <h1>CONNECT FOUR</h1>
+
+        <p class="description">
+            Connect four discs in a row before your opponent does.
+            Think carefully and win!
+        </p>
+
+        <section class="scoreboard">
+            <div class="score-card active" id="redCard">
+                <div class="player-name red-name">🔴 RED PLAYER</div>
+                <div class="score" id="redScore">0</div>
+            </div>
+
+            <div class="score-card" id="yellowCard">
+                <div class="player-name yellow-name">🟡 YELLOW PLAYER</div>
+                <div class="score" id="yellowScore">0</div>
+            </div>
+        </section>
+
+        <div class="status" id="status" aria-live="polite">
+            🔴 Red Player's turn. Choose a column!
+        </div>
+
+        <div class="board-wrap">
+
+            <div class="drop-controls" id="dropControls">
+                <button class="drop-btn" data-col="0" aria-label="Drop in column 1">↓</button>
+                <button class="drop-btn" data-col="1" aria-label="Drop in column 2">↓</button>
+                <button class="drop-btn" data-col="2" aria-label="Drop in column 3">↓</button>
+                <button class="drop-btn" data-col="3" aria-label="Drop in column 4">↓</button>
+                <button class="drop-btn" data-col="4" aria-label="Drop in column 5">↓</button>
+                <button class="drop-btn" data-col="5" aria-label="Drop in column 6">↓</button>
+                <button class="drop-btn" data-col="6" aria-label="Drop in column 7">↓</button>
+            </div>
+
+            <div class="board" id="board" role="grid" aria-label="Connect Four game board"></div>
+
+        </div>
+
+        <div class="controls">
+            <button class="action-btn" id="undoBtn" onclick="undoMove()" disabled>
+                ↶ UNDO MOVE
+            </button>
+
+            <button class="action-btn restart" onclick="newGame()">
+                ⟳ NEW GAME
+            </button>
+        </div>
+
+        <div class="controls">
+            <button class="action-btn" onclick="resetScores()">
+                RESET SCORES
+            </button>
+
+            <button class="action-btn" onclick="flipTurnInfo()">
+                GAME INFO
+            </button>
+        </div>
+
+        <section class="rules">
+            <h3>HOW TO PLAY</h3>
+            <p>
+                1. Red plays first, followed by Yellow.<br>
+                2. Tap one of the seven arrows to drop a disc.<br>
+                3. Connect four discs horizontally, vertically or diagonally to win.<br>
+                4. If the board fills up without a winner, the game is a draw.<br>
+                5. Use Undo to take back your last move.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        © 2026 HEXCLØWN • THINK SMART. PLAY DIFFERENT.
+    </footer>
+
+</div>
+
+<script>
+"use strict";
+
+const ROWS = 6;
+const COLS = 7;
+
+let board = [];
+let currentPlayer = 1;
+let gameOver = false;
+let winningCells = [];
+let history = [];
+
+let scores = {
+    1: 0,
+    2: 0
+};
+
+const boardElement = document.getElementById("board");
+const statusElement = document.getElementById("status");
+const undoButton = document.getElementById("undoBtn");
+const dropButtons = document.querySelectorAll(".drop-btn");
+
+function createEmptyBoard() {
+    return Array.from(
+        { length: ROWS },
+        () => Array(COLS).fill(0)
+    );
+}
+
+function saveState() {
+    history.push({
+        board: board.map(row => [...row]),
+        currentPlayer,
+        gameOver,
+        winningCells: winningCells.map(cell => [...cell]),
+        scores: { ...scores }
+    });
+
+    undoButton.disabled = history.length === 0;
+}
+
+function renderBoard() {
+    boardElement.innerHTML = "";
+
+    for (let row = 0; row < ROWS; row++) {
+        for (let col = 0; col < COLS; col++) {
+
+            const cell = document.createElement("div");
+            cell.className = "cell";
+            cell.setAttribute("role", "gridcell");
+
+            const value = board[row][col];
+
+            if (value !== 0) {
+                const disc = document.createElement("div");
+                disc.className = "disc " + (value === 1 ? "red" : "yellow");
+                cell.appendChild(disc);
+            }
+
+            if (winningCells.some(
+                position => position[0] === row && position[1] === col
+            )) {
+                cell.classList.add("winning");
+            }
+
+            boardElement.appendChild(cell);
+        }
+    }
+
+    updateDropButtons();
+    updateScoreboard();
+}
+
+function updateDropButtons() {
+    dropButtons.forEach(button => {
+        const col = Number(button.dataset.col);
+        const columnFull = board[0][col] !== 0;
+
+        button.disabled = gameOver || columnFull;
+    });
+}
+
+function updateScoreboard() {
+    document.getElementById("redScore").textContent = scores[1];
+    document.getElementById("yellowScore").textContent = scores[2];
+
+    document.getElementById("redCard").classList.toggle(
+        "active",
+        !gameOver && currentPlayer === 1
+    );
+
+    document.getElementById("yellowCard").classList.toggle(
+        "active",
+        !gameOver && currentPlayer === 2
+    );
+}
+
+function setStatus(message, type = "") {
+    statusElement.textContent = message;
+    statusElement.className = "status";
+
+    if (type) {
+        statusElement.classList.add(type);
+    }
+}
+
+function dropDisc(col) {
+    if (gameOver || col < 0 || col >= COLS) return;
+
+    let targetRow = -1;
+
+    for (let row = ROWS - 1; row >= 0; row--) {
+        if (board[row][col] === 0) {
+            targetRow = row;
+            break;
+        }
+    }
+
+    if (targetRow === -1) return;
+
+    saveState();
+
+    board[targetRow][col] = currentPlayer;
+
+    const winningLine = findWinningLine(
+        targetRow,
+        col,
+        currentPlayer
+    );
+
+    if (winningLine.length >= 4) {
+        winningCells = winningLine;
+        gameOver = true;
+        scores[currentPlayer]++;
+
+        const winnerName = currentPlayer === 1
+            ? "🔴 RED PLAYER"
+            : "🟡 YELLOW PLAYER";
+
+        setStatus("🏆 " + winnerName + " WINS!", "winner");
+
+    } else if (isBoardFull()) {
+        gameOver = true;
+        setStatus("🤝 IT'S A DRAW! NO MORE MOVES.", "draw");
+
+    } else {
+        currentPlayer = currentPlayer === 1 ? 2 : 1;
+
+        const nextPlayer = currentPlayer === 1
+            ? "🔴 Red Player"
+            : "🟡 Yellow Player";
+
+        setStatus(nextPlayer + "'s turn. Choose a column!");
+    }
+
+    renderBoard();
+}
+
+function findWinningLine(row, col, player) {
+    const directions = [
+        [0, 1],   // Horizontal
+        [1, 0],   // Vertical
+        [1, 1],   // Diagonal down-right
+        [1, -1]   // Diagonal down-left
+    ];
+
+    for (const [dr, dc] of directions) {
+        let line = [[row, col]];
+
+        for (const sign of [1, -1]) {
+            let r = row + dr * sign;
+            let c = col + dc * sign;
+
+            while (
+                r >= 0 && r < ROWS &&
+                c >= 0 && c < COLS &&
+                board[r][c] === player
+            ) {
+                line.push([r, c]);
+                r += dr * sign;
+                c += dc * sign;
+            }
+        }
+
+        if (line.length >= 4) {
+            return line;
+        }
+    }
+
+    return [];
+}
+
+function isBoardFull() {
+    return board[0].every(cell => cell !== 0);
+}
+
+function undoMove() {
+    if (history.length === 0) return;
+
+    const previous = history.pop();
+
+    board = previous.board.map(row => [...row]);
+    currentPlayer = previous.currentPlayer;
+    gameOver = previous.gameOver;
+    winningCells = previous.winningCells.map(cell => [...cell]);
+    scores = { ...previous.scores };
+
+    if (gameOver) {
+        setStatus("Move undone. The previous game result is restored.", "winner");
+    } else {
+        const playerName = currentPlayer === 1
+            ? "🔴 Red Player"
+            : "🟡 Yellow Player";
+
+        setStatus(playerName + "'s turn. Choose a column!");
+    }
+
+    undoButton.disabled = history.length === 0;
+    renderBoard();
+}
+
+function newGame() {
+    board = createEmptyBoard();
+    currentPlayer = 1;
+    gameOver = false;
+    winningCells = [];
+    history = [];
+
+    undoButton.disabled = true;
+
+    setStatus("🔴 Red Player's turn. Choose a column!");
+
+    renderBoard();
+}
+
+function resetScores() {
+    scores = {
+        1: 0,
+        2: 0
+    };
+
+    renderBoard();
+
+    if (gameOver) {
+        setStatus("Scores reset. Start a new game!", "winner");
+    }
+}
+
+function flipTurnInfo() {
+    alert(
+        "HEXCLØWN CONNECT FOUR\n\n" +
+        "Players: 2\n" +
+        "Board: 7 columns × 6 rows\n" +
+        "Red plays first.\n\n" +
+        "Connect four discs in a straight line to win!"
+    );
+}
+
+// Connect all seven column buttons.
+dropButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        dropDisc(Number(button.dataset.col));
+    });
+});
+
+// Start the game.
+newGame();
+
+</script>
+
+</body>
+  </html>
+  
