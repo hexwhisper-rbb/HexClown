@@ -1,1 +1,855 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Brain Teaser | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg:#071321;
+    --panel:#0d2032;
+    --green:#39ff88;
+    --cyan:#00eaff;
+    --blue:#168bff;
+    --red:#ff426b;
+    --text:#eaf7ff;
+    --muted:#91a9bb;
+}
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body {
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial,sans-serif;
+    min-height:100vh;
+    padding:15px;
+}
+
+header {
+    text-align:center;
+    padding:20px 10px;
+    border-bottom:1px solid #17344b;
+    margin-bottom:25px;
+}
+
+.logo {
+    color:var(--green);
+    font-size:27px;
+    font-weight:900;
+    letter-spacing:3px;
+    text-shadow:0 0 12px #39ff8870;
+}
+
+header p {
+    color:var(--muted);
+    font-size:12px;
+    margin-top:7px;
+    letter-spacing:2px;
+}
+
+nav {
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:18px;
+}
+
+nav a {
+    color:var(--cyan);
+    text-decoration:none;
+    border:1px solid #00eaff55;
+    padding:9px 13px;
+    border-radius:7px;
+    font-size:12px;
+}
+
+nav a:hover {
+    background:var(--cyan);
+    color:#071321;
+}
+
+.container {
+    max-width:650px;
+    margin:auto;
+}
+
+.heading {
+    text-align:center;
+    margin-bottom:22px;
+}
+
+.heading h1 {
+    color:var(--cyan);
+    font-size:27px;
+    margin-bottom:9px;
+}
+
+.heading p {
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+}
+
+.card {
+    background:var(--panel);
+    border:1px solid #1b4058;
+    border-radius:14px;
+    padding:22px;
+    box-shadow:0 0 22px #00eaff0c;
+}
+
+.levels {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:20px 0;
+}
+
+.level {
+    padding:15px 5px;
+    background:#091827;
+    border:1px solid #24445a;
+    color:var(--text);
+    border-radius:9px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.level:hover,
+.level.selected {
+    border-color:var(--green);
+    color:var(--green);
+    box-shadow:0 0 12px #39ff8830;
+}
+
+.btn {
+    width:100%;
+    padding:14px;
+    background:var(--green);
+    color:#061321;
+    border:none;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:12px;
+}
+
+.btn:hover {
+    box-shadow:0 0 15px #39ff8880;
+}
+
+.stats {
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:15px;
+    color:var(--cyan);
+    font-size:13px;
+    font-weight:bold;
+}
+
+.progress {
+    width:100%;
+    height:8px;
+    background:#071321;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+
+.progress-bar {
+    height:100%;
+    width:0%;
+    background:var(--green);
+    transition:width .3s;
+}
+
+.timer-box {
+    color:var(--red);
+    text-align:center;
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.question {
+    font-size:19px;
+    line-height:1.6;
+    margin-bottom:20px;
+}
+
+.answers {
+    display:grid;
+    gap:11px;
+}
+
+.answer {
+    background:#091827;
+    border:1px solid #24445a;
+    border-radius:8px;
+    color:var(--text);
+    padding:14px;
+    text-align:left;
+    cursor:pointer;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.answer:hover:not(:disabled) {
+    border-color:var(--cyan);
+    background:#10283a;
+}
+
+.answer:disabled {
+    cursor:default;
+    opacity:1;
+}
+
+.answer.correct {
+    border-color:var(--green);
+    background:#123d2a;
+    color:var(--green);
+}
+
+.answer.wrong {
+    border-color:var(--red);
+    background:#401c2a;
+    color:#ff9bb0;
+}
+
+.feedback {
+    min-height:25px;
+    margin-top:15px;
+    font-size:14px;
+    font-weight:bold;
+    line-height:1.6;
+}
+
+.feedback.good {
+    color:var(--green);
+}
+
+.feedback.bad {
+    color:var(--red);
+}
+
+.explanation {
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.6;
+    margin-top:9px;
+}
+
+.hidden {
+    display:none !important;
+}
+
+.result {
+    text-align:center;
+}
+
+.result h2 {
+    color:var(--green);
+    font-size:27px;
+    margin-bottom:15px;
+}
+
+.final-score {
+    font-size:42px;
+    color:var(--cyan);
+    font-weight:bold;
+    margin:18px 0;
+}
+
+.result p {
+    color:var(--muted);
+    line-height:1.7;
+    margin-bottom:12px;
+}
+
+.best {
+    color:var(--green) !important;
+}
+
+footer {
+    text-align:center;
+    color:#71889a;
+    font-size:12px;
+    padding:30px 10px 15px;
+}
+
+@media(max-width:420px) {
+    .card {
+        padding:16px;
+    }
+
+    .heading h1 {
+        font-size:23px;
+    }
+
+    .question {
+        font-size:17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEXCLØWN</div>
+    <p>THINK BEYOND LIMITS</p>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="GameZone.html">GameZone</a>
+        <a href="eduandtri.html">Education & Trivia</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <div class="heading">
+        <h1>BRAIN TEASER</h1>
+        <p>Challenge your mind with riddles, logic puzzles, number patterns and tricky questions.</p>
+    </div>
+
+    <section class="card" id="startScreen">
+
+        <h2 style="color:var(--green);text-align:center;">
+            Choose Your Level
+        </h2>
+
+        <div class="levels">
+            <button class="level selected" data-level="easy">EASY</button>
+            <button class="level" data-level="medium">MEDIUM</button>
+            <button class="level" data-level="hard">HARD</button>
+        </div>
+
+        <p style="color:var(--muted);text-align:center;font-size:13px;line-height:1.7;">
+            20 brain challenges per round<br>
+            20 seconds per question<br>
+            10 points for every correct answer.
+        </p>
+
+        <button class="btn" id="startBtn">START CHALLENGE</button>
+
+    </section>
+
+    <section class="card hidden" id="quizScreen">
+
+        <div class="stats">
+            <span id="questionNumber">Question 1/20</span>
+            <span id="score">Score: 0</span>
+        </div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="timer-box">
+            TIME LEFT: <span id="timer">20</span>s
+        </div>
+
+        <h2 class="question" id="question"></h2>
+
+        <div class="answers" id="answers"></div>
+
+        <div class="feedback" id="feedback"></div>
+        <div class="explanation" id="explanation"></div>
+
+        <button class="btn hidden" id="nextBtn">NEXT CHALLENGE</button>
+
+    </section>
+
+    <section class="card hidden result" id="resultScreen">
+
+        <h2>CHALLENGE COMPLETED!</h2>
+
+        <p>Your final score:</p>
+
+        <div class="final-score" id="finalScore">0/200</div>
+
+        <p id="resultMessage"></p>
+
+        <p class="best" id="bestScore"></p>
+
+        <button class="btn" id="playAgainBtn">PLAY AGAIN</button>
+
+        <button class="btn" id="homeBtn" style="background:var(--cyan);">
+            BACK TO MENU
+        </button>
+
+    </section>
+
+</main>
+
+<footer>
+    <p>HEXCLØWN © 2026</p>
+    <p style="margin-top:6px;">THINK • SOLVE • CONQUER</p>
+</footer>
+
+<script>
+const questionBank = {
+
+easy: [
+{
+q:"What has hands but cannot clap?",
+a:["A robot","A clock","A tree","A statue"],
+c:1,
+e:"A clock has hands that point to the time."
+},
+{
+q:"What number comes next: 2, 4, 6, 8, ...?",
+a:["9","10","12","14"],
+c:1,
+e:"The numbers increase by 2."
+},
+{
+q:"What has a neck but no head?",
+a:["A bottle","A chair","A shoe","A table"],
+c:0,
+e:"A bottle has a neck but no head."
+},
+{
+q:"Which month has 28 days?",
+a:["February only","January","All months","December only"],
+c:2,
+e:"Every month has at least 28 days."
+},
+{
+q:"What gets wetter as it dries?",
+a:["A sponge","A towel","The sun","A fan"],
+c:1,
+e:"A towel absorbs water while drying something."
+},
+{
+q:"What comes once in a minute, twice in a moment, but never in a thousand years?",
+a:["The letter M","The letter T","The letter A","The number 1"],
+c:0,
+e:"The letter M appears once in minute and twice in moment."
+},
+{
+q:"How many sides does a triangle have?",
+a:["2","3","4","5"],
+c:1,
+e:"A triangle has three sides."
+},
+{
+q:"What is half of 100?",
+a:["25","40","50","60"],
+c:2,
+e:"100 divided by 2 equals 50."
+},
+{
+q:"If you have 3 apples and take away 2, how many do you have?",
+a:["1","2","3","5"],
+c:1,
+e:"You took 2 apples, so you have the 2 you took."
+},
+{
+q:"What has keys but cannot open locks?",
+a:["A door","A keyboard","A suitcase","A box"],
+c:1,
+e:"A keyboard has keys for typing."
+},
+{
+q:"Which is heavier: 1 kg of iron or 1 kg of cotton?",
+a:["Iron","Cotton","They weigh the same","Cannot tell"],
+c:2,
+e:"Both weigh exactly one kilogram."
+},
+{
+q:"What number comes next: 5, 10, 15, 20, ...?",
+a:["22","25","30","35"],
+c:1,
+e:"The pattern increases by 5."
+},
+{
+q:"What has an eye but cannot see?",
+a:["A needle","A bird","A camera","A person"],
+c:0,
+e:"A needle has an eye where thread passes through."
+},
+{
+q:"If today is Monday, what day will it be in 3 days?",
+a:["Tuesday","Wednesday","Thursday","Friday"],
+c:2,
+e:"Tuesday is 1 day later, Wednesday 2, Thursday 3."
+},
+{
+q:"How many months are in one year?",
+a:["10","11","12","13"],
+c:2,
+e:"There are 12 months in a year."
+},
+{
+q:"What number is missing: 1, 3, 5, 7, __?",
+a:["8","9","10","11"],
+c:1,
+e:"These are consecutive odd numbers."
+},
+{
+q:"What can travel around the world while staying in one corner?",
+a:["A stamp","A plane","A clock","A map"],
+c:0,
+e:"A stamp stays in the corner of an envelope."
+},
+{
+q:"Which word becomes shorter when you add two letters to it?",
+a:["Small","Short","Tiny","Little"],
+c:1,
+e:"Adding ER to short makes the word shorter."
+},
+{
+q:"What has many teeth but cannot bite?",
+a:["A lion","A comb","A dog","A shark"],
+c:1,
+e:"A comb has teeth used for arranging hair."
+},
+{
+q:"If 2 cats catch 2 mice in 2 minutes, how long would 4 cats take to catch 4 mice at the same rate?",
+a:["1 minute","2 minutes","4 minutes","8 minutes"],
+c:1,
+e:"Each cat catches one mouse in 2 minutes."
+}
+],
+
+medium: [
+{
+q:"A farmer has 17 sheep. All but 9 run away. How many remain?",
+a:["8","9","17","0"],
+c:1,
+e:"All but 9 means 9 sheep remain."
+},
+{
+q:"What number comes next: 1, 4, 9, 16, 25, ...?",
+a:["30","35","36","49"],
+c:2,
+e:"These are square numbers: 1², 2², 3², 4², 5², 6²."
+},
+{
+q:"A clock shows 3:15. What is the angle between the hour and minute hands?",
+a:["0 degrees","7.5 degrees","15 degrees","30 degrees"],
+c:1,
+e:"At 3:15, the minute hand is at 90 degrees and the hour hand at 97.5 degrees."
+},
+{
+q:"If five machines make five items in five minutes, how long do 100 machines take to make 100 items?",
+a:["5 minutes","20 minutes","100 minutes","500 minutes"],
+c:0,
+e:"Each machine makes one item in five minutes."
+},
+{
+q:"What comes next: 2, 3, 5, 8, 12, 17, ...?",
+a:["21","22","23","24"],
+c:2,
+e:"The differences are +1, +2, +3, +4, +5, so next is +6."
+},
+{
+q:"A man looks at a photo and says: 'I have no brothers or sisters, but that man's father is my father's son.' Who is in the photo?",
+a:["His father","His son","His uncle","His grandfather"],
+c:1,
+e:"My father's son means himself. So the person in the photo is his son."
+},
+{
+q:"If 3 pencils cost 30 naira, how much do 7 pencils cost at the same price?",
+a:["50 naira","60 naira","70 naira","90 naira"],
+c:2,
+e:"One pencil costs 10 naira. Seven cost 70 naira."
+},
+{
+q:"Which number does not belong: 2, 3, 5, 7, 9, 11?",
+a:["3","7","9","11"],
+c:2,
+e:"9 is not a prime number because it can be divided by 3."
+},
+{
+q:"A person walks 5 km north, then 5 km south. How far are they from their starting point?",
+a:["0 km","5 km","10 km","15 km"],
+c:0,
+e:"They return to the starting point."
+},
+{
+q:"What number comes next: 100, 90, 81, 73, 66, ...?",
+a:["58","59","60","61"],
+c:1,
+e:"The differences are -10, -9, -8, -7, so next is -6."
+},
+{
+q:"If yesterday was two days before Friday, what day is today?",
+a:["Tuesday","Wednesday","Thursday","Friday"],
+c:1,
+e:"Two days before Friday is Wednesday. If yesterday was Wednesday, today is Thursday.",
+},
+{
+q:"A basket contains 6 red balls and 4 blue balls. What is the minimum number you must pick without looking to guarantee two balls of the same colour?",
+a:["2","3","4","5"],
+c:1,
+e:"With two colours, three picks guarantee at least two of one colour."
+},
+{
+q:"How many times can you subtract 10 from 100?",
+a:["Once","Twice","Five times","Ten times"],
+c:0,
+e:"After subtracting 10 once, you are subtracting from 90, not 100."
+},
+{
+q:"What number comes next: 1, 2, 6, 24, 120, ...?",
+a:["240","360","600","720"],
+c:3,
+e:"The pattern multiplies by 2, 3, 4, 5, then 6."
+},
+{
+q:"A room has four corners. One cat sits in each corner. Each cat sees three cats. How many cats are there?",
+a:["4","8","12","16"],
+c:0,
+e:"There are four cats, one in each corner."
+},
+{
+q:"If 12 workers finish a job in 6 days, how long would 6 workers take at the same rate?",
+a:["3 days","6 days","12 days","18 days"],
+c:2,
+e:"Half the workers take twice as long: 12 days."
+},
+{
+q:"Which number is both a perfect square and a perfect cube?",
+a:["16","36","64","81"],
+c:2,
+e:"64 is 8² and 4³."
+},
+{
+q:"A train travels 60 km in one hour. How far does it travel in 30 minutes?",
+a:["15 km","20 km","30 km","45 km"],
+c:2,
+e:"30 minutes is half an hour, so it travels 30 km."
+},
+{
+q:"If all Bloops are Razzies and all Razzies are Lazzies, are all Bloops Lazzies?",
+a:["Yes","No","Only some","Cannot be determined"],
+c:0,
+e:"If each group belongs to the next group, all Bloops must be Lazzies."
+},
+{
+q:"What number is missing: 3, 6, 12, 24, __?",
+a:["30","36","42","48"],
+c:3,
+e:"Each number is multiplied by 2."
+}
+],
+
+hard: [
+{
+q:"A sequence follows this rule: 2, 6, 12, 20, 30, ... What comes next?",
+a:["36","40","42","44"],
+c:2,
+e:"The pattern is n × (n + 1): 1×2, 2×3, 3×4, and so on. Next is 6×7 = 42."
+},
+{
+q:"You have 8 identical-looking balls. One is heavier. What is the minimum number of balance-scale weighings needed to guarantee finding it?",
+a:["1","2","3","4"],
+c:1,
+e:"Weigh 3 against 3. If balanced, compare the remaining 2. If not, compare two balls from the heavier group."
+},
+{
+q:"A number is doubled, then 10 is added, giving 30. What was the original number?",
+a:["5","10","15","20"],
+c:1,
+e:"30 minus 10 is 20. Half of 20 is 10."
+},
+{
+q:"What comes next: 1, 1, 2, 3, 5, 8, 13, ...?",
+a:["18","20","21","24"],
+c:2,
+e:"Each number is the sum of the two previous numbers."
+},
+{
+q:"Three boxes are labelled APPLES, ORANGES and MIXED. Every label is wrong. What is the minimum number of fruits you must take from one box to identify all three boxes?",
+a:["1","2","3","4"],
+c:0,
+e:"Take one fruit from the box labelled MIXED. Since every label is wrong, that box contains only one fruit type. The other boxes can then be identified by elimination."
+},
+{
+q:"A father is four times as old as his son. In 20 years, he will be twice as old. How old is the son now?",
+a:["5","10","15","20"],
+c:1,
+e:"Let the son's age be x. The father is 4x. So 4x + 20 = 2(x + 20), giving x = 10."
+},
+{
+q:"What is the smallest positive number divisible by both 12 and 18?",
+a:["24","30","36","72"],
+c:2,
+e:"36 is the least common multiple of 12 and 18."
+},
+{
+q:"If 5 people each shake hands with every other person exactly once, how many handshakes occur?",
+a:["5","8","10","20"],
+c:2,
+e:"There are 5×4÷2 = 10 unique pairs."
+},
+{
+q:"A snail climbs 3 metres during the day and slips 2 metres at night. How many days does it take to climb out of a 10-metre well?",
+a:["8","9","10","11"],
+c:1,
+e:"It gains 1 metre per full day-night cycle, but on day 9 it reaches 10 metres before slipping back."
+},
+{
+q:"What is the next number: 4, 9, 19, 39, 79, ...?",
+a:["119","139","159","169"],
+c:2,
+e:"Each number is doubled and 1 is added."
+},
+{
+q:"A bag has 5 black, 5 white and 5 red socks. What is the minimum number you must take in the dark to guarantee a matching pair?",
+a:["2","3","4","5"],
+c:2,
+e:"With three colours, the fourth sock must match one of the first three."
+},
+{
+q:"If 6 people can complete a task in 8 hours, how many hours would 12 people take at the same rate?",
+a:["2","4","6","8"],
+c:1,
+e:"Doubling the workers halves the time: 4 hours."
+},
+{
+q:"A two-digit number has digits that add up to 9. Reversing the digits makes the number 27 smaller. What is the original number?",
+a:["36","45","54","63"],
+c:3,
+e:"63 has digits adding to 9. Reversing it gives 36, which is 27 smaller."
+},
+{
+q:"A clock takes 5 seconds to strike 6 times. How long does it take to strike 12 times at the same interval?",
+a:["10 seconds","11 seconds","12 seconds","15 seconds"],
+c:1,
+e:"Six strikes have five intervals. Each interval is 1 second. Twelve strikes have eleven intervals."
+},
+{
+q:"If A is taller than B, and B is taller than C, who is the shortest?",
+a:["A","B","C","Cannot tell"],
+c:2,
+e:"A is taller than B, and B is taller than C, so C is shortest."
+},
+{
+q:"A number leaves a remainder of 2 when divided by 5. Which option could it be?",
+a:["15","17","20","25"],
+c:1,
+e:"17 divided by 5 gives a remainder of 2."
+},
+{
+q:"You have 10 candles burning. You blow out 2. How many candles remain?",
+a:["2","8","10","0"],
+c:2,
+e:"All 10 candles remain physically. The 8 still burning may melt away, but the question asks how many remain at that moment."
+},
+{
+q:"If the day after tomorrow is Sunday, what day was yesterday?",
+a:["Wednesday","Thursday","Friday","Saturday"],
+c:1,
+e:"If the day after tomorrow is Sunday, today is Friday. Yesterday was Thursday."
+},
+{
+q:"A farmer buys an animal for 60 naira, sells it for 70, buys it back for 80 and sells it again for 90. What is the total profit?",
+a:["10 naira","20 naira","30 naira","40 naira"],
+c:1,
+e:"First profit: 10. Second profit: 10. Total profit: 20 naira."
+},
+{
+q:"What is the next number: 2, 10, 30, 68, 130, ...?",
+a:["180","200","222","250"],
+c:2,
+e:"The pattern is n³ + n: 1³+1=2, 2³+2=10, 3³+3=30, and so on. Next is 6³+6 = 222."
+}
+]
+
+};
+
+const startScreen = document.getElementById("startScreen");
+const quizScreen = document.getElementById("quizScreen");
+const resultScreen = document.getElementById("resultScreen");
+
+const questionElement = document.getElementById("question");
+const answersElement = document.getElementById("answers");
+const feedbackElement = document.getElementById("feedback");
+const explanationElement = document.getElementById("explanation");
+const nextBtn = document.getElementById("nextBtn");
+
+let selectedLevel = "easy";
+let questions = [];
+let currentQuestion = 0;
+let score = 0;
+let timeLeft = 20;
+let timerInterval = null;
+let answered = false;
+
+document.querySelectorAll(".level").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".level").forEach(btn => {
+            btn.classList.remove("selected");
+        });
+
+        button.classList.add("selected");
+        selectedLevel = button.dataset.level;
+    });
+});
+
+function shuffle(array) {
+    const copy = [...array];
+
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+
+    return copy;
+}
+
+document.getElementById("startBtn").addEventListener("click", startGame);
+
+function startGame() {
+    clearInterval(timerInterval);
+
+    questions = shuffle(questionBank[selectedLevel]).slice(0, 20);
+
+    currentQuestion = 0;
+    score = 0;
+
+    startScreen.classList.add("hidden");
+    resultScreen.classList.add("hidden");
+    quizScreen.classList.remove("hidden");
+
+    showQuestion();
+}
+
+function showQuestion() {
+    clearInterval(timerInterval);
+
+    answered = false;
+    timeLeft = 20;
+
+    const item = questions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent =
+        "Question " + (currentQuestion + 1) + "/20";
+
+    document.getElementById("score").textContent =
+        "Score: " + score;
+
+    document.getElementById("progressBar").style.width =
+        (currentQuestion / questions.length * 100) + "%";
+
+    document.getElementById("timer").textContent = timeLeft;
+
+    questionElement.textContent = item.q;
+
+    
