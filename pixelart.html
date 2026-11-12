@@ -1,0 +1,812 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+<title>Pixel Art Studio | HEXCLØWN</title>
+
+<style>
+:root {
+  --bg:#061116;
+  --panel:#0b1c23;
+  --panel2:#102832;
+  --line:#1b414b;
+  --green:#b6ff45;
+  --cyan:#36e5e5;
+  --text:#e7f5f5;
+  --muted:#91aeb3;
+  --red:#ff6478;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:radial-gradient(circle at top,#102832,#061116 55%,#03090c);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header {
+  position:sticky;
+  top:0;
+  z-index:10;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:15px 5%;
+  background:#061116ed;
+  border-bottom:1px solid var(--line);
+}
+.logo {
+  color:var(--green);
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+.logo span {color:var(--cyan)}
+header a {
+  color:var(--cyan);
+  text-decoration:none;
+  font-size:13px;
+}
+main {
+  width:min(1050px,94%);
+  margin:25px auto 45px;
+}
+.hero {
+  text-align:center;
+  padding:25px 15px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:linear-gradient(135deg,#102832,#08151b);
+  margin-bottom:18px;
+}
+.hero h1 {
+  color:var(--green);
+  font-size:clamp(27px,6vw,42px);
+  letter-spacing:2px;
+  margin:5px 0 10px;
+}
+.hero p {color:var(--muted);font-size:13px;line-height:1.6}
+.status {
+  display:inline-block;
+  border:1px solid #37604b;
+  color:var(--green);
+  padding:7px 12px;
+  border-radius:20px;
+  font-size:11px;
+}
+.panel {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:17px;
+  margin:15px 0;
+}
+.panel h2 {
+  color:var(--cyan);
+  font-size:16px;
+  margin:0 0 12px;
+}
+label {
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin:9px 0 6px;
+}
+select,input {
+  background:#06151b;
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:10px;
+  max-width:100%;
+}
+button {
+  background:var(--panel2);
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:7px;
+  padding:10px 13px;
+  margin:3px;
+  font-weight:bold;
+  font-size:12px;
+  cursor:pointer;
+}
+button:hover {border-color:var(--cyan);color:var(--cyan)}
+button.active {
+  background:var(--green);
+  color:#071116;
+  border-color:var(--green);
+}
+button:disabled {opacity:.35;cursor:not-allowed}
+.primary {
+  background:var(--green);
+  color:#071116;
+  border-color:var(--green);
+}
+.danger {border-color:#713744;color:#ff9aaa}
+.small {font-size:12px;color:var(--muted);line-height:1.5}
+.toolbar {
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px;
+  margin:10px 0;
+}
+.toolbar button {flex:1 1 75px}
+.palette {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:10px 0;
+}
+.swatch {
+  width:29px;
+  height:29px;
+  padding:0;
+  border:2px solid #789098;
+  border-radius:5px;
+  margin:0;
+}
+.swatch.selected {
+  outline:2px solid var(--green);
+  outline-offset:2px;
+}
+.colorrow {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+input[type=color] {
+  width:55px;
+  height:42px;
+  padding:3px;
+  cursor:pointer;
+}
+.canvas-wrap {
+  background-color:#d4d4d4;
+  background-image:
+    linear-gradient(45deg,#aaa 25%,transparent 25%),
+    linear-gradient(-45deg,#aaa 25%,transparent 25%),
+    linear-gradient(45deg,transparent 75%,#aaa 75%),
+    linear-gradient(-45deg,transparent 75%,#aaa 75%);
+  background-size:20px 20px;
+  background-position:0 0,0 10px,10px -10px,-10px 0;
+  border:2px solid var(--cyan);
+  border-radius:9px;
+  padding:8px;
+  display:flex;
+  justify-content:center;
+  overflow:auto;
+  touch-action:pan-y;
+}
+#pixelCanvas {
+  display:block;
+  width:min(100%,560px);
+  height:auto;
+  aspect-ratio:1;
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+  background:transparent;
+  touch-action:none;
+  cursor:crosshair;
+}
+.stats {
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:8px;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:10px;
+}
+#message {
+  display:none;
+  background:#16333c;
+  border:1px solid var(--cyan);
+  border-radius:8px;
+  padding:11px;
+  margin-top:12px;
+  font-size:13px;
+}
+footer {
+  text-align:center;
+  color:var(--muted);
+  padding:25px 10px;
+  font-size:12px;
+}
+@media(max-width:500px) {
+  header {padding:13px 4%}
+  .logo {font-size:16px}
+  main {width:94%}
+  .panel {padding:13px}
+  button {padding:10px 9px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCL<span>Ø</span>WN</div>
+  <a href="index.html">← BACK TO HOME</a>
+</header>
+
+<main>
+
+<div class="hero">
+  <h1>PIXEL ART STUDIO</h1>
+  <p>Create retro pixel drawings, experiment with colours and export your artwork.</p>
+  <div class="status">PIXEL SYSTEM READY</div>
+</div>
+
+<!-- GRID SIZE -->
+<section class="panel">
+  <h2>01 / Canvas Settings</h2>
+
+  <label for="gridSize">Choose grid size</label>
+  <select id="gridSize">
+    <option value="8">8 × 8 — Tiny</option>
+    <option value="16" selected>16 × 16 — Small</option>
+    <option value="32">32 × 32 — Medium</option>
+    <option value="64">64 × 64 — Large</option>
+  </select>
+
+  <button class="primary" id="applyGrid">Apply Grid Size</button>
+  <p class="small">Changing the grid size starts a fresh canvas. Save your current PNG first if you want to keep it.</p>
+</section>
+
+<!-- COLOURS -->
+<section class="panel">
+  <h2>02 / Colour Picker & Retro Palettes</h2>
+
+  <div class="colorrow">
+    <div>
+      <label for="colorPicker">Custom colour</label>
+      <input type="color" id="colorPicker" value="#b6ff45">
+    </div>
+    <div>
+      <div class="small">Selected colour</div>
+      <div id="selectedHex" class="small">#B6FF45</div>
+    </div>
+  </div>
+
+  <label for="paletteSelect">Retro palette</label>
+  <select id="paletteSelect">
+    <option value="gameboy">Classic Game Boy</option>
+    <option value="nes">NES Retro</option>
+    <option value="cyber">Cyber Neon</option>
+    <option value="sunset">Retro Sunset</option>
+    <option value="pastel">Pixel Pastels</option>
+    <option value="mono">Monochrome</option>
+  </select>
+
+  <div class="palette" id="palette"></div>
+</section>
+
+<!-- TOOLS -->
+<section class="panel">
+  <h2>03 / Drawing Tools</h2>
+
+  <div class="toolbar">
+    <button class="active" data-tool="pencil">✏ Pencil</button>
+    <button data-tool="eraser">⌫ Eraser</button>
+    <button data-tool="fill">▣ Bucket Fill</button>
+    <button data-tool="eyedropper">◉ Eyedropper</button>
+  </div>
+
+  <div class="toolbar">
+    <button id="undoBtn" disabled>↶ Undo</button>
+    <button id="redoBtn" disabled>↷ Redo</button>
+    <button id="mirrorBtn">↔ Mirror: OFF</button>
+    <button id="clearBtn" class="danger">Clear Canvas</button>
+  </div>
+
+  <p class="small">
+    Pencil: draw pixels. Eraser: remove pixels. Bucket: fill connected areas.
+    Eyedropper: select a colour from your artwork.
+  </p>
+</section>
+
+<!-- CANVAS -->
+<section class="panel">
+  <h2>04 / Your Pixel Canvas</h2>
+
+  <div class="canvas-wrap">
+    <canvas id="pixelCanvas" width="16" height="16"></canvas>
+  </div>
+
+  <div class="stats">
+    <span id="gridInfo">16 × 16 grid</span>
+    <span id="pixelCount">0 coloured pixels</span>
+    <span id="toolInfo">Tool: Pencil</span>
+  </div>
+
+  <p class="small">On mobile, drag your finger across the canvas to draw.</p>
+</section>
+
+<!-- EXPORT -->
+<section class="panel">
+  <h2>05 / Export Artwork</h2>
+
+  <label for="fileName">Artwork filename</label>
+  <input id="fileName" type="text" value="hexclown-pixel-art">
+
+  <div class="checkline">
+    <input type="checkbox" id="transparentBg" checked>
+    <label for="transparentBg">Keep transparent background</label>
+  </div>
+
+  <button class="primary" id="exportBtn">↓ Export Transparent PNG</button>
+  <button id="saveImageBtn">Export PNG with White Background</button>
+  <p class="small">Transparent PNG preserves empty pixels. The white-background option fills empty areas with white.</p>
+</section>
+
+<div id="message"></div>
+
+</main>
+
+<footer>
+  HEXCLØWN PIXEL ART STUDIO<br>
+  EVERY PIXEL TELLS A STORY.
+</footer>
+
+<script>
+"use strict";
+
+/* =========================
+   ELEMENTS AND STATE
+========================= */
+
+const canvas = document.getElementById("pixelCanvas");
+const ctx = canvas.getContext("2d", {willReadFrequently:true});
+
+const gridSize = document.getElementById("gridSize");
+const colorPicker = document.getElementById("colorPicker");
+const selectedHex = document.getElementById("selectedHex");
+const paletteSelect = document.getElementById("paletteSelect");
+const paletteBox = document.getElementById("palette");
+
+let size = 16;
+let pixels = [];
+let currentColor = "#b6ff45";
+let currentTool = "pencil";
+let mirrorMode = false;
+let drawing = false;
+let lastCell = null;
+let history = [];
+let historyIndex = -1;
+let historyLimit = 40;
+
+/* =========================
+   PALETTES
+========================= */
+
+const palettes = {
+  gameboy: [
+    "#0f380f","#306230","#8bac0f","#9bbc0f",
+    "#ffffff","#000000"
+  ],
+  nes: [
+    "#000000","#ffffff","#7c7c7c","#bcbcbc",
+    "#ff0000","#ff7c00","#ffff00","#00a800",
+    "#0088ff","#3cbcfc","#6844fc","#d800cc"
+  ],
+  cyber: [
+    "#07131a","#102832","#b6ff45","#36e5e5",
+    "#ff3cac","#8a5cff","#ffffff","#ff6478"
+  ],
+  sunset: [
+    "#2b1b44","#633b6b","#a64f69","#e47764",
+    "#ffb15e","#ffe29a","#f7f0c6","#17102b"
+  ],
+  pastel: [
+    "#f8c8dc","#d6c5f0","#b8e0d2","#aed9e0",
+    "#fff1b6","#f7d6a5","#ffffff","#777777"
+  ],
+  mono: [
+    "#000000","#333333","#666666","#999999",
+    "#cccccc","#ffffff"
+  ]
+};
+
+function renderPalette() {
+  paletteBox.innerHTML = "";
+  palettes[paletteSelect.value].forEach(color => {
+    const button = document.createElement("button");
+    button.className = "swatch";
+    button.style.background = color;
+    button.title = color;
+    button.setAttribute("aria-label", "Select " + color);
+
+    if (color.toLowerCase() === currentColor.toLowerCase()) {
+      button.classList.add("selected");
+    }
+
+    button.addEventListener("click", () => setColor(color));
+    paletteBox.appendChild(button);
+  });
+}
+
+function setColor(color) {
+  currentColor = color;
+  colorPicker.value = color;
+  selectedHex.textContent = color.toUpperCase();
+  renderPalette();
+}
+
+colorPicker.addEventListener("input", () => {
+  currentColor = colorPicker.value;
+  selectedHex.textContent = currentColor.toUpperCase();
+  renderPalette();
+});
+
+paletteSelect.addEventListener("change", renderPalette);
+
+/* =========================
+   CANVAS AND GRID
+========================= */
+
+function createEmptyGrid(newSize) {
+  size = newSize;
+  pixels = Array.from(
+    {length:size},
+    () => Array(size).fill(null)
+  );
+
+  canvas.width = size;
+  canvas.height = size;
+
+  document.getElementById("gridInfo").textContent =
+    size + " × " + size + " grid";
+
+  history = [];
+  historyIndex = -1;
+
+  drawCanvas();
+  saveHistory();
+  updateStats();
+}
+
+function drawCanvas() {
+  ctx.clearRect(0, 0, size, size);
+
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      if (pixels[y][x]) {
+        ctx.fillStyle = pixels[y][x];
+        ctx.fillRect(x, y, 1, 1);
+      }
+    }
+  }
+}
+
+function updateStats() {
+  let count = 0;
+
+  pixels.forEach(row => {
+    row.forEach(color => {
+      if (color) count++;
+    });
+  });
+
+  document.getElementById("pixelCount").textContent =
+    count + " coloured pixels";
+
+  document.getElementById("undoBtn").disabled = historyIndex <= 0;
+  document.getElementById("redoBtn").disabled =
+    historyIndex >= history.length - 1;
+}
+
+document.getElementById("applyGrid").addEventListener("click", () => {
+  const newSize = Number(gridSize.value);
+
+  if (newSize === size) {
+    showMessage("This grid size is already active.");
+    return;
+  }
+
+  if (!confirm("Changing grid size will clear your current drawing. Continue?")) {
+    return;
+  }
+
+  createEmptyGrid(newSize);
+  showMessage("New canvas created: " + newSize + " × " + newSize);
+});
+
+/* =========================
+   HISTORY: UNDO AND REDO
+========================= */
+
+function saveHistory() {
+  const snapshot = JSON.stringify(pixels);
+
+  if (historyIndex < history.length - 1) {
+    history = history.slice(0, historyIndex + 1);
+  }
+
+  if (history[history.length - 1] !== snapshot) {
+    history.push(snapshot);
+
+    if (history.length > historyLimit) {
+      history.shift();
+    }
+
+    historyIndex = history.length - 1;
+  }
+
+  updateStats();
+}
+
+function restoreHistory(index) {
+  if (index < 0 || index >= history.length) return;
+
+  historyIndex = index;
+  pixels = JSON.parse(history[historyIndex]);
+
+  drawCanvas();
+  updateStats();
+}
+
+document.getElementById("undoBtn").addEventListener("click", () => {
+  if (historyIndex > 0) restoreHistory(historyIndex - 1);
+});
+
+document.getElementById("redoBtn").addEventListener("click", () => {
+  if (historyIndex < history.length - 1) {
+    restoreHistory(historyIndex + 1);
+  }
+});
+
+/* =========================
+   TOOLS
+========================= */
+
+document.querySelectorAll("[data-tool]").forEach(button => {
+  button.addEventListener("click", () => {
+    currentTool = button.dataset.tool;
+
+    document.querySelectorAll("[data-tool]").forEach(item => {
+      item.classList.toggle("active", item === button);
+    });
+
+    const names = {
+      pencil:"Pencil",
+      eraser:"Eraser",
+      fill:"Bucket Fill",
+      eyedropper:"Eyedropper"
+    };
+
+    document.getElementById("toolInfo").textContent =
+      "Tool: " + names[currentTool];
+  });
+});
+
+document.getElementById("mirrorBtn").addEventListener("click", () => {
+  mirrorMode = !mirrorMode;
+
+  const button = document.getElementById("mirrorBtn");
+  button.textContent = mirrorMode ? "↔ Mirror: ON" : "↔ Mirror: OFF";
+  button.classList.toggle("active", mirrorMode);
+});
+
+/* =========================
+   DRAWING
+========================= */
+
+function getCell(event) {
+  const rect = canvas.getBoundingClientRect();
+
+  const x = Math.floor((event.clientX - rect.left) / rect.width * size);
+  const y = Math.floor((event.clientY - rect.top) / rect.height * size);
+
+  return {
+    x:Math.max(0,Math.min(size-1,x)),
+    y:Math.max(0,Math.min(size-1,y))
+  };
+}
+
+function paintCell(x,y) {
+  if (x < 0 || x >= size || y < 0 || y >= size) return;
+
+  if (currentTool === "eyedropper") {
+    if (pixels[y][x]) setColor(pixels[y][x]);
+    return;
+  }
+
+  if (currentTool === "fill") {
+    bucketFill(x,y,currentColor);
+    drawCanvas();
+    saveHistory();
+    return;
+  }
+
+  const color = currentTool === "eraser" ? null : currentColor;
+
+  pixels[y][x] = color;
+
+  if (mirrorMode) {
+    pixels[y][size - 1 - x] = color;
+  }
+
+  drawCanvas();
+}
+
+canvas.addEventListener("pointerdown", event => {
+  event.preventDefault();
+  canvas.setPointerCapture(event.pointerId);
+
+  const cell = getCell(event);
+
+  if (currentTool === "fill" || currentTool === "eyedropper") {
+    paintCell(cell.x,cell.y);
+    if (currentTool === "fill") saveHistory();
+    return;
+  }
+
+  drawing = true;
+  lastCell = cell;
+  paintCell(cell.x,cell.y);
+});
+
+canvas.addEventListener("pointermove", event => {
+  if (!drawing) return;
+  event.preventDefault();
+
+  const cell = getCell(event);
+
+  if (!lastCell || cell.x !== lastCell.x || cell.y !== lastCell.y) {
+    paintCell(cell.x,cell.y);
+    lastCell = cell;
+  }
+});
+
+function finishDrawing() {
+  if (drawing) {
+    drawing = false;
+    lastCell = null;
+    saveHistory();
+  }
+}
+
+canvas.addEventListener("pointerup", finishDrawing);
+canvas.addEventListener("pointercancel", finishDrawing);
+canvas.addEventListener("lostpointercapture", finishDrawing);
+
+/* =========================
+   BUCKET FILL
+========================= */
+
+function bucketFill(startX,startY,newColor) {
+  const oldColor = pixels[startY][startX];
+
+  if (oldColor === newColor) return;
+
+  const stack = [[startX,startY]];
+  const visited = new Set();
+
+  while (stack.length) {
+    const [x,y] = stack.pop();
+    const key = x + "," + y;
+
+    if (visited.has(key)) continue;
+    visited.add(key);
+
+    if (x < 0 || x >= size || y < 0 || y >= size) continue;
+    if (pixels[y][x] !== oldColor) continue;
+
+    pixels[y][x] = newColor;
+
+    stack.push([x+1,y]);
+    stack.push([x-1,y]);
+    stack.push([x,y+1]);
+    stack.push([x,y-1]);
+  }
+}
+
+/* =========================
+   CLEAR CANVAS
+========================= */
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+  if (!confirm("Clear the entire canvas?")) return;
+
+  pixels = Array.from(
+    {length:size},
+    () => Array(size).fill(null)
+  );
+
+  drawCanvas();
+  saveHistory();
+  showMessage("Canvas cleared.");
+});
+
+/* =========================
+   EXPORT PNG
+========================= */
+
+function exportPNG(transparent) {
+  const scale = 16;
+  const output = document.createElement("canvas");
+
+  output.width = size * scale;
+  output.height = size * scale;
+
+  const outputCtx = output.getContext("2d");
+
+  if (!transparent) {
+    outputCtx.fillStyle = "#ffffff";
+    outputCtx.fillRect(0,0,output.width,output.height);
+  }
+
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      if (pixels[y][x]) {
+        outputCtx.fillStyle = pixels[y][x];
+        outputCtx.fillRect(x*scale,y*scale,scale,scale);
+      }
+    }
+  }
+
+  const filename =
+    (document.getElementById("fileName").value.trim() || "hexclown-pixel-art")
+    .replace(/[^\w-]/g,"-");
+
+  output.toBlob(blob => {
+    if (!blob) {
+      showMessage("Could not create PNG.");
+      return;
+    }
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = filename + ".png";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url),3000);
+    showMessage("PNG artwork exported successfully.");
+  },"image/png");
+}
+
+document.getElementById("exportBtn").addEventListener("click", () => {
+  exportPNG(true);
+});
+
+document.getElementById("saveImageBtn").addEventListener("click", () => {
+  exportPNG(false);
+});
+
+/* =========================
+   MESSAGES
+========================= */
+
+function showMessage(text) {
+  const box = document.getElementById("message");
+  box.textContent = text;
+  box.style.display = "block";
+
+  clearTimeout(showMessage.timer);
+
+  showMessage.timer = setTimeout(() => {
+    box.style.display = "none";
+  },3000);
+}
+
+/* =========================
+   STARTUP
+========================= */
+
+createEmptyGrid(16);
+renderPalette();
+setColor("#b6ff45");
+
+</script>
+</body>
+  </html>
+  
