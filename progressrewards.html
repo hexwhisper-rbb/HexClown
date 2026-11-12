@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+<title>Progress & Rewards | HEXCLØWN</title>
+
+<style>
+:root{
+  --bg:#07131a;
+  --panel:#0d2029;
+  --panel2:#102a34;
+  --cyan:#00e5ff;
+  --green:#00ff9d;
+  --text:#e8faff;
+  --muted:#91aab4;
+  --border:rgba(0,229,255,.18);
+  --danger:#ff617c;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  background:radial-gradient(circle at top,#102b37,#07131a 50%,#050d12);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(5,15,21,.95);
+  border-bottom:1px solid var(--border);
+  padding:15px 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  backdrop-filter:blur(12px);
+}
+.logo{
+  color:var(--green);
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+.logo span{color:var(--cyan)}
+nav{display:flex;gap:15px;flex-wrap:wrap}
+nav a{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:13px;
+}
+nav a:hover{color:var(--green)}
+main{max-width:1050px;margin:auto;padding:25px 16px 55px}
+.hero{text-align:center;padding:25px 10px 30px}
+.eyebrow{
+  color:var(--green);
+  font-size:11px;
+  letter-spacing:3px;
+  font-weight:bold;
+}
+h1{font-size:clamp(28px,6vw,43px);margin:12px 0}
+.hero p{
+  color:var(--muted);
+  line-height:1.6;
+  margin:auto;
+  max-width:650px;
+}
+.section{
+  background:rgba(13,32,41,.94);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:20px;
+  margin:20px 0;
+  box-shadow:0 12px 35px rgba(0,0,0,.18);
+}
+.section-heading{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:17px;
+}
+.section-icon{
+  width:42px;height:42px;
+  display:grid;place-items:center;
+  border-radius:12px;
+  background:rgba(0,229,255,.1);
+  font-size:21px;
+}
+h2{font-size:21px;margin:0}
+.section-heading p{margin:5px 0 0;color:var(--muted);font-size:13px}
+h3{font-size:15px;margin:18px 0 10px}
+label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin:12px 0 6px;
+}
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#071820;
+  color:var(--text);
+  outline:none;
+  font:inherit;
+  font-size:14px;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--cyan)}
+button{
+  border:0;
+  border-radius:9px;
+  padding:11px 15px;
+  background:var(--cyan);
+  color:#031116;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:13px;
+}
+button:hover{filter:brightness(1.1)}
+button:disabled{opacity:.4;cursor:not-allowed}
+.btn-green{background:var(--green)}
+.btn-dark{
+  background:#17333e;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-danger{
+  background:rgba(255,97,124,.12);
+  color:#ff91a4;
+  border:1px solid rgba(255,97,124,.3);
+}
+.btn-small{padding:8px 11px;font-size:12px}
+.button-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.grid-two{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:13px;
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.muted{color:var(--muted);font-size:13px;line-height:1.5}
+.status{
+  min-height:19px;
+  color:var(--green);
+  font-size:12px;
+  margin-top:9px;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:15px 0;
+}
+.stat{
+  background:#102a34;
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:13px;
+  text-align:center;
+}
+.stat strong{
+  display:block;
+  color:var(--green);
+  font-size:25px;
+}
+.stat span{color:var(--muted);font-size:11px}
+.progress-track{
+  height:10px;
+  background:#18323d;
+  border-radius:20px;
+  overflow:hidden;
+  margin:10px 0;
+}
+.progress-fill{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--cyan),var(--green));
+  transition:width .3s;
+}
+.overall-box{
+  text-align:center;
+  padding:18px;
+  border:1px solid var(--border);
+  background:#102a34;
+  border-radius:13px;
+  margin:15px 0;
+}
+.overall-number{
+  font-size:42px;
+  font-weight:900;
+  color:var(--green);
+}
+.subject-card{
+  background:#102a34;
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:15px;
+  margin:12px 0;
+}
+.subject-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+}
+.subject-top h3{margin:0;overflow-wrap:anywhere}
+.subject-percent{
+  color:var(--green);
+  font-weight:bold;
+  font-size:18px;
+  white-space:nowrap;
+}
+.topic-list{margin-top:12px}
+.topic-item{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border-top:1px solid rgba(0,229,255,.1);
+  padding:10px 0;
+}
+.topic-item input{
+  width:18px;
+  height:18px;
+  accent-color:var(--green);
+  flex-shrink:0;
+}
+.topic-item span{
+  flex:1;
+  font-size:13px;
+  overflow-wrap:anywhere;
+}
+.topic-item.done span{
+  color:var(--green);
+  text-decoration:line-through;
+}
+.topic-item button{flex-shrink:0}
+.certificate-preview{
+  background:#f4f0df;
+  color:#15252b;
+  padding:25px 15px;
+  border:7px double #b18b42;
+  text-align:center;
+  border-radius:5px;
+  margin-top:18px;
+}
+.certificate-preview .cert-brand{
+  font-weight:900;
+  letter-spacing:4px;
+  color:#17666a;
+  font-size:15px;
+}
+.certificate-preview h2{
+  font-family:Georgia,serif;
+  font-size:clamp(22px,5vw,35px);
+  color:#183c42;
+  margin:20px 0;
+}
+.certificate-preview .cert-name{
+  font-family:Georgia,serif;
+  font-size:clamp(20px,5vw,30px);
+  font-weight:bold;
+  color:#805f22;
+  border-bottom:1px solid #b18b42;
+  padding:10px;
+  overflow-wrap:anywhere;
+}
+.certificate-preview p{
+  line-height:1.7;
+  font-size:13px;
+}
+.certificate-preview .cert-subject{
+  font-size:20px;
+  font-weight:bold;
+  color:#17666a;
+  margin:12px 0;
+}
+.certificate-preview .cert-date{
+  margin-top:20px;
+  font-size:12px;
+}
+.cert-stamp{
+  display:inline-block;
+  border:2px solid #b18b42;
+  border-radius:50%;
+  padding:12px;
+  color:#805f22;
+  font-size:11px;
+  font-weight:bold;
+  margin-top:10px;
+}
+.history-item{
+  background:#102a34;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px;
+  margin:8px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.history-item strong{font-size:13px}
+.history-item small{display:block;color:var(--muted);margin-top:4px}
+.hidden{display:none!important}
+footer{
+  text-align:center;
+  padding:25px 12px;
+  color:var(--muted);
+  border-top:1px solid var(--border);
+  font-size:12px;
+}
+@media(max-width:650px){
+  header{padding:13px 4%;align-items:flex-start;flex-direction:column}
+  nav{gap:12px}
+  main{padding:15px 12px 40px}
+  .section{padding:16px}
+  .grid-two,.form-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .history-item{align-items:flex-start;flex-direction:column}
+}
+@media print{
+  body{background:white!important;color:#111!important}
+  header,footer,.hero,#trackerSection,#certificateForm,
+  #certificateHistory,.no-print{display:none!important}
+  main{padding:0!important;margin:0!important}
+  #certificateSection{
+    display:block!important;
+    background:white!important;
+    border:0!important;
+    padding:0!important;
+    margin:0!important;
+    box-shadow:none!important;
+  }
+  .certificate-preview{
+    display:block!important;
+    margin:10px auto!important;
+    width:100%!important;
+    max-width:900px!important;
+    min-height:500px;
+    padding:45px 25px!important;
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
+  }
+  @page{size:A4 landscape;margin:12mm}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEX<span>CLØWN</span></div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="learninghub.html">Learning Hub</a>
+    <a href="#trackerSection">Progress Tracker</a>
+    <a href="#certificateSection">Certificates</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="eyebrow">LEARNING HUB / MODULE 03</div>
+  <h1>Progress & <span style="color:var(--green)">Rewards</span></h1>
+  <p>Track your learning journey, measure your mastery and celebrate the subjects you complete with printable certificates.</p>
+</section>
+
+<!-- PROGRESS TRACKER -->
+
+<section class="section" id="trackerSection">
+
+  <div class="section-heading">
+    <div class="section-icon">📊</div>
+    <div>
+      <h2>Progress Tracker</h2>
+      <p>Organise subjects and monitor your learning progress.</p>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <strong id="subjectTotal">0</strong>
+      <span>Subjects</span>
+    </div>
+    <div class="stat">
+      <strong id="topicTotal">0</strong>
+      <span>Total Topics</span>
+    </div>
+    <div class="stat">
+      <strong id="masteredTotal">0</strong>
+      <span>Mastered</span>
+    </div>
+  </div>
+
+  <div class="overall-box">
+    <div class="muted">OVERALL MASTERY</div>
+    <div class="overall-number" id="overallPercent">0%</div>
+    <div class="progress-track">
+      <div class="progress-fill" id="overallBar"></div>
+    </div>
+    <p class="muted" id="overallMessage">Add your first subject to begin tracking.</p>
+  </div>
+
+  <h3>Add a Subject</h3>
+
+  <label for="subjectName">Subject name</label>
+  <input id="subjectName" type="text" placeholder="Example: Biology">
+
+  <label for="topicNames">Topics (separate each topic with a new line)</label>
+  <textarea id="topicNames" placeholder="Cell Biology&#10;Genetics&#10;Human Anatomy&#10;Ecology"></textarea>
+
+  <div class="button-row">
+    <button class="btn-green" id="addSubjectBtn">+ Add Subject</button>
+  </div>
+
+  <div class="status" id="trackerStatus" aria-live="polite"></div>
+
+  <h3>Your Subjects & Topics</h3>
+  <div id="subjectList">
+    <p class="muted">No subjects added yet.</p>
+  </div>
+
+</section>
+
+<!-- CERTIFICATES -->
+
+<section class="section" id="certificateSection">
+
+  <div class="section-heading">
+    <div class="section-icon">🏆</div>
+    <div>
+      <h2>Printable Study Certificates</h2>
+      <p>Create a personalised certificate for a completed subject.</p>
+    </div>
+  </div>
+
+  <div id="certificateForm">
+
+    <label for="certificateName">Student name</label>
+    <input id="certificateName" type="text" placeholder="Enter your name">
+
+    <label for="certificateSubject">Choose a completed subject</label>
+    <select id="certificateSubject">
+      <option value="">Add and complete a subject first</option>
+    </select>
+
+    <label for="certificateNote">Optional achievement message</label>
+    <textarea id="certificateNote" placeholder="Example: Successfully completed all revision topics."></textarea>
+
+    <div class="button-row">
+      <button class="btn-green" id="generateCertificateBtn">Generate Certificate</button>
+      <button class="btn-dark" id="printCertificateBtn">Print Certificate</button>
+    </div>
+
+    <div class="status" id="certificateStatus" aria-live="polite"></div>
+
+  </div>
+
+  <div class="certificate-preview" id="certificatePreview">
+    <div class="cert-brand">HEXCLØWN</div>
+    <p style="letter-spacing:3px;color:#805f22;font-size:11px">LEARNING HUB • ACHIEVEMENT AWARD</p>
+
+    <h2>Certificate of Completion</h2>
+
+    <p>This certificate is presented to</p>
+
+    <div class="cert-name" id="certStudentName">Student Name</div>
+
+    <p>In recognition of completing the study programme in</p>
+
+    <div class="cert-subject" id="certSubjectName">Subject Name</div>
+
+    <p id="certAchievementNote">For dedication, practice and commitment to learning.</p>
+
+    <div class="cert-stamp">STUDY<br>ACHIEVEMENT</div>
+
+    <div class="cert-date">
+      Date: <span id="certDate"></span>
+      <br>
+      Certificate ID: <span id="certId"></span>
+    </div>
+  </div>
+
+  <p class="muted no-print">
+    Certificates are personal learning achievements generated by this website. They are not accredited academic qualifications.
+  </p>
+
+  <div id="certificateHistory" style="margin-top:22px">
+    <h3>Certificate History</h3>
+    <div id="historyList">
+      <p class="muted">No certificates generated yet.</p>
+    </div>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  HEXCLØWN LEARNING SYSTEM<br>
+  <span>Track Your Growth • Celebrate Your Progress</span>
+</footer>
+
+<script>
+
+/* =====================================
+   PROGRESS TRACKER
+===================================== */
+
+const PROGRESS_KEY = "hexclown_progressrewards_subjects_v1";
+const CERTIFICATE_KEY = "hexclown_progressrewards_certificates_v1";
+
+let subjects = [];
+let certificates = [];
+
+function makeId(){
+  return Date.now().toString(36) +
+    Math.random().toString(36).slice(2,8).toUpperCase();
+}
+
+function saveProgress(){
+  try{
+    localStorage.setItem(PROGRESS_KEY,JSON.stringify(subjects));
+  }catch(error){
+    document.getElementById("trackerStatus").textContent =
+      "Could not save progress. Browser storage may be full.";
+  }
+}
+
+function saveCertificates(){
+  try{
+    localStorage.setItem(CERTIFICATE_KEY,JSON.stringify(certificates));
+  }catch(error){
+    document.getElementById("certificateStatus").textContent =
+      "Could not save certificate history.";
+  }
+}
+
+function loadData(){
+  try{
+    const savedSubjects = JSON.parse(
+      localStorage.getItem(PROGRESS_KEY) || "[]"
+    );
+
+    const savedCertificates = JSON.parse(
+      localStorage.getItem(CERTIFICATE_KEY) || "[]"
+    );
+
+    if(Array.isArray(savedSubjects)){
+      subjects = savedSubjects.filter(subject =>
+        subject &&
+        typeof subject.id === "string" &&
+        typeof subject.name === "string" &&
+        Array.isArray(subject.topics)
+      );
+    }
+
+    if(Array.isArray(savedCertificates)){
+      certificates = savedCertificates.filter(cert =>
+        cert &&
+        typeof cert.id === "string"
+      );
+    }
+
+  }catch(error){
+    subjects = [];
+    certificates = [];
+  }
+
+  renderSubjects();
+  updateStatistics();
+  updateCertificateSubjects();
+  renderCertificateHistory();
+}
+
+function addSubject(){
+  const name = document.getElementById("subjectName").value.trim();
+  const rawTopics = document.getElementById("topicNames").value;
+
+  if(!name){
+    document.getElementById("trackerStatus").textContent =
+      "Please enter a subject name.";
+    return;
+  }
+
+  const topics = rawTopics
+    .split("\n")
+    .map(topic => topic.trim())
+    .filter(Boolean);
+
+  if(topics.length === 0){
+    document.getElementById("trackerStatus").textContent =
+      "Please enter at least one topic.";
+    return;
+  }
+
+  const duplicate = subjects.some(subject =>
+    subject.name.toLowerCase() === name.toLowerCase()
+  );
+
+  if(duplicate){
+    document.getElementById("trackerStatus").textContent =
+      "This subject already exists. Add new topics to that subject instead.";
+    return;
+  }
+
+  subjects.push({
+    id:makeId(),
+    name:name,
+    topics:topics.map(topic=>({
+      id:makeId(),
+      name:topic,
+      mastered:false
+    }))
+  });
+
+  document.getElementById("subjectName").value = "";
+  document.getElementById("topicNames").value = "";
+
+  saveProgress();
+  renderSubjects();
+  updateStatistics();
+  updateCertificateSubjects();
+
+  document.getElementById("trackerStatus").textContent =
+    "Subject added successfully!";
+}
+
+function getSubjectProgress(subject){
+  const total = subject.topics.length;
+  const mastered = subject.topics.filter(topic=>topic.mastered).length;
+
+  return {
+    total,
+    mastered,
+    percentage:total ? Math.round(mastered / total * 100) : 0
+  };
+}
+
+function renderSubjects(){
+  const container = document.getElementById("subjectList");
+  container.replaceChildren();
+
+  if(subjects.length === 0){
+    const empty = document.createElement("p");
+    empty.className = "muted";
+    empty.textContent = "No subjects added yet. Add your first subject above.";
+    container.appendChild(empty);
+    return;
+  }
+
+  subjects.forEach(subject=>{
+    const progress = getSubjectProgress(subject);
+
+    const card = document.createElement("div");
+    card.className = "subject-card";
+
+    const top = document.createElement("div");
+    top.className = "subject-top";
+
+    const heading = document.createElement("h3");
+    heading.textContent = subject.name;
+
+    const percent = document.createElement("div");
+    percent.className = "subject-percent";
+    percent.textContent = progress.percentage + "%";
+
+    top.append(heading,percent);
+
+    const detail = document.createElement("p");
+    detail.className = "muted";
+    detail.textContent =
+      progress.mastered + " of " + progress.total + " topics mastered";
+
+    const bar = document.createElement("div");
+    bar.className = "progress-track";
+
+    const fill = document.createElement("div");
+    fill.className = "progress-fill";
+    fill.style.width = progress.percentage + "%";
+
+    bar.appendChild(fill);
+
+    const topicList = document.createElement("div");
+    topicList.className = "topic-list";
+
+    subject.topics.forEach(topic=>{
+      const row = document.createElement("div");
+      row.className = "topic-item" + (topic.mastered ? " done" : "");
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = topic.mastered;
+      checkbox.setAttribute("aria-label","Mark " + topic.name + " as mastered");
+
+      checkbox.addEventListener("change",()=>{
+        topic.mastered = checkbox.checked;
+        saveProgress();
+        renderSubjects();
+        updateStatistics();
+        updateCertificateSubjects();
+      });
+
+      const title = document.createElement("span");
+      title.textContent = topic.name;
+
+      const remove = document.createElement("button");
+      remove.className = "btn-danger btn-small";
+      remove.textContent = "×";
+      remove.title = "Delete topic";
+
+      remove.addEventListener("click",()=>{
+        if(!confirm("Delete this topic?")) return;
+
+        subject.topics = subject.topics.filter(item=>item.id !== topic.id);
+
+        saveProgress();
+        renderSubjects();
+        updateStatistics();
+        updateCertificateSubjects();
+      });
+
+      row.append(checkbox,title,remove);
+      topicList.appendChild(row);
+    });
+
+    const addTopicButton = document.createElement("button");
+    addTopicButton.className = "btn-dark btn-small";
+    addTopicButton.textContent = "+ Add Topic";
+
+    addTopicButton.addEventListener("click",()=>{
+      const topicName = prompt("Enter the new topic name:");
+
+      if(!topicName || !topicName.trim()) return;
+
+      subject.topics.push({
+        id:makeId(),
+        name:topicName.trim(),
+        mastered:false
+      });
+
+      saveProgress();
+      renderSubjects();
+      updateStatistics();
+      updateCertificateSubjects();
+    });
+
+    const removeSubjectButton = document.createElement("button");
+    removeSubjectButton.className = "btn-danger btn-small";
+    removeSubjectButton.textContent = "Delete Subject";
+
+    removeSubjectButton.addEventListener("click",()=>{
+      if(!confirm("Delete " + subject.name + " and all its topics?")) return;
+
+      subjects = subjects.filter(item=>item.id !== subject.id);
+
+      saveProgress();
+      renderSubjects();
+      updateStatistics();
+      updateCertificateSubjects();
+    });
+
+    const actions = document.createElement("div");
+    actions.className = "button-row";
+    actions.append(addTopicButton,removeSubjectButton);
+
+    card.append(top,detail,bar,topicList,actions);
+    container.appendChild(card);
+  });
+}
+
+function updateStatistics(){
+  const totalSubjects = subjects.length;
+
+  let totalTopics = 0;
+  let totalMastered = 0;
+
+  subjects.forEach(subject=>{
+    totalTopics += subject.topics.length;
+    totalMastered += subject.topics.filter(topic=>topic.mastered).length;
+  });
+
+  const percentage = totalTopics
+    ? Math.round(totalMastered / totalTopics * 100)
+    : 0;
+
+  document.getElementById("subjectTotal").textContent =
+    totalSubjects;
+
+  document.getElementById("topicTotal").textContent =
+    totalTopics;
+
+  document.getElementById("masteredTotal").textContent =
+    totalMastered;
+
+  document.getElementById("overallPercent").textContent =
+    percentage + "%";
+
+  document.getElementById("overallBar").style.width =
+    percentage + "%";
+
+  document.getElementById("overallMessage").textCont
