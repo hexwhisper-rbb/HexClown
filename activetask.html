@@ -1,0 +1,868 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+
+<title>Active Task Pinning | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #07131a;
+    --panel: #0d2028;
+    --panel2: #102a33;
+    --green: #00e6a0;
+    --cyan: #00cfff;
+    --text: #e9f5f3;
+    --muted: #8ba6a7;
+    --border: rgba(0,230,160,.17);
+    --red: #ff6878;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+}
+
+header {
+    padding: 17px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background: #091820;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    color: var(--green);
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+header a {
+    color: var(--muted);
+    font-size: 12px;
+    text-decoration: none;
+}
+
+header a:hover {
+    color: var(--green);
+}
+
+.container {
+    width: 92%;
+    max-width: 720px;
+    margin: 32px auto 50px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.eyebrow {
+    color: var(--green);
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: clamp(27px, 6vw, 39px);
+    margin: 8px 0;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.panel {
+    background: linear-gradient(145deg, var(--panel), #091a22);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 19px;
+    margin-bottom: 17px;
+}
+
+.panel h2 {
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.panel-description {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.pinned-card {
+    background: linear-gradient(135deg, #0d302b, #102a33);
+    border: 1px solid rgba(0,230,160,.4);
+    border-radius: 13px;
+    padding: 19px;
+    min-height: 125px;
+}
+
+.pinned-label {
+    color: var(--green);
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.pinned-title {
+    font-size: 19px;
+    font-weight: bold;
+    margin-top: 9px;
+    overflow-wrap: anywhere;
+}
+
+.pinned-description {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 6px;
+    overflow-wrap: anywhere;
+}
+
+.pinned-empty {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 12px;
+}
+
+.task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px;
+    background: #071820;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--green);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 75px;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 11px 15px;
+    background: var(--green);
+    color: #041710;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.12);
+}
+
+button.secondary {
+    background: #17333c;
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+button.danger {
+    background: #3b1d27;
+    color: #ff9ba7;
+    border: 1px solid rgba(255,104,120,.25);
+}
+
+button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task-card {
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 14px;
+}
+
+.task-card.active {
+    border-color: var(--green);
+    background: rgba(0,230,160,.07);
+}
+
+.task-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.task-name {
+    font-size: 14px;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.task-description {
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 5px;
+    overflow-wrap: anywhere;
+}
+
+.task-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 10px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 20px;
+    background: #193740;
+    color: var(--cyan);
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.tag.pinned {
+    background: rgba(0,230,160,.13);
+    color: var(--green);
+}
+
+.tag.completed {
+    background: rgba(0,207,255,.12);
+    color: var(--cyan);
+}
+
+.task-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 12px;
+}
+
+.task-actions button {
+    padding: 8px 10px;
+    font-size: 10px;
+}
+
+.task-card.completed .task-name {
+    color: var(--muted);
+    text-decoration: line-through;
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 22px 8px;
+}
+
+.search-row {
+    margin-bottom: 13px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+}
+
+.stat {
+    background: var(--panel2);
+    border-radius: 10px;
+    padding: 13px 5px;
+    text-align: center;
+}
+
+.stat strong {
+    display: block;
+    color: var(--green);
+    font-size: 25px;
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 9px;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.controls button {
+    flex: 1;
+}
+
+footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    padding: 25px 10px;
+    border-top: 1px solid var(--border);
+}
+
+@media(max-width:480px) {
+    header {
+        padding: 14px 4%;
+    }
+
+    .logo {
+        font-size: 17px;
+    }
+
+    .panel {
+        padding: 15px;
+    }
+
+    .task-top {
+        flex-direction: column;
+    }
+
+    .task-actions button {
+        flex: 1;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEXCL<span>Ø</span>WN</div>
+    <a href="focusmanager.html">← Focus Manager</a>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <div class="eyebrow">FOCUS MANAGER / TOOL 02</div>
+        <h1>Active Task Pinning</h1>
+        <p>Choose your priority. Keep it visible. Get it done.</p>
+    </section>
+
+    <!-- ACTIVE PINNED TASK -->
+
+    <section class="panel">
+        <h2>📌 Your Active Task</h2>
+
+        <div class="pinned-card">
+            <div class="pinned-label">CURRENT PRIORITY</div>
+            <div class="pinned-title" id="pinnedTitle">
+                No task pinned
+            </div>
+            <div class="pinned-description" id="pinnedDescription">
+                Pin a task from your list to make it your active priority.
+            </div>
+            <p class="pinned-empty" id="pinnedEmpty">
+                Your next big move starts here.
+            </p>
+        </div>
+
+        <div class="controls">
+            <button class="secondary" id="unpinBtn" disabled>
+                UNPIN TASK
+            </button>
+        </div>
+    </section>
+
+    <!-- ADD TASK -->
+
+    <section class="panel">
+        <h2>＋ Add New Task</h2>
+
+        <p class="panel-description">
+            Create a task and choose what matters most.
+        </p>
+
+        <form class="task-form" id="taskForm">
+
+            <input
+                type="text"
+                id="taskName"
+                placeholder="What do you need to do?"
+                maxlength="100"
+                required
+            >
+
+            <textarea
+                id="taskDescription"
+                placeholder="Add a short description (optional)..."
+                maxlength="250"
+            ></textarea>
+
+            <select id="taskPriority">
+                <option value="Normal">Normal Priority</option>
+                <option value="High">High Priority</option>
+                <option value="Low">Low Priority</option>
+            </select>
+
+            <button type="submit">＋ CREATE TASK</button>
+
+        </form>
+    </section>
+
+    <!-- TASK STATISTICS -->
+
+    <section class="panel">
+        <h2>📊 Task Overview</h2>
+
+        <div class="stats">
+            <div class="stat">
+                <strong id="totalCount">0</strong>
+                <span>TOTAL TASKS</span>
+            </div>
+
+            <div class="stat">
+                <strong id="activeCount">0</strong>
+                <span>ACTIVE TASKS</span>
+            </div>
+
+            <div class="stat">
+                <strong id="completedCount">0</strong>
+                <span>COMPLETED</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- TASK LIST -->
+
+    <section class="panel">
+        <h2>☑ Your Task List</h2>
+
+        <div class="search-row">
+            <input
+                type="search"
+                id="searchInput"
+                placeholder="Search your tasks..."
+            >
+        </div>
+
+        <div class="task-list" id="taskList"></div>
+
+        <p class="empty" id="emptyMessage">
+            You haven't created any tasks yet.
+        </p>
+
+        <div class="controls">
+            <button class="secondary" id="clearCompleted">
+                CLEAR COMPLETED
+            </button>
+
+            <button class="danger" id="clearAll">
+                DELETE ALL
+            </button>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    HEXCLØWN © 2026 · ACTIVE TASK PINNING
+    <br>One priority at a time.
+</footer>
+
+<script>
+(function() {
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const STORAGE_KEY = "hexclown_active_tasks";
+
+let tasks = [];
+let pinnedId = null;
+
+function saveData() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            tasks: tasks,
+            pinnedId: pinnedId
+        }));
+    } catch(error) {
+        console.warn("Could not save tasks.", error);
+    }
+}
+
+function loadData() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+
+        if (saved && Array.isArray(saved.tasks)) {
+            tasks = saved.tasks.filter(task =>
+                task &&
+                typeof task.id === "string" &&
+                typeof task.name === "string"
+            );
+
+            pinnedId = typeof saved.pinnedId === "string"
+                ? saved.pinnedId
+                : null;
+        }
+    } catch(error) {
+        console.warn("Could not load tasks.", error);
+    }
+
+    const pinned = tasks.find(task =>
+        task.id === pinnedId && !task.completed
+    );
+
+    if (!pinned) {
+        pinnedId = null;
+    }
+}
+
+/* CREATE TASK */
+
+function addTask(name, description, priority) {
+    const task = {
+        id: Date.now().toString() +
+            Math.random().toString(36).slice(2),
+        name: name,
+        description: description,
+        priority: priority,
+        completed: false,
+        createdAt: new Date().toISOString()
+    };
+
+    tasks.unshift(task);
+
+    saveData();
+    render();
+}
+
+/* PIN TASK */
+
+function pinTask(id) {
+    const task = tasks.find(t => t.id === id);
+
+    if (!task || task.completed) return;
+
+    pinnedId = id;
+
+    saveData();
+    render();
+}
+
+/* UNPIN TASK */
+
+function unpinTask() {
+    pinnedId = null;
+
+    saveData();
+    render();
+}
+
+/* COMPLETE TASK */
+
+function toggleComplete(id) {
+    const task = tasks.find(t => t.id === id);
+
+    if (!task) return;
+
+    task.completed = !task.completed;
+
+    if (task.completed && pinnedId === id) {
+        pinnedId = null;
+    }
+
+    saveData();
+    render();
+}
+
+/* DELETE TASK */
+
+function deleteTask(id) {
+    tasks = tasks.filter(t => t.id !== id);
+
+    if (pinnedId === id) {
+        pinnedId = null;
+    }
+
+    saveData();
+    render();
+}
+
+/* CLEAR COMPLETED */
+
+function clearCompleted() {
+    tasks = tasks.filter(t => !t.completed);
+
+    if (!tasks.some(t => t.id === pinnedId)) {
+        pinnedId = null;
+    }
+
+    saveData();
+    render();
+}
+
+/* DELETE EVERYTHING */
+
+function clearAll() {
+    if (tasks.length === 0) return;
+
+    const confirmed = confirm(
+        "Are you sure you want to delete all your tasks?"
+    );
+
+    if (!confirmed) return;
+
+    tasks = [];
+    pinnedId = null;
+
+    saveData();
+    render();
+}
+
+/* CREATE SAFE HTML ELEMENTS */
+
+function makeButton(label, className, callback) {
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.textContent = label;
+    button.className = className;
+
+    button.addEventListener("click", callback);
+
+    return button;
+}
+
+/* PINNED TASK DISPLAY */
+
+function renderPinned() {
+    const pinned = tasks.find(t =>
+        t.id === pinnedId && !t.completed
+    );
+
+    if (pinned) {
+        $("pinnedTitle").textContent = pinned.name;
+        $("pinnedDescription").textContent =
+            pinned.description || "Your active priority.";
+
+        $("pinnedEmpty").classList.add("hidden");
+        $("unpinBtn").disabled = false;
+    } else {
+        $("pinnedTitle").textContent = "No task pinned";
+        $("pinnedDescription").textContent =
+            "Pin a task from your list to make it your active priority.";
+
+        $("pinnedEmpty").classList.remove("hidden");
+        $("unpinBtn").disabled = true;
+    }
+}
+
+/* TASK CARD */
+
+function createTaskCard(task) {
+    const card = document.createElement("article");
+
+    card.className = "task-card";
+
+    if (task.id === pinnedId) {
+        card.classList.add("active");
+    }
+
+    if (task.completed) {
+        card.classList.add("completed");
+    }
+
+    const top = document.createElement("div");
+    top.className = "task-top";
+
+    const details = document.createElement("div");
+
+    const name = document.createElement("div");
+    name.className = "task-name";
+    name.textContent = task.name;
+
+    const description = document.createElement("div");
+    description.className = "task-description";
+    description.textContent =
+        task.description || "No description provided.";
+
+    details.appendChild(name);
+    details.appendChild(description);
+
+    top.appendChild(details);
+    card.appendChild(top);
+
+    const meta = document.createElement("div");
+    meta.className = "task-meta";
+
+    const priority = document.createElement("span");
+    priority.className = "tag";
+    priority.textContent = task.priority + " PRIORITY";
+
+    meta.appendChild(priority);
+
+    if (task.id === pinnedId) {
+        const pinnedTag = document.createElement("span");
+        pinnedTag.className = "tag pinned";
+        pinnedTag.textContent = "📌 ACTIVE TASK";
+        meta.appendChild(pinnedTag);
+    }
+
+    if (task.completed) {
+        const completedTag = document.createElement("span");
+        completedTag.className = "tag completed";
+        completedTag.textContent = "COMPLETED";
+        meta.appendChild(completedTag);
+    }
+
+    card.appendChild(meta);
+
+    const actions = document.createElement("div");
+    actions.className = "task-actions";
+
+    if (!task.completed) {
+        const pinButton = makeButton(
+            task.id === pinnedId ? "PINNED" : "📌 PIN TASK",
+            "secondary",
+            () => pinTask(task.id)
+        );
+
+        if (task.id === pinnedId) {
+            pinButton.disabled = true;
+        }
+
+        actions.appendChild(pinButton);
+    }
+
+    actions.appendChild(makeButton(
+        task.completed ? "↶ RESTORE" : "✓ COMPLETE",
+        "secondary",
+        () => toggleComplete(task.id)
+    ));
+
+    actions.appendChild(makeButton(
+        "DELETE",
+        "danger",
+        () => deleteTask(task.id)
+    ));
+
+    card.appendChild(actions);
+
+    return card;
+}
+
+/* RENDER EVERYTHING */
+
+function render() {
+    const list = $("taskList");
+    const search = $("searchInput").value.trim().toLowerCase();
+
+    list.innerHTML = "";
+
+    const filtered = tasks.filter(task =>
+        task.name.toLowerCase().includes(search) ||
+        task.description.toLowerCase().includes(search)
+    );
+
+    $("emptyMessage").classList.toggle(
+        "hidden",
+        filtered.length > 0
+    );
+
+    if (filtered.length === 0) {
+        $("emptyMessage").textContent =
+            tasks.length === 0
+                ? "You haven't created any tasks yet."
+                : "No matching tasks found.";
+    }
+
+    filtered.forEach(task => {
+        list.appendChild(createTaskCard(task));
+    });
+
+    $("totalCount").textContent = tasks.length;
+
+    $("activeCount").textContent =
+        tasks.filter(t => !t.completed).length;
+
+    $("completedCount").textContent =
+        tasks.filter(t => t.completed).length;
+
+    renderPinned();
+}
+
+/* EVENTS */
+
+$("taskForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const name = $("taskName").value.trim();
+    const description = $("taskDescription").value.trim();
+    const priority = $("taskPriority").value;
+
+    if (!name) return;
+
+    addTask(name, description, priority);
+
+    $("taskForm").reset();
+    $("taskName").focus();
+});
+
+$("unpinBtn").addEventListener("click", unpinTask);
+
+$("searchInput").addEventListener("input", render);
+
+$("clearCompleted").addEventListener("click", clearCompleted);
+
+$("clearAll").addEventListener("click", clearAll);
+
+/* INITIALISE */
+
+loadData();
+render();
+
+})();
+</script>
+
+</body>
+                  </html>
+                  
