@@ -1,1 +1,959 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Battleship | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #071321;
+    --panel: #0c1d30;
+    --cyan: #00eaff;
+    --green: #00ff88;
+    --blue: #168bff;
+    --red: #ff405d;
+    --yellow: #ffe45c;
+    --text: #eafaff;
+    --muted: #91aabd;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    padding: 18px 10px 35px;
+    background:
+        radial-gradient(circle at top, #102c45 0%, transparent 45%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 760px;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--green);
+    text-shadow: 0 0 12px var(--green);
+}
+
+.logo span {
+    color: var(--cyan);
+    text-shadow: 0 0 12px var(--cyan);
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-top: 7px;
+}
+
+.back-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 18px 0;
+}
+
+.back-links a {
+    color: var(--cyan);
+    text-decoration: none;
+    border: 1px solid #087d91;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.back-links a:hover {
+    background: #06384a;
+    box-shadow: 0 0 12px #00eaff55;
+}
+
+.game-panel {
+    background: linear-gradient(145deg, #10263b, #091827);
+    border: 1px solid #16415a;
+    border-radius: 18px;
+    padding: 18px 12px;
+    box-shadow: 0 0 25px #001b2d;
+}
+
+h1 {
+    text-align: center;
+    color: var(--cyan);
+    font-size: 25px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px #00eaff66;
+    margin-bottom: 8px;
+}
+
+.description {
+    color: var(--muted);
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+.status {
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 15px;
+    background: #061522;
+    border: 1px solid #1c5269;
+    border-radius: 10px;
+    color: var(--cyan);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.status.success {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+.status.warning {
+    color: var(--yellow);
+    border-color: var(--yellow);
+}
+
+.status.danger {
+    color: var(--red);
+    border-color: var(--red);
+}
+
+.info-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.info-card {
+    background: #071522;
+    border: 1px solid #244158;
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+}
+
+.info-card small {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 6px;
+}
+
+.info-card strong {
+    color: var(--green);
+    font-size: 19px;
+}
+
+.setup-panel {
+    background: #071522;
+    border: 1px solid #244158;
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 16px;
+}
+
+.setup-panel h3 {
+    color: var(--green);
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.ship-list {
+    display: grid;
+    gap: 8px;
+}
+
+.ship-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 9px;
+    background: #0b2033;
+    border: 1px solid #21435a;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.ship-item.selected {
+    border-color: var(--green);
+    box-shadow: 0 0 10px #00ff8833;
+}
+
+.ship-item.placed {
+    opacity: .55;
+}
+
+.ship-item button {
+    padding: 7px 10px;
+    border: 1px solid var(--cyan);
+    border-radius: 6px;
+    background: #08243a;
+    color: var(--cyan);
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.ship-item button:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.setup-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.action-btn {
+    flex: 1;
+    min-width: 110px;
+    padding: 11px 8px;
+    border: 1px solid var(--cyan);
+    border-radius: 8px;
+    background: #08243a;
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.action-btn:hover:not(:disabled) {
+    background: #075071;
+    box-shadow: 0 0 12px #00eaff55;
+}
+
+.action-btn.green {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+.action-btn.green:hover:not(:disabled) {
+    background: #063b2a;
+}
+
+.action-btn.red {
+    color: var(--red);
+    border-color: var(--red);
+}
+
+.action-btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+.board-section {
+    margin-top: 18px;
+}
+
+.board-title {
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--cyan);
+    margin-bottom: 10px;
+}
+
+.board-wrap {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding: 8px;
+    background: linear-gradient(135deg, #087db4, #073a70);
+    border: 2px solid var(--cyan);
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00cfff55;
+}
+
+.grid-board {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 3px;
+}
+
+.cell {
+    aspect-ratio: 1;
+    min-width: 0;
+    border: 1px solid #1d5378;
+    border-radius: 3px;
+    background: #06182d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(9px, 3vw, 17px);
+    font-weight: bold;
+    color: var(--cyan);
+    cursor: pointer;
+    padding: 0;
+    transition: .15s;
+    touch-action: manipulation;
+}
+
+.cell:hover:not(:disabled) {
+    background: #0d4164;
+    border-color: var(--cyan);
+}
+
+.cell:disabled {
+    cursor: default;
+}
+
+.cell.ship {
+    background: #14516b;
+    border-color: #00bde5;
+}
+
+.cell.hit {
+    background: #5a1728;
+    border-color: var(--red);
+    color: #fff;
+}
+
+.cell.miss {
+    background: #16344a;
+    border-color: #6a91a9;
+    color: #b8d2e3;
+}
+
+.cell.sunk {
+    background: #5c2530;
+    border-color: var(--red);
+    color: #fff;
+}
+
+.cell.last-hit {
+    outline: 2px solid var(--yellow);
+    outline-offset: -2px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.legend i {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+}
+
+.legend .ship-color { background: #14516b; }
+.legend .hit-color { background: var(--red); }
+.legend .miss-color { background: #6a91a9; }
+
+.pass-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    background: rgba(3, 10, 20, .97);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.pass-card {
+    width: 100%;
+    max-width: 380px;
+    background: #0c1d30;
+    border: 1px solid var(--cyan);
+    border-radius: 16px;
+    padding: 25px 18px;
+    text-align: center;
+    box-shadow: 0 0 30px #00eaff33;
+}
+
+.pass-card h2 {
+    color: var(--green);
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+
+.pass-card p {
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.pass-card button {
+    width: 100%;
+    padding: 13px;
+    background: #063b2a;
+    border: 1px solid var(--green);
+    border-radius: 9px;
+    color: var(--green);
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.rules {
+    margin-top: 20px;
+    padding: 14px;
+    background: #071522;
+    border: 1px solid #193c55;
+    border-radius: 10px;
+}
+
+.rules h3 {
+    color: var(--green);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.rules p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+footer {
+    text-align: center;
+    color: #607d91;
+    font-size: 11px;
+    margin-top: 22px;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 380px) {
+    .game-panel { padding: 14px 8px; }
+    .board-wrap { padding: 5px; }
+    .grid-board { gap: 2px; }
+    .cell { border-radius: 2px; }
+    h1 { font-size: 21px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <div class="logo">HEX<span>CLØWN</span></div>
+    <div class="subtitle">NEON GAMING NETWORK</div>
+
+    <nav class="back-links">
+        <a href="boaandstr.html">← Board & Strategy</a>
+        <a href="GameZone.html">GameZone</a>
+    </nav>
+</header>
+
+<main class="game-panel">
+
+    <h1>BATTLESHIP</h1>
+
+    <p class="description">
+        Deploy your fleet, protect your ocean and find
+        your opponent's ships before they find yours!
+    </p>
+
+    <div class="info-panel">
+        <div class="info-card">
+            <small>GAME PHASE</small>
+            <strong id="phaseText">SETUP</strong>
+        </div>
+
+        <div class="info-card">
+            <small>SHIPS REMAINING</small>
+            <strong id="remainingText">5 / 5</strong>
+        </div>
+    </div>
+
+    <div class="status" id="status" aria-live="polite">
+        Player 1: Place your ships.
+    </div>
+
+    <section class="setup-panel" id="setupPanel">
+
+        <h3>🚢 YOUR FLEET</h3>
+
+        <div class="ship-list" id="shipList"></div>
+
+        <div class="setup-controls">
+            <button class="action-btn" id="rotateBtn">
+                ↻ ROTATE SHIP
+            </button>
+
+            <button class="action-btn" id="randomBtn">
+                ⚡ RANDOM FLEET
+            </button>
+        </div>
+
+        <div class="setup-controls">
+            <button class="action-btn green" id="readyBtn" disabled>
+                ✓ READY
+            </button>
+
+            <button class="action-btn red" id="resetFleetBtn">
+                RESET FLEET
+            </button>
+        </div>
+
+    </section>
+
+    <section class="board-section">
+
+        <div class="board-title" id="boardTitle">
+            PLAYER 1 — PLACE YOUR SHIPS
+        </div>
+
+        <div class="board-wrap">
+            <div class="grid-board" id="gameBoard"></div>
+        </div>
+
+        <div class="legend">
+            <span><i class="ship-color"></i> Ship</span>
+            <span><i class="hit-color"></i> Hit</span>
+            <span><i class="miss-color"></i> Miss</span>
+        </div>
+
+    </section>
+
+    <section class="board-section hidden" id="enemySection">
+
+        <div class="board-title" id="enemyTitle">
+            ENEMY OCEAN — ATTACK HERE
+        </div>
+
+        <div class="board-wrap">
+            <div class="grid-board" id="enemyBoard"></div>
+        </div>
+
+        <div class="legend">
+            <span><i class="hit-color"></i> Hit</span>
+            <span><i class="miss-color"></i> Miss</span>
+        </div>
+
+    </section>
+
+    <div class="setup-controls">
+        <button class="action-btn green" id="newGameBtn">
+            ⟳ NEW GAME
+        </button>
+    </div>
+
+    <section class="rules">
+        <h3>HOW TO PLAY</h3>
+        <p>
+            1. Each player places five ships on their 10×10 ocean.<br>
+            2. Ships can be placed horizontally or vertically.<br>
+            3. Once both players are ready, take turns attacking the opponent's grid.<br>
+            4. A hit means you found part of a ship. A miss means empty water.<br>
+            5. Sink all five enemy ships to win!
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    © 2026 HEXCLØWN • THINK SMART. PLAY DIFFERENT.
+</footer>
+
+</div>
+
+<div class="pass-screen hidden" id="passScreen">
+    <div class="pass-card">
+        <h2 id="passTitle">PASS THE DEVICE</h2>
+        <p id="passMessage">
+            Give the device to the next player.
+        </p>
+        <button id="passButton">I'M READY</button>
+    </div>
+</div>
+
+<script>
+"use strict";
+
+const SIZE = 10;
+
+const SHIPS = [
+    { name: "Carrier", size: 5 },
+    { name: "Battleship", size: 4 },
+    { name: "Cruiser", size: 3 },
+    { name: "Submarine", size: 3 },
+    { name: "Destroyer", size: 2 }
+];
+
+let players = [];
+let currentPlayer = 0;
+let phase = "setup";
+let selectedShip = 0;
+let horizontal = true;
+let pendingAction = null;
+let gameWinner = null;
+
+const statusElement = document.getElementById("status");
+const boardElement = document.getElementById("gameBoard");
+const enemyElement = document.getElementById("enemyBoard");
+const shipListElement = document.getElementById("shipList");
+
+function createOcean() {
+    return {
+        ships: Array.from(
+            { length: SIZE },
+            () => Array(SIZE).fill(0)
+        ),
+        shots: Array.from(
+            { length: SIZE },
+            () => Array(SIZE).fill(0)
+        ),
+        sunk: []
+    };
+}
+
+function createPlayer() {
+    return {
+        ocean: createOcean(),
+        ready: false
+    };
+}
+
+function setStatus(message, type = "") {
+    statusElement.textContent = message;
+    statusElement.className = "status";
+
+    if (type) {
+        statusElement.classList.add(type);
+    }
+}
+
+function getCurrentPlayerName() {
+    return "PLAYER " + (currentPlayer + 1);
+}
+
+function newGame() {
+    players = [
+        createPlayer(),
+        createPlayer()
+    ];
+
+    currentPlayer = 0;
+    phase = "setup";
+    selectedShip = 0;
+    horizontal = true;
+    pendingAction = null;
+    gameWinner = null;
+
+    document.getElementById("setupPanel").classList.remove("hidden");
+    document.getElementById("enemySection").classList.add("hidden");
+
+    document.getElementById("phaseText").textContent = "SETUP";
+
+    setStatus("Player 1: Place your ships.");
+
+    renderSetup();
+    renderOwnBoard();
+    updateInfo();
+}
+
+function updateInfo() {
+    const player = players[currentPlayer];
+
+    const remaining = player.ocean.sunk.length;
+
+    document.getElementById("remainingText").textContent =
+        (5 - remaining) + " / 5";
+
+    document.getElementById("phaseText").textContent =
+        phase.toUpperCase();
+}
+
+function renderSetup() {
+    shipListElement.innerHTML = "";
+
+    SHIPS.forEach((ship, index) => {
+        const item = document.createElement("div");
+        item.className = "ship-item";
+
+        if (selectedShip === index && !isShipPlaced(index)) {
+            item.classList.add("selected");
+        }
+
+        if (isShipPlaced(index)) {
+            item.classList.add("placed");
+        }
+
+        const label = document.createElement("span");
+        label.textContent =
+            ship.name + " (" + ship.size + " cells)";
+
+        const button = document.createElement("button");
+
+        button.textContent = isShipPlaced(index)
+            ? "PLACED ✓"
+            : "SELECT";
+
+        button.disabled = isShipPlaced(index);
+
+        button.addEventListener("click", () => {
+            selectedShip = index;
+            renderSetup();
+        });
+
+        item.appendChild(label);
+        item.appendChild(button);
+
+        shipListElement.appendChild(item);
+    });
+
+    const allPlaced = players[currentPlayer].ocean.ships
+        .flat()
+        .filter(value => value !== 0).length;
+
+    document.getElementById("readyBtn").disabled =
+        allPlaced !== 17;
+
+    document.getElementById("rotateBtn").textContent =
+        horizontal ? "↻ HORIZONTAL" : "↻ VERTICAL";
+}
+
+function isShipPlaced(index) {
+    const ocean = players[currentPlayer].ocean;
+
+    return ocean.sunk.includes("placed-" + index);
+}
+
+function getShipCells(row, col, size, isHorizontal) {
+    const positions = [];
+
+    for (let i = 0; i < size; i++) {
+        const r = row + (isHorizontal ? 0 : i);
+        const c = col + (isHorizontal ? i : 0);
+
+        if (
+            r < 0 || r >= SIZE ||
+            c < 0 || c >= SIZE
+        ) {
+            return null;
+        }
+
+        positions.push([r, c]);
+    }
+
+    return positions;
+}
+
+function canPlaceShip(row, col, index, isHorizontal) {
+    const ocean = players[currentPlayer].ocean;
+    const positions = getShipCells(
+        row,
+        col,
+        SHIPS[index].size,
+        isHorizontal
+    );
+
+    if (!positions) return false;
+
+    return positions.every(([r, c]) => ocean.ships[r][c] === 0);
+}
+
+function placeShip(row, col) {
+    if (phase !== "setup") return;
+
+    if (isShipPlaced(selectedShip)) return;
+
+    if (!canPlaceShip(row, col, selectedShip, horizontal)) {
+        setStatus("That ship does not fit there. Try another position.", "warning");
+        return;
+    }
+
+    const ocean = players[currentPlayer].ocean;
+
+    const positions = getShipCells(
+        row,
+        col,
+        SHIPS[selectedShip].size,
+        horizontal
+    );
+
+    positions.forEach(([r, c]) => {
+        ocean.ships[r][c] = selectedShip + 1;
+    });
+
+    ocean.sunk.push("placed-" + selectedShip);
+
+    const next = SHIPS.findIndex(
+        (_, index) => !isShipPlaced(index)
+    );
+
+    if (next !== -1) {
+        selectedShip = next;
+        setStatus(
+            SHIPS[next].name + " selected. Place your next ship."
+        );
+    } else {
+        setStatus("All ships placed! Press READY when you're finished.", "success");
+    }
+
+    renderSetup();
+    renderOwnBoard();
+}
+
+function randomFleet() {
+    if (phase !== "setup") return;
+
+    const ocean = createOcean();
+
+    SHIPS.forEach((ship, index) => {
+        let placed = false;
+        let attempts = 0;
+
+        while (!placed && attempts < 1000) {
+            attempts++;
+
+            const isHorizontal = Math.random() < 0.5;
+            const row = Math.floor(Math.random() * SIZE);
+            const col = Math.floor(Math.random() * SIZE);
+
+            const positions = getShipCells(
+                row,
+                col,
+                ship.size,
+                isHorizontal
+            );
+
+            if (!positions) continue;
+
+            const free = positions.every(
+                ([r, c]) => ocean.ships[r][c] === 0
+            );
+
+            if (!free) continue;
+
+            positions.forEach(([r, c]) => {
+                ocean.ships[r][c] = index + 1;
+            });
+
+            ocean.sunk.push("placed-" + index);
+            placed = true;
+        }
+    });
+
+    players[currentPlayer].ocean = ocean;
+
+    const next = SHIPS.findIndex(
+        (_, index) => !isShipPlaced(index)
+    );
+
+    selectedShip = next === -1 ? 0 : next;
+
+    setStatus("Random fleet placed! Press READY to continue.", "success");
+
+    renderSetup();
+    renderOwnBoard();
+}
+
+function resetFleet() {
+    if (phase !== "setup") return;
+
+    players[currentPlayer].ocean = createOcean();
+    selectedShip = 0;
+
+    setStatus("Fleet cleared. Place your ships again.");
+
+    renderSetup();
+    renderOwnBoard();
+}
+
+function renderOwnBoard() {
+    boardElement.innerHTML = "";
+
+    const ocean = players[currentPlayer].ocean;
+
+    for (let row = 0; row < SIZE; row++) {
+        for (let col = 0; col < SIZE; col++) {
+            const button = document.createElement("button");
+            button.className = "cell";
+            button.type = "button";
+
+            const ship = ocean.ships[row][col];
+            const shot = ocean.shots[row][col];
+
+            if (ship !== 0) {
+                button.classList.add("ship");
+                button.textContent = "■";
+            }
+
+            if (shot === 1) {
+                button.classList.add("hit");
+                button.textContent = "✕";
+            } else if (shot === 2) {
+                button.classList.add("miss");
+                button.textContent = "•";
+            }
+
+            if (phase !== "setup") {
+                button.disabled = true;
+            }
+
+            button.addEventListener("click", () => {
+                placeShip(row, col);
+            });
+
+            boardElement.appendChild(button);
+        }
+    }
+}
+
+function renderEnemyBoard() {
+    enemyElement.innerHTML = "";
+
+    const enemy = players[1 - currentPlayer].ocean;
+
+    for (let row = 0; row < SIZE; row++) {
+        for (let col = 0; col < SIZE; col++) {
+            const button = document.createElement("button");
+            button.className = "cell";
+            button.type = "button";
+
+            const shot = enemy.shots[row][col];
+
+            if (shot === 1) {
+                button.classList.add(
