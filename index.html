@@ -8,7 +8,7 @@
 
 <title>HEXCLØWN | Underground Digital Universe</title>
 
-<meta name="description" content="HEXCLØWN is an underground digital universe where technology, creativity and entertainment collide. Explore games, tools, music, Whisper Bots and digital experiences.">
+<meta name="description" content="HEXCLØWN is an underground digital universe where technology, creativity and entertainment collide.">
 
 <style>
 :root {
@@ -31,9 +31,7 @@
   box-sizing:border-box;
 }
 
-html {
-  scroll-behavior:smooth;
-}
+html { scroll-behavior:smooth; }
 
 body {
   background:
@@ -44,8 +42,6 @@ body {
   font-family:Arial,sans-serif;
   min-height:100vh;
 }
-
-/* HEADER */
 
 header {
   padding:17px 16px;
@@ -68,9 +64,7 @@ header {
   text-shadow:0 0 12px #39ff8870;
 }
 
-.logo span {
-  color:var(--cyan);
-}
+.logo span { color:var(--cyan); }
 
 .menu-btn {
   background:#102c36;
@@ -82,8 +76,6 @@ header {
   font-weight:bold;
 }
 
-/* NAVIGATION */
-
 nav {
   display:none;
   background:#0b1c25;
@@ -91,9 +83,7 @@ nav {
   border-bottom:1px solid var(--border);
 }
 
-nav.show {
-  display:block;
-}
+nav.show { display:block; }
 
 nav a {
   display:block;
@@ -102,14 +92,9 @@ nav a {
   padding:13px 0;
   border-bottom:1px solid #1d3944;
   font-size:13px;
-  transition:.2s;
 }
 
-nav a:hover {
-  color:var(--green);
-}
-
-/* MAIN */
+nav a:hover { color:var(--green); }
 
 .container {
   width:100%;
@@ -117,8 +102,6 @@ nav a:hover {
   margin:auto;
   padding:22px 15px;
 }
-
-/* HERO */
 
 .hero {
   background:
@@ -183,15 +166,12 @@ nav a:hover {
   font-size:12px;
   font-weight:900;
   box-shadow:0 0 16px #39ff8840;
-  transition:.2s;
 }
 
 .hero-btn:hover {
   background:var(--cyan);
   box-shadow:0 0 22px #00e5ff80;
 }
-
-/* SYSTEM STATUS */
 
 .system-status {
   margin-bottom:24px;
@@ -217,8 +197,6 @@ nav a:hover {
   font-weight:bold;
 }
 
-/* STATS */
-
 .stats {
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -240,13 +218,8 @@ nav a:hover {
   text-shadow:0 0 10px #39ff8840;
 }
 
-.stat:nth-child(2) h2 {
-  color:var(--cyan);
-}
-
-.stat:nth-child(3) h2 {
-  color:var(--blue);
-}
+.stat:nth-child(2) h2 { color:var(--cyan); }
+.stat:nth-child(3) h2 { color:var(--blue); }
 
 .stat p {
   color:var(--muted);
@@ -254,11 +227,7 @@ nav a:hover {
   margin-top:7px;
 }
 
-/* SEARCH */
-
-.search-box {
-  margin-bottom:27px;
-}
+.search-box { margin-bottom:27px; }
 
 .search-box input {
   width:100%;
@@ -269,7 +238,6 @@ nav a:hover {
   border-radius:9px;
   outline:none;
   font-size:14px;
-  transition:.2s;
 }
 
 .search-box input:focus {
@@ -277,11 +245,7 @@ nav a:hover {
   box-shadow:0 0 12px #00e5ff25;
 }
 
-.search-box input::placeholder {
-  color:#829da5;
-}
-
-/* SECTION HEADINGS */
+.search-box input::placeholder { color:#829da5; }
 
 .section-heading {
   display:flex;
@@ -302,8 +266,6 @@ nav a:hover {
   letter-spacing:1px;
 }
 
-/* CATEGORIES */
-
 .categories {
   display:flex;
   gap:9px;
@@ -313,9 +275,7 @@ nav a:hover {
   scrollbar-width:none;
 }
 
-.categories::-webkit-scrollbar {
-  display:none;
-}
+.categories::-webkit-scrollbar { display:none; }
 
 .categories button {
   white-space:nowrap;
@@ -326,7 +286,6 @@ nav a:hover {
   padding:10px 16px;
   font-size:12px;
   cursor:pointer;
-  transition:.2s;
 }
 
 .categories button.active {
@@ -340,8 +299,6 @@ nav a:hover {
   border-color:var(--cyan);
   color:var(--cyan);
 }
-
-/* APPLICATION GRID */
 
 .app-grid {
   display:grid;
@@ -407,11 +364,7 @@ nav a:hover {
   font-weight:bold;
 }
 
-.open-app:hover {
-  color:var(--green);
-}
-
-/* WHISPER BOTS CARD */
+.open-app:hover { color:var(--green); }
 
 .whisper-card {
   border-color:#267c78;
@@ -425,16 +378,94 @@ nav a:hover {
   text-shadow:0 0 14px #39ff8870;
 }
 
-.whisper-card h3 {
-  color:var(--green);
-}
+.whisper-card h3 { color:var(--green); }
 
 .whisper-card:hover {
   border-color:var(--cyan);
   box-shadow:0 0 20px #00e5ff25;
 }
 
-/* EMPTY SEARCH */
+.admin-card {
+  border-color:#66502a;
+  background:linear-gradient(145deg,#302b20,#10232c);
+}
+
+.admin-card h3 { color:#ffd36a; }
+
+.admin-panel {
+  margin-top:35px;
+  padding:20px;
+  background:linear-gradient(145deg,#172a32,#0b1c25);
+  border:1px solid #66502a;
+  border-radius:14px;
+  box-shadow:0 0 18px #ffd36a0c;
+}
+
+.admin-panel h2 {
+  color:#ffd36a;
+  font-size:18px;
+  margin-bottom:9px;
+}
+
+.admin-panel > p {
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
+  margin-bottom:17px;
+}
+
+.admin-form {
+  display:grid;
+  gap:11px;
+}
+
+.admin-form input {
+  width:100%;
+  padding:14px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#071820;
+  color:white;
+  outline:none;
+  font-size:14px;
+}
+
+.admin-form input:focus { border-color:var(--cyan); }
+
+.admin-button {
+  padding:13px;
+  border:1px solid var(--green);
+  border-radius:8px;
+  background:#123b34;
+  color:var(--green);
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.admin-button:hover {
+  background:#174c3d;
+}
+
+.admin-message {
+  margin-top:13px;
+  font-size:12px;
+  line-height:1.6;
+  color:var(--cyan);
+  overflow-wrap:anywhere;
+}
+
+.admin-logout {
+  display:none;
+  margin-top:12px;
+  padding:10px 14px;
+  background:#381c27;
+  border:1px solid var(--red);
+  border-radius:7px;
+  color:#ff8292;
+  cursor:pointer;
+}
+
+.admin-only { display:none; }
 
 .empty {
   display:none;
@@ -443,8 +474,6 @@ nav a:hover {
   color:var(--muted);
   font-size:13px;
 }
-
-/* FAVOURITES */
 
 .fav-section {
   margin-top:35px;
@@ -476,8 +505,6 @@ nav a:hover {
   font-size:11px;
 }
 
-/* FOOTER */
-
 footer {
   text-align:center;
   border-top:1px solid var(--border);
@@ -508,41 +535,24 @@ footer strong {
   margin-top:9px;
 }
 
-/* DESKTOP */
-
 @media (min-width:650px) {
-  .container {
-    padding:30px 25px;
-  }
-
+  .container { padding:30px 25px; }
   .app-grid {
     grid-template-columns:repeat(3,1fr);
     gap:16px;
   }
-
-  .hero {
-    padding:48px 38px;
-  }
-
-  .hero h1 {
-    font-size:45px;
-  }
-
+  .hero { padding:48px 38px; }
+  .hero h1 { font-size:45px; }
   nav.show {
     display:flex;
     gap:27px;
     padding:0 25px;
   }
-
-  nav a {
-    border:none;
-  }
+  nav a { border:none; }
 }
 
 @media (min-width:950px) {
-  .app-grid {
-    grid-template-columns:repeat(4,1fr);
-  }
+  .app-grid { grid-template-columns:repeat(4,1fr); }
 }
 </style>
 </head>
@@ -559,283 +569,261 @@ footer strong {
   <a href="#explore">Explore</a>
   <a href="#apps">Applications</a>
   <a href="GameZone.html">Game Zone</a>
-  <a href="whisperbots.html">Whisper Bots</a>
   <a href="#favorites">Favourites</a>
+  <a href="#administration">Administration</a>
   <a href="#about">About</a>
 </nav>
 
 <main class="container">
 
-  <!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">● UNDERGROUND DIGITAL NETWORK</div>
+  <h1>ENTER THE <span>UNKNOWN.</span></h1>
+  <p>
+    Welcome to HEXCLØWN — an underground digital
+    universe where technology, creativity and
+    entertainment collide. Discover something
+    beyond the ordinary.
+  </p>
+  <a href="#apps" class="hero-btn">EXPLORE THE HUB →</a>
+</section>
 
-  <section class="hero">
-    <div class="hero-tag">● UNDERGROUND DIGITAL NETWORK</div>
+<section class="system-status">
+  <strong>HEXCLØWN SYSTEM</strong>
+  <div class="online">● NETWORK ONLINE</div>
+</section>
 
-    <h1>ENTER THE <span>UNKNOWN.</span></h1>
+<section class="stats">
+  <div class="stat">
+    <h2 id="appCount">32</h2>
+    <p>FEATURES PLANNED</p>
+  </div>
+  <div class="stat">
+    <h2>06</h2>
+    <p>MAIN CATEGORIES</p>
+  </div>
+  <div class="stat">
+    <h2 id="favCount">0</h2>
+    <p>YOUR FAVOURITES</p>
+  </div>
+</section>
 
-    <p>
-      Welcome to HEXCLØWN — an underground digital
-      universe where technology, creativity and
-      entertainment collide. Discover something
-      beyond the ordinary.
-    </p>
+<section class="search-box" id="explore">
+  <input
+    type="search"
+    id="search"
+    placeholder="⌕ Search tools, games, music..."
+    oninput="filterApps()"
+  >
+</section>
 
-    <a href="#apps" class="hero-btn">
-      EXPLORE THE HUB →
-    </a>
-  </section>
+<section id="apps">
 
-  <!-- STATUS -->
+  <div class="section-heading">
+    <h2>Explore Applications</h2>
+    <small>DISCOVER THE HUB</small>
+  </div>
 
-  <section class="system-status">
-    <strong>HEXCLØWN SYSTEM</strong>
-    <div class="online">
-      ● NETWORK ONLINE
-    </div>
-  </section>
+  <div class="categories">
+    <button class="active" onclick="setCategory('all',this)">All</button>
+    <button onclick="setCategory('games',this)">Games</button>
+    <button onclick="setCategory('tools',this)">Tools</button>
+    <button onclick="setCategory('audio',this)">Audio</button>
+    <button onclick="setCategory('creative',this)">Creative</button>
+    <button onclick="setCategory('learning',this)">Learning</button>
+    <button onclick="setCategory('security',this)">Cyber</button>
+  </div>
 
-  <!-- STATS -->
+  <div class="app-grid" id="appGrid">
 
-  <section class="stats">
-    <div class="stat">
-      <h2 id="appCount">30</h2>
-      <p>FEATURES PLANNED</p>
-    </div>
+    <article class="app-card" data-category="games">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">🎮</div>
+      <h3>Game Zone</h3>
+      <p>Discover games and interactive challenges.</p>
+      <a href="GameZone.html" class="open-app">ENTER GAME ZONE →</a>
+    </article>
 
-    <div class="stat">
-      <h2>06</h2>
-      <p>MAIN CATEGORIES</p>
-    </div>
+    <article class="app-card" data-category="games">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">🧩</div>
+      <h3>Quiz Centre</h3>
+      <p>Test your knowledge and sharpen your mind.</p>
+      <a href="#" class="open-app">Coming soon →</a>
+    </article>
 
-    <div class="stat">
-      <h2 id="favCount">0</h2>
-      <p>YOUR FAVOURITES</p>
-    </div>
-  </section>
+    <article class="app-card" data-category="tools">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">⏱️</div>
+      <h3>Focus Manager</h3>
+      <p>Organise tasks and manage your time.</p>
+      <a href="#" class="open-app">Coming soon →</a>
+    </article>
 
-  <!-- SEARCH -->
+    <article class="app-card" data-category="tools">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">📝</div>
+      <h3>Text Editor</h3>
+      <p>Write and organise your notes.</p>
+      <a href="#" class="open-app">Coming soon →</a>
+    </article>
 
-  <section class="search-box" id="explore">
+    <article class="app-card" data-category="audio">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">🎵</div>
+      <h3>Audio Studio</h3>
+      <p>Experiment with sounds and chiptunes.</p>
+      <a href="#" class="open-app">Coming soon →</a>
+    </article>
+
+    <article class="app-card" data-category="audio">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">🎙️</div>
+      <h3>Voice FX Studio</h3>
+      <p>Explore audio effects and voice recording.</p>
+      <a href="#" class="open-app">Coming soon →</a>
+    </article>
+
+    <article class="app-card" data-category="creative">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">🎨</div>
+      <h3>Pixel Art</h3>
+      <p>Create your own pixel artwork.</p>
+      <a href="#" class="open-app">Coming soon →</a>
+    </article>
+
+    <article class="app-card" data-category="learning">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">📚</div>
+      <h3>Learning Hub</h3>
+      <p>Explore educational activities and flashcards.</p>
+      <a href="#" class="open-app">Coming soon →</a>
+    </article>
+
+    <article class="app-card" data-category="security">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">🔐</div>
+      <h3>Password Checker</h3>
+      <p>Learn about password strength and safety.</p>
+      <a href="#" class="open-app">Coming soon →</a>
+    </article>
+
+    <article class="app-card" data-category="tools">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">🔄</div>
+      <h3>Quick Converter</h3>
+      <p>Convert common units and values.</p>
+      <a href="#" class="open-app">Coming soon →</a>
+    </article>
+
+    <article class="app-card" data-category="games">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">🧠</div>
+      <h3>Memory Match</h3>
+      <p>Challenge your memory with matching games.</p>
+      <a href="#" class="open-app">Coming soon →</a>
+    </article>
+
+    <article class="app-card" data-category="creative">
+      <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+      <div class="app-icon">⚡</div>
+      <h3>Code Playground</h3>
+      <p>Experiment with simple code examples.</p>
+      <a href="#" class="open-app">Coming soon →</a>
+    </article>
+
+    <!-- ADMIN-ONLY CARDS: KEPT AT THE VERY BOTTOM -->
+
+    <article class="app-card whisper-card admin-only"
+      data-category="tools" data-admin-card="true">
+      <div class="app-icon">🤖</div>
+      <h3>Whisper Bots</h3>
+      <p>Private digital companions and bot controls.</p>
+      <a href="whisperbots.html" class="open-app">ENTER WHISPER BOTS →</a>
+    </article>
+
+    <article class="app-card admin-card admin-only"
+      data-category="tools" data-admin-card="true">
+      <div class="app-icon">🎭</div>
+      <h3>C3CLOWN Idle Bot</h3>
+      <p>Private C3CLOWN idle bot administration.</p>
+      <a href="c3clownidlebot.html" class="open-app">OPEN IDLE BOT →</a>
+    </article>
+
+  </div>
+
+  <div class="empty" id="empty">
+    No applications found. Try another search.
+  </div>
+
+</section>
+
+<!-- ADMINISTRATION PANEL -->
+
+<section class="admin-panel" id="administration">
+
+  <h2>🔐 ADMINISTRATION PANEL</h2>
+
+  <p>
+    Restricted area. Administrator authentication is
+    required before the private bot features are shown.
+  </p>
+
+  <form class="admin-form" id="adminLoginForm">
+
     <input
-      type="search"
-      id="search"
-      placeholder="⌕ Search tools, games, music, bots..."
-      oninput="filterApps()"
+      type="email"
+      id="adminEmail"
+      placeholder="Administrator email"
+      autocomplete="username"
+      required
     >
-  </section>
 
-  <!-- APPLICATIONS -->
+    <input
+      type="password"
+      id="adminPassword"
+      placeholder="Administrator password"
+      autocomplete="current-password"
+      required
+    >
 
-  <section id="apps">
+    <button class="admin-button" id="loginButton" type="submit">
+      ADMIN LOGIN →
+    </button>
 
-    <div class="section-heading">
-      <h2>Explore Applications</h2>
-      <small>DISCOVER THE HUB</small>
-    </div>
+  </form>
 
-    <!-- CATEGORY FILTERS -->
+  <div class="admin-message" id="adminMessage" aria-live="polite">
+    ● ADMINISTRATOR ACCESS LOCKED
+  </div>
 
-    <div class="categories">
+  <button class="admin-logout" id="logoutButton" type="button">
+    SIGN OUT
+  </button>
 
-      <button class="active"
-        onclick="setCategory('all',this)">All</button>
+</section>
 
-      <button onclick="setCategory('games',this)">
-        Games
-      </button>
+<section class="fav-section" id="favorites">
 
-      <button onclick="setCategory('tools',this)">
-        Tools
-      </button>
+  <div class="section-heading">
+    <h2>Your Favourites</h2>
+    <small>SAVED APPS</small>
+  </div>
 
-      <button onclick="setCategory('audio',this)">
-        Audio
-      </button>
+  <p id="favMessage">
+    Tap the ☆ on any application to save it here.
+    Your choices are saved on this device.
+  </p>
 
-      <button onclick="setCategory('creative',this)">
-        Creative
-      </button>
+  <div class="fav-list" id="favList"></div>
 
-      <button onclick="setCategory('learning',this)">
-        Learning
-      </button>
-
-      <button onclick="setCategory('security',this)">
-        Cyber
-      </button>
-
-    </div>
-
-    <!-- APP GRID -->
-
-    <div class="app-grid" id="appGrid">
-
-      <!-- GAME ZONE -->
-
-      <article class="app-card" data-category="games">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🎮</div>
-        <h3>Game Zone</h3>
-        <p>Discover games and interactive challenges.</p>
-        <a href="GameZone.html" class="open-app">ENTER GAME ZONE →</a>
-      </article>
-
-      <!-- WHISPER BOTS -->
-
-      <article class="app-card whisper-card" data-category="tools">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🤖</div>
-        <h3>Whisper Bots</h3>
-        <p>Meet intelligent digital companions and explore interactive bot experiences.</p>
-        <a href="whisperbots.html" class="open-app">ENTER WHISPER BOTS →</a>
-      </article>
-
-      <!-- QUIZ CENTRE -->
-
-      <article class="app-card" data-category="games">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🧩</div>
-        <h3>Quiz Centre</h3>
-        <p>Test your knowledge and sharpen your mind.</p>
-        <a href="#" class="open-app">Coming soon →</a>
-      </article>
-
-      <!-- FOCUS MANAGER -->
-
-      <article class="app-card" data-category="tools">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">⏱️</div>
-        <h3>Focus Manager</h3>
-        <p>Organise tasks and manage your time.</p>
-        <a href="#" class="open-app">Coming soon →</a>
-      </article>
-
-      <!-- TEXT EDITOR -->
-
-      <article class="app-card" data-category="tools">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">📝</div>
-        <h3>Text Editor</h3>
-        <p>Write and organise your notes.</p>
-        <a href="#" class="open-app">Coming soon →</a>
-      </article>
-
-      <!-- AUDIO STUDIO -->
-
-      <article class="app-card" data-category="audio">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🎵</div>
-        <h3>Audio Studio</h3>
-        <p>Experiment with sounds and chiptunes.</p>
-        <a href="#" class="open-app">Coming soon →</a>
-      </article>
-
-      <!-- VOICE FX -->
-
-      <article class="app-card" data-category="audio">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🎙️</div>
-        <h3>Voice FX Studio</h3>
-        <p>Explore audio effects and voice recording.</p>
-        <a href="#" class="open-app">Coming soon →</a>
-      </article>
-
-      <!-- PIXEL ART -->
-
-      <article class="app-card" data-category="creative">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🎨</div>
-        <h3>Pixel Art</h3>
-        <p>Create your own pixel artwork.</p>
-        <a href="#" class="open-app">Coming soon →</a>
-      </article>
-
-      <!-- LEARNING HUB -->
-
-      <article class="app-card" data-category="learning">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">📚</div>
-        <h3>Learning Hub</h3>
-        <p>Explore educational activities and flashcards.</p>
-        <a href="#" class="open-app">Coming soon →</a>
-      </article>
-
-      <!-- PASSWORD CHECKER -->
-
-      <article class="app-card" data-category="security">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🔐</div>
-        <h3>Password Checker</h3>
-        <p>Learn about password strength and safety.</p>
-        <a href="#" class="open-app">Coming soon →</a>
-      </article>
-
-      <!-- QUICK CONVERTER -->
-
-      <article class="app-card" data-category="tools">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🔄</div>
-        <h3>Quick Converter</h3>
-        <p>Convert common units and values.</p>
-        <a href="#" class="open-app">Coming soon →</a>
-      </article>
-
-      <!-- MEMORY MATCH -->
-
-      <article class="app-card" data-category="games">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">🧠</div>
-        <h3>Memory Match</h3>
-        <p>Challenge your memory with matching games.</p>
-        <a href="#" class="open-app">Coming soon →</a>
-      </article>
-
-      <!-- CODE PLAYGROUND -->
-
-      <article class="app-card" data-category="creative">
-        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
-        <div class="app-icon">⚡</div>
-        <h3>Code Playground</h3>
-        <p>Experiment with simple code examples.</p>
-        <a href="#" class="open-app">Coming soon →</a>
-      </article>
-
-    </div>
-
-    <div class="empty" id="empty">
-      No applications found. Try another search.
-    </div>
-
-  </section>
-
-  <!-- FAVOURITES -->
-
-  <section class="fav-section" id="favorites">
-
-    <div class="section-heading">
-      <h2>Your Favourites</h2>
-      <small>SAVED APPS</small>
-    </div>
-
-    <p id="favMessage">
-      Tap the ☆ on any application to save it here.
-      Your choices are saved on this device.
-    </p>
-
-    <div class="fav-list" id="favList"></div>
-
-  </section>
+</section>
 
 </main>
 
-<!-- FOOTER -->
-
 <footer id="about">
-
   <strong>HEXCLØWN</strong><br>
-
   THE UNDERGROUND DIGITAL UNIVERSE<br>
-
   Technology · Creativity · Entertainment
 
   <div class="credit">
@@ -849,23 +837,52 @@ footer strong {
   </div>
 
   <br>
-
   © 2026 HEXCLØWN. ALL RIGHTS RESERVED.
-
 </footer>
+
+<!-- SUPABASE LIBRARY -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-let currentCategory = "all";
+/* =====================================
+   SUPABASE CONNECTION
+===================================== */
 
-/* NAVIGATION */
+/* Replace these two values with your own. */
+
+const SUPABASE_URL = "YOUR_SUPABASE_API_URL";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "YOUR_SUPABASE_PUBLISHABLE_KEY";
+
+let supabaseClient = null;
+
+if (
+  window.supabase &&
+  SUPABASE_URL !== "YOUR_SUPABASE_API_URL" &&
+  SUPABASE_PUBLISHABLE_KEY !== "YOUR_SUPABASE_PUBLISHABLE_KEY"
+) {
+  supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+}
+
+/* =====================================
+   NAVIGATION
+===================================== */
 
 function toggleMenu() {
   document.getElementById("navigation")
     .classList.toggle("show");
 }
 
-/* CATEGORY FILTER */
+/* =====================================
+   CATEGORY FILTER
+===================================== */
+
+let currentCategory = "all";
 
 function setCategory(category, button) {
 
@@ -879,7 +896,9 @@ function setCategory(category, button) {
   filterApps();
 }
 
-/* SEARCH AND FILTER */
+/* =====================================
+   SEARCH AND FILTER
+===================================== */
 
 function filterApps() {
 
@@ -891,6 +910,14 @@ function filterApps() {
   let visible = 0;
 
   cards.forEach(card => {
+
+    const isAdminCard =
+      card.dataset.adminCard === "true";
+
+    if (isAdminCard && card.classList.contains("admin-only")) {
+      card.hidden = true;
+      return;
+    }
 
     const matchesSearch =
       card.innerText.toLowerCase().includes(search);
@@ -911,134 +938,12 @@ function filterApps() {
     visible === 0 ? "block" : "none";
 }
 
-/* FAVOURITES */
+/* =====================================
+   FAVOURITES
+===================================== */
 
 function getFavorites() {
 
   try {
     return JSON.parse(
-      localStorage.getItem("hexclown_favorites") || "[]"
-    );
-  } catch (error) {
-    return [];
-  }
-
-}
-
-function saveFavorites(favorites) {
-
-  try {
-
-    localStorage.setItem(
-      "hexclown_favorites",
-      JSON.stringify(favorites)
-    );
-
-  } catch (error) {
-
-    alert("Your browser could not save favourites.");
-
-  }
-
-}
-
-function toggleFavorite(button) {
-
-  const card = button.closest(".app-card");
-
-  const name = card.querySelector("h3").innerText;
-
-  let favorites = getFavorites();
-
-  if (favorites.includes(name)) {
-    favorites = favorites.filter(item => item !== name);
-  } else {
-    favorites.push(name);
-  }
-
-  saveFavorites(favorites);
-
-  loadFavorites();
-}
-
-/* LOAD FAVOURITES */
-
-function loadFavorites() {
-
-  const favorites = getFavorites();
-
-  document.querySelectorAll(".app-card").forEach(card => {
-
-    const name = card.querySelector("h3").innerText;
-
-    const button = card.querySelector(".favorite");
-
-    if (favorites.includes(name)) {
-      button.classList.add("saved");
-      button.innerText = "★";
-    } else {
-      button.classList.remove("saved");
-      button.innerText = "☆";
-    }
-
-  });
-
-  updateFavoriteCount();
-
-  displayFavorites();
-}
-
-/* UPDATE COUNT */
-
-function updateFavoriteCount() {
-
-  document.getElementById("favCount").innerText =
-    getFavorites().length;
-
-}
-
-/* DISPLAY SAVED APPS */
-
-function displayFavorites() {
-
-  const favorites = getFavorites();
-
-  const list = document.getElementById("favList");
-
-  const message = document.getElementById("favMessage");
-
-  list.innerHTML = "";
-
-  if (favorites.length === 0) {
-
-    message.innerText =
-      "Tap the ☆ on any application to save it here. Your choices are saved on this device.";
-
-    return;
-
-  }
-
-  message.innerText = "Your saved applications:";
-
-  favorites.forEach(name => {
-
-    const item = document.createElement("div");
-
-    item.className = "fav-item";
-
-    item.innerText = "★ " + name;
-
-    list.appendChild(item);
-
-  });
-
-}
-
-/* INITIALISE */
-
-loadFavorites();
-
-</script>
-
-</body>
-</html>
+      localStorage.getItem("hexclown_favorites") || "[]
