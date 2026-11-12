@@ -1,0 +1,715 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+<title>Audio Studio | HEXCLØWN</title>
+
+<!-- MP3 encoder -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
+
+<style>
+:root {
+  --bg:#061116;
+  --panel:#0b1c23;
+  --panel2:#102832;
+  --line:#1b414b;
+  --green:#b6ff45;
+  --cyan:#36e5e5;
+  --text:#e7f5f5;
+  --muted:#91aeb3;
+  --red:#ff6478;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;
+  background:radial-gradient(circle at top,#102832 0,#061116 48%,#03090c 100%);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header {
+  position:sticky;
+  top:0;
+  z-index:20;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:15px 5%;
+  background:#061116ed;
+  border-bottom:1px solid var(--line);
+  backdrop-filter:blur(12px);
+}
+.logo {
+  color:var(--green);
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+.logo span {color:var(--cyan)}
+header a {
+  color:var(--cyan);
+  text-decoration:none;
+  font-size:13px;
+}
+main {
+  width:min(1100px,94%);
+  margin:25px auto 50px;
+}
+.hero {
+  padding:25px 20px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:linear-gradient(135deg,#102832,#08151b);
+  text-align:center;
+  margin-bottom:22px;
+}
+.hero h1 {
+  color:var(--green);
+  font-size:clamp(27px,6vw,43px);
+  margin:5px 0 10px;
+  letter-spacing:2px;
+}
+.hero p {color:var(--muted);line-height:1.6;margin:0}
+.status {
+  display:inline-block;
+  margin-top:13px;
+  padding:7px 12px;
+  border:1px solid #37604b;
+  border-radius:20px;
+  color:var(--green);
+  font-size:11px;
+  letter-spacing:1px;
+}
+.section {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:18px;
+  margin:17px 0;
+  box-shadow:0 8px 25px #0003;
+}
+.section h2 {
+  color:var(--cyan);
+  font-size:18px;
+  margin:0 0 8px;
+}
+.desc {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.5;
+  margin:0 0 15px;
+}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+  gap:10px;
+}
+label {
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin:10px 0 6px;
+}
+input,select,textarea {
+  width:100%;
+  padding:11px;
+  background:#06151b;
+  border:1px solid var(--line);
+  color:var(--text);
+  border-radius:8px;
+  outline:none;
+  font:inherit;
+}
+input:focus,select:focus,textarea:focus {border-color:var(--cyan)}
+input[type=range] {padding:0;accent-color:var(--green)}
+input[type=checkbox] {width:auto;accent-color:var(--green)}
+button {
+  padding:11px 14px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#102832;
+  color:var(--text);
+  font-weight:bold;
+  cursor:pointer;
+  margin:4px 3px 4px 0;
+}
+button:hover {border-color:var(--cyan);color:var(--cyan)}
+button.primary {
+  background:var(--green);
+  color:#071116;
+  border-color:var(--green);
+}
+button.danger {border-color:#713744;color:#ff9aaa}
+button:disabled {opacity:.4;cursor:not-allowed}
+.small {font-size:12px;color:var(--muted)}
+canvas {
+  width:100%;
+  height:120px;
+  display:block;
+  background:#031015;
+  border:1px solid var(--line);
+  border-radius:10px;
+  margin:12px 0;
+}
+.readout {
+  color:var(--green);
+  font-size:14px;
+  margin:8px 0;
+  overflow-wrap:anywhere;
+}
+.divider {height:1px;background:var(--line);margin:16px 0}
+.checkline {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  color:var(--muted);
+  font-size:13px;
+  margin:10px 0;
+}
+.checkline label {margin:0}
+.steps {
+  display:grid;
+  grid-template-columns:repeat(16,minmax(0,1fr));
+  gap:4px;
+  margin:12px 0;
+}
+.step {
+  min-width:0;
+  aspect-ratio:1;
+  padding:0;
+  margin:0;
+  border-radius:4px;
+  background:#142b34;
+  border:1px solid #25434d;
+}
+.step.on {background:var(--green);border-color:var(--green)}
+.step.playing {outline:2px solid var(--cyan)}
+.trackname {
+  color:var(--cyan);
+  font-size:12px;
+  margin-top:14px;
+}
+.history-item {
+  padding:10px;
+  background:#07171d;
+  border:1px solid var(--line);
+  border-radius:8px;
+  margin:7px 0;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+footer {
+  text-align:center;
+  color:var(--muted);
+  padding:25px 10px;
+  font-size:12px;
+}
+#message {
+  position:sticky;
+  bottom:10px;
+  z-index:30;
+  background:#16333c;
+  border:1px solid var(--cyan);
+  border-radius:10px;
+  padding:12px;
+  margin-top:15px;
+  display:none;
+  font-size:13px;
+}
+@media(max-width:500px) {
+  header {padding:13px 4%}
+  .logo {font-size:16px}
+  main {width:94%}
+  .section {padding:14px}
+  .steps {gap:2px}
+  .step {border-radius:3px}
+  button {font-size:12px;padding:10px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCL<span>Ø</span>WN</div>
+  <a href="index.html">← BACK TO HOME</a>
+</header>
+
+<main>
+
+<div class="hero">
+  <h1>AUDIO STUDIO</h1>
+  <p>Record. Transform. Compose. Edit. Export.</p>
+  <div class="status">8 AUDIO SYSTEMS AVAILABLE</div>
+</div>
+
+<!-- 1. VOICE RECORDER -->
+<section class="section">
+  <h2>01 / Voice Recorder & Live Waveform</h2>
+  <p class="desc">Record your voice and watch the waveform respond in real time.</p>
+
+  <canvas id="waveform" width="900" height="160"></canvas>
+  <div class="readout" id="recordStatus">Recorder ready.</div>
+
+  <div class="grid">
+    <button class="primary" id="recordBtn">● Start Recording</button>
+    <button id="stopRecordBtn" disabled>■ Stop Recording</button>
+    <button id="playRecordBtn" disabled>▶ Play Recording</button>
+    <button id="stopPlaybackBtn" disabled>Stop Playback</button>
+  </div>
+
+  <div class="checkline">
+    <input type="checkbox" id="monitorVoice">
+    <label for="monitorVoice">Monitor processed microphone audio (headphones recommended)</label>
+  </div>
+
+  <p class="small">Microphone access is requested only when you start recording. Your recording stays in this browser until you export or save it in a project.</p>
+</section>
+
+<!-- 2. VOICE EFFECTS -->
+<section class="section">
+  <h2>02 / Real-Time Voice Effects</h2>
+  <p class="desc">Choose an effect before recording. The processed voice is sent to the recording output.</p>
+
+  <label for="voiceEffect">Voice effect</label>
+  <select id="voiceEffect">
+    <option value="normal">Normal Voice</option>
+    <option value="robot">Robot</option>
+    <option value="helium">Helium</option>
+    <option value="monster">Monster</option>
+    <option value="echo">Echo</option>
+  </select>
+
+  <p class="small">Effects are applied to the microphone signal. Helium and Monster use pitch shifting, which is approximated with playback-rate processing rather than studio-grade pitch correction.</p>
+</section>
+
+<!-- 3. TEXT TO CHIPTUNE -->
+<section class="section">
+  <h2>03 / Text-to-Chiptune Generator</h2>
+  <p class="desc">Turn your words into an original 8-bit melody.</p>
+
+  <label for="songText">Enter your text or song idea</label>
+  <textarea id="songText" rows="3" placeholder="Type something..."></textarea>
+
+  <div class="grid">
+    <div>
+      <label for="songWave">Sound style</label>
+      <select id="songWave">
+        <option value="square">Classic 8-bit</option>
+        <option value="triangle">Soft Chiptune</option>
+        <option value="sawtooth">Arcade Synth</option>
+      </select>
+    </div>
+    <div>
+      <label for="songSpeed">Note speed</label>
+      <select id="songSpeed">
+        <option value="0.16">Fast</option>
+        <option value="0.25" selected>Normal</option>
+        <option value="0.4">Slow</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="primary" id="generateSongBtn">♫ Generate Melody</button>
+  <button id="playSongBtn" disabled>▶ Play Melody</button>
+  <button id="stopSongBtn" disabled>■ Stop Melody</button>
+  <div class="readout" id="songStatus">Waiting for text.</div>
+</section>
+
+<!-- 4. BEAT SEQUENCER -->
+<section class="section">
+  <h2>04 / 8-Bit Beat & Step Sequencer</h2>
+  <p class="desc">Build a beat by switching steps on and off. Each row is a different sound.</p>
+
+  <div class="grid">
+    <div>
+      <label for="bpm">Tempo / BPM</label>
+      <input type="number" id="bpm" min="40" max="240" value="120">
+    </div>
+    <div>
+      <label for="masterVolume">Master volume</label>
+      <input type="range" id="masterVolume" min="0" max="100" value="65">
+    </div>
+  </div>
+
+  <div id="sequencer"></div>
+
+  <button class="primary" id="playBeatBtn">▶ Play Beat</button>
+  <button id="stopBeatBtn">■ Stop Beat</button>
+  <button id="clearBeatBtn">Clear Pattern</button>
+  <button id="randomBeatBtn">Random Pattern</button>
+</section>
+
+<!-- 5. AUDIO TRIMMER -->
+<section class="section">
+  <h2>05 / Audio Trimmer & Silence Cropper</h2>
+  <p class="desc">Load an audio file or use your recording. Trim it or automatically remove quiet sections at the beginning and end.</p>
+
+  <label for="audioFile">Choose an audio file from your device</label>
+  <input type="file" id="audioFile" accept="audio/*">
+
+  <div class="readout" id="audioInfo">No audio loaded.</div>
+
+  <label for="trimStart">Trim start (seconds)</label>
+  <input type="number" id="trimStart" min="0" step="0.1" value="0">
+
+  <label for="trimEnd">Trim end (seconds)</label>
+  <input type="number" id="trimEnd" min="0" step="0.1" value="0">
+
+  <div class="grid">
+    <button id="useRecordingBtn">Use My Recording</button>
+    <button class="primary" id="applyTrimBtn">Apply Trim</button>
+    <button id="cropSilenceBtn">Crop Leading & Ending Silence</button>
+    <button id="playEditedBtn" disabled>▶ Play Edited Audio</button>
+  </div>
+  <p class="small">Silence cropping checks the beginning and end of the audio using a volume threshold. It does not remove quiet gaps in the middle.</p>
+</section>
+
+<!-- 6. EXPORT -->
+<section class="section">
+  <h2>06 / One-Click Audio Export</h2>
+  <p class="desc">Export your recording, edited audio or generated beat as a WAV or MP3 file.</p>
+
+  <label for="exportSource">Choose audio to export</label>
+  <select id="exportSource">
+    <option value="recording">Voice Recording</option>
+    <option value="edited">Edited Audio</option>
+    <option value="song">Generated Chiptune</option>
+    <option value="beat">Sequencer Pattern</option>
+  </select>
+
+  <label for="exportName">File name</label>
+  <input id="exportName" value="hexclown-audio">
+
+  <button class="primary" id="exportWavBtn">Download WAV</button>
+  <button id="exportMp3Btn">Download MP3</button>
+  <div class="small" id="exportStatus">WAV export is built in. MP3 export needs the encoder library to load.</div>
+</section>
+
+<!-- 7. PROJECT SAVE AND LOAD -->
+<section class="section">
+  <h2>07 / Audio Project Save & Load</h2>
+  <p class="desc">Save your current settings, beat pattern and available audio in this browser.</p>
+
+  <label for="projectName">Project name</label>
+  <input id="projectName" placeholder="My first audio project">
+
+  <div class="grid">
+    <button class="primary" id="saveProjectBtn">Save Project</button>
+    <button id="refreshProjectsBtn">Refresh Projects</button>
+  </div>
+
+  <div id="projectList"></div>
+  <p class="small">Projects are stored locally in this browser using IndexedDB. Clearing browser site data may erase them. Export important audio files as backups.</p>
+</section>
+
+<!-- 8. BPM AND METRONOME -->
+<section class="section">
+  <h2>08 / BPM & Metronome Control</h2>
+  <p class="desc">Set the tempo and use a metronome to keep time while creating music.</p>
+
+  <div class="readout" id="bpmDisplay">120 BPM</div>
+  <input type="range" id="bpmSlider" min="40" max="240" value="120">
+
+  <div class="grid">
+    <button class="primary" id="metronomeBtn">▶ Start Metronome</button>
+    <button id="stopMetronomeBtn">■ Stop Metronome</button>
+    <button id="tapTempoBtn">Tap Tempo</button>
+  </div>
+  <div class="readout" id="metronomeStatus">Metronome stopped.</div>
+</section>
+
+<div id="message"></div>
+
+</main>
+
+<footer>
+  HEXCLØWN AUDIO STUDIO<br>
+  CREATE YOUR OWN SOUND.
+</footer>
+
+<script>
+"use strict";
+
+/* =========================
+   GENERAL UTILITIES
+========================= */
+
+const $ = id => document.getElementById(id);
+let audioContext = null;
+let recordingBlob = null;
+let editedBuffer = null;
+let songBuffer = null;
+let beatBuffer = null;
+let mediaRecorder = null;
+let recordingChunks = [];
+let microphoneStream = null;
+let micSource = null;
+let micAnalyser = null;
+let monitorGain = null;
+let recordDestination = null;
+let recordAnimation = null;
+let playbackSource = null;
+let songSource = null;
+let beatSource = null;
+let songPlaying = false;
+let beatTimer = null;
+let metroTimer = null;
+let metroBeat = 0;
+let tapTimes = [];
+let currentBeatStep = 0;
+let db = null;
+
+function message(text) {
+  const box = $("message");
+  box.textContent = text;
+  box.style.display = "block";
+  clearTimeout(message.timer);
+  message.timer = setTimeout(() => box.style.display = "none", 3500);
+}
+
+function getAudioContext() {
+  if (!audioContext) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) throw new Error("Your browser does not support the Web Audio API.");
+    audioContext = new AC();
+  }
+  if (audioContext.state === "suspended") audioContext.resume();
+  return audioContext;
+}
+
+function safeName(name) {
+  return (name || "hexclown-audio")
+    .replace(/[^\w\-]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "hexclown-audio";
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
+}
+
+function bufferToWav(buffer) {
+  const channels = Math.min(buffer.numberOfChannels, 2);
+  const sampleRate = buffer.sampleRate;
+  const frames = buffer.length;
+  const bytesPerSample = 2;
+  const blockAlign = channels * bytesPerSample;
+  const dataSize = frames * blockAlign;
+  const arrayBuffer = new ArrayBuffer(44 + dataSize);
+  const view = new DataView(arrayBuffer);
+
+  function writeString(offset, text) {
+    for (let i = 0; i < text.length; i++) {
+      view.setUint8(offset + i, text.charCodeAt(i));
+    }
+  }
+
+  writeString(0, "RIFF");
+  view.setUint32(4, 36 + dataSize, true);
+  writeString(8, "WAVE");
+  writeString(12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, channels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * blockAlign, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, 16, true);
+  writeString(36, "data");
+  view.setUint32(40, dataSize, true);
+
+  const channelData = [];
+  for (let c = 0; c < channels; c++) {
+    channelData.push(buffer.getChannelData(c));
+  }
+
+  let offset = 44;
+  for (let i = 0; i < frames; i++) {
+    for (let c = 0; c < channels; c++) {
+      let sample = Math.max(-1, Math.min(1, channelData[c][i]));
+      view.setInt16(offset, sample < 0 ? sample * 32768 : sample * 32767, true);
+      offset += 2;
+    }
+  }
+  return new Blob([arrayBuffer], {type:"audio/wav"});
+}
+
+function resampleBuffer(buffer, targetRate) {
+  const offline = new OfflineAudioContext(
+    buffer.numberOfChannels,
+    Math.ceil(buffer.duration * targetRate),
+    targetRate
+  );
+  const source = offline.createBufferSource();
+  source.buffer = buffer;
+  source.connect(offline.destination);
+  source.start();
+  return offline.startRendering();
+}
+
+function encodeMp3(buffer) {
+  if (!window.lamejs || !window.lamejs.Mp3Encoder) {
+    throw new Error("MP3 encoder did not load. Check your internet connection and try again.");
+  }
+
+  const targetRate = 44100;
+  return resampleBuffer(buffer, targetRate).then(resampled => {
+    const channels = Math.min(2, resampled.numberOfChannels);
+    const encoder = new lamejs.Mp3Encoder(channels, targetRate, 128);
+    const left = resampled.getChannelData(0);
+    const right = channels > 1 ? resampled.getChannelData(1) : null;
+    const blockSize = 1152;
+    const parts = [];
+
+    for (let i = 0; i < left.length; i += blockSize) {
+      const leftChunk = new Int16Array(Math.min(blockSize, left.length - i));
+      const rightChunk = channels > 1 ? new Int16Array(leftChunk.length) : null;
+
+      for (let j = 0; j < leftChunk.length; j++) {
+        leftChunk[j] = Math.max(-32768, Math.min(32767, left[i+j] * 32767));
+        if (rightChunk) {
+          rightChunk[j] = Math.max(-32768, Math.min(32767, right[i+j] * 32767));
+        }
+      }
+
+      const encoded = channels > 1
+        ? encoder.encodeBuffer(leftChunk, rightChunk)
+        : encoder.encodeBuffer(leftChunk);
+
+      if (encoded.length) parts.push(new Int8Array(encoded));
+    }
+
+    const finalChunk = encoder.flush();
+    if (finalChunk.length) parts.push(new Int8Array(finalChunk));
+    return new Blob(parts, {type:"audio/mpeg"});
+  });
+}
+
+/* =========================
+   WAVEFORM
+========================= */
+
+const canvas = $("waveform");
+const ctx = canvas.getContext("2d");
+
+function drawIdleWave() {
+  ctx.fillStyle = "#031015";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = "#36e5e5";
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height/2);
+  ctx.lineTo(canvas.width, canvas.height/2);
+  ctx.stroke();
+}
+
+function drawWaveform() {
+  if (!micAnalyser) return;
+  const data = new Uint8Array(micAnalyser.fftSize);
+  micAnalyser.getByteTimeDomainData(data);
+
+  ctx.fillStyle = "#031015";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "#b6ff45";
+  ctx.beginPath();
+
+  const step = canvas.width / data.length;
+  for (let i = 0; i < data.length; i++) {
+    const y = (data[i] / 255) * canvas.height;
+    if (i === 0) ctx.moveTo(0, y);
+    else ctx.lineTo(i * step, y);
+  }
+  ctx.stroke();
+  recordAnimation = requestAnimationFrame(drawWaveform);
+}
+drawIdleWave();
+
+/* =========================
+   RECORDER AND EFFECTS
+========================= */
+
+function makeVoiceEffect(source, destination, effect) {
+  const ac = getAudioContext();
+  const input = source;
+
+  if (effect === "normal") {
+    input.connect(destination);
+    return;
+  }
+
+  if (effect === "robot") {
+    const oscillator = ac.createOscillator();
+    const gain = ac.createGain();
+    const mix = ac.createGain();
+    oscillator.type = "square";
+    oscillator.frequency.value = 35;
+    gain.gain.value = 0.16;
+    mix.gain.value = 0.85;
+    input.connect(mix);
+    mix.connect(destination);
+    oscillator.connect(gain);
+    gain.connect(destination);
+    oscillator.start();
+    return () => oscillator.stop();
+  }
+
+  if (effect === "echo") {
+    const delay = ac.createDelay(1);
+    const feedback = ac.createGain();
+    const dry = ac.createGain();
+    delay.delayTime.value = 0.22;
+    feedback.gain.value = 0.28;
+    dry.gain.value = 0.8;
+    input.connect(dry);
+    dry.connect(destination);
+    input.connect(delay);
+    delay.connect(feedback);
+    feedback.connect(delay);
+    delay.connect(destination);
+    return;
+  }
+
+  if (effect === "helium" || effect === "monster") {
+    const rate = effect === "helium" ? 1.35 : 0.72;
+    const processor = ac.createScriptProcessor(2048, 1, 1);
+    const bufferSize = 16384;
+    const ring = new Float32Array(bufferSize);
+    let writeIndex = 0;
+    let readIndex = 0;
+
+    processor.onaudioprocess = event => {
+      const inputData = event.inputBuffer.getChannelData(0);
+      const outputData = event.outputBuffer.getChannelData(0);
+
+      for (let i = 0; i < inputData.length; i++) {
+        ring[writeIndex] = inputData[i];
+        writeIndex = (writeIndex + 1) % bufferSize;
+        outputData[i] = ring[Math.floor(readIndex) % bufferSize] || 0;
+        readIndex = (readIndex + rate) % bufferSize;
+      }
+    };
+
+    input.connect(processor);
+    processor.connect(destination);
+    return;
+  }
+}
+
+$("recordBtn").addEventListener("click", async () => {
+  try {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error("Microphone recording is not available in this browser. Open the GitHub Pages HTTPS address.");
+    }
