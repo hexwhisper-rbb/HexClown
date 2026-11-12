@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+<title>Quick To-Do | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #07131a;
+    --panel: #0d2029;
+    --panel2: #102832;
+    --cyan: #00e5ff;
+    --green: #00ff9d;
+    --text: #e9f7fa;
+    --muted: #8ba6af;
+    --border: rgba(0,229,255,.18);
+    --red: #ff647c;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    padding: 17px 5%;
+    background: #091a22;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    color: var(--green);
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+.back {
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    padding: 9px 13px;
+    border-radius: 7px;
+}
+
+.back:hover {
+    background: var(--panel2);
+}
+
+.container {
+    width: 92%;
+    max-width: 760px;
+    margin: 35px auto;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    color: var(--green);
+    font-size: clamp(27px, 6vw, 38px);
+    margin-bottom: 9px;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 17px 8px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.stat strong {
+    display: block;
+    color: var(--cyan);
+    font-size: 25px;
+    margin-bottom: 6px;
+}
+
+.stat small {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.card h2 {
+    color: var(--cyan);
+    font-size: 17px;
+    margin-bottom: 15px;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+}
+
+input {
+    min-width: 0;
+    flex: 1;
+    padding: 14px;
+    background: #06141b;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: white;
+    outline: none;
+    font-size: 14px;
+}
+
+input:focus {
+    border-color: var(--cyan);
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: .2s;
+}
+
+.add-btn {
+    background: var(--green);
+    color: #04140e;
+    padding: 0 20px;
+}
+
+.add-btn:hover {
+    filter: brightness(1.1);
+}
+
+.filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.filter-btn {
+    background: var(--panel2);
+    color: var(--muted);
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+}
+
+.filter-btn.active {
+    background: rgba(0,229,255,.13);
+    color: var(--cyan);
+    border-color: var(--cyan);
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task {
+    background: #091a22;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 13px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    animation: appear .2s ease;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.task input[type="checkbox"] {
+    flex: 0 0 auto;
+    width: 19px;
+    height: 19px;
+    accent-color: var(--green);
+    cursor: pointer;
+}
+
+.task-text {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.task.completed .task-text {
+    text-decoration: line-through;
+    color: #70858c;
+}
+
+.task-date {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+.delete-btn {
+    background: rgba(255,100,124,.12);
+    color: var(--red);
+    padding: 8px 10px;
+    font-size: 12px;
+}
+
+.delete-btn:hover {
+    background: rgba(255,100,124,.25);
+}
+
+.empty {
+    text-align: center;
+    color: var(--muted);
+    padding: 35px 10px;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.clear-btn {
+    width: 100%;
+    background: transparent;
+    color: var(--red);
+    border: 1px solid rgba(255,100,124,.3);
+    padding: 12px;
+    margin-top: 15px;
+}
+
+.clear-btn:hover {
+    background: rgba(255,100,124,.1);
+}
+
+footer {
+    text-align: center;
+    padding: 25px 10px;
+    color: var(--muted);
+    font-size: 11px;
+    border-top: 1px solid var(--border);
+    margin-top: 35px;
+}
+
+@media(max-width: 480px) {
+    .input-area {
+        flex-direction: column;
+    }
+
+    .add-btn {
+        padding: 13px;
+    }
+
+    .stats {
+        gap: 7px;
+    }
+
+    .stat {
+        padding: 14px 5px;
+    }
+
+    .stat strong {
+        font-size: 21px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEX<span>CLØWN</span></div>
+    <a href="focusmanager.html" class="back">← Focus Manager</a>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>QUICK TO-DO</h1>
+        <p>Organise your day. Track your progress. Get things done.</p>
+    </section>
+
+    <section class="stats">
+        <div class="stat">
+            <strong id="totalCount">0</strong>
+            <small>TOTAL TASKS</small>
+        </div>
+
+        <div class="stat">
+            <strong id="pendingCount">0</strong>
+            <small>PENDING</small>
+        </div>
+
+        <div class="stat">
+            <strong id="completedCount">0</strong>
+            <small>COMPLETED</small>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>+ ADD A NEW TASK</h2>
+
+        <form class="input-area" id="taskForm">
+            <input
+                type="text"
+                id="taskInput"
+                placeholder="What do you need to do?"
+                maxlength="150"
+                autocomplete="off"
+                required
+            >
+            <button type="submit" class="add-btn">ADD TASK</button>
+        </form>
+    </section>
+
+    <section class="card">
+        <h2>YOUR CHECKLIST</h2>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">ALL</button>
+            <button class="filter-btn" data-filter="pending">PENDING</button>
+            <button class="filter-btn" data-filter="completed">COMPLETED</button>
+        </div>
+
+        <div class="task-list" id="taskList"></div>
+
+        <button class="clear-btn" id="clearCompleted">
+            CLEAR COMPLETED TASKS
+        </button>
+    </section>
+
+</main>
+
+<footer>
+    HEXCLØWN DIGITAL UNIVERSE<br>
+    QUICK TO-DO CHECKLIST
+</footer>
+
+<script>
+const STORAGE_KEY = "hexclown_quicktodo_tasks";
+
+const taskForm = document.getElementById("taskForm");
+const taskInput = document.getElementById("taskInput");
+const taskList = document.getElementById("taskList");
+
+let tasks = [];
+
+try {
+    const savedTasks = localStorage.getItem(STORAGE_KEY);
+    const parsed = savedTasks ? JSON.parse(savedTasks) : [];
+    tasks = Array.isArray(parsed) ? parsed.filter(task =>
+        task &&
+        typeof task.id === "string" &&
+        typeof task.text === "string" &&
+        typeof task.completed === "boolean"
+    ) : [];
+} catch (error) {
+    tasks = [];
+}
+
+let currentFilter = "all";
+
+function saveTasks() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+}
+
+function updateStats() {
+    const total = tasks.length;
+    const completed = tasks.filter(task => task.completed).length;
+    const pending = total - completed;
+
+    document.getElementById("totalCount").textContent = total;
+    document.getElementById("pendingCount").textContent = pending;
+    document.getElementById("completedCount").textContent = completed;
+}
+
+function addTask(text) {
+    const task = {
+        id: Date.now().toString() + Math.random().toString(36).slice(2),
+        text: text,
+        completed: false,
+        createdAt: new Date().toLocaleString()
+    };
+
+    tasks.unshift(task);
+    saveTasks();
+    renderTasks();
+}
+
+function toggleTask(id) {
+    tasks = tasks.map(task =>
+        task.id === id
+            ? { ...task, completed: !task.completed }
+            : task
+    );
+
+    saveTasks();
+    renderTasks();
+}
+
+function deleteTask(id) {
+    tasks = tasks.filter(task => task.id !== id);
+    saveTasks();
+    renderTasks();
+}
+
+function renderTasks() {
+    taskList.replaceChildren();
+
+    const filteredTasks = tasks.filter(task => {
+        if (currentFilter === "pending") return !task.completed;
+        if (currentFilter === "completed") return task.completed;
+        return true;
+    });
+
+    if (filteredTasks.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+
+        empty.textContent = tasks.length === 0
+            ? "Your checklist is empty. Add your first task above!"
+            : "No tasks found in this category.";
+
+        taskList.appendChild(empty);
+    }
+
+    filteredTasks.forEach(task => {
+        const item = document.createElement("div");
+        item.className = "task" + (task.completed ? " completed" : "");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = task.completed;
+        checkbox.setAttribute("aria-label", "Mark task as completed");
+        checkbox.addEventListener("change", () => toggleTask(task.id));
+
+        const details = document.createElement("div");
+        details.className = "task-text";
+
+        const taskName = document.createElement("span");
+        taskName.textContent = task.text;
+
+        const date = document.createElement("small");
+        date.className = "task-date";
+        date.textContent = "Added: " + task.createdAt;
+
+        details.appendChild(taskName);
+        details.appendChild(date);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "delete-btn";
+        deleteButton.textContent = "DELETE";
+        deleteButton.setAttribute("aria-label", "Delete task");
+        deleteButton.addEventListener("click", () => deleteTask(task.id));
+
+        item.appendChild(checkbox);
+        item.appendChild(details);
+        item.appendChild(deleteButton);
+
+        taskList.appendChild(item);
+    });
+
+    updateStats();
+}
+
+taskForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const text = taskInput.value.trim();
+
+    if (!text) return;
+
+    addTask(text);
+    taskInput.value = "";
+    taskInput.focus();
+});
+
+document.querySelectorAll(".filter-btn").forEach(button => {
+    button.addEventListener("click", function() {
+        currentFilter = this.dataset.filter;
+
+        document.querySelectorAll(".filter-btn").forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        this.classList.add("active");
+        renderTasks();
+    });
+});
+
+document.getElementById("clearCompleted").addEventListener("click", function() {
+    const completedCount = tasks.filter(task => task.completed).length;
+
+    if (completedCount === 0) {
+        alert("There are no completed tasks to clear.");
+        return;
+    }
+
+    if (confirm("Delete all completed tasks?")) {
+        tasks = tasks.filter(task => !task.completed);
+        saveTasks();
+        renderTasks();
+    }
+});
+
+renderTasks();
+</script>
+
+</body>
+</html>
