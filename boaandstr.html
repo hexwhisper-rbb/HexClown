@@ -1,217 +1,121 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07131b">
+<meta name="theme-color" content="#071321">
 <title>Board & Strategy | HEXCLØWN</title>
 
 <style>
 :root {
-  --bg:#07131b;
-  --panel:#10232e;
-  --panel2:#142d39;
-  --green:#39ff88;
-  --cyan:#27eaff;
-  --blue:#3985ff;
-  --red:#ff536b;
-  --text:#e9fbff;
-  --muted:#91aeb9;
-  --border:#24505c;
+ --bg:#071321;
+ --card:#102337;
+ --cyan:#00eaff;
+ --green:#00ff88;
+ --blue:#168bff;
+ --red:#ff426b;
+ --text:#eafaff;
+ --muted:#91a8bb;
 }
-*{box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
 body{
-  margin:0;
-  background:radial-gradient(circle at top,#12313d,#07131b 55%);
-  color:var(--text);
-  font-family:Arial,sans-serif;
+ background:var(--bg);color:var(--text);
+ font-family:Arial,sans-serif;min-height:100vh;
 }
 header{
-  padding:17px 5%;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
-  border-bottom:1px solid var(--border);
-  background:#091923;
+ padding:17px 5%;background:#091a2b;
+ border-bottom:1px solid #174257;
+ display:flex;justify-content:space-between;
+ align-items:center;gap:12px;flex-wrap:wrap;
 }
-.logo{
-  color:var(--green);
-  font-size:25px;
-  font-weight:900;
-  letter-spacing:2px;
-  text-shadow:0 0 12px #39ff8877;
+.logo{font-size:24px;font-weight:900;color:var(--green);
+ text-shadow:0 0 12px var(--green);letter-spacing:2px}
+.logo span{color:var(--cyan)}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.nav a{
+ color:var(--cyan);text-decoration:none;
+ border:1px solid var(--cyan);padding:9px 12px;
+ border-radius:6px;font-size:12px
 }
-nav{display:flex;gap:16px;flex-wrap:wrap}
-nav a{
-  color:var(--cyan);
-  text-decoration:none;
-  font-size:13px;
-  font-weight:bold;
-}
-nav a:hover{color:var(--green)}
-.hero{
-  text-align:center;
-  padding:38px 15px 25px;
-}
+.nav a:hover{background:var(--cyan);color:#071321}
+.hero{text-align:center;padding:40px 15px 25px}
 .hero h1{
-  color:var(--cyan);
-  font-size:clamp(27px,6vw,43px);
-  margin:0 0 12px;
-  text-shadow:0 0 15px #27eaff55;
+ color:var(--cyan);font-size:clamp(27px,6vw,42px);
+ text-shadow:0 0 14px #00eaff66
 }
-.hero p{color:var(--muted);line-height:1.6}
-.hero .tag{
-  display:inline-block;
-  color:var(--green);
-  border:1px solid var(--green);
-  border-radius:30px;
-  padding:7px 14px;
-  font-size:11px;
-  letter-spacing:2px;
-  margin-bottom:13px;
+.hero p{color:var(--muted);font-size:14px;line-height:1.7;margin-top:12px}
+.line{height:3px;width:70px;background:var(--green);
+ margin:18px auto;box-shadow:0 0 12px var(--green)}
+.container{width:92%;max-width:1100px;margin:auto;padding-bottom:45px}
+.search{max-width:550px;margin:0 auto 28px}
+.search input{
+ width:100%;padding:14px;background:#0c2033;
+ color:white;border:1px solid var(--cyan);border-radius:8px;
+ outline:none;font-size:15px
 }
-.container{width:92%;max-width:1100px;margin:auto}
-.section-title{
-  color:var(--green);
-  font-size:20px;
-  margin:25px 0 14px;
-}
-.game-list{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
-  gap:12px;
-  margin-bottom:25px;
-}
+.section-title{color:var(--green);margin-bottom:18px;font-size:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
 .game-card{
-  background:linear-gradient(145deg,#15313d,#0c1d27);
-  border:1px solid var(--border);
-  border-radius:13px;
-  padding:16px 12px;
-  cursor:pointer;
-  transition:.2s;
-  text-align:left;
-  color:var(--text);
+ background:var(--card);border:1px solid #174257;
+ border-radius:12px;padding:22px 17px;text-align:center;
+ transition:.25s
 }
-.game-card:hover,.game-card.active{
-  border-color:var(--green);
-  box-shadow:0 0 15px #39ff8833;
-  transform:translateY(-2px);
+.game-card:hover{transform:translateY(-5px);border-color:var(--green);
+ box-shadow:0 0 16px #00ff8830}
+.game-icon{font-size:38px;margin-bottom:12px}
+.game-card h3{color:var(--cyan);margin-bottom:9px}
+.game-card p{font-size:13px;color:var(--muted);line-height:1.6;min-height:42px}
+.play{
+ width:100%;padding:12px;margin-top:15px;
+ background:transparent;border:1px solid var(--green);
+ color:var(--green);border-radius:7px;font-weight:bold;
+ cursor:pointer
 }
-.game-card .emoji{font-size:25px}
-.game-card h3{font-size:14px;margin:9px 0 5px}
-.game-card p{font-size:11px;color:var(--muted);margin:0;line-height:1.5}
-.game-area{
-  background:linear-gradient(145deg,#112833,#0a1a23);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:18px;
-  margin:15px 0 35px;
-  min-height:300px;
+.play:hover{background:var(--green);color:#071321}
+#gameArea{
+ display:none;background:#0b1c2c;border:1px solid var(--cyan);
+ border-radius:13px;padding:20px;margin-top:30px;
+ box-shadow:0 0 18px #00eaff18
 }
-.game-heading{
-  text-align:center;
-  margin-bottom:15px;
+.game-head{display:flex;justify-content:space-between;
+ align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+.game-head h2{color:var(--cyan);font-size:21px}
+.close{
+ padding:9px 13px;background:#341526;color:#ff8099;
+ border:1px solid var(--red);border-radius:6px;cursor:pointer
 }
-.game-heading h2{color:var(--cyan);margin:5px}
-.game-heading p{color:var(--muted);font-size:13px}
-.info{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:10px;
-  margin:12px 0;
-}
-.info span{
-  background:#091923;
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:8px 12px;
-  font-size:12px;
-}
-button{
-  background:#153541;
-  border:1px solid var(--cyan);
-  color:var(--cyan);
-  padding:10px 14px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:bold;
-  margin:4px;
-}
-button:hover{background:#1b4b59}
-button.primary{
-  background:var(--green);
-  color:#06150e;
-  border-color:var(--green);
-}
-button:disabled{opacity:.4;cursor:not-allowed}
-.board-wrap{
-  display:flex;
-  justify-content:center;
-  overflow-x:auto;
-  padding:10px 0;
-}
-.board{
-  display:grid;
-  border:3px solid #287080;
-  border-radius:5px;
-  overflow:hidden;
-  user-select:none;
-  touch-action:manipulation;
-}
-.cell{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  position:relative;
-  font-weight:bold;
-}
-.cell.selected{outline:3px solid var(--green);outline-offset:-3px}
-.cell.possible:after{
-  content:"";
-  width:25%;
-  height:25%;
-  border-radius:50%;
-  background:#39ff8899;
-  position:absolute;
-}
-.cell.last{box-shadow:inset 0 0 0 3px var(--cyan)}
 .status{
-  text-align:center;
-  color:var(--green);
-  min-height:24px;
-  margin:10px 0;
-  font-size:14px;
+ text-align:center;color:var(--green);font-weight:bold;
+ margin:12px 0 18px;min-height:22px
 }
-.controls{text-align:center;margin:12px 0}
-.small-note{
-  text-align:center;
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.6;
+button{font-family:inherit}
+.control{
+ padding:10px 14px;background:#102d43;color:var(--cyan);
+ border:1px solid var(--cyan);border-radius:6px;cursor:pointer
 }
+.control:hover{background:var(--cyan);color:#071321}
+.board{margin:15px auto;display:grid;gap:3px;justify-content:center}
+.cell{
+ display:flex;align-items:center;justify-content:center;
+ border:1px solid #24506a;background:#122c40;
+ cursor:pointer;user-select:none;font-size:23px;
+ touch-action:manipulation
+}
+.cell:disabled{cursor:default}
+.cell.selected{outline:3px solid var(--green);outline-offset:-3px}
+.cell.valid{background:#174c43}
+.cell:focus-visible{outline:3px solid white}
 footer{
-  text-align:center;
-  padding:25px 10px;
-  border-top:1px solid var(--border);
-  color:var(--muted);
-  font-size:11px;
+ background:#091a2b;border-top:1px solid #174257;
+ text-align:center;padding:22px 10px;color:var(--muted);
+ font-size:12px;line-height:1.8
 }
-footer strong{color:var(--green)}
-.empty{
-  text-align:center;
-  color:var(--muted);
-  padding:35px 10px;
-}
+footer span{color:var(--green)}
+.empty{text-align:center;color:var(--red);padding:25px;display:none}
 @media(max-width:500px){
-  header{justify-content:center}
-  nav{justify-content:center}
-  .game-area{padding:12px}
-  .game-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .grid{grid-template-columns:1fr}
+ #gameArea{padding:12px}
+ .cell{font-size:19px}
 }
 </style>
 </head>
@@ -219,420 +123,522 @@ footer strong{color:var(--green)}
 <body>
 
 <header>
-  <div class="logo">HEXCLØWN</div>
-  <nav>
-    <a href="index.html">HOME</a>
-    <a href="GameZone.html">GAME ZONE</a>
-    <a href="#games">BOARD GAMES</a>
-  </nav>
+ <div class="logo">HEXCL<span>Ø</span>WN</div>
+ <nav class="nav">
+  <a href="index.html">HOME</a>
+  <a href="GameZone.html">GAME ZONE</a>
+ </nav>
 </header>
 
 <section class="hero">
-  <div class="tag">STRATEGY MODE ACTIVATED</div>
-  <h1>BOARD & STRATEGY</h1>
-  <p>Think ahead. Make your move. Challenge your strategy.<br>
-  Six classic games inside one HEXCLØWN zone.</p>
+ <h1>BOARD & STRATEGY</h1>
+ <div class="line"></div>
+ <p>Think ahead. Plan your moves. Outsmart your opponent.<br>
+ Enter the world of classic board and strategy games.</p>
 </section>
 
 <main class="container">
-  <h2 class="section-title" id="games">Choose Your Game</h2>
 
-  <div class="game-list" id="gameList">
-    <button class="game-card" onclick="startGame('checkers')">
-      <div class="emoji">🔴</div>
-      <h3>Checkers Classic</h3>
-      <p>Capture pieces and crown your kings.</p>
-    </button>
-    <button class="game-card" onclick="startGame('chess')">
-      <div class="emoji">♟️</div>
-      <h3>Chess Lite</h3>
-      <p>Local two-player chess match.</p>
-    </button>
-    <button class="game-card" onclick="startGame('connect')">
-      <div class="emoji">🔵</div>
-      <h3>Connect Four</h3>
-      <p>Connect four pieces in a row.</p>
-    </button>
-    <button class="game-card" onclick="startGame('tic')">
-      <div class="emoji">❎</div>
-      <h3>Tic-Tac-Toe Ultimate</h3>
-      <p>Get three marks in a line.</p>
-    </button>
-    <button class="game-card" onclick="startGame('battle')">
-      <div class="emoji">🚢</div>
-      <h3>Battleship Grid</h3>
-      <p>Find the hidden ships.</p>
-    </button>
-    <button class="game-card" onclick="startGame('reversi')">
-      <div class="emoji">⚫</div>
-      <h3>Reversi / Othello</h3>
-      <p>Flip pieces and control the board.</p>
-    </button>
+ <div class="search">
+  <input id="search" type="search" placeholder="⌕ Search board games...">
+ </div>
+
+ <h2 class="section-title">CHOOSE YOUR GAME</h2>
+
+ <div class="grid" id="gameGrid">
+
+  <article class="game-card">
+   <div class="game-icon">🔴</div>
+   <h3>Checkers Classic</h3>
+   <p>Jump over opponent pieces and capture them to win.</p>
+   <button class="play" onclick="startGame('checkers')">PLAY GAME →</button>
+  </article>
+
+  <article class="game-card">
+   <div class="game-icon">♟️</div>
+   <h3>Chess Lite</h3>
+   <p>Play a local two-player chess match on one device.</p>
+   <button class="play" onclick="startGame('chess')">PLAY GAME →</button>
+  </article>
+
+  <article class="game-card">
+   <div class="game-icon">🔵</div>
+   <h3>Connect Four</h3>
+   <p>Connect four pieces horizontally, vertically or diagonally.</p>
+   <button class="play" onclick="startGame('connect')">PLAY GAME →</button>
+  </article>
+
+  <article class="game-card">
+   <div class="game-icon">❎</div>
+   <h3>Tic-Tac-Toe Ultimate</h3>
+   <p>Challenge another player in this classic strategy game.</p>
+   <button class="play" onclick="startGame('ttt')">PLAY GAME →</button>
+  </article>
+
+  <article class="game-card">
+   <div class="game-icon">🚢</div>
+   <h3>Battleship Grid</h3>
+   <p>Find and sink the hidden enemy fleet.</p>
+   <button class="play" onclick="startGame('battleship')">PLAY GAME →</button>
+  </article>
+
+  <article class="game-card">
+   <div class="game-icon">⚫</div>
+   <h3>Reversi / Othello</h3>
+   <p>Flip your opponent's pieces and control the board.</p>
+   <button class="play" onclick="startGame('reversi')">PLAY GAME →</button>
+  </article>
+
+ </div>
+
+ <div class="empty" id="empty">NO GAMES FOUND.</div>
+
+ <section id="gameArea">
+  <div class="game-head">
+   <h2 id="gameTitle">GAME</h2>
+   <button class="close" onclick="closeGame()">✕ CLOSE GAME</button>
   </div>
+  <div id="gameContent"></div>
+ </section>
 
-  <section class="game-area" id="gameArea">
-    <div class="empty">
-      <div style="font-size:42px">🎮</div>
-      <h2 style="color:var(--cyan)">Welcome to the Strategy Arena</h2>
-      <p>Select a game above to begin playing.</p>
-    </div>
-  </section>
 </main>
 
 <footer>
-  <strong>HEXCLØWN</strong><br><br>
-  CREATED BY TIJANI ALIYU<br>
-  HEXWHISPER / CYBERCODECLOWN<br><br>
-  © 2026 HEXCLØWN. ALL RIGHTS RESERVED.
+ <p>© 2026 <span>HEXCLØWN</span> — ALL RIGHTS RESERVED.</p>
+ <p>THINK DIFFERENT. PLAY SMART. STAY CURIOUS.</p>
 </footer>
 
 <script>
 const area=document.getElementById("gameArea");
-let currentGame="";
+const content=document.getElementById("gameContent");
+const title=document.getElementById("gameTitle");
+const search=document.getElementById("search");
+const cards=document.querySelectorAll(".game-card");
 
-function shell(title,description,content){
-  area.innerHTML=`
-    <div class="game-heading">
-      <h2>${title}</h2>
-      <p>${description}</p>
-    </div>
-    ${content}
-  `;
-}
-function message(txt){
-  const el=document.getElementById("status");
-  if(el)el.textContent=txt;
-}
-function startGame(game){
-  currentGame=game;
-  document.querySelectorAll(".game-card").forEach(c=>c.classList.remove("active"));
-  const cards=[...document.querySelectorAll(".game-card")];
-  const index=["checkers","chess","connect","tic","battle","reversi"].indexOf(game);
-  if(cards[index])cards[index].classList.add("active");
+search.addEventListener("input",()=>{
+ let count=0;
+ cards.forEach(card=>{
+  const match=card.innerText.toLowerCase().includes(search.value.toLowerCase());
+  card.style.display=match?"":"none";
+  if(match)count++;
+ });
+ document.getElementById("empty").style.display=count?"none":"block";
+});
 
-  if(game==="checkers")initCheckers();
-  if(game==="chess")initChess();
-  if(game==="connect")initConnect();
-  if(game==="tic")initTic();
-  if(game==="battle")initBattle();
-  if(game==="reversi")initReversi();
+function startGame(type){
+ area.style.display="block";
+ area.scrollIntoView({behavior:"smooth",block:"start"});
+ const names={
+  checkers:"CHECKERS CLASSIC",
+  chess:"CHESS LITE",
+  connect:"CONNECT FOUR",
+  ttt:"TIC-TAC-TOE ULTIMATE",
+  battleship:"BATTLESHIP GRID",
+  reversi:"REVERSI / OTHELLO"
+ };
+ title.textContent=names[type];
+ content.innerHTML="";
+ if(type==="checkers")checkers();
+ if(type==="chess")chess();
+ if(type==="connect")connect();
+ if(type==="ttt")ttt();
+ if(type==="battleship")battleship();
+ if(type==="reversi")reversi();
+}
+function closeGame(){
+ area.style.display="none";
+ content.innerHTML="";
+}
+function status(text){
+ const el=document.getElementById("status");
+ if(el)el.textContent=text;
+}
+function resetButton(fn){
+ return `<button class="control" onclick="${fn}">↻ NEW GAME</button>`;
 }
 
-/* =========================
-   CHECKERS CLASSIC
-========================= */
-let checkBoard,checkTurn,checkSelected,checkMoves;
+/* CHECKERS */
+let ckBoard=[],ckTurn=1,ckSelected=null,ckOver=false;
 
-function initCheckers(){
-  checkBoard=Array.from({length:8},()=>Array(8).fill(""));
-  for(let r=0;r<3;r++)for(let c=0;c<8;c++)
-    if((r+c)%2===1)checkBoard[r][c]="B";
-  for(let r=5;r<8;r++)for(let c=0;c<8;c++)
-    if((r+c)%2===1)checkBoard[r][c]="R";
-  checkTurn="R";checkSelected=null;checkMoves=[];
-  drawCheckers();
+function checkers(){
+ ckBoard=Array(8).fill(null).map(()=>Array(8).fill(0));
+ for(let r=0;r<3;r++)for(let c=0;c<8;c++)
+  if((r+c)%2)ckBoard[r][c]=2;
+ for(let r=5;r<8;r++)for(let c=0;c<8;c++)
+  if((r+c)%2)ckBoard[r][c]=1;
+ ckTurn=1;ckSelected=null;ckOver=false;
+ renderCheckers();
 }
-function drawCheckers(){
-  shell("🔴 Checkers Classic","Two-player local match. Capture your opponent's pieces.",`
-    <div class="info"><span id="turnInfo">Red's turn</span><span>Red vs Blue</span></div>
-    <div class="board-wrap"><div class="board" id="checkBoard" style="grid-template-columns:repeat(8,40px)"></div></div>
-    <div class="status" id="status">Red begins.</div>
-    <div class="controls"><button onclick="initCheckers()">New Match</button></div>
-    <p class="small-note">Tap one of your pieces, then tap a highlighted square. Kings can move in both directions. Captures are supported.</p>
-  `);
-  const board=document.getElementById("checkBoard");
-  board.innerHTML="";
-  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
-    const el=document.createElement("div");
-    el.className="cell";
-    el.style.width="40px";el.style.height="40px";
-    el.style.background=(r+c)%2?"#286070":"#c5dce0";
-    if(checkSelected&&checkSelected[0]===r&&checkSelected[1]===c)el.classList.add("selected");
-    if(checkMoves.some(m=>m.r===r&&m.c===c))el.classList.add("possible");
-    const p=checkBoard[r][c];
-    if(p){
-      el.textContent=p==="R"?"🔴":p==="B"?"🔵":p==="RK"?"👑":"♛";
-      el.style.fontSize="23px";
-    }
-    el.onclick=()=>checkClick(r,c);
-    board.appendChild(el);
+function renderCheckers(){
+ content.innerHTML=`
+ <div class="status" id="status">${ckOver?"GAME OVER":(ckTurn===1?"RED":"BLUE")+"'S TURN"}</div>
+ <div class="board" style="grid-template-columns:repeat(8,min(10vw,43px))" id="ckBoard"></div>
+ ${resetButton("checkers()")}
+ `;
+ const b=document.getElementById("ckBoard");
+ ckBoard.forEach((row,r)=>row.forEach((v,c)=>{
+  const el=document.createElement("button");
+  el.className="cell";
+  el.style.width="min(10vw,43px)";
+  el.style.height="min(10vw,43px)";
+  el.style.background=(r+c)%2?"#174054":"#b6c5c9";
+  if(ckSelected&&ckSelected.r===r&&ckSelected.c===c)el.classList.add("selected");
+  if(v){
+   el.textContent=v===1||v===3?"🔴":"🔵";
+   if(v===3||v===4)el.textContent+="♛";
   }
-  document.getElementById("turnInfo").textContent=(checkTurn==="R"?"Red":"Blue")+"'s turn";
+  el.onclick=()=>ckClick(r,c);
+  b.appendChild(el);
+ }));
 }
-function getCheckMoves(r,c){
-  const p=checkBoard[r][c],side=p[0],king=p.length>1;
-  const dirs=king?[-1,1]:[side==="R"?-1:1];
-  let moves=[];
-  dirs.forEach(dr=>[-1,1].forEach(dc=>{
-    let nr=r+dr,nc=c+dc;
-    if(nr<0||nr>7||nc<0||nc>7)return;
-    if(!checkBoard[nr][nc])moves.push({r:nr,c:nc,cap:false});
-    else if(checkBoard[nr][nc][0]!==side){
-      let jr=nr+dr,jc=nc+dc;
-      if(jr>=0&&jr<8&&jc>=0&&jc<8&&!checkBoard[jr][jc])
-        moves.push({r:jr,c:jc,cap:true,cr:nr,cc:nc});
-    }
+function ckClick(r,c){
+ if(ckOver)return;
+ const v=ckBoard[r][c];
+ if(ckSelected){
+  const {r:sr,c:sc}=ckSelected;
+  const piece=ckBoard[sr][sc];
+  const dr=r-sr,dc=c-sc;
+  if(!v&&Math.abs(dc)===1&&dr===(ckTurn===1?-1:1)){
+   ckMove(sr,sc,r,c);return;
+  }
+  if(!v&&Math.abs(dc)===2&&Math.abs(dr)===2&&
+     ckBoard[sr+dr/2][sc+dc/2]&&
+     Math.ceil(ckBoard[sr+dr/2][sc+dc/2]/3)!==Math.ceil(piece/3)){
+   ckMove(sr,sc,r,c,true);return;
+  }
+ }
+ if(v&&Math.ceil(v/3)===ckTurn){
+  ckSelected={r,c};renderCheckers();
+ }
+}
+function ckMove(sr,sc,r,c,capture=false){
+ let p=ckBoard[sr][sc];
+ ckBoard[r][c]=p;ckBoard[sr][sc]=0;
+ if(capture)ckBoard[(sr+r)/2][(sc+c)/2]=0;
+ if((r===0&&p===1)||(r===7&&p===2))ckBoard[r][c]=p+2;
+ if(capture){
+  const canContinue=[-2,2].some(dr=>[-2,2].some(dc=>{
+   const nr=r+dr,nc=c+dc;
+   return nr>=0&&nr<8&&nc>=0&&nc<8&&
+    !ckBoard[nr][nc]&&ckBoard[r+dr/2][c+dc/2]&&
+    Math.ceil(ckBoard[r+dr/2][c+dc/2]/3)!==ckTurn;
   }));
-  return moves;
-}
-function checkClick(r,c){
-  const p=checkBoard[r][c];
-  if(checkSelected){
-    const move=checkMoves.find(m=>m.r===r&&m.c===c);
-    if(move){
-      const [sr,sc]=checkSelected;
-      const piece=checkBoard[sr][sc];
-      checkBoard[r][c]=piece;
-      checkBoard[sr][sc]="";
-      if(move.cap)checkBoard[move.cr][move.cc]="";
-      if(piece==="R"&&r===0)checkBoard[r][c]="RK";
-      if(piece==="B"&&r===7)checkBoard[r][c]="BK";
-      checkSelected=null;checkMoves=[];
-      checkTurn=checkTurn==="R"?"B":"R";
-      drawCheckers();
-      message("Move made. "+(checkTurn==="R"?"Red":"Blue")+"'s turn.");
-      return;
-    }
-  }
-  if(p&&p[0]===checkTurn){
-    checkSelected=[r,c];
-    checkMoves=getCheckMoves(r,c);
-    drawCheckers();
-    message("Choose a highlighted square.");
-  }else{
-    checkSelected=null;checkMoves=[];drawCheckers();
-  }
+  if(canContinue){ckSelected={r,c};renderCheckers();return;}
+ }
+ ckSelected=null;
+ ckTurn=3-ckTurn;
+ const remaining=ckBoard.flat().filter(x=>x&&Math.ceil(x/3)===ckTurn).length;
+ if(!remaining)ckOver=true;
+ renderCheckers();
+ if(ckOver)status((ckTurn===1?"BLUE":"RED")+" WINS!");
 }
 
-/* =========================
-   CHESS LITE
-========================= */
+/* CHESS LITE - LOCAL TWO PLAYER */
 const chessStart=[
- ["r","n","b","q","k","b","n","r"],
- ["p","p","p","p","p","p","p","p"],
+ ["♜","♞","♝","♛","♚","♝","♞","♜"],
+ ["♟","♟","♟","♟","♟","♟","♟","♟"],
  ["","","","","","","",""],
  ["","","","","","","",""],
  ["","","","","","","",""],
  ["","","","","","","",""],
- ["P","P","P","P","P","P","P","P"],
- ["R","N","B","Q","K","B","N","R"]
+ ["♙","♙","♙","♙","♙","♙","♙","♙"],
+ ["♖","♘","♗","♕","♔","♗","♘","♖"]
 ];
-let chessBoard,chessTurn,chessSelected,chessOptions;
+let chBoard=[],chTurn="w",chSel=null,chOver=false;
 
-function initChess(){
-  chessBoard=chessStart.map(row=>row.slice());
-  chessTurn="W";chessSelected=null;chessOptions=[];
-  drawChess();
+function chess(){
+ chBoard=chessStart.map(row=>row.slice());
+ chTurn="w";chSel=null;chOver=false;
+ renderChess();
 }
-function drawChess(){
-  shell("♟️ Chess Lite Local Match","Two-player chess. Take turns and capture your opponent's pieces.",`
-    <div class="info"><span id="chessTurn">White's turn</span><span>White vs Black</span></div>
-    <div class="board-wrap"><div class="board" id="chessBoard" style="grid-template-columns:repeat(8,40px)"></div></div>
-    <div class="status" id="status">White begins.</div>
-    <div class="controls"><button onclick="initChess()">New Match</button></div>
-    <p class="small-note">This is a casual chess-lite version. It supports piece movement and captures, but does not enforce check, checkmate or castling rules.</p>
-  `);
-  const b=document.getElementById("chessBoard");b.innerHTML="";
-  const symbols={K:"♔",Q:"♕",R:"♖",B:"♗",N:"♘",P:"♙",k:"♚",q:"♛",r:"♜",b:"♝",n:"♞",p:"♟"};
-  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
-    const el=document.createElement("div");
-    el.className="cell";
-    el.style.width="40px";el.style.height="40px";
-    el.style.background=(r+c)%2?"#397080":"#d4e4dc";
-    if(chessSelected&&chessSelected[0]===r&&chessSelected[1]===c)el.classList.add("selected");
-    if(chessOptions.some(m=>m.r===r&&m.c===c))el.classList.add("possible");
-    const p=chessBoard[r][c];
-    if(p){el.textContent=symbols[p];el.style.fontSize="29px";el.style.color=p===p.toUpperCase()?"#10232e":"#07131b";}
-    el.onclick=()=>chessClick(r,c);
-    b.appendChild(el);
-  }
-  document.getElementById("chessTurn").textContent=(chessTurn==="W"?"White":"Black")+"'s turn";
+function chColor(p){
+ return "♙♖♘♗♕♔".includes(p)?"w":"b";
 }
-function chessMoves(r,c){
-  const p=chessBoard[r][c],side=p===p.toUpperCase()?"W":"B";
-  const type=p.toLowerCase(),dir=side==="W"?-1:1;
-  let out=[];
-  const add=(nr,nc)=>{
-    if(nr<0||nr>7||nc<0||nc>7)return false;
-    const target=chessBoard[nr][nc];
-    if(target&&(target===target.toUpperCase()?"W":"B")===side)return false;
-    out.push({r:nr,c:nc});
-    return !target;
-  };
-  if(type==="p"){
-    const nr=r+dir;
-    if(nr>=0&&nr<8&&!chessBoard[nr][c]){
-      out.push({r:nr,c});
-      if((side==="W"&&r===6)||(side==="B"&&r===1)){
-        if(!chessBoard[nr+dir][c])out.push({r:nr+dir,c});
-      }
-    }
-    [-1,1].forEach(dc=>{
-      const nc=c+dc;
-      if(nr>=0&&nr<8&&nc>=0&&nc<8&&chessBoard[nr][nc]&&
-        (chessBoard[nr][nc]===chessBoard[nr][nc].toUpperCase()?"W":"B")!==side)
-        out.push({r:nr,c:nc});
-    });
-  }
-  if(type==="n"){
-    [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]].forEach(([a,b])=>add(r+a,c+b));
-  }
-  if(type==="k"){
-    for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++)if(a||b)add(r+a,c+b);
-  }
-  if(["r","b","q"].includes(type)){
-    let dirs=[];
-    if(type==="r"||type==="q")dirs.push([1,0],[-1,0],[0,1],[0,-1]);
-    if(type==="b"||type==="q")dirs.push([1,1],[1,-1],[-1,1],[-1,-1]);
-    dirs.forEach(([a,b])=>{
-      for(let n=1;n<8;n++)if(!add(r+a*n,c+b*n))break;
-    });
-  }
-  return out;
+function renderChess(){
+ content.innerHTML=`
+ <div class="status" id="status">${chOver?"GAME OVER":(chTurn==="w"?"WHITE":"BLACK")+"'S TURN"}</div>
+ <div class="board" style="grid-template-columns:repeat(8,min(10vw,43px))" id="chBoard"></div>
+ <p style="text-align:center;color:var(--muted);font-size:12px;margin:12px">Chess Lite: local two-player. Standard piece movement, castling and check rules are not implemented.</p>
+ ${resetButton("chess()")}
+ `;
+ const b=document.getElementById("chBoard");
+ chBoard.forEach((row,r)=>row.forEach((p,c)=>{
+  const el=document.createElement("button");
+  el.className="cell";
+  el.style.width="min(10vw,43px)";
+  el.style.height="min(10vw,43px)";
+  el.style.background=(r+c)%2?"#356078":"#c3d5d9";
+  el.style.color=p&&chColor(p)==="w"?"#fff":"#111";
+  el.style.textShadow="0 1px 3px #000";
+  el.textContent=p;
+  if(chSel&&chSel.r===r&&chSel.c===c)el.classList.add("selected");
+  el.onclick=()=>chClick(r,c);
+  b.appendChild(el);
+ }));
 }
-function chessClick(r,c){
-  const p=chessBoard[r][c];
-  if(chessSelected){
-    const move=chessOptions.find(m=>m.r===r&&m.c===c);
-    if(move){
-      const [sr,sc]=chessSelected;
-      const moving=chessBoard[sr][sc];
-      chessBoard[r][c]=moving;
-      chessBoard[sr][sc]="";
-      if(moving==="P"&&r===0)chessBoard[r][c]="Q";
-      if(moving==="p"&&r===7)chessBoard[r][c]="q";
-      chessTurn=chessTurn==="W"?"B":"W";
-      chessSelected=null;chessOptions=[];
-      drawChess();message("Move made. "+(chessTurn==="W"?"White":"Black")+"'s turn.");
-      return;
-    }
+function chClick(r,c){
+ if(chOver)return;
+ const p=chBoard[r][c];
+ if(chSel){
+  const {r:sr,c:sc}=chSel;
+  const moving=chBoard[sr][sc];
+  if((!p||chColor(p)!==chTurn)&&chValid(sr,sc,r,c,moving)){
+   if(p==="♔"||p==="♚"){
+    chOver=true;
+   }
+   chBoard[r][c]=moving;chBoard[sr][sc]="";
+   chTurn=chTurn==="w"?"b":"w";chSel=null;
+   renderChess();
+   if(chOver)status(chTurn==="b"?"WHITE WINS!":"BLACK WINS!");
+   return;
   }
-  if(p&&(p===p.toUpperCase()?"W":"B")===chessTurn){
-    chessSelected=[r,c];chessOptions=chessMoves(r,c);
-    drawChess();message("Choose a highlighted square.");
-  }else{
-    chessSelected=null;chessOptions=[];drawChess();
+ }
+ if(p&&chColor(p)===chTurn){chSel={r,c};renderChess();}
+}
+function chValid(sr,sc,r,c,p){
+ const dr=r-sr,dc=c-sc;
+ const ad=Math.abs(dc),ar=Math.abs(dr);
+ if(!dr&&!dc)return false;
+ const dest=chBoard[r][c];
+ if(dest&&chColor(dest)===chTurn)return false;
+ const clear=(stepR,stepC)=>{
+  let x=sr+stepR,y=sc+stepC;
+  while(x!==r||y!==c){
+   if(chBoard[x][y])return false;
+   x+=stepR;y+=stepC;
   }
+  return true;
+ };
+ if(p==="♙"||p==="♟"){
+  const dir=p==="♙"?-1:1;
+  const start=p==="♙"?6:1;
+  if(dc===0&&!dest&&dr===dir)return true;
+  if(dc===0&&!dest&&sr===start&&dr===2*dir&&!chBoard[sr+dir][sc])return true;
+  if(ad===1&&dr===dir&&dest)return true;
+  return false;
+ }
+ if(p==="♘"||p==="♞")return (ar===2&&ad===1)||(ar===1&&ad===2);
+ if(p==="♖"||p==="♜")return (dr===0||dc===0)&&clear(Math.sign(dr),Math.sign(dc));
+ if(p==="♗"||p==="♝")return ar===ad&&clear(Math.sign(dr),Math.sign(dc));
+ if(p==="♕"||p==="♛")return (dr===0||dc===0||ar===ad)&&clear(Math.sign(dr),Math.sign(dc));
+ if(p==="♔"||p==="♚")return ar<=1&&ad<=1;
+ return false;
 }
 
-/* =========================
-   CONNECT FOUR
-========================= */
-let connectBoard,connectTurn,connectOver;
-function initConnect(){
-  connectBoard=Array.from({length:6},()=>Array(7).fill(""));
-  connectTurn="R";connectOver=false;drawConnect();
+/* CONNECT FOUR */
+let coBoard=[],coTurn=1,coOver=false;
+function connect(){
+ coBoard=Array.from({length:6},()=>Array(7).fill(0));
+ coTurn=1;coOver=false;renderConnect();
 }
-function drawConnect(){
-  shell("🔵 Connect Four Grid","Drop four pieces in a row horizontally, vertically or diagonally.",`
-    <div class="info"><span id="connectTurn">Red's turn</span></div>
-    <div class="board-wrap"><div class="board" id="connectBoard" style="grid-template-columns:repeat(7,43px);background:#164d75;padding:5px;gap:3px"></div></div>
-    <div class="status" id="status">Red begins.</div>
-    <div class="controls"><button onclick="initConnect()">New Match</button></div>
-  `);
-  const b=document.getElementById("connectBoard");b.innerHTML="";
-  for(let r=0;r<6;r++)for(let c=0;c<7;c++){
-    const el=document.createElement("div");el.className="cell";
-    el.style.width="43px";el.style.height="43px";
-    el.style.borderRadius="50%";el.style.background=connectBoard[r][c]==="R"?"#ff536b":connectBoard[r][c]==="Y"?"#ffe45c":"#071923";
-    el.onclick=()=>dropConnect(c);b.appendChild(el);
+function renderConnect(){
+ content.innerHTML=`
+ <div class="status" id="status">${coOver?"GAME OVER":(coTurn===1?"RED":"YELLOW")+"'S TURN"}</div>
+ <div class="board" style="grid-template-columns:repeat(7,min(12vw,48px))" id="coBoard"></div>
+ ${resetButton("connect()")}
+ `;
+ const b=document.getElementById("coBoard");
+ coBoard.forEach((row,r)=>row.forEach((v,c)=>{
+  const el=document.createElement("button");
+  el.className="cell";
+  el.style.width="min(12vw,48px)";
+  el.style.height="min(12vw,48px)";
+  el.style.borderRadius="50%";
+  el.style.background=v===1?"#ff405e":v===2?"#ffdc42":"#102d43";
+  el.textContent=v?"●":"";
+  el.onclick=()=>coDrop(c);
+  b.appendChild(el);
+ }));
+}
+function coDrop(c){
+ if(coOver)return;
+ for(let r=5;r>=0;r--){
+  if(!coBoard[r][c]){
+   coBoard[r][c]=coTurn;
+   if(coWin(r,c)){
+    coOver=true;renderConnect();status((coTurn===1?"RED":"YELLOW")+" WINS!");return;
+   }
+   if(coBoard.every(row=>row.every(Boolean))){
+    coOver=true;renderConnect();status("IT'S A DRAW!");return;
+   }
+   coTurn=3-coTurn;renderConnect();return;
   }
-  document.getElementById("connectTurn").textContent=connectOver?"Game over":(connectTurn==="R"?"Red":"Yellow")+"'s turn";
+ }
 }
-function dropConnect(c){
-  if(connectOver)return;
-  for(let r=5;r>=0;r--)if(!connectBoard[r][c]){
-    connectBoard[r][c]=connectTurn;
-    if(checkConnectWin(r,c)){
-      connectOver=true;drawConnect();message((connectTurn==="R"?"Red":"Yellow")+" wins!");return;
-    }
-    if(connectBoard.every(row=>row.every(Boolean))){
-      connectOver=true;drawConnect();message("It's a draw!");return;
-    }
-    connectTurn=connectTurn==="R"?"Y":"R";
-    drawConnect();return;
+function coWin(r,c){
+ const p=coBoard[r][c];
+ for(const [dr,dc] of [[0,1],[1,0],[1,1],[1,-1]]){
+  let count=1;
+  for(const d of [-1,1]){
+   let x=r+dr*d,y=c+dc*d;
+   while(x>=0&&x<6&&y>=0&&y<7&&coBoard[x][y]===p){
+    count++;x+=dr*d;y+=dc*d;
+   }
   }
-  message("That column is full.");
-}
-function checkConnectWin(r,c){
-  const p=connectBoard[r][c];
-  const dirs=[[1,0],[0,1],[1,1],[1,-1]];
-  return dirs.some(([dr,dc])=>{
-    let count=1;
-    for(let s of [-1,1]){
-      let nr=r+dr*s,nc=c+dc*s;
-      while(nr>=0&&nr<6&&nc>=0&&nc<7&&connectBoard[nr][nc]===p){
-        count++;nr+=dr*s;nc+=dc*s;
-      }
-    }
-    return count>=4;
-  });
+  if(count>=4)return true;
+ }
+ return false;
 }
 
-/* =========================
-   TIC TAC TOE
-========================= */
-let ticBoard,ticTurn,ticOver;
-function initTic(){
-  ticBoard=Array(9).fill("");
-  ticTurn="X";ticOver=false;drawTic();
+/* TIC TAC TOE */
+let ttBoard=[],ttTurn="X",ttOver=false;
+function ttt(){
+ ttBoard=Array(9).fill("");
+ ttTurn="X";ttOver=false;renderTT();
 }
-function drawTic(){
-  shell("❎ Tic-Tac-Toe Ultimate","Challenge another player on the same device.",`
-    <div class="info"><span id="ticTurn">X's turn</span></div>
-    <div class="board-wrap"><div class="board" id="ticBoard" style="grid-template-columns:repeat(3,85px);gap:5px;border:0"></div></div>
-    <div class="status" id="status">X begins.</div>
-    <div class="controls"><button onclick="initTic()">New Match</button></div>
-  `);
-  const b=document.getElementById("ticBoard");b.innerHTML="";
-  ticBoard.forEach((p,i)=>{
-    const el=document.createElement("div");el.className="cell";
-    el.style.width="85px";el.style.height="85px";
-    el.style.background="#153541";el.style.border="1px solid #27eaff";
-    el.style.borderRadius="10px";el.style.fontSize="38px";
-    el.style.color=p==="X"?"#39ff88":"#27eaff";
-    el.textContent=p;el.onclick=()=>ticClick(i);b.appendChild(el);
-  });
-  document.getElementById("ticTurn").textContent=ticOver?"Game over":ticTurn+"'s turn";
+function renderTT(){
+ content.innerHTML=`
+ <div class="status" id="status">${ttOver?"GAME OVER":ttTurn+"'S TURN"}</div>
+ <div class="board" style="grid-template-columns:repeat(3,min(23vw,90px))" id="ttBoard"></div>
+ ${resetButton("ttt()")}
+ `;
+ const b=document.getElementById("ttBoard");
+ ttBoard.forEach((v,i)=>{
+  const el=document.createElement("button");
+  el.className="cell";
+  el.style.width="min(23vw,90px)";
+  el.style.height="min(23vw,90px)";
+  el.style.fontSize="35px";
+  el.style.color=v==="X"?"var(--cyan)":"var(--green)";
+  el.textContent=v;
+  el.onclick=()=>ttMove(i);
+  b.appendChild(el);
+ });
 }
-function ticClick(i){
-  if(ticOver||ticBoard[i])return;
-  ticBoard[i]=ticTurn;
-  const lines=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-  if(lines.some(line=>line.every(n=>ticBoard[n]===ticTurn))){
-    ticOver=true;drawTic();message(ticTurn+" wins!");return;
-  }
-  if(ticBoard.every(Boolean)){
-    ticOver=true;drawTic();message("It's a draw!");return;
-  }
-  ticTurn=ticTurn==="X"?"O":"X";
-  drawTic();
+function ttMove(i){
+ if(ttOver||ttBoard[i])return;
+ ttBoard[i]=ttTurn;
+ const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+ const won=wins.some(line=>line.every(x=>ttBoard[x]===ttTurn));
+ if(won||ttBoard.every(Boolean)){
+  ttOver=true;const winner=ttTurn;renderTT();
+  status(won?winner+" WINS!":"IT'S A DRAW!");return;
+ }
+ ttTurn=ttTurn==="X"?"O":"X";renderTT();
 }
 
-/* =========================
-   BATTLESHIP
-========================= */
-let battleShips,battleShots,battleCount,battleOver;
-function initBattle(){
-  battleShips=new Set();
-  while(battleShips.size<5)battleShips.add(Math.floor(Math.random()*100));
-  battleShots=new Set();battleCount=0;battleOver=false;
-  drawBattle();
+/* BATTLESHIP */
+let bsShips=[],bsShots=[],bsHits=0,bsOver=false,bsTurn=0;
+function battleship(){
+ bsShips=Array.from({length:8},()=>Array(8).fill(false));
+ bsShots=Array.from({length:8},()=>Array(8).fill(false));
+ bsHits=0;bsOver=false;bsTurn=0;
+ [3,2,2].forEach(len=>{
+  let placed=false;
+  while(!placed){
+   const horizontal=Math.random()<.5;
+   const r=Math.floor(Math.random()*(horizontal?8:9-len));
+   const c=Math.floor(Math.random()*(horizontal?9-len:8));
+   let cells=[];
+   for(let i=0;i<len;i++)cells.push([r+(horizontal?0:i),c+(horizontal?i:0)]);
+   if(cells.every(([x,y])=>!bsShips[x][y])){
+    cells.forEach(([x,y])=>bsShips[x][y]=true);placed=true;
+   }
+  }
+ });
+ renderBS();
 }
-function drawBattle(){
-  shell("🚢 Battleship Grid","Find all five hidden ship positions on the 10 × 10 grid.",`
-    <div class="info"><span id="battleCount">Hits: 0 / 5</span><span>Misses: <b id="missCount">0</b></span></div>
-    <div class="board-wrap"><div class="board" id="battleBoard" style="grid-template-columns:repeat(10,29px);gap:2px;border:0"></div></div>
-    <div class="status" id="status">Choose a square to fire!</div>
-    <div class="controls"><button onclick="initBattle()">New Fleet</button></div>
-    <p class="small-note">Tap a square to search for a hidden ship. Red means hit; blue means water.</p>
-  `);
-  const b=document.getElementById("battleBoard");b.innerHTML="";
-  let misses=0;
-  for(let i=0;i<100;i++){
-    const el=document.createElement("div");el.className="cell";
-    el.style.width="29px";el.style.height="29px";
-    el.style.background="#153541";el.style.border="1px solid #286070";
-    if(battleShots.has(i)){
-      if(battleShips.has(i)){el.textContent="✦";el.style.color="#ff536b";el.style.background="#542431";}
-      else{el.textContent="·";
+function renderBS(){
+ content.innerHTML=`
+ <div class="status" id="status">${bsOver?"GAME OVER":"TAP A SQUARE TO FIRE AT THE ENEMY FLEET"}</div>
+ <div class="board" style="grid-template-columns:repeat(8,min(10vw,43px))" id="bsBoard"></div>
+ <p style="text-align:center;color:var(--muted);font-size:12px;margin:10px">Hits: ${bsHits}/7 | Red = hit, blue = miss</p>
+ ${resetButton("battleship()")}
+ `;
+ const b=document.getElementById("bsBoard");
+ bsShots.forEach((row,r)=>row.forEach((v,c)=>{
+  const el=document.createElement("button");
+  el.className="cell";
+  el.style.width="min(10vw,43px)";
+  el.style.height="min(10vw,43px)";
+  el.textContent=v?(bsShips[r][c]?"💥":"•"):"";
+  el.style.background=v?(bsShips[r][c]?"#71283c":"#174c66"):"#102d43";
+  el.disabled=v||bsOver;
+  el.onclick=()=>bsFire(r,c);
+  b.appendChild(el);
+ }));
+}
+function bsFire(r,c){
+ if(bsOver||bsShots[r][c])return;
+ bsShots[r][c]=true;
+ if(bsShips[r][c])bsHits++;
+ if(bsHits===7){
+  bsOver=true;renderBS();status("YOU DESTROYED THE ENTIRE FLEET!");return;
+ }
+ if(bsShots.flat().every(Boolean)){
+  bsOver=true;renderBS();status("GAME OVER! NO SHOTS LEFT.");return;
+ }
+ renderBS();
+ status(bsShips[r][c]?"DIRECT HIT!":"MISS! KEEP SEARCHING.");
+}
+
+/* REVERSI / OTHELLO */
+let rvBoard=[],rvTurn=1,rvOver=false;
+const rvDirs=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+function reversi(){
+ rvBoard=Array.from({length:8},()=>Array(8).fill(0));
+ rvBoard[3][3]=2;rvBoard[3][4]=1;
+ rvBoard[4][3]=1;rvBoard[4][4]=2;
+ rvTurn=1;rvOver=false;renderRV();
+}
+function rvFlips(r,c,p){
+ if(rvBoard[r][c])return [];
+ let flips=[];
+ for(const [dr,dc] of rvDirs){
+  let x=r+dr,y=c+dc,line=[];
+  while(x>=0&&x<8&&y>=0&&y<8&&rvBoard[x][y]===3-p){
+   line.push([x,y]);x+=dr;y+=dc;
+  }
+  if(line.length&&x>=0&&x<8&&y>=0&&y<8&&rvBoard[x][y]===p)
+   flips.push(...line);
+ }
+ return flips;
+}
+function rvMoves(p){
+ let moves=[];
+ for(let r=0;r<8;r++)for(let c=0;c<8;c++)
+  if(rvFlips(r,c,p).length)moves.push([r,c]);
+ return moves;
+}
+function renderRV(){
+ const black=rvBoard.flat().filter(x=>x===1).length;
+ const white=rvBoard.flat().filter(x=>x===2).length;
+ content.innerHTML=`
+ <div class="status" id="status">${rvOver?"GAME OVER":(rvTurn===1?"BLACK":"WHITE")+"'S TURN | BLACK "+black+" - WHITE "+white}</div>
+ <div class="board" style="grid-template-columns:repeat(8,min(10vw,43px))" id="rvBoard"></div>
+ ${resetButton("reversi()")}
+ `;
+ const b=document.getElementById("rvBoard");
+ const valid=rvMoves(rvTurn);
+ rvBoard.forEach((row,r)=>row.forEach((v,c)=>{
+  const el=document.createElement("button");
+  el.className="cell";
+  el.style.width="min(10vw,43px)";
+  el.style.height="min(10vw,43px)";
+  el.style.background="#08734d";
+  el.style.border="1px solid #25b982";
+  el.textContent=v?(v===1?"⚫":"⚪"):(valid.some(([x,y])=>x===r&&y===c)?"·":"");
+  el.style.color="#b9ffe1";
+  el.onclick=()=>rvPlay(r,c);
+  b.appendChild(el);
+ }));
+}
+function rvPlay(r,c){
+ if(rvOver)return;
+ const flips=rvFlips(r,c,rvTurn);
+ if(!flips.length)return;
+ rvBoard[r][c]=rvTurn;
+ flips.forEach(([x,y])=>rvBoard[x][y]=rvTurn);
+ rvTurn=3-rvTurn;
+ if(!rvMoves(rvTurn).length){
+  rvTurn=3-rvTurn;
+  if(!rvMoves(rvTurn).length){
+   rvOver=true;
+   renderRV();
+   const b=rvBoard.flat().filter(x=>x===1).length;
+   const w=rvBoard.flat().filter(x=>x===2).length;
+   status(b===w?"DRAW!":(b>w?"BLACK":"WHITE")+" WINS!");
+   return;
+  }
+ }
+ r
