@@ -1,0 +1,675 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+<title>Session Counter | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #07131a;
+    --panel: #0d2029;
+    --panel2: #102832;
+    --cyan: #00e5ff;
+    --green: #00ff9d;
+    --text: #e9f7fa;
+    --muted: #8ba6af;
+    --border: rgba(0,229,255,.18);
+    --red: #ff647c;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    padding: 17px 5%;
+    background: #091a22;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    color: var(--green);
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+.back {
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    padding: 9px 13px;
+    border-radius: 7px;
+}
+
+.container {
+    width: 92%;
+    max-width: 760px;
+    margin: 35px auto;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    color: var(--green);
+    font-size: clamp(27px, 6vw, 38px);
+    margin-bottom: 9px;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.date-label {
+    text-align: center;
+    color: var(--cyan);
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 20px 12px;
+    border-radius: 11px;
+    text-align: center;
+}
+
+.stat strong {
+    display: block;
+    color: var(--green);
+    font-size: 30px;
+    margin-bottom: 7px;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat small {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 18px;
+}
+
+.card h2 {
+    color: var(--cyan);
+    font-size: 17px;
+    margin-bottom: 16px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    color: var(--text);
+    font-size: 13px;
+    margin-bottom: 9px;
+}
+
+input, select {
+    width: 100%;
+    padding: 13px;
+    background: #06141b;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: white;
+    outline: none;
+    font-size: 14px;
+}
+
+input:focus, select:focus {
+    border-color: var(--cyan);
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 13px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+button:hover {
+    filter: brightness(1.12);
+}
+
+.primary {
+    background: var(--green);
+    color: #04140e;
+}
+
+.secondary {
+    background: var(--panel2);
+    color: var(--cyan);
+    border: 1px solid var(--border);
+}
+
+.danger {
+    background: rgba(255,100,124,.12);
+    color: var(--red);
+    border: 1px solid rgba(255,100,124,.3);
+}
+
+.button-row button {
+    flex: 1;
+    min-width: 120px;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.history-item:last-child {
+    border-bottom: none;
+}
+
+.history-info strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.history-info small {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.history-time {
+    color: var(--green);
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.empty {
+    color: var(--muted);
+    text-align: center;
+    padding: 25px 10px;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.status {
+    background: #091a22;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 14px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+    margin-top: 15px;
+}
+
+.status strong {
+    color: var(--green);
+}
+
+.note {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.7;
+    margin-top: 13px;
+}
+
+footer {
+    text-align: center;
+    padding: 25px 10px;
+    color: var(--muted);
+    font-size: 11px;
+    border-top: 1px solid var(--border);
+    margin-top: 35px;
+}
+
+@media(max-width: 480px) {
+    .card {
+        padding: 16px;
+    }
+
+    .stat {
+        padding: 17px 8px;
+    }
+
+    .stat strong {
+        font-size: 25px;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+    .button-row button {
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEX<span>CLØWN</span></div>
+    <a href="focusmanager.html" class="back">← Focus Manager</a>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>DAILY SESSION COUNTER</h1>
+        <p>Keep track of your focus sessions and celebrate your progress.</p>
+    </section>
+
+    <div class="date-label" id="todayDate">Loading date...</div>
+
+    <section class="stats">
+
+        <div class="stat">
+            <strong id="todaySessions">0</strong>
+            <small>TODAY'S SESSIONS</small>
+        </div>
+
+        <div class="stat">
+            <strong id="todayMinutes">0</strong>
+            <small>TODAY'S FOCUS MINUTES</small>
+        </div>
+
+        <div class="stat">
+            <strong id="allSessions">0</strong>
+            <small>ALL-TIME SESSIONS</small>
+        </div>
+
+        <div class="stat">
+            <strong id="allHours">0h</strong>
+            <small>ALL-TIME FOCUS HOURS</small>
+        </div>
+
+    </section>
+
+    <section class="card">
+        <h2>+ RECORD A FOCUS SESSION</h2>
+
+        <form id="sessionForm">
+
+            <div class="input-group">
+                <label for="taskName">What did you work on?</label>
+                <input
+                    type="text"
+                    id="taskName"
+                    placeholder="Example: Studying Biology"
+                    maxlength="100"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="duration">Focus Duration (minutes)</label>
+                <input
+                    type="number"
+                    id="duration"
+                    min="1"
+                    max="600"
+                    value="25"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="primary" style="width:100%;">
+                RECORD COMPLETED SESSION
+            </button>
+
+        </form>
+
+        <div class="status" id="status" aria-live="polite">
+            <strong>READY:</strong> Record a focus session when you finish working.
+        </div>
+
+        <p class="note">
+            This page records sessions you enter manually. It does not automatically
+            detect completed sessions from the Pomodoro Timer.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>SESSION HISTORY</h2>
+
+        <div id="historyList"></div>
+
+        <button class="secondary" id="showMore" style="width:100%; margin-top:12px; display:none;">
+            SHOW MORE
+        </button>
+    </section>
+
+    <section class="card">
+        <h2>COUNTER CONTROLS</h2>
+
+        <div class="button-row">
+            <button class="secondary" id="resetToday">
+                RESET TODAY
+            </button>
+
+            <button class="danger" id="clearHistory">
+                CLEAR ALL HISTORY
+            </button>
+        </div>
+
+        <p class="note">
+            Reset Today removes today's records only. Clear All History permanently
+            removes every saved session from this browser.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    HEXCLØWN DIGITAL UNIVERSE<br>
+    DAILY SESSION COUNTER
+</footer>
+
+<script>
+const STORAGE_KEY = "hexclown_session_counter";
+
+const todayDate = document.getElementById("todayDate");
+const historyList = document.getElementById("historyList");
+const sessionForm = document.getElementById("sessionForm");
+
+let sessions = [];
+let showAllHistory = false;
+
+try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+    sessions = Array.isArray(saved)
+        ? saved.filter(item =>
+            item &&
+            typeof item.id === "string" &&
+            typeof item.task === "string" &&
+            Number.isFinite(item.minutes) &&
+            item.minutes > 0 &&
+            typeof item.date === "string"
+        )
+        : [];
+} catch (error) {
+    sessions = [];
+}
+
+function getTodayKey() {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return year + "-" + month + "-" + day;
+}
+
+function saveSessions() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+}
+
+function updateDate() {
+    todayDate.textContent = new Date().toLocaleDateString(undefined, {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    });
+}
+
+function updateStats() {
+    const today = getTodayKey();
+
+    const todayRecords = sessions.filter(item => item.date === today);
+
+    const todayCount = todayRecords.length;
+
+    const todayMinutes = todayRecords.reduce(
+        (total, item) => total + item.minutes,
+        0
+    );
+
+    const allCount = sessions.length;
+
+    const allMinutes = sessions.reduce(
+        (total, item) => total + item.minutes,
+        0
+    );
+
+    document.getElementById("todaySessions").textContent = todayCount;
+    document.getElementById("todayMinutes").textContent = todayMinutes;
+    document.getElementById("allSessions").textContent = allCount;
+
+    document.getElementById("allHours").textContent =
+        (allMinutes / 60).toFixed(1) + "h";
+}
+
+function showStatus(message) {
+    const status = document.getElementById("status");
+    status.textContent = message;
+}
+
+function recordSession(task, minutes) {
+    const now = new Date();
+
+    const session = {
+        id: Date.now().toString() + Math.random().toString(36).slice(2),
+        task: task,
+        minutes: minutes,
+        date: getTodayKey(),
+        time: now.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        }),
+        timestamp: now.getTime()
+    };
+
+    sessions.unshift(session);
+
+    saveSessions();
+    renderPage();
+
+    showStatus("SESSION RECORDED: Your focus progress has been saved.");
+}
+
+function deleteSession(id) {
+    sessions = sessions.filter(item => item.id !== id);
+
+    saveSessions();
+    renderPage();
+
+    showStatus("SESSION DELETED.");
+}
+
+function renderHistory() {
+    historyList.replaceChildren();
+
+    const visibleSessions = showAllHistory
+        ? sessions
+        : sessions.slice(0, 7);
+
+    if (visibleSessions.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "No sessions recorded yet. Complete a focus session and record it here.";
+        historyList.appendChild(empty);
+    }
+
+    visibleSessions.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "history-item";
+
+        const info = document.createElement("div");
+        info.className = "history-info";
+
+        const task = document.createElement("strong");
+        task.textContent = item.task;
+
+        const date = document.createElement("small");
+        date.textContent = item.date + " • " + item.time;
+
+        info.appendChild(task);
+        info.appendChild(date);
+
+        const right = document.createElement("div");
+        right.style.display = "flex";
+        right.style.alignItems = "center";
+        right.style.gap = "10px";
+
+        const duration = document.createElement("span");
+        duration.className = "history-time";
+        duration.textContent = item.minutes + " min";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "danger";
+        deleteButton.textContent = "×";
+        deleteButton.style.padding = "6px 10px";
+        deleteButton.style.minWidth = "32px";
+        deleteButton.setAttribute("aria-label", "Delete this session");
+
+        deleteButton.addEventListener("click", () => {
+            if (confirm("Delete this session record?")) {
+                deleteSession(item.id);
+            }
+        });
+
+        right.appendChild(duration);
+        right.appendChild(deleteButton);
+
+        row.appendChild(info);
+        row.appendChild(right);
+
+        historyList.appendChild(row);
+    });
+
+    const showMoreButton = document.getElementById("showMore");
+
+    showMoreButton.style.display = sessions.length > 7 ? "block" : "none";
+    showMoreButton.textContent = showAllHistory ? "SHOW LESS" : "SHOW MORE";
+}
+
+function renderPage() {
+    updateStats();
+    renderHistory();
+}
+
+sessionForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const task = document.getElementById("taskName").value.trim();
+    const minutes = Number(document.getElementById("duration").value);
+
+    if (!task) {
+        alert("Please enter the task name.");
+        return;
+    }
+
+    if (!Number.isInteger(minutes) || minutes < 1 || minutes > 600) {
+        alert("Enter a duration between 1 and 600 minutes.");
+        return;
+    }
+
+    recordSession(task, minutes);
+
+    sessionForm.reset();
+    document.getElementById("duration").value = 25;
+});
+
+document.getElementById("showMore").addEventListener("click", function() {
+    showAllHistory = !showAllHistory;
+    renderHistory();
+});
+
+document.getElementById("resetToday").addEventListener("click", function() {
+    const today = getTodayKey();
+
+    const count = sessions.filter(item => item.date === today).length;
+
+    if (count === 0) {
+        alert("There are no sessions recorded today.");
+        return;
+    }
+
+    if (confirm("Delete all sessions recorded today?")) {
+        sessions = sessions.filter(item => item.date !== today);
+
+        saveSessions();
+        renderPage();
+
+        showStatus("TODAY RESET: Today's session records have been cleared.");
+    }
+});
+
+document.getElementById("clearHistory").addEventListener("click", function() {
+    if (sessions.length === 0) {
+        alert("There is no session history to clear.");
+        return;
+    }
+
+    if (confirm("Are you sure you want to permanently clear ALL session history?")) {
+        sessions = [];
+        showAllHistory = false;
+
+        saveSessions();
+        renderPage();
+
+        showStatus("HISTORY CLEARED: All session records have been removed.");
+    }
+});
+
+updateDate();
+renderPage();
+</script>
+
+</body>
+</html>
