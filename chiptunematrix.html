@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>8-Bit Chiptune Matrix | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg:#071321;
+    --panel:#0d2032;
+    --green:#39ff88;
+    --cyan:#00eaff;
+    --blue:#168bff;
+    --red:#ff426b;
+    --white:#f5faff;
+}
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body {
+    background:var(--bg);
+    color:var(--white);
+    font-family:Arial,sans-serif;
+    min-height:100vh;
+    padding:15px;
+}
+
+header {
+    text-align:center;
+    padding:15px 0 20px;
+}
+
+.logo {
+    color:var(--green);
+    font-size:27px;
+    font-weight:900;
+    letter-spacing:3px;
+    text-shadow:0 0 12px var(--green);
+}
+
+header p {
+    color:#9ab4c8;
+    font-size:13px;
+    margin-top:7px;
+}
+
+nav {
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:9px;
+    margin:0 auto 18px;
+}
+
+nav a {
+    text-decoration:none;
+    color:var(--cyan);
+    border:1px solid #00eaff55;
+    background:var(--panel);
+    padding:9px 13px;
+    border-radius:7px;
+    font-size:12px;
+}
+
+.container {
+    max-width:540px;
+    margin:auto;
+    background:var(--panel);
+    border:1px solid #00eaff55;
+    border-radius:15px;
+    padding:15px;
+    box-shadow:0 0 20px #00eaff12;
+}
+
+h1 {
+    text-align:center;
+    color:var(--cyan);
+    font-size:22px;
+    margin-bottom:7px;
+}
+
+.subtitle {
+    text-align:center;
+    color:#9ab4c8;
+    font-size:12px;
+    line-height:1.6;
+    margin-bottom:18px;
+}
+
+.section-title {
+    color:var(--green);
+    font-size:13px;
+    margin:17px 0 9px;
+}
+
+.matrix-wrap {
+    background:#071321;
+    border:1px solid #168bff66;
+    border-radius:10px;
+    padding:9px;
+    overflow:hidden;
+}
+
+#matrix {
+    display:grid;
+    grid-template-columns:repeat(8,minmax(0,1fr));
+    gap:5px;
+}
+
+.cell {
+    aspect-ratio:1;
+    min-width:0;
+    border:1px solid #24445b;
+    border-radius:5px;
+    background:#10263a;
+    cursor:pointer;
+    touch-action:manipulation;
+    transition:background .1s,box-shadow .1s;
+}
+
+.cell.active {
+    background:var(--green);
+    border-color:var(--green);
+    box-shadow:0 0 10px #39ff8888;
+}
+
+.cell.playing {
+    outline:2px solid var(--cyan);
+    outline-offset:1px;
+}
+
+.cell.active.playing {
+    background:var(--cyan);
+    border-color:var(--cyan);
+    box-shadow:0 0 14px var(--cyan);
+}
+
+.row-labels {
+    display:grid;
+    grid-template-columns:repeat(8,minmax(0,1fr));
+    gap:5px;
+    margin-top:8px;
+    color:#91aabd;
+    text-align:center;
+    font-size:9px;
+}
+
+.controls {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-top:14px;
+}
+
+button, select {
+    font-family:Arial,sans-serif;
+}
+
+.action {
+    border:1px solid var(--cyan);
+    background:#071321;
+    color:var(--cyan);
+    border-radius:7px;
+    padding:12px 5px;
+    font-size:12px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.action.primary {
+    background:var(--green);
+    border-color:var(--green);
+    color:#071321;
+}
+
+.action:active {
+    transform:scale(.97);
+}
+
+.settings {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:15px;
+}
+
+.setting {
+    background:#071321;
+    border:1px solid #168bff44;
+    padding:11px;
+    border-radius:8px;
+}
+
+.setting label {
+    display:block;
+    color:#a9c0d0;
+    font-size:11px;
+    margin-bottom:9px;
+}
+
+.setting select {
+    width:100%;
+    background:#10263a;
+    color:var(--cyan);
+    border:1px solid #00eaff66;
+    border-radius:5px;
+    padding:8px;
+    outline:none;
+}
+
+.setting input[type="range"] {
+    width:100%;
+    accent-color:var(--green);
+}
+
+.value {
+    color:var(--green);
+    font-size:12px;
+    font-weight:bold;
+    float:right;
+}
+
+.presets {
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+}
+
+.preset {
+    flex:1;
+    min-width:85px;
+    border:1px solid #168bff66;
+    color:var(--cyan);
+    background:#071321;
+    border-radius:6px;
+    padding:9px 5px;
+    font-size:11px;
+    cursor:pointer;
+}
+
+.status {
+    color:var(--green);
+    background:#071321;
+    border:1px solid #39ff8844;
+    border-radius:7px;
+    padding:10px;
+    text-align:center;
+    font-size:12px;
+    margin-top:14px;
+    min-height:36px;
+}
+
+.instructions {
+    margin-top:18px;
+    padding:13px;
+    background:#071321;
+    border-radius:9px;
+    border:1px solid #168bff44;
+}
+
+.instructions h3 {
+    color:var(--green);
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.instructions p {
+    color:#a9c0d0;
+    font-size:12px;
+    line-height:1.8;
+}
+
+footer {
+    text-align:center;
+    color:#70899b;
+    font-size:11px;
+    padding:25px 0 10px;
+}
+
+@media(max-width:380px) {
+    body {padding:8px;}
+    .container {padding:10px;}
+    #matrix {gap:3px;}
+    .matrix-wrap {padding:6px;}
+    .controls {gap:5px;}
+    .action {font-size:10px;padding:11px 3px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEXCLØWN</div>
+    <p>ENTER THE WORLD OF DIGITAL GAMES</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="GameZone.html">Game Zone</a>
+    <a href="rhyandaud.html">Rhythm & Audio</a>
+</nav>
+
+<main class="container">
+
+    <h1>🎮 8-BIT CHiPTUNE MATRIX</h1>
+    <p class="subtitle">
+        Build your own retro video-game music.
+        Tap the squares to create a beat!
+    </p>
+
+    <h3 class="section-title">MUSIC MATRIX — 8 × 8</h3>
+
+    <div class="matrix-wrap">
+        <div id="matrix"></div>
+
+        <div class="row-labels">
+            <span>C5</span>
+            <span>B4</span>
+            <span>A4</span>
+            <span>G4</span>
+            <span>F4</span>
+            <span>E4</span>
+            <span>D4</span>
+            <span>C4</span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="action primary" id="playBtn">▶ PLAY</button>
+        <button class="action" id="stopBtn">■ STOP</button>
+        <button class="action" id="clearBtn">✕ CLEAR</button>
+    </div>
+
+    <h3 class="section-title">SOUND SETTINGS</h3>
+
+    <div class="settings">
+
+        <div class="setting">
+            <label for="waveform">Sound Wave</label>
+            <select id="waveform">
+                <option value="square">8-Bit Square</option>
+                <option value="triangle">Soft Triangle</option>
+                <option value="sawtooth">Retro Saw</option>
+                <option value="sine">Smooth Sine</option>
+            </select>
+        </div>
+
+        <div class="setting">
+            <label for="tempo">
+                Tempo <span class="value" id="tempoValue">120 BPM</span>
+            </label>
+            <input type="range" id="tempo" min="60" max="220" value="120">
+        </div>
+
+        <div class="setting">
+            <label for="volume">
+                Volume <span class="value" id="volumeValue">50%</span>
+            </label>
+            <input type="range" id="volume" min="0" max="100" value="50">
+        </div>
+
+        <div class="setting">
+            <label for="pattern">Pattern Length</label>
+            <select id="pattern">
+                <option value="8">8 Steps</option>
+                <option value="4">4 Steps</option>
+            </select>
+        </div>
+
+    </div>
+
+    <h3 class="section-title">QUICK BEAT PRESETS</h3>
+
+    <div class="presets">
+        <button class="preset" data-preset="arcade">🕹️ Arcade</button>
+        <button class="preset" data-preset="dance">💃 Dance</button>
+        <button class="preset" data-preset="mystery">👾 Mystery</button>
+        <button class="preset" data-preset="random">🎲 Random</button>
+    </div>
+
+    <div class="status" id="status">
+        Ready! Create your first beat.
+    </div>
+
+    <section class="instructions">
+        <h3>HOW TO USE</h3>
+        <p>
+            • Tap any square to activate a musical note.<br>
+            • Each column represents a step in the music.<br>
+            • Each row represents a different musical pitch.<br>
+            • Press PLAY to hear your creation.<br>
+            • Change the tempo to make the music faster or slower.<br>
+            • Choose different sound waves for different 8-bit sounds.<br>
+            • Try the preset buttons to load ready-made patterns.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    © 2026 HEXCLØWN. ALL RIGHTS RESERVED.
+</footer>
+
+<script>
+(() => {
+    "use strict";
+
+    const matrix = document.getElementById("matrix");
+    const playBtn = document.getElementById("playBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const tempoInput = document.getElementById("tempo");
+    const volumeInput = document.getElementById("volume");
+    const tempoValue = document.getElementById("tempoValue");
+    const volumeValue = document.getElementById("volumeValue");
+    const waveform = document.getElementById("waveform");
+    const patternLength = document.getElementById("pattern");
+    const status = document.getElementById("status");
+
+    const ROWS = 8;
+    const COLS = 8;
+
+    const frequencies = [
+        523.25,
+        493.88,
+        440.00,
+        392.00,
+        349.23,
+        329.63,
+        293.66,
+        261.63
+    ];
+
+    let pattern = Array.from(
+        {length: ROWS},
+        () => Array(COLS).fill(false)
+    );
+
+    let cells = [];
+    let currentStep = 0;
+    let isPlaying = false;
+    let timerId = null;
+    let audioContext = null;
+
+    function createMatrix() {
+        matrix.innerHTML = "";
+        cells = [];
+
+        for (let row = 0; row < ROWS; row++) {
+            cells[row] = [];
+
+            for (let col = 0; col < COLS; col++) {
+                const cell = document.createElement("button");
+
+                cell.type = "button";
+                cell.className = "cell";
+                cell.setAttribute(
+                    "aria-label",
+                    "Row " + (row + 1) + ", step " + (col + 1)
+                );
+
+                cell.addEventListener("click", () => {
+                    pattern[row][col] = !pattern[row][col];
+                    updateCell(row, col);
+                });
+
+                matrix.appendChild(cell);
+                cells[row][col] = cell;
+            }
+        }
+    }
+
+    function updateCell(row, col) {
+        cells[row][col].classList.toggle(
+            "active",
+            pattern[row][col]
+        );
+    }
+
+    function updateAllCells() {
+        for (let row = 0; row < ROWS; row++) {
+            for (let col = 0; col < COLS; col++) {
+                updateCell(row, col);
+            }
+        }
+    }
+
+    function getAudio() {
+        if (!audioContext) {
+            const AudioClass =
+                window.AudioContext || window.webkitAudioContext;
+
+            if (!AudioClass) {
+                status.textContent = "Audio is not supported by this browser.";
+                return null;
+            }
+
+            audioContext = new AudioClass();
+        }
+
+        if (audioContext.state === "suspended") {
+            audioContext.resume();
+        }
+
+        return audioContext;
+    }
+
+    function playNote(row, time) {
+        const ctx = getAudio();
+        if (!ctx) return;
+
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        const volume = Number(volumeInput.value) / 100;
+
+        oscillator.type = waveform.value;
+        oscillator.frequency.setValueAtTime(
+            frequencies[row],
+            time
+        );
+
+        gain.gain.setValueAtTime(0.0001, time);
+        gain.gain.exponentialRampToValueAtTime(
+            Math.max(0.0001, volume * 0.18),
+            time + 0.01
+        );
+        gain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            time + 0.16
+        );
+
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+
+        oscillator.start(time);
+        oscillator.stop(time + 0.18);
+    }
+
+    function clearHighlights() {
+        for (let row = 0; row < ROWS; row++) {
+            for (let col = 0; col < COLS; col++) {
+                cells[row][col].classList.remove("playing");
+            }
+        }
+    }
+
+    function highlightColumn(column) {
+        clearHighlights();
+
+        for (let row = 0; row < ROWS; row++) {
+            cells[row][column].classList.add("playing");
+        }
+    }
+
+    function playStep() {
+        if (!isPlaying) return;
+
+        const ctx = getAudio();
+        if (!ctx) {
+            stopPlayback();
+            return;
+        }
+
+        highlightColumn(currentStep);
+
+        const now = ctx.currentTime;
+
+        for (let row = 0; row < ROWS; row++) {
+            if (pattern[row][currentStep]) {
+                playNote(row, now);
+            }
+        }
+
+        currentStep++;
+
+        const totalSteps = Number(patternLength.value);
+
+        if (currentStep >= totalSteps) {
+            currentStep = 0;
+        }
+
+        const bpm = Number(tempoInput.value);
+        const stepDuration = 60000 / bpm / 2;
+
+        timerId = setTimeout(playStep, stepDuration);
+    }
+
+    function startPlayback() {
+        if (isPlaying) return;
+
+        const ctx = getAudio();
+        if (!ctx) return;
+
+        if (ctx.state === "suspended") {
+            ctx.resume();
+        }
+
+        isPlaying = true;
+        playBtn.textContent = "Ⅱ PLAYING";
+        status.textContent = "Sequencer is running...";
+        playStep();
+    }
+
+    function stopPlayback() {
+        isPlaying = false;
+
+        if (timerId !== null) {
+            clearTimeout(timerId);
+            timerId = null;
+        }
+
+        playBtn.textContent = "▶ PLAY";
+        clearHighlights();
+        currentStep = 0;
+        status.textContent = "Playback stopped.";
+    }
+
+    function clearPattern() {
+        stopPlayback();
+
+        pattern = Array.from(
+            {length: ROWS},
+            () => Array(COLS).fill(false)
+        );
+
+        updateAllCells();
+        status.textContent = "Matrix cleared. Create a new beat!";
+    }
+
+    function loadPreset(name) {
+        stopPlayback();
+
+        pattern = Array.from(
+            {length: ROWS},
+            () => Array(COLS).fill(false)
+        );
+
+        if (name === "arcade") {
+            const data = [
+                [0,4],
+                [1,3,6],
+                [2,5],
+                [0,3,7],
+                [1,4],
+                [2,6],
+                [0,3,5],
+                [1,4,7]
+            ];
+
+            data.forEach((steps, row) => {
+                steps.forEach(step => {
+                    pattern[row][step] = true;
+                });
+            });
+        }
+
+        else if (name === "dance") {
+            [0,2,4,6].forEach(col => {
+                pattern[7][col] = true;
+                pattern[5][col] = true;
+            });
+
+            [1,3,5,7].forEach(col => {
+                pattern[0][col] = true;
+                pattern[2][col] = true;
+                pattern[4][col] = true;
+            });
+        }
+
+        else if (name === "mystery") {
+            const data = [
+                [0,3,7],
+                [2,5],
+                [1,6],
+                [0,4],
+                [3,7],
+                [1,5],
+                [2,6],
+                [0,3,5,7]
+            ];
+
+            data.forEach((steps, row) => {
+                steps.forEach(step => {
+                    pattern[row][step] = true;
+                });
+            });
+        }
+
+        else if (name === "random") {
+            for (let row = 0; row < ROWS; row++) {
+                for (let col = 0; col < COLS; col++) {
+                    pattern[row][col] = Math.random() < 0.28;
+                }
+            }
+        }
+
+        updateAllCells();
+        status.textContent =
+            name.charAt(0).toUpperCase() +
+            name.slice(1) + " preset loaded!";
+    }
+
+    tempoInput.addEventListener("input", () => {
+        tempoValue.textContent = tempoInput.value + " BPM";
+    });
+
+    volumeInput.addEventListener("input", () => {
+        volumeValue.textContent = volumeInput.value + "%";
+    });
+
+    patternLength.addEventListener("change", () => {
+        currentStep = 0;
+        status.textContent =
+            patternLength.value + "-step pattern selected.";
+    });
+
+    playBtn.addEventListener("click", startPlayback);
+    stopBtn.addEventListener("click", stopPlayback);
+    clearBtn.addEventListener("click", clearPattern);
+
+    document.querySelectorAll(".preset").forEach(button => {
+        button.addEventListener("click", () => {
+            loadPreset(button.dataset.preset);
+        });
+    });
+
+    createMatrix();
+
+})();
+</script>
+
+</body>
+  </html>
+                      
