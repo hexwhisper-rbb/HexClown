@@ -1,121 +1,280 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#071321">
+
 <title>Board & Strategy | HEXCLØWN</title>
 
 <style>
 :root {
- --bg:#071321;
- --card:#102337;
- --cyan:#00eaff;
- --green:#00ff88;
- --blue:#168bff;
- --red:#ff426b;
- --text:#eafaff;
- --muted:#91a8bb;
+    --bg: #071321;
+    --card: #0c1d2e;
+    --green: #39ff88;
+    --cyan: #00eaff;
+    --blue: #168bff;
+    --red: #ff426b;
+    --text: #e9faff;
+    --muted: #91a9ba;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{
- background:var(--bg);color:var(--text);
- font-family:Arial,sans-serif;min-height:100vh;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-header{
- padding:17px 5%;background:#091a2b;
- border-bottom:1px solid #174257;
- display:flex;justify-content:space-between;
- align-items:center;gap:12px;flex-wrap:wrap;
+
+body {
+    background:
+        radial-gradient(circle at top left, #102b40, transparent 40%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
 }
-.logo{font-size:24px;font-weight:900;color:var(--green);
- text-shadow:0 0 12px var(--green);letter-spacing:2px}
-.logo span{color:var(--cyan)}
-.nav{display:flex;gap:8px;flex-wrap:wrap}
-.nav a{
- color:var(--cyan);text-decoration:none;
- border:1px solid var(--cyan);padding:9px 12px;
- border-radius:6px;font-size:12px
+
+header {
+    padding: 22px 16px;
+    text-align: center;
+    border-bottom: 1px solid rgba(0,234,255,.25);
+    background: rgba(4,15,27,.85);
 }
-.nav a:hover{background:var(--cyan);color:#071321}
-.hero{text-align:center;padding:40px 15px 25px}
-.hero h1{
- color:var(--cyan);font-size:clamp(27px,6vw,42px);
- text-shadow:0 0 14px #00eaff66
+
+.logo {
+    color: var(--green);
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px rgba(57,255,136,.6);
 }
-.hero p{color:var(--muted);font-size:14px;line-height:1.7;margin-top:12px}
-.line{height:3px;width:70px;background:var(--green);
- margin:18px auto;box-shadow:0 0 12px var(--green)}
-.container{width:92%;max-width:1100px;margin:auto;padding-bottom:45px}
-.search{max-width:550px;margin:0 auto 28px}
-.search input{
- width:100%;padding:14px;background:#0c2033;
- color:white;border:1px solid var(--cyan);border-radius:8px;
- outline:none;font-size:15px
+
+.logo span {
+    color: var(--cyan);
 }
-.section-title{color:var(--green);margin-bottom:18px;font-size:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-.game-card{
- background:var(--card);border:1px solid #174257;
- border-radius:12px;padding:22px 17px;text-align:center;
- transition:.25s
+
+header p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 7px;
+    letter-spacing: 2px;
 }
-.game-card:hover{transform:translateY(-5px);border-color:var(--green);
- box-shadow:0 0 16px #00ff8830}
-.game-icon{font-size:38px;margin-bottom:12px}
-.game-card h3{color:var(--cyan);margin-bottom:9px}
-.game-card p{font-size:13px;color:var(--muted);line-height:1.6;min-height:42px}
-.play{
- width:100%;padding:12px;margin-top:15px;
- background:transparent;border:1px solid var(--green);
- color:var(--green);border-radius:7px;font-weight:bold;
- cursor:pointer
+
+nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 10px;
+    background: #091a2a;
+    border-bottom: 1px solid rgba(57,255,136,.15);
 }
-.play:hover{background:var(--green);color:#071321}
-#gameArea{
- display:none;background:#0b1c2c;border:1px solid var(--cyan);
- border-radius:13px;padding:20px;margin-top:30px;
- box-shadow:0 0 18px #00eaff18
+
+nav a {
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 13px;
+    padding: 9px 13px;
+    border: 1px solid rgba(0,234,255,.3);
+    border-radius: 6px;
+    transition: .25s;
 }
-.game-head{display:flex;justify-content:space-between;
- align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}
-.game-head h2{color:var(--cyan);font-size:21px}
-.close{
- padding:9px 13px;background:#341526;color:#ff8099;
- border:1px solid var(--red);border-radius:6px;cursor:pointer
+
+nav a:hover {
+    color: #061321;
+    background: var(--cyan);
+    box-shadow: 0 0 12px var(--cyan);
 }
-.status{
- text-align:center;color:var(--green);font-weight:bold;
- margin:12px 0 18px;min-height:22px
+
+.hero {
+    text-align: center;
+    padding: 35px 15px 25px;
 }
-button{font-family:inherit}
-.control{
- padding:10px 14px;background:#102d43;color:var(--cyan);
- border:1px solid var(--cyan);border-radius:6px;cursor:pointer
+
+.hero h1 {
+    color: var(--green);
+    font-size: 29px;
+    margin-bottom: 12px;
+    text-shadow: 0 0 13px rgba(57,255,136,.35);
 }
-.control:hover{background:var(--cyan);color:#071321}
-.board{margin:15px auto;display:grid;gap:3px;justify-content:center}
-.cell{
- display:flex;align-items:center;justify-content:center;
- border:1px solid #24506a;background:#122c40;
- cursor:pointer;user-select:none;font-size:23px;
- touch-action:manipulation
+
+.hero p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 520px;
+    margin: auto;
 }
-.cell:disabled{cursor:default}
-.cell.selected{outline:3px solid var(--green);outline-offset:-3px}
-.cell.valid{background:#174c43}
-.cell:focus-visible{outline:3px solid white}
-footer{
- background:#091a2b;border-top:1px solid #174257;
- text-align:center;padding:22px 10px;color:var(--muted);
- font-size:12px;line-height:1.8
+
+.search-box {
+    max-width: 500px;
+    margin: 25px auto 10px;
+    padding: 0 15px;
 }
-footer span{color:var(--green)}
-.empty{text-align:center;color:var(--red);padding:25px;display:none}
-@media(max-width:500px){
- .grid{grid-template-columns:1fr}
- #gameArea{padding:12px}
- .cell{font-size:19px}
+
+.search-box input {
+    width: 100%;
+    padding: 14px;
+    background: #0c2032;
+    border: 1px solid var(--cyan);
+    border-radius: 8px;
+    color: white;
+    outline: none;
+    font-size: 14px;
+    box-shadow: 0 0 10px rgba(0,234,255,.12);
+}
+
+.search-box input:focus {
+    box-shadow: 0 0 14px rgba(0,234,255,.35);
+}
+
+.section-heading {
+    text-align: center;
+    margin: 28px 0 20px;
+}
+
+.section-heading h2 {
+    color: var(--cyan);
+    font-size: 20px;
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 7px;
+}
+
+.games-container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 10px 15px 45px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+    gap: 17px;
+}
+
+.game-card {
+    background: linear-gradient(145deg, #10283b, #091725);
+    border: 1px solid rgba(0,234,255,.22);
+    border-radius: 12px;
+    padding: 18px 12px;
+    text-align: center;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: .25s;
+}
+
+.game-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--green);
+    box-shadow: 0 0 17px rgba(57,255,136,.17);
+}
+
+.game-icon {
+    width: 75px;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 42px;
+    border-radius: 15px;
+    background: rgba(0,234,255,.07);
+    border: 1px solid rgba(0,234,255,.25);
+    margin-bottom: 14px;
+}
+
+.game-card h3 {
+    color: var(--green);
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.game-card p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+    flex-grow: 1;
+}
+
+.play-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #061321;
+    background: var(--cyan);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 10px 19px;
+    border-radius: 6px;
+    margin-top: 15px;
+    transition: .25s;
+}
+
+.play-btn:hover {
+    background: var(--green);
+    box-shadow: 0 0 13px var(--green);
+}
+
+.no-results {
+    display: none;
+    text-align: center;
+    color: var(--red);
+    padding: 25px;
+    grid-column: 1 / -1;
+}
+
+.back-area {
+    text-align: center;
+    padding: 10px 15px 35px;
+}
+
+.back-area a {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--green);
+    border: 1px solid var(--green);
+    padding: 11px 20px;
+    border-radius: 7px;
+    font-size: 13px;
+}
+
+.back-area a:hover {
+    color: #061321;
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+}
+
+footer {
+    text-align: center;
+    padding: 22px 12px;
+    background: #06101b;
+    border-top: 1px solid rgba(0,234,255,.2);
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+footer strong {
+    color: var(--green);
+}
+
+@media(max-width: 380px) {
+    .games-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .game-card {
+        padding: 14px 9px;
+    }
+
+    .hero h1 {
+        font-size: 25px;
+    }
 }
 </style>
 </head>
@@ -123,522 +282,123 @@ footer span{color:var(--green)}
 <body>
 
 <header>
- <div class="logo">HEXCL<span>Ø</span>WN</div>
- <nav class="nav">
-  <a href="index.html">HOME</a>
-  <a href="GameZone.html">GAME ZONE</a>
- </nav>
+    <div class="logo">HEXCL<span>Ø</span>WN</div>
+    <p>PLAY DIFFERENT. THINK SMARTER.</p>
 </header>
 
+<nav>
+    <a href="index.html">Home</a>
+    <a href="GameZone.html">GameZone</a>
+    <a href="arcandact.html">Arcade & Action</a>
+    <a href="puzandlog.html">Puzzle & Logic</a>
+</nav>
+
 <section class="hero">
- <h1>BOARD & STRATEGY</h1>
- <div class="line"></div>
- <p>Think ahead. Plan your moves. Outsmart your opponent.<br>
- Enter the world of classic board and strategy games.</p>
+    <h1>♟ BOARD & STRATEGY</h1>
+    <p>
+        Think ahead. Plan your moves. Challenge your mind.
+        Enter the strategy zone and prove your skills!
+    </p>
 </section>
 
-<main class="container">
+<div class="search-box">
+    <input
+        type="search"
+        id="gameSearch"
+        placeholder="Search board games..."
+        oninput="searchGames()"
+        aria-label="Search board games"
+    >
+</div>
 
- <div class="search">
-  <input id="search" type="search" placeholder="⌕ Search board games...">
- </div>
+<div class="section-heading">
+    <h2>CHOOSE YOUR GAME</h2>
+    <p>Six strategic challenges. One gaming zone.</p>
+</div>
 
- <h2 class="section-title">CHOOSE YOUR GAME</h2>
+<main class="games-container" id="gamesContainer">
 
- <div class="grid" id="gameGrid">
+    <div class="game-card" data-name="checkers classic checkers">
+        <div class="game-icon">🔴</div>
+        <h3>Checkers Classic</h3>
+        <p>Jump, capture and crown your pieces to win.</p>
+        <a class="play-btn" href="checkers.html">PLAY GAME</a>
+    </div>
 
-  <article class="game-card">
-   <div class="game-icon">🔴</div>
-   <h3>Checkers Classic</h3>
-   <p>Jump over opponent pieces and capture them to win.</p>
-   <button class="play" onclick="startGame('checkers')">PLAY GAME →</button>
-  </article>
+    <div class="game-card" data-name="chess chess lite">
+        <div class="game-icon">♟️</div>
+        <h3>Chess Lite</h3>
+        <p>Outsmart your opponent with clever chess moves.</p>
+        <a class="play-btn" href="chess.html">PLAY GAME</a>
+    </div>
 
-  <article class="game-card">
-   <div class="game-icon">♟️</div>
-   <h3>Chess Lite</h3>
-   <p>Play a local two-player chess match on one device.</p>
-   <button class="play" onclick="startGame('chess')">PLAY GAME →</button>
-  </article>
+    <div class="game-card" data-name="connect four connectfour">
+        <div class="game-icon">🔵</div>
+        <h3>Connect Four</h3>
+        <p>Connect four discs before your opponent does.</p>
+        <a class="play-btn" href="connectfour.html">PLAY GAME</a>
+    </div>
 
-  <article class="game-card">
-   <div class="game-icon">🔵</div>
-   <h3>Connect Four</h3>
-   <p>Connect four pieces horizontally, vertically or diagonally.</p>
-   <button class="play" onclick="startGame('connect')">PLAY GAME →</button>
-  </article>
+    <div class="game-card" data-name="tic tac toe tictactoe">
+        <div class="game-icon">❎</div>
+        <h3>Tic-Tac-Toe</h3>
+        <p>Make a line of three and claim your victory.</p>
+        <a class="play-btn" href="tictactoe.html">PLAY GAME</a>
+    </div>
 
-  <article class="game-card">
-   <div class="game-icon">❎</div>
-   <h3>Tic-Tac-Toe Ultimate</h3>
-   <p>Challenge another player in this classic strategy game.</p>
-   <button class="play" onclick="startGame('ttt')">PLAY GAME →</button>
-  </article>
+    <div class="game-card" data-name="battleship grid battleship">
+        <div class="game-icon">🚢</div>
+        <h3>Battleship Grid</h3>
+        <p>Plan your fleet and outsmart your opponent.</p>
+        <a class="play-btn" href="battleship.html">PLAY GAME</a>
+    </div>
 
-  <article class="game-card">
-   <div class="game-icon">🚢</div>
-   <h3>Battleship Grid</h3>
-   <p>Find and sink the hidden enemy fleet.</p>
-   <button class="play" onclick="startGame('battleship')">PLAY GAME →</button>
-  </article>
+    <div class="game-card" data-name="reversi othello">
+        <div class="game-icon">⚫</div>
+        <h3>Reversi</h3>
+        <p>Flip your opponent's pieces and control the board.</p>
+        <a class="play-btn" href="reversi.html">PLAY GAME</a>
+    </div>
 
-  <article class="game-card">
-   <div class="game-icon">⚫</div>
-   <h3>Reversi / Othello</h3>
-   <p>Flip your opponent's pieces and control the board.</p>
-   <button class="play" onclick="startGame('reversi')">PLAY GAME →</button>
-  </article>
-
- </div>
-
- <div class="empty" id="empty">NO GAMES FOUND.</div>
-
- <section id="gameArea">
-  <div class="game-head">
-   <h2 id="gameTitle">GAME</h2>
-   <button class="close" onclick="closeGame()">✕ CLOSE GAME</button>
-  </div>
-  <div id="gameContent"></div>
- </section>
+    <div class="no-results" id="noResults">
+        No games found. Try another search!
+    </div>
 
 </main>
 
+<div class="back-area">
+    <a href="GameZone.html">← BACK TO GAMEZONE</a>
+</div>
+
 <footer>
- <p>© 2026 <span>HEXCLØWN</span> — ALL RIGHTS RESERVED.</p>
- <p>THINK DIFFERENT. PLAY SMART. STAY CURIOUS.</p>
+    <strong>HEXCLØWN</strong><br>
+    Your world of games, skills and entertainment.<br>
+    © 2026 HEXCLØWN. All rights reserved.
 </footer>
 
 <script>
-const area=document.getElementById("gameArea");
-const content=document.getElementById("gameContent");
-const title=document.getElementById("gameTitle");
-const search=document.getElementById("search");
-const cards=document.querySelectorAll(".game-card");
+function searchGames() {
+    const input = document.getElementById("gameSearch");
+    const searchValue = input.value.toLowerCase().trim();
 
-search.addEventListener("input",()=>{
- let count=0;
- cards.forEach(card=>{
-  const match=card.innerText.toLowerCase().includes(search.value.toLowerCase());
-  card.style.display=match?"":"none";
-  if(match)count++;
- });
- document.getElementById("empty").style.display=count?"none":"block";
-});
+    const cards = document.querySelectorAll(".game-card");
+    let visibleCount = 0;
 
-function startGame(type){
- area.style.display="block";
- area.scrollIntoView({behavior:"smooth",block:"start"});
- const names={
-  checkers:"CHECKERS CLASSIC",
-  chess:"CHESS LITE",
-  connect:"CONNECT FOUR",
-  ttt:"TIC-TAC-TOE ULTIMATE",
-  battleship:"BATTLESHIP GRID",
-  reversi:"REVERSI / OTHELLO"
- };
- title.textContent=names[type];
- content.innerHTML="";
- if(type==="checkers")checkers();
- if(type==="chess")chess();
- if(type==="connect")connect();
- if(type==="ttt")ttt();
- if(type==="battleship")battleship();
- if(type==="reversi")reversi();
-}
-function closeGame(){
- area.style.display="none";
- content.innerHTML="";
-}
-function status(text){
- const el=document.getElementById("status");
- if(el)el.textContent=text;
-}
-function resetButton(fn){
- return `<button class="control" onclick="${fn}">↻ NEW GAME</button>`;
-}
+    cards.forEach(function(card) {
+        const name = card.dataset.name.toLowerCase();
 
-/* CHECKERS */
-let ckBoard=[],ckTurn=1,ckSelected=null,ckOver=false;
+        if (name.includes(searchValue)) {
+            card.style.display = "flex";
+            visibleCount++;
+        } else {
+            card.style.display = "none";
+        }
+    });
 
-function checkers(){
- ckBoard=Array(8).fill(null).map(()=>Array(8).fill(0));
- for(let r=0;r<3;r++)for(let c=0;c<8;c++)
-  if((r+c)%2)ckBoard[r][c]=2;
- for(let r=5;r<8;r++)for(let c=0;c<8;c++)
-  if((r+c)%2)ckBoard[r][c]=1;
- ckTurn=1;ckSelected=null;ckOver=false;
- renderCheckers();
+    document.getElementById("noResults").style.display =
+        visibleCount === 0 ? "block" : "none";
 }
-function renderCheckers(){
- content.innerHTML=`
- <div class="status" id="status">${ckOver?"GAME OVER":(ckTurn===1?"RED":"BLUE")+"'S TURN"}</div>
- <div class="board" style="grid-template-columns:repeat(8,min(10vw,43px))" id="ckBoard"></div>
- ${resetButton("checkers()")}
- `;
- const b=document.getElementById("ckBoard");
- ckBoard.forEach((row,r)=>row.forEach((v,c)=>{
-  const el=document.createElement("button");
-  el.className="cell";
-  el.style.width="min(10vw,43px)";
-  el.style.height="min(10vw,43px)";
-  el.style.background=(r+c)%2?"#174054":"#b6c5c9";
-  if(ckSelected&&ckSelected.r===r&&ckSelected.c===c)el.classList.add("selected");
-  if(v){
-   el.textContent=v===1||v===3?"🔴":"🔵";
-   if(v===3||v===4)el.textContent+="♛";
-  }
-  el.onclick=()=>ckClick(r,c);
-  b.appendChild(el);
- }));
-}
-function ckClick(r,c){
- if(ckOver)return;
- const v=ckBoard[r][c];
- if(ckSelected){
-  const {r:sr,c:sc}=ckSelected;
-  const piece=ckBoard[sr][sc];
-  const dr=r-sr,dc=c-sc;
-  if(!v&&Math.abs(dc)===1&&dr===(ckTurn===1?-1:1)){
-   ckMove(sr,sc,r,c);return;
-  }
-  if(!v&&Math.abs(dc)===2&&Math.abs(dr)===2&&
-     ckBoard[sr+dr/2][sc+dc/2]&&
-     Math.ceil(ckBoard[sr+dr/2][sc+dc/2]/3)!==Math.ceil(piece/3)){
-   ckMove(sr,sc,r,c,true);return;
-  }
- }
- if(v&&Math.ceil(v/3)===ckTurn){
-  ckSelected={r,c};renderCheckers();
- }
-}
-function ckMove(sr,sc,r,c,capture=false){
- let p=ckBoard[sr][sc];
- ckBoard[r][c]=p;ckBoard[sr][sc]=0;
- if(capture)ckBoard[(sr+r)/2][(sc+c)/2]=0;
- if((r===0&&p===1)||(r===7&&p===2))ckBoard[r][c]=p+2;
- if(capture){
-  const canContinue=[-2,2].some(dr=>[-2,2].some(dc=>{
-   const nr=r+dr,nc=c+dc;
-   return nr>=0&&nr<8&&nc>=0&&nc<8&&
-    !ckBoard[nr][nc]&&ckBoard[r+dr/2][c+dc/2]&&
-    Math.ceil(ckBoard[r+dr/2][c+dc/2]/3)!==ckTurn;
-  }));
-  if(canContinue){ckSelected={r,c};renderCheckers();return;}
- }
- ckSelected=null;
- ckTurn=3-ckTurn;
- const remaining=ckBoard.flat().filter(x=>x&&Math.ceil(x/3)===ckTurn).length;
- if(!remaining)ckOver=true;
- renderCheckers();
- if(ckOver)status((ckTurn===1?"BLUE":"RED")+" WINS!");
-}
+</script>
 
-/* CHESS LITE - LOCAL TWO PLAYER */
-const chessStart=[
- ["♜","♞","♝","♛","♚","♝","♞","♜"],
- ["♟","♟","♟","♟","♟","♟","♟","♟"],
- ["","","","","","","",""],
- ["","","","","","","",""],
- ["","","","","","","",""],
- ["","","","","","","",""],
- ["♙","♙","♙","♙","♙","♙","♙","♙"],
- ["♖","♘","♗","♕","♔","♗","♘","♖"]
-];
-let chBoard=[],chTurn="w",chSel=null,chOver=false;
-
-function chess(){
- chBoard=chessStart.map(row=>row.slice());
- chTurn="w";chSel=null;chOver=false;
- renderChess();
-}
-function chColor(p){
- return "♙♖♘♗♕♔".includes(p)?"w":"b";
-}
-function renderChess(){
- content.innerHTML=`
- <div class="status" id="status">${chOver?"GAME OVER":(chTurn==="w"?"WHITE":"BLACK")+"'S TURN"}</div>
- <div class="board" style="grid-template-columns:repeat(8,min(10vw,43px))" id="chBoard"></div>
- <p style="text-align:center;color:var(--muted);font-size:12px;margin:12px">Chess Lite: local two-player. Standard piece movement, castling and check rules are not implemented.</p>
- ${resetButton("chess()")}
- `;
- const b=document.getElementById("chBoard");
- chBoard.forEach((row,r)=>row.forEach((p,c)=>{
-  const el=document.createElement("button");
-  el.className="cell";
-  el.style.width="min(10vw,43px)";
-  el.style.height="min(10vw,43px)";
-  el.style.background=(r+c)%2?"#356078":"#c3d5d9";
-  el.style.color=p&&chColor(p)==="w"?"#fff":"#111";
-  el.style.textShadow="0 1px 3px #000";
-  el.textContent=p;
-  if(chSel&&chSel.r===r&&chSel.c===c)el.classList.add("selected");
-  el.onclick=()=>chClick(r,c);
-  b.appendChild(el);
- }));
-}
-function chClick(r,c){
- if(chOver)return;
- const p=chBoard[r][c];
- if(chSel){
-  const {r:sr,c:sc}=chSel;
-  const moving=chBoard[sr][sc];
-  if((!p||chColor(p)!==chTurn)&&chValid(sr,sc,r,c,moving)){
-   if(p==="♔"||p==="♚"){
-    chOver=true;
-   }
-   chBoard[r][c]=moving;chBoard[sr][sc]="";
-   chTurn=chTurn==="w"?"b":"w";chSel=null;
-   renderChess();
-   if(chOver)status(chTurn==="b"?"WHITE WINS!":"BLACK WINS!");
-   return;
-  }
- }
- if(p&&chColor(p)===chTurn){chSel={r,c};renderChess();}
-}
-function chValid(sr,sc,r,c,p){
- const dr=r-sr,dc=c-sc;
- const ad=Math.abs(dc),ar=Math.abs(dr);
- if(!dr&&!dc)return false;
- const dest=chBoard[r][c];
- if(dest&&chColor(dest)===chTurn)return false;
- const clear=(stepR,stepC)=>{
-  let x=sr+stepR,y=sc+stepC;
-  while(x!==r||y!==c){
-   if(chBoard[x][y])return false;
-   x+=stepR;y+=stepC;
-  }
-  return true;
- };
- if(p==="♙"||p==="♟"){
-  const dir=p==="♙"?-1:1;
-  const start=p==="♙"?6:1;
-  if(dc===0&&!dest&&dr===dir)return true;
-  if(dc===0&&!dest&&sr===start&&dr===2*dir&&!chBoard[sr+dir][sc])return true;
-  if(ad===1&&dr===dir&&dest)return true;
-  return false;
- }
- if(p==="♘"||p==="♞")return (ar===2&&ad===1)||(ar===1&&ad===2);
- if(p==="♖"||p==="♜")return (dr===0||dc===0)&&clear(Math.sign(dr),Math.sign(dc));
- if(p==="♗"||p==="♝")return ar===ad&&clear(Math.sign(dr),Math.sign(dc));
- if(p==="♕"||p==="♛")return (dr===0||dc===0||ar===ad)&&clear(Math.sign(dr),Math.sign(dc));
- if(p==="♔"||p==="♚")return ar<=1&&ad<=1;
- return false;
-}
-
-/* CONNECT FOUR */
-let coBoard=[],coTurn=1,coOver=false;
-function connect(){
- coBoard=Array.from({length:6},()=>Array(7).fill(0));
- coTurn=1;coOver=false;renderConnect();
-}
-function renderConnect(){
- content.innerHTML=`
- <div class="status" id="status">${coOver?"GAME OVER":(coTurn===1?"RED":"YELLOW")+"'S TURN"}</div>
- <div class="board" style="grid-template-columns:repeat(7,min(12vw,48px))" id="coBoard"></div>
- ${resetButton("connect()")}
- `;
- const b=document.getElementById("coBoard");
- coBoard.forEach((row,r)=>row.forEach((v,c)=>{
-  const el=document.createElement("button");
-  el.className="cell";
-  el.style.width="min(12vw,48px)";
-  el.style.height="min(12vw,48px)";
-  el.style.borderRadius="50%";
-  el.style.background=v===1?"#ff405e":v===2?"#ffdc42":"#102d43";
-  el.textContent=v?"●":"";
-  el.onclick=()=>coDrop(c);
-  b.appendChild(el);
- }));
-}
-function coDrop(c){
- if(coOver)return;
- for(let r=5;r>=0;r--){
-  if(!coBoard[r][c]){
-   coBoard[r][c]=coTurn;
-   if(coWin(r,c)){
-    coOver=true;renderConnect();status((coTurn===1?"RED":"YELLOW")+" WINS!");return;
-   }
-   if(coBoard.every(row=>row.every(Boolean))){
-    coOver=true;renderConnect();status("IT'S A DRAW!");return;
-   }
-   coTurn=3-coTurn;renderConnect();return;
-  }
- }
-}
-function coWin(r,c){
- const p=coBoard[r][c];
- for(const [dr,dc] of [[0,1],[1,0],[1,1],[1,-1]]){
-  let count=1;
-  for(const d of [-1,1]){
-   let x=r+dr*d,y=c+dc*d;
-   while(x>=0&&x<6&&y>=0&&y<7&&coBoard[x][y]===p){
-    count++;x+=dr*d;y+=dc*d;
-   }
-  }
-  if(count>=4)return true;
- }
- return false;
-}
-
-/* TIC TAC TOE */
-let ttBoard=[],ttTurn="X",ttOver=false;
-function ttt(){
- ttBoard=Array(9).fill("");
- ttTurn="X";ttOver=false;renderTT();
-}
-function renderTT(){
- content.innerHTML=`
- <div class="status" id="status">${ttOver?"GAME OVER":ttTurn+"'S TURN"}</div>
- <div class="board" style="grid-template-columns:repeat(3,min(23vw,90px))" id="ttBoard"></div>
- ${resetButton("ttt()")}
- `;
- const b=document.getElementById("ttBoard");
- ttBoard.forEach((v,i)=>{
-  const el=document.createElement("button");
-  el.className="cell";
-  el.style.width="min(23vw,90px)";
-  el.style.height="min(23vw,90px)";
-  el.style.fontSize="35px";
-  el.style.color=v==="X"?"var(--cyan)":"var(--green)";
-  el.textContent=v;
-  el.onclick=()=>ttMove(i);
-  b.appendChild(el);
- });
-}
-function ttMove(i){
- if(ttOver||ttBoard[i])return;
- ttBoard[i]=ttTurn;
- const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
- const won=wins.some(line=>line.every(x=>ttBoard[x]===ttTurn));
- if(won||ttBoard.every(Boolean)){
-  ttOver=true;const winner=ttTurn;renderTT();
-  status(won?winner+" WINS!":"IT'S A DRAW!");return;
- }
- ttTurn=ttTurn==="X"?"O":"X";renderTT();
-}
-
-/* BATTLESHIP */
-let bsShips=[],bsShots=[],bsHits=0,bsOver=false,bsTurn=0;
-function battleship(){
- bsShips=Array.from({length:8},()=>Array(8).fill(false));
- bsShots=Array.from({length:8},()=>Array(8).fill(false));
- bsHits=0;bsOver=false;bsTurn=0;
- [3,2,2].forEach(len=>{
-  let placed=false;
-  while(!placed){
-   const horizontal=Math.random()<.5;
-   const r=Math.floor(Math.random()*(horizontal?8:9-len));
-   const c=Math.floor(Math.random()*(horizontal?9-len:8));
-   let cells=[];
-   for(let i=0;i<len;i++)cells.push([r+(horizontal?0:i),c+(horizontal?i:0)]);
-   if(cells.every(([x,y])=>!bsShips[x][y])){
-    cells.forEach(([x,y])=>bsShips[x][y]=true);placed=true;
-   }
-  }
- });
- renderBS();
-}
-function renderBS(){
- content.innerHTML=`
- <div class="status" id="status">${bsOver?"GAME OVER":"TAP A SQUARE TO FIRE AT THE ENEMY FLEET"}</div>
- <div class="board" style="grid-template-columns:repeat(8,min(10vw,43px))" id="bsBoard"></div>
- <p style="text-align:center;color:var(--muted);font-size:12px;margin:10px">Hits: ${bsHits}/7 | Red = hit, blue = miss</p>
- ${resetButton("battleship()")}
- `;
- const b=document.getElementById("bsBoard");
- bsShots.forEach((row,r)=>row.forEach((v,c)=>{
-  const el=document.createElement("button");
-  el.className="cell";
-  el.style.width="min(10vw,43px)";
-  el.style.height="min(10vw,43px)";
-  el.textContent=v?(bsShips[r][c]?"💥":"•"):"";
-  el.style.background=v?(bsShips[r][c]?"#71283c":"#174c66"):"#102d43";
-  el.disabled=v||bsOver;
-  el.onclick=()=>bsFire(r,c);
-  b.appendChild(el);
- }));
-}
-function bsFire(r,c){
- if(bsOver||bsShots[r][c])return;
- bsShots[r][c]=true;
- if(bsShips[r][c])bsHits++;
- if(bsHits===7){
-  bsOver=true;renderBS();status("YOU DESTROYED THE ENTIRE FLEET!");return;
- }
- if(bsShots.flat().every(Boolean)){
-  bsOver=true;renderBS();status("GAME OVER! NO SHOTS LEFT.");return;
- }
- renderBS();
- status(bsShips[r][c]?"DIRECT HIT!":"MISS! KEEP SEARCHING.");
-}
-
-/* REVERSI / OTHELLO */
-let rvBoard=[],rvTurn=1,rvOver=false;
-const rvDirs=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
-function reversi(){
- rvBoard=Array.from({length:8},()=>Array(8).fill(0));
- rvBoard[3][3]=2;rvBoard[3][4]=1;
- rvBoard[4][3]=1;rvBoard[4][4]=2;
- rvTurn=1;rvOver=false;renderRV();
-}
-function rvFlips(r,c,p){
- if(rvBoard[r][c])return [];
- let flips=[];
- for(const [dr,dc] of rvDirs){
-  let x=r+dr,y=c+dc,line=[];
-  while(x>=0&&x<8&&y>=0&&y<8&&rvBoard[x][y]===3-p){
-   line.push([x,y]);x+=dr;y+=dc;
-  }
-  if(line.length&&x>=0&&x<8&&y>=0&&y<8&&rvBoard[x][y]===p)
-   flips.push(...line);
- }
- return flips;
-}
-function rvMoves(p){
- let moves=[];
- for(let r=0;r<8;r++)for(let c=0;c<8;c++)
-  if(rvFlips(r,c,p).length)moves.push([r,c]);
- return moves;
-}
-function renderRV(){
- const black=rvBoard.flat().filter(x=>x===1).length;
- const white=rvBoard.flat().filter(x=>x===2).length;
- content.innerHTML=`
- <div class="status" id="status">${rvOver?"GAME OVER":(rvTurn===1?"BLACK":"WHITE")+"'S TURN | BLACK "+black+" - WHITE "+white}</div>
- <div class="board" style="grid-template-columns:repeat(8,min(10vw,43px))" id="rvBoard"></div>
- ${resetButton("reversi()")}
- `;
- const b=document.getElementById("rvBoard");
- const valid=rvMoves(rvTurn);
- rvBoard.forEach((row,r)=>row.forEach((v,c)=>{
-  const el=document.createElement("button");
-  el.className="cell";
-  el.style.width="min(10vw,43px)";
-  el.style.height="min(10vw,43px)";
-  el.style.background="#08734d";
-  el.style.border="1px solid #25b982";
-  el.textContent=v?(v===1?"⚫":"⚪"):(valid.some(([x,y])=>x===r&&y===c)?"·":"");
-  el.style.color="#b9ffe1";
-  el.onclick=()=>rvPlay(r,c);
-  b.appendChild(el);
- }));
-}
-function rvPlay(r,c){
- if(rvOver)return;
- const flips=rvFlips(r,c,rvTurn);
- if(!flips.length)return;
- rvBoard[r][c]=rvTurn;
- flips.forEach(([x,y])=>rvBoard[x][y]=rvTurn);
- rvTurn=3-rvTurn;
- if(!rvMoves(rvTurn).length){
-  rvTurn=3-rvTurn;
-  if(!rvMoves(rvTurn).length){
-   rvOver=true;
-   renderRV();
-   const b=rvBoard.flat().filter(x=>x===1).length;
-   const w=rvBoard.flat().filter(x=>x===2).length;
-   status(b===w?"DRAW!":(b>w?"BLACK":"WHITE")+" WINS!");
-   return;
-  }
- }
- r
+</body>
+</html>
