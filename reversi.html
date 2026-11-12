@@ -1,1 +1,848 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Reversi | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #071321;
+    --panel: #0c1d30;
+    --cyan: #00eaff;
+    --green: #00ff88;
+    --blue: #168bff;
+    --red: #ff405d;
+    --text: #eafaff;
+    --muted: #91aabd;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    padding: 18px 10px 35px;
+    background:
+        radial-gradient(circle at top, #102c45 0%, transparent 45%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--green);
+    text-shadow: 0 0 12px var(--green);
+}
+
+.logo span {
+    color: var(--cyan);
+    text-shadow: 0 0 12px var(--cyan);
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-top: 7px;
+}
+
+.back-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 18px 0;
+}
+
+.back-links a {
+    color: var(--cyan);
+    text-decoration: none;
+    border: 1px solid #087d91;
+    padding: 9px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.back-links a:hover {
+    background: #06384a;
+    box-shadow: 0 0 12px #00eaff55;
+}
+
+.game-panel {
+    background: linear-gradient(145deg, #10263b, #091827);
+    border: 1px solid #16415a;
+    border-radius: 18px;
+    padding: 18px 12px;
+    box-shadow: 0 0 25px #001b2d;
+}
+
+h1 {
+    text-align: center;
+    color: var(--cyan);
+    font-size: 25px;
+    letter-spacing: 2px;
+    text-shadow: 0 0 12px #00eaff66;
+    margin-bottom: 8px;
+}
+
+.description {
+    color: var(--muted);
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+.scoreboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.score-card {
+    text-align: center;
+    padding: 13px 8px;
+    background: #071522;
+    border: 1px solid #244158;
+    border-radius: 12px;
+    transition: .2s;
+}
+
+.score-card.active {
+    border-color: var(--green);
+    box-shadow: 0 0 13px #00ff8840;
+}
+
+.player-name {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.black-name {
+    color: #b8d2e3;
+}
+
+.white-name {
+    color: #ffffff;
+}
+
+.score {
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.status {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 15px;
+    background: #061522;
+    border: 1px solid #1c5269;
+    border-radius: 10px;
+    color: var(--cyan);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.status.winner {
+    color: var(--green);
+    border-color: var(--green);
+    box-shadow: 0 0 12px #00ff8840;
+}
+
+.status.warning {
+    color: #ffe45c;
+    border-color: #ffe45c;
+}
+
+.board-wrap {
+    width: 100%;
+    max-width: 510px;
+    margin: auto;
+    padding: 7px;
+    background: linear-gradient(135deg, #087db4, #073a70);
+    border: 2px solid var(--cyan);
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00cfff55;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 3px;
+}
+
+.cell {
+    aspect-ratio: 1;
+    min-width: 0;
+    border: 1px solid #087a79;
+    border-radius: 3px;
+    background: #075b4c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+    touch-action: manipulation;
+}
+
+.cell:hover:not(:disabled) {
+    background: #087665;
+}
+
+.cell:disabled {
+    cursor: default;
+}
+
+.disc {
+    width: 78%;
+    height: 78%;
+    border-radius: 50%;
+    display: block;
+    box-shadow: 0 2px 5px #0008;
+    animation: appear .18s ease-out;
+}
+
+.disc.black {
+    background: radial-gradient(circle at 32% 25%, #73808a, #202a32 48%, #05090d);
+    border: 1px solid #8799a5;
+}
+
+.disc.white {
+    background: radial-gradient(circle at 32% 25%, #ffffff, #e4edf2 55%, #8ea0ae);
+    border: 1px solid #ffffff;
+}
+
+@keyframes appear {
+    from { transform: scale(.5); }
+    to { transform: scale(1); }
+}
+
+.cell.valid::after {
+    content: "";
+    position: absolute;
+    width: 22%;
+    height: 22%;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    opacity: .8;
+}
+
+.cell.last-move {
+    outline: 2px solid var(--yellow);
+    outline-offset: -2px;
+}
+
+.controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 17px;
+}
+
+.action-btn {
+    padding: 12px 8px;
+    border: 1px solid var(--cyan);
+    border-radius: 9px;
+    background: #08243a;
+    color: var(--cyan);
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.action-btn:hover:not(:disabled) {
+    background: #075071;
+    box-shadow: 0 0 12px #00eaff55;
+}
+
+.action-btn.green {
+    color: var(--green);
+    border-color: var(--green);
+}
+
+.action-btn.green:hover:not(:disabled) {
+    background: #063b2a;
+}
+
+.action-btn:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+.rules {
+    margin-top: 20px;
+    padding: 14px;
+    background: #071522;
+    border: 1px solid #193c55;
+    border-radius: 10px;
+}
+
+.rules h3 {
+    color: var(--green);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.rules p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.legend {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 12px;
+}
+
+.legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legend i {
+    width: 11px;
+    height: 11px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.legend .black-dot {
+    background: #202a32;
+    border: 1px solid #8799a5;
+}
+
+.legend .white-dot {
+    background: white;
+}
+
+.legend .green-dot {
+    background: var(--green);
+}
+
+footer {
+    text-align: center;
+    color: #607d91;
+    font-size: 11px;
+    margin-top: 22px;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 380px) {
+    .game-panel {
+        padding: 14px 8px;
+    }
+
+    .board-wrap {
+        padding: 5px;
+    }
+
+    .board {
+        gap: 2px;
+    }
+
+    h1 {
+        font-size: 21px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <div class="logo">HEX<span>CLØWN</span></div>
+    <div class="subtitle">NEON GAMING NETWORK</div>
+
+    <nav class="back-links">
+        <a href="boaandstr.html">← Board & Strategy</a>
+        <a href="GameZone.html">GameZone</a>
+    </nav>
+</header>
+
+<main class="game-panel">
+
+    <h1>REVERSI</h1>
+
+    <p class="description">
+        Capture your opponent's discs by trapping them
+        between your own. Finish with the most discs to win!
+    </p>
+
+    <section class="scoreboard">
+
+        <div class="score-card active" id="blackCard">
+            <div class="player-name black-name">⚫ BLACK PLAYER</div>
+            <div class="score" id="blackScore">2</div>
+        </div>
+
+        <div class="score-card" id="whiteCard">
+            <div class="player-name white-name">⚪ WHITE PLAYER</div>
+            <div class="score" id="whiteScore">2</div>
+        </div>
+
+    </section>
+
+    <div class="status" id="status" aria-live="polite">
+        ⚫ Black Player's turn!
+    </div>
+
+    <div class="board-wrap">
+        <div class="board" id="board" role="grid" aria-label="Reversi game board"></div>
+    </div>
+
+    <div class="legend">
+        <span><i class="black-dot"></i> Black</span>
+        <span><i class="white-dot"></i> White</span>
+        <span><i class="green-dot"></i> Legal move</span>
+    </div>
+
+    <div class="controls">
+
+        <button class="action-btn" id="undoBtn" onclick="undoMove()" disabled>
+            ↶ UNDO MOVE
+        </button>
+
+        <button class="action-btn green" onclick="newGame()">
+            ⟳ NEW GAME
+        </button>
+
+    </div>
+
+    <div class="controls">
+
+        <button class="action-btn" onclick="showInfo()">
+            GAME INFO
+        </button>
+
+        <button class="action-btn" onclick="toggleHints()">
+            <span id="hintText">HIDE HINTS</span>
+        </button>
+
+    </div>
+
+    <section class="rules">
+        <h3>HOW TO PLAY</h3>
+        <p>
+            1. Black plays first.<br>
+            2. Place a disc where it traps one or more opponent discs between your new disc and another of your discs.<br>
+            3. All trapped opponent discs flip to your colour.<br>
+            4. If you have no legal move, your turn is skipped.<br>
+            5. When neither player can move, the player with the most discs wins.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    © 2026 HEXCLØWN • THINK SMART. PLAY DIFFERENT.
+</footer>
+
+</div>
+
+<script>
+"use strict";
+
+const SIZE = 8;
+
+const DIRECTIONS = [
+    [-1, -1], [-1, 0], [-1, 1],
+    [0, -1],           [0, 1],
+    [1, -1],  [1, 0],  [1, 1]
+];
+
+let board = [];
+let currentPlayer = 1;
+let gameOver = false;
+let showHints = true;
+let history = [];
+let lastMove = null;
+
+const boardElement = document.getElementById("board");
+const statusElement = document.getElementById("status");
+const undoButton = document.getElementById("undoBtn");
+
+function createBoard() {
+    const grid = Array.from(
+        { length: SIZE },
+        () => Array(SIZE).fill(0)
+    );
+
+    grid[3][3] = 2;
+    grid[3][4] = 1;
+    grid[4][3] = 1;
+    grid[4][4] = 2;
+
+    return grid;
+}
+
+function saveState() {
+    history.push({
+        board: board.map(row => [...row]),
+        currentPlayer,
+        gameOver,
+        lastMove: lastMove ? [...lastMove] : null
+    });
+
+    undoButton.disabled = history.length === 0;
+}
+
+function inside(row, col) {
+    return (
+        row >= 0 &&
+        row < SIZE &&
+        col >= 0 &&
+        col < SIZE
+    );
+}
+
+function getFlips(row, col, player) {
+    if (!inside(row, col) || board[row][col] !== 0) {
+        return [];
+    }
+
+    const opponent = player === 1 ? 2 : 1;
+    const allFlips = [];
+
+    for (const [dr, dc] of DIRECTIONS) {
+        let r = row + dr;
+        let c = col + dc;
+        const line = [];
+
+        while (
+            inside(r, c) &&
+            board[r][c] === opponent
+        ) {
+            line.push([r, c]);
+
+            r += dr;
+            c += dc;
+        }
+
+        if (
+            line.length > 0 &&
+            inside(r, c) &&
+            board[r][c] === player
+        ) {
+            allFlips.push(...line);
+        }
+    }
+
+    return allFlips;
+}
+
+function getLegalMoves(player) {
+    const moves = [];
+
+    for (let row = 0; row < SIZE; row++) {
+        for (let col = 0; col < SIZE; col++) {
+            const flips = getFlips(row, col, player);
+
+            if (flips.length > 0) {
+                moves.push({
+                    row,
+                    col,
+                    flips
+                });
+            }
+        }
+    }
+
+    return moves;
+}
+
+function countDiscs() {
+    let black = 0;
+    let white = 0;
+
+    for (let row = 0; row < SIZE; row++) {
+        for (let col = 0; col < SIZE; col++) {
+            if (board[row][col] === 1) black++;
+            if (board[row][col] === 2) white++;
+        }
+    }
+
+    return { black, white };
+}
+
+function updateScores() {
+    const scores = countDiscs();
+
+    document.getElementById("blackScore").textContent = scores.black;
+    document.getElementById("whiteScore").textContent = scores.white;
+
+    document.getElementById("blackCard").classList.toggle(
+        "active",
+        !gameOver && currentPlayer === 1
+    );
+
+    document.getElementById("whiteCard").classList.toggle(
+        "active",
+        !gameOver && currentPlayer === 2
+    );
+}
+
+function setStatus(message, type = "") {
+    statusElement.textContent = message;
+    statusElement.className = "status";
+
+    if (type) {
+        statusElement.classList.add(type);
+    }
+}
+
+function renderBoard() {
+    boardElement.innerHTML = "";
+
+    const legalMoves = gameOver
+        ? []
+        : getLegalMoves(currentPlayer);
+
+    for (let row = 0; row < SIZE; row++) {
+        for (let col = 0; col < SIZE; col++) {
+            const cell = document.createElement("button");
+
+            cell.type = "button";
+            cell.className = "cell";
+
+            const value = board[row][col];
+
+            if (value !== 0) {
+                const disc = document.createElement("span");
+
+                disc.className =
+                    "disc " + (value === 1 ? "black" : "white");
+
+                cell.appendChild(disc);
+            } else if (
+                showHints &&
+                legalMoves.some(
+                    move => move.row === row && move.col === col
+                )
+            ) {
+                cell.classList.add("valid");
+            }
+
+            if (
+                lastMove &&
+                lastMove[0] === row &&
+                lastMove[1] === col
+            ) {
+                cell.classList.add("last-move");
+            }
+
+            cell.setAttribute(
+                "aria-label",
+                "Row " + (row + 1) +
+                ", column " + (col + 1) +
+                (value === 1 ? ", black disc" :
+                 value === 2 ? ", white disc" : ", empty")
+            );
+
+            cell.disabled = gameOver || value !== 0;
+
+            cell.addEventListener("click", () => {
+                playMove(row, col);
+            });
+
+            boardElement.appendChild(cell);
+        }
+    }
+
+    updateScores();
+}
+
+function playMove(row, col) {
+    if (gameOver) return;
+
+    const flips = getFlips(row, col, currentPlayer);
+
+    if (flips.length === 0) {
+        setStatus("Invalid move! Choose a highlighted square.", "warning");
+        return;
+    }
+
+    saveState();
+
+    board[row][col] = currentPlayer;
+
+    flips.forEach(([r, c]) => {
+        board[r][c] = currentPlayer;
+    });
+
+    lastMove = [row, col];
+
+    const playerName = currentPlayer === 1
+        ? "⚫ Black Player"
+        : "⚪ White Player";
+
+    setStatus(
+        playerName + " flipped " + flips.length +
+        (flips.length === 1 ? " disc!" : " discs!"),
+        "success"
+    );
+
+    const opponent = currentPlayer === 1 ? 2 : 1;
+
+    const opponentMoves = getLegalMoves(opponent);
+    const currentMoves = getLegalMoves(currentPlayer);
+
+    if (opponentMoves.length === 0 && currentMoves.length === 0) {
+        finishGame();
+        return;
+    }
+
+    if (opponentMoves.length === 0) {
+        renderBoard();
+
+        setStatus(
+            (opponent === 1 ? "Black" : "White") +
+            " has no legal moves. " +
+            (currentPlayer === 1 ? "Black" : "White") +
+            " plays again.",
+            "warning"
+        );
+
+        return;
+    }
+
+    currentPlayer = opponent;
+
+    renderBoard();
+
+    setStatus(
+        (currentPlayer === 1 ? "⚫ Black" : "⚪ White") +
+        " Player's turn!"
+    );
+}
+
+function finishGame() {
+    gameOver = true;
+
+    const scores = countDiscs();
+
+    renderBoard();
+
+    if (scores.black > scores.white) {
+        setStatus(
+            "🏆 BLACK WINS! " +
+            scores.black + " - " + scores.white,
+            "winner"
+        );
+
+    } else if (scores.white > scores.black) {
+        setStatus(
+            "🏆 WHITE WINS! " +
+            scores.white + " - " + scores.black,
+            "winner"
+        );
+
+    } else {
+        setStatus(
+            "🤝 DRAW! BOTH PLAYERS HAVE " +
+            scores.black + " DISCS.",
+            "winner"
+        );
+    }
+}
+
+function undoMove() {
+    if (history.length === 0) return;
+
+    const previous = history.pop();
+
+    board = previous.board.map(row => [...row]);
+    currentPlayer = previous.currentPlayer;
+    gameOver = previous.gameOver;
+    lastMove = previous.lastMove
+        ? [...previous.lastMove]
+        : null;
+
+    undoButton.disabled = history.length === 0;
+
+    renderBoard();
+
+    setStatus(
+        (currentPlayer === 1 ? "⚫ Black" : "⚪ White") +
+        " Player's turn. Move undone."
+    );
+}
+
+function newGame() {
+    board = createBoard();
+    currentPlayer = 1;
+    gameOver = false;
+    history = [];
+    lastMove = null;
+
+    undoButton.disabled = true;
+
+    setStatus("⚫ Black Player starts! Choose a highlighted square.");
+
+    renderBoard();
+}
+
+function toggleHints() {
+    showHints = !showHints;
+
+    document.getElementById("hintText").textContent =
+        showHints ? "HIDE HINTS" : "SHOW HINTS";
+
+    renderBoard();
+}
+
+function showInfo() {
+    alert(
+        "HEXCLØWN REVERSI\n\n" +
+        "Players: 2\n" +
+        "Board: 8 × 8\n" +
+        "Black plays first.\n\n" +
+        "Trap your opponent's discs between your own discs to flip them.\n\n" +
+        "The player with the most discs at the end wins!"
+    );
+}
+
+// Start game.
+newGame();
+
+</script>
+
+</body>
+      </html>
+  
