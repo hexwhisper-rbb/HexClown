@@ -1,0 +1,776 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+<title>Tab Countdown | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #07131a;
+    --panel: #0d2029;
+    --panel2: #102832;
+    --cyan: #00e5ff;
+    --green: #00ff9d;
+    --text: #e9f7fa;
+    --muted: #8ba6af;
+    --border: rgba(0,229,255,.18);
+    --red: #ff647c;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    padding: 17px 5%;
+    background: #091a22;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    color: var(--green);
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+.back {
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    padding: 9px 13px;
+    border-radius: 7px;
+}
+
+.container {
+    width: 92%;
+    max-width: 650px;
+    margin: 35px auto;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    color: var(--green);
+    font-size: clamp(27px, 6vw, 38px);
+    margin-bottom: 9px;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 17px;
+}
+
+.card h2 {
+    color: var(--cyan);
+    font-size: 17px;
+    margin-bottom: 17px;
+}
+
+.timer-display {
+    background: #06141b;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 30px 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.timer-label {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.time {
+    color: var(--green);
+    font-size: clamp(45px, 12vw, 70px);
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 3px;
+}
+
+.timer-state {
+    color: var(--cyan);
+    font-size: 12px;
+    margin-top: 12px;
+}
+
+.inputs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 13px 8px;
+    background: #06141b;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: var(--cyan);
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 13px 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+    flex: 1;
+    min-width: 100px;
+}
+
+button:hover {
+    filter: brightness(1.12);
+}
+
+.primary {
+    background: var(--green);
+    color: #04140e;
+}
+
+.secondary {
+    background: var(--panel2);
+    color: var(--cyan);
+    border: 1px solid var(--border);
+}
+
+.danger {
+    background: rgba(255,100,124,.12);
+    color: var(--red);
+    border: 1px solid rgba(255,100,124,.3);
+}
+
+.progress-track {
+    height: 9px;
+    background: #06141b;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--green), var(--cyan));
+    border-radius: 20px;
+    transition: width .3s;
+}
+
+.quick-times {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.quick-times button {
+    flex: 1;
+    min-width: 75px;
+    background: var(--panel2);
+    color: var(--cyan);
+    border: 1px solid var(--border);
+    font-size: 12px;
+}
+
+.setting-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.setting-row:last-child {
+    border-bottom: none;
+}
+
+.setting-row strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.setting-row small {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.toggle {
+    width: 47px;
+    height: 25px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.toggle input {
+    display: none;
+}
+
+.toggle span {
+    position: absolute;
+    inset: 0;
+    background: #29404a;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.toggle span:before {
+    content: "";
+    position: absolute;
+    height: 19px;
+    width: 19px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: .2s;
+}
+
+.toggle input:checked + span {
+    background: var(--green);
+}
+
+.toggle input:checked + span:before {
+    transform: translateX(22px);
+    background: #06141b;
+}
+
+.status {
+    background: #091a22;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 14px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+    margin-top: 15px;
+}
+
+.status strong {
+    color: var(--green);
+}
+
+.note {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+footer {
+    text-align: center;
+    padding: 25px 10px;
+    color: var(--muted);
+    font-size: 11px;
+    border-top: 1px solid var(--border);
+    margin-top: 35px;
+}
+
+@media(max-width: 450px) {
+    .card {
+        padding: 15px;
+    }
+
+    .button-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .inputs {
+        gap: 7px;
+    }
+
+    .input-group input {
+        font-size: 16px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEX<span>CLØWN</span></div>
+    <a href="focusmanager.html" class="back">← Focus Manager</a>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>TAB COUNTDOWN</h1>
+        <p>Your countdown. Always visible in your browser tab.</p>
+    </section>
+
+    <section class="card">
+        <h2>COUNTDOWN TIMER</h2>
+
+        <div class="timer-display">
+            <div class="timer-label">TIME REMAINING</div>
+            <div class="time" id="timeDisplay">25:00</div>
+            <div class="timer-state" id="timerState">READY TO START</div>
+        </div>
+
+        <div class="inputs">
+            <div class="input-group">
+                <label for="hours">Hours</label>
+                <input type="number" id="hours" min="0" max="99" value="0">
+            </div>
+
+            <div class="input-group">
+                <label for="minutes">Minutes</label>
+                <input type="number" id="minutes" min="0" max="59" value="25">
+            </div>
+
+            <div class="input-group">
+                <label for="seconds">Seconds</label>
+                <input type="number" id="seconds" min="0" max="59" value="0">
+            </div>
+        </div>
+
+        <div class="button-row">
+            <button class="primary" id="startBtn">START</button>
+            <button class="secondary" id="pauseBtn">PAUSE</button>
+            <button class="danger" id="resetBtn">RESET</button>
+        </div>
+
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="status" id="status" aria-live="polite">
+            <strong>READY:</strong> Set your countdown and press START.
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>QUICK TIME PRESETS</h2>
+
+        <div class="quick-times">
+            <button data-time="300">5 MIN</button>
+            <button data-time="600">10 MIN</button>
+            <button data-time="900">15 MIN</button>
+            <button data-time="1500">25 MIN</button>
+            <button data-time="1800">30 MIN</button>
+            <button data-time="3600">1 HOUR</button>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>NOTIFICATION SETTINGS</h2>
+
+        <div class="setting-row">
+            <div>
+                <strong>Sound Alert</strong>
+                <small>Play a gentle sound when the timer finishes.</small>
+            </div>
+            <label class="toggle">
+                <input type="checkbox" id="soundAlert" checked>
+                <span></span>
+            </label>
+        </div>
+
+        <div class="setting-row">
+            <div>
+                <strong>Browser Notification</strong>
+                <small>Show a notification when the countdown ends, if permission is granted.</small>
+            </div>
+            <label class="toggle">
+                <input type="checkbox" id="browserAlert">
+                <span></span>
+            </label>
+        </div>
+
+        <p class="note" style="margin-top:15px;">
+            Browser notifications require permission. Your browser may not show them if notifications are blocked.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    HEXCLØWN DIGITAL UNIVERSE<br>
+    TAB COUNTDOWN SYSTEM
+</footer>
+
+<script>
+const display = document.getElementById("timeDisplay");
+const state = document.getElementById("timerState");
+const progressFill = document.getElementById("progressFill");
+const statusBox = document.getElementById("status");
+
+const hoursInput = document.getElementById("hours");
+const minutesInput = document.getElementById("minutes");
+const secondsInput = document.getElementById("seconds");
+
+let remaining = 1500;
+let totalDuration = 1500;
+let endTime = null;
+let timerInterval = null;
+let running = false;
+let audioContext = null;
+
+const originalTitle = "Tab Countdown | HEXCLØWN";
+
+function formatTime(seconds) {
+    const safe = Math.max(0, Math.floor(seconds));
+
+    const h = Math.floor(safe / 3600);
+    const m = Math.floor((safe % 3600) / 60);
+    const s = safe % 60;
+
+    if (h > 0) {
+        return String(h).padStart(2, "0") + ":" +
+               String(m).padStart(2, "0") + ":" +
+               String(s).padStart(2, "0");
+    }
+
+    return String(m).padStart(2, "0") + ":" +
+           String(s).padStart(2, "0");
+}
+
+function updateDisplay() {
+    const formatted = formatTime(remaining);
+
+    display.textContent = formatted;
+
+    document.title = running
+        ? formatted + " | HEXCLØWN"
+        : originalTitle;
+
+    const progress = totalDuration > 0
+        ? ((totalDuration - remaining) / totalDuration) * 100
+        : 0;
+
+    progressFill.style.width = Math.min(100, Math.max(0, progress)) + "%";
+}
+
+function setStatus(message) {
+    statusBox.textContent = message;
+}
+
+function getInputSeconds() {
+    const h = Number(hoursInput.value);
+    const m = Number(minutesInput.value);
+    const s = Number(secondsInput.value);
+
+    if (
+        !Number.isInteger(h) ||
+        !Number.isInteger(m) ||
+        !Number.isInteger(s) ||
+        h < 0 || h > 99 ||
+        m < 0 || m > 59 ||
+        s < 0 || s > 59
+    ) {
+        alert("Enter valid hours, minutes and seconds.");
+        return null;
+    }
+
+    const total = h * 3600 + m * 60 + s;
+
+    if (total <= 0) {
+        alert("Please set a countdown greater than zero.");
+        return null;
+    }
+
+    return total;
+}
+
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+
+    running = false;
+    endTime = null;
+}
+
+function tick() {
+    if (!running || endTime === null) return;
+
+    remaining = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
+
+    updateDisplay();
+
+    if (remaining <= 0) {
+        stopTimer();
+        state.textContent = "COUNTDOWN COMPLETE";
+        setStatus("COMPLETE: Your countdown has finished.");
+        document.title = "TIME UP! | HEXCLØWN";
+        progressFill.style.width = "100%";
+        finishAlert();
+    }
+}
+
+function startTimer() {
+    if (running) return;
+
+    if (remaining <= 0) {
+        const inputTime = getInputSeconds();
+
+        if (inputTime === null) return;
+
+        remaining = inputTime;
+        totalDuration = inputTime;
+    } else if (timerInterval === null && totalDuration === 0) {
+        const inputTime = getInputSeconds();
+
+        if (inputTime === null) return;
+
+        remaining = inputTime;
+        totalDuration = inputTime;
+    }
+
+    if (remaining <= 0) return;
+
+    running = true;
+    endTime = Date.now() + remaining * 1000;
+
+    state.textContent = "COUNTDOWN RUNNING";
+    setStatus("RUNNING: Your countdown is active.");
+
+    timerInterval = setInterval(tick, 200);
+    updateDisplay();
+}
+
+function pauseTimer() {
+    if (!running) return;
+
+    remaining = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
+
+    stopTimer();
+
+    state.textContent = "PAUSED";
+    setStatus("PAUSED: Your countdown has been stopped temporarily.");
+
+    updateDisplay();
+}
+
+function resetTimer() {
+    stopTimer();
+
+    const inputTime = getInputSeconds();
+
+    if (inputTime === null) {
+        remaining = 0;
+        totalDuration = 0;
+    } else {
+        remaining = inputTime;
+        totalDuration = inputTime;
+    }
+
+    state.textContent = "READY TO START";
+    setStatus("RESET: Your countdown is ready.");
+
+    updateDisplay();
+}
+
+function setQuickTime(seconds) {
+    stopTimer();
+
+    remaining = seconds;
+    totalDuration = seconds;
+
+    hoursInput.value = Math.floor(seconds / 3600);
+    minutesInput.value = Math.floor((seconds % 3600) / 60);
+    secondsInput.value = seconds % 60;
+
+    state.textContent = "READY TO START";
+    setStatus("PRESET SELECTED: Press START when ready.");
+
+    updateDisplay();
+}
+
+async function playAlertSound() {
+    try {
+        const AudioContextClass =
+            window.AudioContext || window.webkitAudioContext;
+
+        if (!AudioContextClass) return;
+
+        if (!audioContext) {
+            audioContext = new AudioContextClass();
+        }
+
+        if (audioContext.state === "suspended") {
+            await audioContext.resume();
+        }
+
+        const now = audioContext.currentTime;
+
+        [660, 880, 660].forEach((frequency, index) => {
+            const oscillator = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+
+            const start = now + index * 0.35;
+
+            oscillator.type = "sine";
+            oscillator.frequency.setValueAtTime(frequency, start);
+
+            gain.gain.setValueAtTime(0.001, start);
+            gain.gain.exponentialRampToValueAtTime(0.12, start + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.001, start + 0.28);
+
+            oscillator.connect(gain);
+            gain.connect(audioContext.destination);
+
+            oscillator.start(start);
+            oscillator.stop(start + 0.3);
+        });
+
+    } catch (error) {
+        console.log("Audio alert unavailable.");
+    }
+}
+
+async function requestNotificationPermission() {
+    if (!("Notification" in window)) {
+        alert("This browser does not support notifications.");
+        document.getElementById("browserAlert").checked = false;
+        return;
+    }
+
+    if (Notification.permission === "granted") return;
+
+    if (Notification.permission === "denied") {
+        alert("Notifications are blocked in your browser settings.");
+        document.getElementById("browserAlert").checked = false;
+        return;
+    }
+
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") {
+        document.getElementById("browserAlert").checked = false;
+        alert("Notification permission was not granted.");
+    }
+}
+
+function finishAlert() {
+    if (document.getElementById("soundAlert").checked) {
+        playAlertSound();
+    }
+
+    if (
+        document.getElementById("browserAlert").checked &&
+        "Notification" in window &&
+        Notification.permission === "granted"
+    ) {
+        try {
+            new Notification("HEXCLØWN Countdown", {
+                body: "Your countdown has finished!",
+                tag: "hexclown-countdown"
+            });
+        } catch (error) {
+            console.log("Notification unavailable.");
+        }
+    }
+}
+
+document.getElementById("startBtn").addEventListener("click", startTimer);
+document.getElementById("pauseBtn").addEventListener("click", pauseTimer);
+document.getElementById("resetBtn").addEventListener("click", resetTimer);
+
+document.querySelectorAll("[data-time]").forEach(button => {
+    button.addEventListener("click", () => {
+        setQuickTime(Number(button.dataset.time));
+    });
+});
+
+document.getElementById("browserAlert").addEventListener("change", async event => {
+    if (event.target.checked) {
+        await requestNotificationPermission();
+    }
+});
+
+[hoursInput, minutesInput, secondsInput].forEach(input => {
+    input.addEventListener("input", () => {
+        if (running) return;
+
+        const h = Number(hoursInput.value) || 0;
+        const m = Number(minutesInput.value) || 0;
+        const s = Number(secondsInput.value) || 0;
+
+        if (h > 99 || m > 59 || s > 59 || h < 0 || m < 0 || s < 0) {
+            return;
+        }
+
+        remaining = h * 3600 + m * 60 + s;
+        totalDuration = remaining;
+
+        state.textContent = "READY TO START";
+        setStatus("TIME UPDATED: Press START when ready.");
+
+        updateDisplay();
+    });
+});
+
+window.addEventListener("beforeunload", () => {
+    stopTimer();
+});
+
+updateDisplay();
+</script>
+
+</body>
+</html>
