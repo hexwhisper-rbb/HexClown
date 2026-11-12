@@ -1,1 +1,659 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+
+<title>Quiz Master | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #071321;
+    --panel: #0d2032;
+    --green: #39ff88;
+    --cyan: #00eaff;
+    --blue: #168bff;
+    --red: #ff426b;
+    --text: #eafaff;
+    --muted: #9bb2c2;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, #12304a, transparent 40%),
+        var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    padding-bottom: 30px;
+}
+
+header {
+    text-align: center;
+    padding: 22px 12px;
+    background: rgba(4,15,27,.9);
+    border-bottom: 1px solid rgba(0,234,255,.25);
+}
+
+.logo {
+    color: var(--green);
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-shadow: 0 0 12px rgba(57,255,136,.5);
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+header p {
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-top: 7px;
+}
+
+nav {
+    text-align: center;
+    padding: 13px 8px;
+    background: #091a2a;
+    border-bottom: 1px solid rgba(57,255,136,.15);
+}
+
+nav a {
+    display: inline-block;
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 12px;
+    padding: 8px 12px;
+    margin: 3px;
+    border: 1px solid rgba(0,234,255,.3);
+    border-radius: 6px;
+}
+
+nav a:hover {
+    background: var(--cyan);
+    color: #071321;
+}
+
+.container {
+    width: 92%;
+    max-width: 650px;
+    margin: 30px auto;
+}
+
+.intro {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.intro h1 {
+    color: var(--green);
+    font-size: 29px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 12px rgba(57,255,136,.3);
+}
+
+.intro p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.quiz-card {
+    background: linear-gradient(145deg, #10283b, #091725);
+    border: 1px solid rgba(0,234,255,.3);
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 0 22px rgba(0,234,255,.07);
+}
+
+.top-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+.question-count {
+    color: var(--cyan);
+}
+
+.score {
+    color: var(--green);
+    font-weight: bold;
+}
+
+.progress-track {
+    height: 8px;
+    background: #20364a;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--cyan));
+    transition: width .3s;
+}
+
+.question {
+    font-size: 21px;
+    line-height: 1.5;
+    margin-bottom: 22px;
+    color: white;
+}
+
+.answers {
+    display: grid;
+    gap: 12px;
+}
+
+.answer-btn {
+    width: 100%;
+    padding: 15px;
+    text-align: left;
+    border: 1px solid rgba(0,234,255,.25);
+    border-radius: 8px;
+    background: #10283b;
+    color: var(--text);
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.answer-btn:hover:not(:disabled) {
+    border-color: var(--cyan);
+    background: #15364d;
+    transform: translateX(3px);
+}
+
+.answer-btn:disabled {
+    cursor: default;
+    opacity: 1;
+}
+
+.answer-btn.correct {
+    background: rgba(57,255,136,.15);
+    border-color: var(--green);
+    color: var(--green);
+}
+
+.answer-btn.wrong {
+    background: rgba(255,66,107,.15);
+    border-color: var(--red);
+    color: #ff829b;
+}
+
+.feedback {
+    min-height: 25px;
+    margin-top: 17px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+.feedback.good {
+    color: var(--green);
+}
+
+.feedback.bad {
+    color: var(--red);
+}
+
+.action-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 7px;
+    background: var(--cyan);
+    color: #061321;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.action-btn:hover {
+    background: var(--green);
+    box-shadow: 0 0 14px rgba(57,255,136,.3);
+}
+
+#nextBtn {
+    display: none;
+}
+
+.result {
+    display: none;
+    text-align: center;
+}
+
+.result h2 {
+    color: var(--green);
+    font-size: 26px;
+    margin-bottom: 15px;
+}
+
+.result .final-score {
+    font-size: 48px;
+    color: var(--cyan);
+    font-weight: bold;
+    margin: 20px 0;
+    text-shadow: 0 0 15px rgba(0,234,255,.4);
+}
+
+.result p {
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 14px;
+}
+
+.result-message {
+    color: var(--green) !important;
+    font-size: 18px !important;
+    margin: 12px 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.back-area {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.back-area a {
+    color: var(--green);
+    text-decoration: none;
+    border: 1px solid var(--green);
+    border-radius: 7px;
+    padding: 11px 18px;
+    display: inline-block;
+    font-size: 13px;
+}
+
+.back-area a:hover {
+    background: var(--green);
+    color: #071321;
+}
+
+footer {
+    text-align: center;
+    padding: 20px 10px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+footer strong {
+    color: var(--green);
+}
+
+@media(max-width: 400px) {
+    .quiz-card {
+        padding: 16px;
+    }
+
+    .question {
+        font-size: 18px;
+    }
+
+    .intro h1 {
+        font-size: 25px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEXCL<span>Ø</span>WN</div>
+    <p>LEARN • THINK • CONQUER</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="GameZone.html">GameZone</a>
+    <a href="eduandtri.html">Education & Trivia</a>
+</nav>
+
+<main class="container">
+
+    <section class="intro">
+        <h1>🧠 QUIZ MASTER</h1>
+        <p>
+            Welcome to Quiz Master! Test your general knowledge,
+            challenge your brain and see how much you know.
+        </p>
+    </section>
+
+    <section class="quiz-card">
+
+        <div id="quizArea">
+
+            <div class="top-info">
+                <span class="question-count" id="questionCount">
+                    QUESTION 1 / 15
+                </span>
+
+                <span class="score" id="scoreDisplay">
+                    SCORE: 0
+                </span>
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <h2 class="question" id="questionText">
+                Loading question...
+            </h2>
+
+            <div class="answers" id="answerButtons"></div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <button class="action-btn" id="nextBtn" onclick="nextQuestion()">
+                NEXT QUESTION →
+            </button>
+
+        </div>
+
+        <div class="result" id="resultArea">
+            <h2>QUIZ COMPLETED!</h2>
+
+            <div class="final-score" id="finalScore">0 / 15</div>
+
+            <p id="percentage"></p>
+
+            <p class="result-message" id="resultMessage"></p>
+
+            <p>
+                Keep learning and keep improving.
+                Every question is a chance to grow!
+            </p>
+
+            <button class="action-btn" onclick="restartQuiz()">
+                PLAY AGAIN ↻
+            </button>
+        </div>
+
+    </section>
+
+    <div class="back-area">
+        <a href="eduandtri.html">← BACK TO EDUCATION & TRIVIA</a>
+    </div>
+
+</main>
+
+<footer>
+    <strong>HEXCLØWN</strong><br>
+    Your world of games, skills and entertainment.<br>
+    © 2026 HEXCLØWN. All rights reserved.
+</footer>
+
+<script>
+
+const questions = [
+    {
+        question: "What is the capital city of Nigeria?",
+        answers: ["Lagos", "Abuja", "Kano", "Ibadan"],
+        correct: 1
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        answers: ["Venus", "Jupiter", "Mars", "Saturn"],
+        correct: 2
+    },
+    {
+        question: "How many days are there in a leap year?",
+        answers: ["364", "365", "366", "367"],
+        correct: 2
+    },
+    {
+        question: "Which animal is known as the King of the Jungle?",
+        answers: ["Tiger", "Lion", "Elephant", "Leopard"],
+        correct: 1
+    },
+    {
+        question: "What is the largest ocean on Earth?",
+        answers: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+        correct: 3
+    },
+    {
+        question: "Which gas do plants absorb from the atmosphere?",
+        answers: ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"],
+        correct: 1
+    },
+    {
+        question: "How many sides does a hexagon have?",
+        answers: ["Five", "Six", "Seven", "Eight"],
+        correct: 1
+    },
+    {
+        question: "Who wrote the play Romeo and Juliet?",
+        answers: ["Charles Dickens", "William Shakespeare", "Mark Twain", "Chinua Achebe"],
+        correct: 1
+    },
+    {
+        question: "Which is the largest continent?",
+        answers: ["Africa", "Europe", "Asia", "South America"],
+        correct: 2
+    },
+    {
+        question: "What is the chemical symbol for water?",
+        answers: ["CO2", "O2", "H2O", "NaCl"],
+        correct: 2
+    },
+    {
+        question: "Which organ pumps blood around the human body?",
+        answers: ["Brain", "Lungs", "Heart", "Kidney"],
+        correct: 2
+    },
+    {
+        question: "How many colours are traditionally listed in a rainbow?",
+        answers: ["Five", "Six", "Seven", "Eight"],
+        correct: 2
+    },
+    {
+        question: "Which country is famous for the Eiffel Tower?",
+        answers: ["Italy", "France", "Germany", "Spain"],
+        correct: 1
+    },
+    {
+        question: "What is 12 multiplied by 8?",
+        answers: ["86", "92", "96", "108"],
+        correct: 2
+    },
+    {
+        question: "Which instrument is used to measure temperature?",
+        answers: ["Barometer", "Thermometer", "Compass", "Microscope"],
+        correct: 1
+    }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+const questionText = document.getElementById("questionText");
+const answerButtons = document.getElementById("answerButtons");
+const questionCount = document.getElementById("questionCount");
+const scoreDisplay = document.getElementById("scoreDisplay");
+const feedback = document.getElementById("feedback");
+const progressBar = document.getElementById("progressBar");
+const nextBtn = document.getElementById("nextBtn");
+const quizArea = document.getElementById("quizArea");
+const resultArea = document.getElementById("resultArea");
+
+function loadQuestion() {
+
+    answered = false;
+
+    feedback.textContent = "";
+    feedback.className = "feedback";
+    nextBtn.style.display = "none";
+
+    const q = questions[currentQuestion];
+
+    questionText.textContent = q.question;
+
+    questionCount.textContent =
+        "QUESTION " + (currentQuestion + 1) +
+        " / " + questions.length;
+
+    scoreDisplay.textContent = "SCORE: " + score;
+
+    progressBar.style.width =
+        (currentQuestion / questions.length * 100) + "%";
+
+    answerButtons.innerHTML = "";
+
+    q.answers.forEach(function(answer, index) {
+
+        const button = document.createElement("button");
+
+        button.className = "answer-btn";
+        button.textContent =
+            String.fromCharCode(65 + index) + ". " + answer;
+
+        button.addEventListener("click", function() {
+            selectAnswer(index, button);
+        });
+
+        answerButtons.appendChild(button);
+    });
+}
+
+function selectAnswer(selected, selectedButton) {
+
+    if (answered) return;
+
+    answered = true;
+
+    const q = questions[currentQuestion];
+    const buttons = answerButtons.querySelectorAll(".answer-btn");
+
+    buttons.forEach(function(button) {
+        button.disabled = true;
+    });
+
+    if (selected === q.correct) {
+
+        score++;
+
+        selectedButton.classList.add("correct");
+
+        feedback.textContent = "✓ CORRECT! Excellent work!";
+        feedback.className = "feedback good";
+
+    } else {
+
+        selectedButton.classList.add("wrong");
+
+        buttons[q.correct].classList.add("correct");
+
+        feedback.textContent =
+            "✗ NOT QUITE! Correct answer: " +
+            q.answers[q.correct];
+
+        feedback.className = "feedback bad";
+    }
+
+    scoreDisplay.textContent = "SCORE: " + score;
+
+    progressBar.style.width =
+        ((currentQuestion + 1) / questions.length * 100) + "%";
+
+    nextBtn.style.display = "block";
+
+    if (currentQuestion === questions.length - 1) {
+        nextBtn.textContent = "SEE MY RESULTS →";
+    } else {
+        nextBtn.textContent = "NEXT QUESTION →";
+    }
+}
+
+function nextQuestion() {
+
+    if (!answered) return;
+
+    currentQuestion++;
+
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        showResults();
+    }
+}
+
+function showResults() {
+
+    quizArea.classList.add("hidden");
+    resultArea.style.display = "block";
+
+    const total = questions.length;
+    const percent = Math.round((score / total) * 100);
+
+    document.getElementById("finalScore").textContent =
+        score + " / " + total;
+
+    document.getElementById("percentage").textContent =
+        "You scored " + percent + "%";
+
+    let message = "";
+
+    if (percent === 100) {
+        message = "🏆 PERFECT SCORE! You're a Quiz Master!";
+    } else if (percent >= 80) {
+        message = "🔥 Outstanding! You know your stuff!";
+    } else if (percent >= 60) {
+        message = "⚡ Great effort! Keep it up!";
+    } else if (percent >= 40) {
+        message = "👏 Good try! You can do even better!";
+    } else {
+        message = "💡 Keep learning. Practice makes progress!";
+    }
+
+    document.getElementById("resultMessage").textContent = message;
+}
+
+function restartQuiz() {
+
+    currentQuestion = 0;
+    score = 0;
+    answered = false;
+
+    resultArea.style.display = "none";
+    quizArea.classList.remove("hidden");
+
+    nextBtn.textContent = "NEXT QUESTION →";
+
+    loadQuestion();
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+              </html>
+              
