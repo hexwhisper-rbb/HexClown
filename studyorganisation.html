@@ -1,0 +1,845 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+<title>Study Organisation | HEXCLØWN</title>
+
+<style>
+:root{
+  --bg:#07131a;
+  --panel:#0d2029;
+  --panel2:#102a34;
+  --line:#1c3c48;
+  --text:#e7f5f5;
+  --muted:#8ba7ad;
+  --cyan:#35e0dc;
+  --green:#8cff75;
+  --red:#ff647c;
+  --yellow:#ffd36b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+
+header{
+  padding:17px 5%;
+  background:#091921;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.logo{
+  font-size:21px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:var(--cyan);
+}
+.logo span{color:var(--green)}
+.back{
+  text-decoration:none;
+  color:var(--cyan);
+  border:1px solid var(--line);
+  padding:9px 13px;
+  border-radius:9px;
+  font-size:13px;
+}
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:25px 15px 50px;
+}
+.hero{text-align:center;margin:15px 0 28px}
+.hero h1{
+  font-size:clamp(25px,5vw,37px);
+  margin:0 0 9px;
+}
+.hero h1 span{color:var(--cyan)}
+.hero p{
+  color:var(--muted);
+  line-height:1.6;
+  font-size:14px;
+}
+.section{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:19px;
+  margin-bottom:22px;
+}
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+.section-title span{font-size:23px}
+.section-title h2{font-size:20px;margin:0}
+.subtext{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+}
+input,textarea,select{
+  width:100%;
+  background:#061117;
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:12px;
+  outline:none;
+}
+input:focus,textarea:focus,select:focus{
+  border-color:var(--cyan);
+}
+textarea{
+  resize:vertical;
+  min-height:150px;
+  line-height:1.6;
+}
+label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:7px;
+}
+.field{margin-bottom:13px}
+.primary{
+  background:var(--cyan);
+  color:#061117;
+  border:0;
+  border-radius:9px;
+  padding:12px 16px;
+  font-weight:bold;
+}
+.secondary{
+  background:var(--panel2);
+  color:var(--cyan);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:9px 12px;
+  font-size:12px;
+}
+.danger{
+  background:transparent;
+  color:var(--red);
+  border:1px solid #63313c;
+  border-radius:8px;
+  padding:8px 10px;
+  font-size:12px;
+}
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.full{grid-column:1/-1}
+.toolbar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin:13px 0;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:17px 0;
+}
+.stat{
+  background:#091921;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:14px;
+  text-align:center;
+}
+.stat strong{
+  display:block;
+  font-size:24px;
+  color:var(--green);
+}
+.stat span{
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:5px;
+}
+.note-tools{
+  display:grid;
+  grid-template-columns:1fr 180px;
+  gap:10px;
+  margin:18px 0;
+}
+.notes-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:12px;
+}
+.note-card{
+  background:#091921;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:15px;
+  min-width:0;
+}
+.note-card h3{
+  margin:0 0 8px;
+  font-size:16px;
+  overflow-wrap:anywhere;
+}
+.note-subject{
+  font-size:11px;
+  color:var(--cyan);
+  margin-bottom:10px;
+}
+.note-preview{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  max-height:100px;
+  overflow:hidden;
+}
+.note-date{
+  font-size:10px;
+  color:var(--muted);
+  margin:12px 0;
+}
+.note-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+.empty{
+  color:var(--muted);
+  font-size:13px;
+  padding:15px 0;
+}
+.progress-track{
+  height:10px;
+  background:#061117;
+  border-radius:20px;
+  overflow:hidden;
+  margin:10px 0;
+}
+.progress-fill{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--cyan),var(--green));
+  border-radius:20px;
+  transition:width .25s;
+}
+.progress-label{
+  display:flex;
+  justify-content:space-between;
+  font-size:12px;
+  color:var(--muted);
+}
+.planner-form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:18px;
+}
+.task-list{
+  display:grid;
+  gap:10px;
+  margin-top:18px;
+}
+.task{
+  background:#091921;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:13px;
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+}
+.task.completed{opacity:.65}
+.task.completed .task-title{text-decoration:line-through}
+.task-check{
+  width:21px;
+  height:21px;
+  accent-color:#35e0dc;
+  flex-shrink:0;
+  margin-top:2px;
+}
+.task-content{flex:1;min-width:0}
+.task-title{
+  font-size:14px;
+  font-weight:bold;
+  overflow-wrap:anywhere;
+}
+.task-details{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:6px;
+  line-height:1.5;
+}
+.priority{
+  display:inline-block;
+  border-radius:5px;
+  padding:4px 7px;
+  font-size:10px;
+  margin-top:7px;
+}
+.priority.High{color:var(--red);background:#381b25}
+.priority.Medium{color:var(--yellow);background:#382d18}
+.priority.Low{color:var(--green);background:#183322}
+.task-actions{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.task-actions button{
+  background:transparent;
+  border:1px solid var(--line);
+  color:var(--cyan);
+  border-radius:7px;
+  padding:6px 8px;
+  font-size:11px;
+}
+.task-actions .remove{color:var(--red)}
+.planner-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.planner-top input{max-width:190px}
+.filter-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+.filter-row button.active{
+  background:#164b45;
+  border-color:var(--cyan);
+}
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  padding:20px;
+  border-top:1px solid var(--line);
+}
+@media(max-width:600px){
+  main{padding:18px 11px 35px}
+  .section{padding:14px}
+  .form-grid,.planner-form{grid-template-columns:1fr}
+  .full{grid-column:auto}
+  .note-tools{grid-template-columns:1fr}
+  .stats{gap:6px}
+  .stat{padding:11px 5px}
+  .stat strong{font-size:20px}
+  .task{padding:10px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCL<span>Ø</span>WN</div>
+  <a class="back" href="index.html">← Home</a>
+</header>
+
+<main>
+
+  <div class="hero">
+    <h1>STUDY <span>ORGANISATION</span></h1>
+    <p>Organise your revision materials, plan your study sessions and stay focused on your goals.</p>
+  </div>
+
+  <!-- STUDY NOTES -->
+  <section class="section">
+
+    <div class="section-title">
+      <span>📚</span>
+      <h2>Study Notes & Revision Library</h2>
+    </div>
+
+    <p class="subtext">
+      Create your own revision library. Save notes by subject, search your materials and return to them whenever you need.
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        <strong id="noteTotal">0</strong>
+        <span>Total Notes</span>
+      </div>
+      <div class="stat">
+        <strong id="subjectTotal">0</strong>
+        <span>Subjects</span>
+      </div>
+      <div class="stat">
+        <strong id="noteWords">0</strong>
+        <span>Total Words</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="noteTitle">Note title</label>
+      <input id="noteTitle" type="text" maxlength="100" placeholder="e.g. Introduction to Cell Biology">
+    </div>
+
+    <div class="form-grid">
+      <div class="field">
+        <label for="noteSubject">Subject</label>
+        <input id="noteSubject" type="text" maxlength="50" placeholder="e.g. Biology">
+      </div>
+
+      <div class="field">
+        <label for="noteTag">Topic / Category</label>
+        <input id="noteTag" type="text" maxlength="50" placeholder="e.g. Cell Structure">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="noteContent">Your study notes</label>
+      <textarea id="noteContent" placeholder="Write your notes, definitions, formulas, explanations and revision points here..."></textarea>
+    </div>
+
+    <div class="toolbar">
+      <button class="primary" id="saveNote">＋ Save Study Note</button>
+      <button class="secondary" id="cancelEdit" style="display:none">Cancel Editing</button>
+      <button class="secondary" id="exportAllNotes">Export All Notes</button>
+    </div>
+
+    <div class="note-tools">
+      <input id="searchNotes" type="search" placeholder="Search notes, subjects or topics...">
+      <select id="subjectFilter">
+        <option value="all">All Subjects</option>
+      </select>
+    </div>
+
+    <div class="notes-grid" id="notesGrid">
+      <div class="empty">Your saved study notes will appear here.</div>
+    </div>
+
+  </section>
+
+  <!-- DAILY STUDY PLANNER -->
+  <section class="section">
+
+    <div class="section-title">
+      <span>📅</span>
+      <h2>Daily Study Planner & Focus Goals</h2>
+    </div>
+
+    <p class="subtext">
+      Plan your study activities, choose priorities and track your daily achievements.
+    </p>
+
+    <div class="planner-top">
+      <div>
+        <label for="plannerDate">Choose study date</label>
+        <input type="date" id="plannerDate">
+      </div>
+      <div class="subtext" id="plannerDay"></div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <strong id="taskTotal">0</strong>
+        <span>Total Tasks</span>
+      </div>
+      <div class="stat">
+        <strong id="taskDone">0</strong>
+        <span>Completed</span>
+      </div>
+      <div class="stat">
+        <strong id="taskPercent">0%</strong>
+        <span>Daily Progress</span>
+      </div>
+    </div>
+
+    <div class="progress-label">
+      <span>Daily Goal Progress</span>
+      <span id="progressText">0% completed</span>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <form id="taskForm" class="planner-form">
+
+      <div class="field">
+        <label for="taskTitle">Study task</label>
+        <input id="taskTitle" type="text" maxlength="100" placeholder="e.g. Revise organic chemistry" required>
+      </div>
+
+      <div class="field">
+        <label for="taskSubject">Subject</label>
+        <input id="taskSubject" type="text" maxlength="50" placeholder="e.g. Chemistry">
+      </div>
+
+      <div class="field">
+        <label for="taskTime">Study time</label>
+        <input id="taskTime" type="time">
+      </div>
+
+      <div class="field">
+        <label for="taskDuration">Duration (minutes)</label>
+        <input id="taskDuration" type="number" min="1" max="1440" placeholder="e.g. 45">
+      </div>
+
+      <div class="field">
+        <label for="taskPriority">Priority</label>
+        <select id="taskPriority">
+          <option value="High">High</option>
+          <option value="Medium" selected>Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="taskDate">Task date</label>
+        <input id="taskDate" type="date" required>
+      </div>
+
+      <div class="full">
+        <button class="primary" type="submit">＋ Add Study Task</button>
+      </div>
+
+    </form>
+
+    <div class="filter-row" id="taskFilters">
+      <button class="secondary active" data-filter="all">All Tasks</button>
+      <button class="secondary" data-filter="pending">Pending</button>
+      <button class="secondary" data-filter="completed">Completed</button>
+      <button class="secondary" data-filter="High">High Priority</button>
+    </div>
+
+    <div class="task-list" id="taskList">
+      <div class="empty">No study tasks for this date yet.</div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  HEXCLØWN — Plan Your Work. Master Your Goals.
+</footer>
+
+<script>
+/* ===================================
+   STORAGE
+=================================== */
+
+const NOTE_KEY = "hexclown_studyorganisation_notes_v1";
+const TASK_KEY = "hexclown_studyorganisation_tasks_v1";
+
+function loadData(key){
+  try{
+    const data = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(data) ? data : [];
+  }catch(e){
+    return [];
+  }
+}
+
+function saveData(key,data){
+  try{
+    localStorage.setItem(key,JSON.stringify(data));
+    return true;
+  }catch(e){
+    alert("Browser storage is unavailable or full. Export your work before continuing.");
+    return false;
+  }
+}
+
+let notes = loadData(NOTE_KEY);
+let tasks = loadData(TASK_KEY);
+
+function makeId(){
+  return Date.now().toString(36) + Math.random().toString(36).slice(2);
+}
+
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,char=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[char]);
+}
+
+function dateString(date){
+  const year = date.getFullYear();
+  const month = String(date.getMonth()+1).padStart(2,"0");
+  const day = String(date.getDate()).padStart(2,"0");
+  return year + "-" + month + "-" + day;
+}
+
+
+/* ===================================
+   STUDY NOTES LIBRARY
+=================================== */
+
+const noteTitle = document.getElementById("noteTitle");
+const noteSubject = document.getElementById("noteSubject");
+const noteTag = document.getElementById("noteTag");
+const noteContent = document.getElementById("noteContent");
+const notesGrid = document.getElementById("notesGrid");
+const searchNotes = document.getElementById("searchNotes");
+const subjectFilter = document.getElementById("subjectFilter");
+const saveNoteButton = document.getElementById("saveNote");
+const cancelEditButton = document.getElementById("cancelEdit");
+
+let editingNoteId = null;
+
+function resetNoteForm(){
+  editingNoteId = null;
+  noteTitle.value = "";
+  noteSubject.value = "";
+  noteTag.value = "";
+  noteContent.value = "";
+  saveNoteButton.textContent = "＋ Save Study Note";
+  cancelEditButton.style.display = "none";
+}
+
+function updateNoteStats(){
+  const subjects = new Set(
+    notes.map(note=>(note.subject || "").trim().toLowerCase()).filter(Boolean)
+  );
+
+  let words = 0;
+
+  notes.forEach(note=>{
+    const content = note.content || "";
+    words += content.trim() ? content.trim().split(/\s+/).length : 0;
+  });
+
+  document.getElementById("noteTotal").textContent = notes.length;
+  document.getElementById("subjectTotal").textContent = subjects.size;
+  document.getElementById("noteWords").textContent = words;
+}
+
+function updateSubjectFilter(){
+  const current = subjectFilter.value;
+
+  const subjects = [...new Set(
+    notes.map(note=>(note.subject || "").trim()).filter(Boolean)
+  )].sort((a,b)=>a.localeCompare(b));
+
+  subjectFilter.innerHTML = '<option value="all">All Subjects</option>';
+
+  subjects.forEach(subject=>{
+    const option = document.createElement("option");
+    option.value = subject;
+    option.textContent = subject;
+    subjectFilter.appendChild(option);
+  });
+
+  if(subjects.includes(current)){
+    subjectFilter.value = current;
+  }
+}
+
+function renderNotes(){
+  updateNoteStats();
+  updateSubjectFilter();
+
+  const search = searchNotes.value.trim().toLowerCase();
+  const selectedSubject = subjectFilter.value;
+
+  const filtered = notes.filter(note=>{
+    const searchable = [
+      note.title,
+      note.subject,
+      note.tag,
+      note.content
+    ].join(" ").toLowerCase();
+
+    const matchesSearch = searchable.includes(search);
+    const matchesSubject =
+      selectedSubject === "all" || note.subject === selectedSubject;
+
+    return matchesSearch && matchesSubject;
+  });
+
+  notesGrid.innerHTML = "";
+
+  if(!filtered.length){
+    const message = document.createElement("div");
+    message.className = "empty";
+    message.textContent = notes.length
+      ? "No notes match your search."
+      : "Your saved study notes will appear here.";
+
+    notesGrid.appendChild(message);
+    return;
+  }
+
+  filtered.forEach(note=>{
+    const card = document.createElement("article");
+    card.className = "note-card";
+
+    const title = document.createElement("h3");
+    title.textContent = note.title;
+
+    const subject = document.createElement("div");
+    subject.className = "note-subject";
+    subject.textContent =
+      (note.subject || "Uncategorised") +
+      (note.tag ? " · " + note.tag : "");
+
+    const preview = document.createElement("div");
+    preview.className = "note-preview";
+    preview.textContent = note.content;
+
+    const date = document.createElement("div");
+    date.className = "note-date";
+    date.textContent = "Last saved: " +
+      new Date(note.updatedAt || note.createdAt).toLocaleString();
+
+    const actions = document.createElement("div");
+    actions.className = "note-actions";
+
+    const edit = document.createElement("button");
+    edit.className = "secondary";
+    edit.textContent = "Edit";
+    edit.addEventListener("click",()=>editNote(note.id));
+
+    const exportButton = document.createElement("button");
+    exportButton.className = "secondary";
+    exportButton.textContent = "Export";
+    exportButton.addEventListener("click",()=>exportSingleNote(note));
+
+    const remove = document.createElement("button");
+    remove.className = "danger";
+    remove.textContent = "Delete";
+    remove.addEventListener("click",()=>deleteNote(note.id));
+
+    actions.append(edit,exportButton,remove);
+    card.append(title,subject,preview,date,actions);
+    notesGrid.appendChild(card);
+  });
+}
+
+saveNoteButton.addEventListener("click",()=>{
+  const title = noteTitle.value.trim();
+  const subject = noteSubject.value.trim();
+  const tag = noteTag.value.trim();
+  const content = noteContent.value.trim();
+
+  if(!title || !content){
+    alert("Please enter a note title and some study content.");
+    return;
+  }
+
+  if(editingNoteId){
+    const note = notes.find(item=>item.id === editingNoteId);
+
+    if(note){
+      note.title = title;
+      note.subject = subject;
+      note.tag = tag;
+      note.content = content;
+      note.updatedAt = new Date().toISOString();
+    }
+  }else{
+    notes.unshift({
+      id:makeId(),
+      title:title,
+      subject:subject,
+      tag:tag,
+      content:content,
+      createdAt:new Date().toISOString(),
+      updatedAt:new Date().toISOString()
+    });
+  }
+
+  if(saveData(NOTE_KEY,notes)){
+    resetNoteForm();
+    renderNotes();
+  }
+});
+
+function editNote(id){
+  const note = notes.find(item=>item.id === id);
+  if(!note) return;
+
+  editingNoteId = id;
+  noteTitle.value = note.title;
+  noteSubject.value = note.subject || "";
+  noteTag.value = note.tag || "";
+  noteContent.value = note.content;
+
+  saveNoteButton.textContent = "Save Changes";
+  cancelEditButton.style.display = "inline-block";
+
+  document.getElementById("noteTitle").scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+}
+
+cancelEditButton.addEventListener("click",resetNoteForm);
+
+function deleteNote(id){
+  if(!confirm("Delete this study note permanently?")) return;
+
+  notes = notes.filter(note=>note.id !== id);
+
+  if(editingNoteId === id) resetNoteForm();
+
+  saveData(NOTE_KEY,notes);
+  renderNotes();
+}
+
+function downloadText(filename,text){
+  const blob = new Blob([text],{type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function exportSingleNote(note){
+  const text =
+    note.title + "\n" +
+    "Subject: " + (note.subject || "Uncategorised") + "\n" +
+    "Topic: " + (note.tag || "None") + "\n\n" +
+    note.content;
+
+  downloadText("study-note-" + note.title.replace(/[^a-z0-9]/gi,"-") + ".txt",text);
+}
+
+document.getElementById("exportAllNotes").addEventListener("click",()=>{
+  if(!notes.length){
+    alert("There are no notes to export.");
+    return;
+  }
+
+  const text = notes.map(note=>
+    "================================\n" +
+    note.title + "\n" +
+    "Subject: " + (note.subject || "Uncategorised") + "\n" +
+    "T
