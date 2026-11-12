@@ -1,0 +1,832 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+<title>Exam Workspace | HEXCLØWN</title>
+
+<style>
+:root{
+  --bg:#07131a;
+  --panel:#0d2029;
+  --panel2:#102a34;
+  --line:#1c3c48;
+  --text:#e7f5f5;
+  --muted:#8ba7ad;
+  --cyan:#35e0dc;
+  --green:#8cff75;
+  --danger:#ff647c;
+  --yellow:#ffd36b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+header{
+  padding:17px 5%;
+  background:#091921;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.logo{
+  font-size:21px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:var(--cyan);
+}
+.logo span{color:var(--green)}
+.back{
+  text-decoration:none;
+  color:var(--cyan);
+  border:1px solid var(--line);
+  padding:9px 13px;
+  border-radius:9px;
+  font-size:13px;
+}
+main{max-width:1100px;margin:auto;padding:25px 15px 50px}
+.hero{text-align:center;margin:15px 0 28px}
+.hero h1{margin:0 0 9px;font-size:clamp(25px,5vw,37px)}
+.hero h1 span{color:var(--cyan)}
+.hero p{color:var(--muted);line-height:1.6;font-size:14px}
+.section{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:19px;
+  margin-bottom:22px;
+}
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:17px;
+}
+.section-title h2{font-size:20px;margin:0}
+.section-title span{font-size:22px}
+.subtext{color:var(--muted);font-size:13px;line-height:1.5}
+.calculator-layout{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:18px;
+}
+.display{
+  background:#061117;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:15px;
+  margin-bottom:12px;
+}
+#expression{
+  width:100%;
+  background:transparent;
+  border:0;
+  outline:none;
+  color:var(--muted);
+  font-size:17px;
+  text-align:right;
+  padding:7px 0;
+}
+#result{
+  text-align:right;
+  font-size:30px;
+  font-weight:bold;
+  color:var(--green);
+  min-height:39px;
+  overflow-wrap:anywhere;
+}
+.calc-options{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:12px;
+  flex-wrap:wrap;
+}
+.mode{
+  border:1px solid var(--line);
+  background:var(--panel2);
+  color:var(--cyan);
+  border-radius:8px;
+  padding:8px 11px;
+  font-size:12px;
+}
+.keys{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:7px;
+}
+.key{
+  min-height:48px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  background:var(--panel2);
+  color:var(--text);
+  font-weight:bold;
+  font-size:15px;
+}
+.key:active{transform:scale(.96)}
+.key.function{color:var(--cyan)}
+.key.operator{color:var(--green)}
+.key.danger{color:var(--danger)}
+.key.equal{
+  background:#164b45;
+  color:#fff;
+  border-color:#287c70;
+}
+.history-box,.scratch-box{
+  background:#091921;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:14px;
+}
+.history-box h3,.scratch-box h3{margin:0 0 12px;font-size:15px}
+.history-list{
+  max-height:260px;
+  overflow:auto;
+}
+.history-item{
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+  overflow-wrap:anywhere;
+}
+.history-item:last-child{border-bottom:0}
+.history-item .old{color:var(--muted);margin-bottom:5px}
+.history-item .new{color:var(--green);font-weight:bold}
+.history-item button{
+  float:right;
+  background:none;
+  border:0;
+  color:var(--cyan);
+  font-size:12px;
+}
+.empty{color:var(--muted);font-size:13px;padding:10px 0}
+.scratch-box textarea{
+  width:100%;
+  min-height:230px;
+  resize:vertical;
+  background:#061117;
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:13px;
+  outline:none;
+  line-height:1.6;
+}
+.scratch-box textarea:focus,
+input:focus{border-color:var(--cyan)}
+.scratch-footer{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  color:var(--muted);
+  font-size:12px;
+  margin-top:10px;
+}
+.small-btn{
+  border:1px solid var(--line);
+  background:var(--panel2);
+  color:var(--cyan);
+  border-radius:8px;
+  padding:8px 11px;
+  font-size:12px;
+}
+.exam-form{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.field label{
+  display:block;
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:7px;
+}
+.field input{
+  width:100%;
+  background:#061117;
+  color:var(--text);
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:12px;
+  outline:none;
+  color-scheme:dark;
+}
+.full{grid-column:1/-1}
+.primary{
+  border:0;
+  border-radius:9px;
+  padding:12px 16px;
+  background:var(--cyan);
+  color:#061117;
+  font-weight:bold;
+}
+.exam-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;
+  margin-top:18px;
+}
+.exam-card{
+  background:#091921;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:15px;
+}
+.exam-card h3{margin:0 0 6px;font-size:16px}
+.exam-subject{font-size:12px;color:var(--muted);margin-bottom:13px}
+.countdown{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:5px;
+  margin:12px 0;
+}
+.time-unit{
+  text-align:center;
+  background:var(--panel2);
+  border-radius:7px;
+  padding:9px 3px;
+}
+.time-unit strong{
+  display:block;
+  color:var(--green);
+  font-size:20px;
+}
+.time-unit small{font-size:10px;color:var(--muted)}
+.exam-date{font-size:11px;color:var(--muted);margin-bottom:12px}
+.exam-actions{display:flex;justify-content:flex-end}
+.delete-exam{
+  border:1px solid #63313c;
+  background:transparent;
+  color:var(--danger);
+  padding:7px 10px;
+  border-radius:7px;
+  font-size:12px;
+}
+.status{font-size:12px;color:var(--yellow);margin-top:7px}
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  padding:20px;
+  border-top:1px solid var(--line);
+}
+@media(max-width:720px){
+  .calculator-layout{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  main{padding:18px 11px 35px}
+  .section{padding:14px}
+  .exam-form{grid-template-columns:1fr}
+  .full{grid-column:auto}
+  .key{min-height:45px;font-size:13px}
+  #result{font-size:25px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCL<span>Ø</span>WN</div>
+  <a class="back" href="index.html">← Home</a>
+</header>
+
+<main>
+
+  <div class="hero">
+    <h1>EXAM <span>WORKSPACE</span></h1>
+    <p>Your personal calculation desk, scratchpad and exam countdown centre.</p>
+  </div>
+
+  <!-- SCIENTIFIC CALCULATOR -->
+  <section class="section">
+    <div class="section-title">
+      <span>🧮</span>
+      <h2>Scientific Calculator</h2>
+    </div>
+
+    <div class="calculator-layout">
+
+      <div>
+        <div class="display">
+          <input id="expression" type="text" placeholder="Enter calculation..." readonly>
+          <div id="result">0</div>
+        </div>
+
+        <div class="calc-options">
+          <button class="mode" id="angleMode">DEG</button>
+          <span class="subtext">Scientific calculation mode</span>
+        </div>
+
+        <div class="keys" id="calculatorKeys">
+          <button class="key function" data-value="sin(">sin</button>
+          <button class="key function" data-value="cos(">cos</button>
+          <button class="key function" data-value="tan(">tan</button>
+          <button class="key function" data-value="log(">log</button>
+          <button class="key function" data-value="ln(">ln</button>
+
+          <button class="key function" data-value="sqrt(">√</button>
+          <button class="key function" data-value="^">xʸ</button>
+          <button class="key function" data-value="!">x!</button>
+          <button class="key function" data-value="(">(</button>
+          <button class="key function" data-value=")">)</button>
+
+          <button class="key function" data-value="pi">π</button>
+          <button class="key function" data-value="e">e</button>
+          <button class="key function" data-value="%">%</button>
+          <button class="key danger" data-action="clear">AC</button>
+          <button class="key danger" data-action="backspace">⌫</button>
+
+          <button class="key" data-value="7">7</button>
+          <button class="key" data-value="8">8</button>
+          <button class="key" data-value="9">9</button>
+          <button class="key operator" data-value="/">÷</button>
+          <button class="key operator" data-value="*">×</button>
+
+          <button class="key" data-value="4">4</button>
+          <button class="key" data-value="5">5</button>
+          <button class="key" data-value="6">6</button>
+          <button class="key operator" data-value="-">−</button>
+          <button class="key operator" data-value="+">+</button>
+
+          <button class="key" data-value="1">1</button>
+          <button class="key" data-value="2">2</button>
+          <button class="key" data-value="3">3</button>
+          <button class="key" data-value="0">0</button>
+          <button class="key" data-value=".">.</button>
+
+          <button class="key function" data-action="sign">±</button>
+          <button class="key function" data-action="ans">ANS</button>
+          <button class="key danger" data-action="clearHistory">CLR H</button>
+          <button class="key equal" data-action="calculate" style="grid-column:span 2">=</button>
+        </div>
+      </div>
+
+      <div class="history-box">
+        <h3>📜 Calculation History</h3>
+        <div id="historyList" class="history-list">
+          <div class="empty">Your calculations will appear here.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SCRATCHPAD -->
+  <section class="section">
+    <div class="section-title">
+      <span>📝</span>
+      <h2>Study Scratchpad</h2>
+    </div>
+
+    <p class="subtext">Write formulas, working steps, reminders and quick notes. Your notes save automatically in this browser.</p>
+
+    <div class="scratch-box">
+      <h3>My Working Notes</h3>
+      <textarea id="scratchpad" placeholder="Start writing your calculations, formulas and study notes here..."></textarea>
+
+      <div class="scratch-footer">
+        <span id="scratchCount">0 words · 0 characters</span>
+        <span id="saveStatus">Saved automatically</span>
+      </div>
+
+      <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:13px">
+        <button class="small-btn" id="downloadNotes">Export Notes (.txt)</button>
+        <button class="small-btn" id="clearNotes">Clear Scratchpad</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXAM COUNTDOWN -->
+  <section class="section">
+    <div class="section-title">
+      <span>⏳</span>
+      <h2>Exam Countdown Timer</h2>
+    </div>
+
+    <p class="subtext">Add your upcoming exams and keep track of how much time you have left to prepare.</p>
+
+    <form id="examForm" class="exam-form">
+      <div class="field">
+        <label for="examName">Exam name</label>
+        <input id="examName" type="text" placeholder="e.g. Biology Examination" required maxlength="60">
+      </div>
+
+      <div class="field">
+        <label for="examSubject">Subject / Course</label>
+        <input id="examSubject" type="text" placeholder="e.g. Biology" maxlength="50">
+      </div>
+
+      <div class="field full">
+        <label for="examDate">Exam date and time</label>
+        <input id="examDate" type="datetime-local" required>
+      </div>
+
+      <div class="full">
+        <button type="submit" class="primary">＋ Add Exam Countdown</button>
+      </div>
+    </form>
+
+    <div id="examList" class="exam-list">
+      <div class="empty">No exams added yet. Add your first exam above.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  HEXCLØWN — Learn. Prepare. Achieve.
+</footer>
+
+<script>
+/* =====================================
+   SAFE SCIENTIFIC CALCULATOR
+   No eval() or external libraries
+===================================== */
+
+const expressionDisplay = document.getElementById("expression");
+const resultDisplay = document.getElementById("result");
+const keys = document.getElementById("calculatorKeys");
+const angleButton = document.getElementById("angleMode");
+
+let expression = "";
+let lastAnswer = 0;
+let angleMode = "DEG";
+
+let history = [];
+try {
+  history = JSON.parse(localStorage.getItem("hexclown_exam_calc_history_v1") || "[]");
+  if (!Array.isArray(history)) history = [];
+} catch(e) {
+  history = [];
+}
+
+function updateDisplay(){
+  expressionDisplay.value = expression;
+}
+
+function insertValue(value){
+  expression += value;
+  updateDisplay();
+  resultDisplay.textContent = "…";
+}
+
+function clearCalculator(){
+  expression = "";
+  updateDisplay();
+  resultDisplay.textContent = "0";
+}
+
+function backspace(){
+  expression = expression.slice(0,-1);
+  updateDisplay();
+  resultDisplay.textContent = expression ? "…" : "0";
+}
+
+function factorial(n){
+  if (!Number.isInteger(n) || n < 0 || n > 170) {
+    throw new Error("Factorial needs a whole number from 0 to 170");
+  }
+  let answer = 1;
+  for(let i=2;i<=n;i++) answer *= i;
+  return answer;
+}
+
+function tokenize(input){
+  const tokens = [];
+  let i = 0;
+
+  while(i < input.length){
+    if(/\s/.test(input[i])){
+      i++;
+      continue;
+    }
+
+    const rest = input.slice(i);
+    const number = rest.match(/^(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?/i);
+
+    if(number){
+      tokens.push({type:"number",value:Number(number[0])});
+      i += number[0].length;
+      continue;
+    }
+
+    const identifier = rest.match(/^[a-zA-Z]+/);
+    if(identifier){
+      tokens.push({type:"identifier",value:identifier[0].toLowerCase()});
+      i += identifier[0].length;
+      continue;
+    }
+
+    const character = input[i];
+
+    if("+-*/^()%!".includes(character)){
+      tokens.push({type:"symbol",value:character});
+      i++;
+      continue;
+    }
+
+    throw new Error("Invalid character: " + character);
+  }
+
+  return tokens;
+}
+
+function calculateExpression(input){
+  const tokens = tokenize(input);
+  let position = 0;
+
+  function peek(){
+    return tokens[position];
+  }
+
+  function take(value){
+    if(peek() && peek().value === value){
+      position++;
+      return true;
+    }
+    return false;
+  }
+
+  function parseExpression(){
+    let value = parseTerm();
+
+    while(peek() && (peek().value === "+" || peek().value === "-")){
+      const operator = tokens[position++].value;
+      const right = parseTerm();
+      value = operator === "+" ? value + right : value - right;
+    }
+
+    return value;
+  }
+
+  function parseTerm(){
+    let value = parseUnary();
+
+    while(peek() && ["*","/"].includes(peek().value)){
+      const operator = tokens[position++].value;
+      const right = parseUnary();
+
+      if(operator === "/" && right === 0){
+        throw new Error("Cannot divide by zero");
+      }
+
+      value = operator === "*" ? value * right : value / right;
+    }
+
+    return value;
+  }
+
+  function parseUnary(){
+    if(take("+")) return parseUnary();
+    if(take("-")) return -parseUnary();
+    return parsePower();
+  }
+
+  function parsePower(){
+    let value = parsePostfix();
+
+    if(take("^")){
+      value = Math.pow(value,parseUnary());
+    }
+
+    return value;
+  }
+
+  function parsePostfix(){
+    let value = parsePrimary();
+
+    while(true){
+      if(take("!")){
+        value = factorial(value);
+      } else if(take("%")){
+        value = value / 100;
+      } else {
+        break;
+      }
+    }
+
+    return value;
+  }
+
+  function parsePrimary(){
+    const token = peek();
+
+    if(!token) throw new Error("Incomplete expression");
+
+    if(take("(")){
+      const value = parseExpression();
+      if(!take(")")) throw new Error("Missing closing bracket");
+      return value;
+    }
+
+    if(token.type === "number"){
+      position++;
+      return token.value;
+    }
+
+    if(token.type === "identifier"){
+      position++;
+      const name = token.value;
+
+      if(name === "pi") return Math.PI;
+      if(name === "e") return Math.E;
+
+      if(!take("(")){
+        throw new Error("Function needs brackets");
+      }
+
+      const argument = parseExpression();
+
+      if(!take(")")){
+        throw new Error("Missing function bracket");
+      }
+
+      let value;
+
+      switch(name){
+        case "sin":
+          value = Math.sin(angleMode === "DEG" ? argument*Math.PI/180 : argument);
+          break;
+        case "cos":
+          value = Math.cos(angleMode === "DEG" ? argument*Math.PI/180 : argument);
+          break;
+        case "tan":{
+          const radians = angleMode === "DEG" ? argument*Math.PI/180 : argument;
+          if(Math.abs(Math.cos(radians)) < 1e-12) throw new Error("Tangent is undefined here");
+          value = Math.tan(radians);
+          break;
+        }
+        case "sqrt":
+          if(argument < 0) throw new Error("Cannot calculate square root of a negative number");
+          value = Math.sqrt(argument);
+          break;
+        case "log":
+          if(argument <= 0) throw new Error("Log needs a positive number");
+          value = Math.log10(argument);
+          break;
+        case "ln":
+          if(argument <= 0) throw new Error("Natural log needs a positive number");
+          value = Math.log(argument);
+          break;
+        default:
+          throw new Error("Unknown function: " + name);
+      }
+
+      return value;
+    }
+
+    throw new Error("Unexpected value");
+  }
+
+  if(tokens.length === 0) throw new Error("Enter a calculation");
+
+  const answer = parseExpression();
+
+  if(position !== tokens.length){
+    throw new Error("Check your expression");
+  }
+
+  if(!Number.isFinite(answer)){
+    throw new Error("Result is outside the supported range");
+  }
+
+  return answer;
+}
+
+function formatNumber(number){
+  if(Object.is(number,-0)) number = 0;
+  return Number(number.toPrecision(12)).toString();
+}
+
+function renderHistory(){
+  const list = document.getElementById("historyList");
+
+  if(!history.length){
+    list.innerHTML = '<div class="empty">Your calculations will appear here.</div>';
+    return;
+  }
+
+  list.innerHTML = "";
+
+  history.forEach((item,index)=>{
+    const row = document.createElement("div");
+    row.className = "history-item";
+
+    const old = document.createElement("div");
+    old.className = "old";
+    old.textContent = item.expression;
+
+    const result = document.createElement("span");
+    result.className = "new";
+    result.textContent = "= " + item.result;
+
+    const use = document.createElement("button");
+    use.textContent = "USE";
+    use.type = "button";
+    use.addEventListener("click",()=>{
+      expression = String(item.result);
+      updateDisplay();
+      resultDisplay.textContent = item.result;
+    });
+
+    row.append(old,result,use);
+    list.appendChild(row);
+  });
+}
+
+function saveHistory(){
+  try{
+    localStorage.setItem("hexclown_exam_calc_history_v1",JSON.stringify(history));
+  }catch(e){}
+}
+
+function calculate(){
+  if(!expression.trim()) return;
+
+  try{
+    const answer = calculateExpression(expression);
+    const formatted = formatNumber(answer);
+
+    resultDisplay.textContent = formatted;
+    lastAnswer = answer;
+
+    history.unshift({
+      expression:expression,
+      result:formatted
+    });
+
+    history = history.slice(0,30);
+    saveHistory();
+    renderHistory();
+
+    expression = formatted;
+    updateDisplay();
+
+  }catch(error){
+    resultDisplay.textContent = error.message;
+  }
+}
+
+keys.addEventListener("click",function(event){
+  const button = event.target.closest("button");
+  if(!button) return;
+
+  const value = button.dataset.value;
+  const action = button.dataset.action;
+
+  if(value !== undefined){
+    insertValue(value);
+    return;
+  }
+
+  switch(action){
+    case "clear":
+      clearCalculator();
+      break;
+
+    case "backspace":
+      backspace();
+      break;
+
+    case "calculate":
+      calculate();
+      break;
+
+    case "sign":
+      if(expression){
+        expression = "-(" + expression + ")";
+        updateDisplay();
+      }else{
+        insertValue("-");
+      }
+      break;
+
+    case "ans":
+      insertValue(String(lastAnswer));
+      break;
+
+    case "clearHistory":
+      history = [];
+      saveHistory();
+      renderHistory();
+      break;
+  }
+});
+
+angleButton.addEventListener("click"
