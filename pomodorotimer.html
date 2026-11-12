@@ -1,0 +1,779 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+
+<title>Pomodoro Timer | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #07131a;
+    --panel: #0d2028;
+    --panel2: #102a33;
+    --green: #00e6a0;
+    --cyan: #00cfff;
+    --text: #e9f5f3;
+    --muted: #8ba6a7;
+    --border: rgba(0,230,160,.17);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+header {
+    padding: 17px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #091820;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    color: var(--green);
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+header a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+}
+
+header a:hover {
+    color: var(--green);
+}
+
+.container {
+    width: 92%;
+    max-width: 650px;
+    margin: 35px auto;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.eyebrow {
+    color: var(--green);
+    font-size: 11px;
+    letter-spacing: 3px;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: clamp(27px, 6vw, 39px);
+    margin: 8px 0;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.panel {
+    background: linear-gradient(145deg, var(--panel), #091a22);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    padding: 22px;
+    margin-bottom: 17px;
+}
+
+.timer-panel {
+    text-align: center;
+    padding: 28px 17px;
+}
+
+.mode {
+    color: var(--green);
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.timer {
+    font-size: clamp(65px, 17vw, 105px);
+    font-weight: 900;
+    color: var(--green);
+    letter-spacing: 3px;
+    margin: 18px 0;
+    font-variant-numeric: tabular-nums;
+    text-shadow: 0 0 25px rgba(0,230,160,.12);
+}
+
+.progress-track {
+    height: 8px;
+    background: #1b343c;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.progress {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--green), var(--cyan));
+    transition: width .3s;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 9px;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 12px 17px;
+    background: var(--green);
+    color: #041710;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.13);
+}
+
+button.secondary {
+    background: #17333c;
+    color: var(--text);
+    border: 1px solid var(--border);
+}
+
+button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.settings {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.setting {
+    background: var(--panel2);
+    padding: 12px 8px;
+    border-radius: 10px;
+}
+
+.setting label {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+select {
+    width: 100%;
+    background: #071820;
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 8px 4px;
+    font-size: 11px;
+    outline: none;
+}
+
+.status {
+    color: var(--green);
+    font-size: 12px;
+    margin-top: 17px;
+}
+
+.info h2 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.info p, .info li {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.info ul {
+    padding-left: 18px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.stat {
+    background: var(--panel2);
+    border-radius: 10px;
+    text-align: center;
+    padding: 15px 8px;
+}
+
+.stat strong {
+    display: block;
+    color: var(--green);
+    font-size: 27px;
+}
+
+.stat span {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.toggle-row:last-child {
+    border-bottom: none;
+}
+
+.toggle-row span {
+    font-size: 12px;
+}
+
+.toggle-row small {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.toggle-row input {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--green);
+}
+
+footer {
+    text-align: center;
+    padding: 25px 10px;
+    color: var(--muted);
+    font-size: 11px;
+    border-top: 1px solid var(--border);
+}
+
+@media(max-width:480px) {
+    header {
+        padding: 14px 4%;
+    }
+
+    .logo {
+        font-size: 17px;
+    }
+
+    .panel {
+        padding: 17px;
+    }
+
+    .settings {
+        gap: 6px;
+    }
+
+    .setting {
+        padding: 10px 5px;
+    }
+
+    button {
+        padding: 11px 13px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEXCL<span>Ø</span>WN</div>
+    <a href="focusmanager.html">← Focus Manager</a>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <div class="eyebrow">FOCUS MANAGER / TOOL 01</div>
+        <h1>Pomodoro Timer</h1>
+        <p>Focus deeply. Take breaks. Make progress.</p>
+    </section>
+
+    <section class="panel timer-panel">
+
+        <div class="mode" id="modeLabel">FOCUS SESSION</div>
+
+        <div class="timer" id="timerDisplay">25:00</div>
+
+        <div class="progress-track">
+            <div class="progress" id="progressBar"></div>
+        </div>
+
+        <div class="settings">
+
+            <div class="setting">
+                <label for="focusLength">FOCUS TIME</label>
+                <select id="focusLength">
+                    <option value="15">15 min</option>
+                    <option value="25" selected>25 min</option>
+                    <option value="30">30 min</option>
+                    <option value="45">45 min</option>
+                    <option value="60">60 min</option>
+                </select>
+            </div>
+
+            <div class="setting">
+                <label for="shortLength">SHORT BREAK</label>
+                <select id="shortLength">
+                    <option value="3">3 min</option>
+                    <option value="5" selected>5 min</option>
+                    <option value="10">10 min</option>
+                </select>
+            </div>
+
+            <div class="setting">
+                <label for="longLength">LONG BREAK</label>
+                <select id="longLength">
+                    <option value="10">10 min</option>
+                    <option value="15" selected>15 min</option>
+                    <option value="20">20 min</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="controls">
+            <button id="startBtn">▶ START</button>
+            <button class="secondary" id="pauseBtn">Ⅱ PAUSE</button>
+            <button class="secondary" id="resetBtn">↻ RESET</button>
+        </div>
+
+        <p class="status" id="status">Ready when you are.</p>
+
+    </section>
+
+    <section class="panel info">
+
+        <h2>◈ Session Controls</h2>
+
+        <div class="controls">
+            <button class="secondary" id="focusBtn">FOCUS</button>
+            <button class="secondary" id="shortBtn">SHORT BREAK</button>
+            <button class="secondary" id="longBtn">LONG BREAK</button>
+        </div>
+
+        <p style="margin-top:13px">
+            Select a session type above. Changing session type resets the timer.
+        </p>
+
+    </section>
+
+    <section class="panel info">
+
+        <h2>📊 Your Productivity</h2>
+
+        <div class="stats">
+
+            <div class="stat">
+                <strong id="todayCount">0</strong>
+                <span>SESSIONS TODAY</span>
+            </div>
+
+            <div class="stat">
+                <strong id="totalCount">0</strong>
+                <span>ALL-TIME SESSIONS</span>
+            </div>
+
+        </div>
+
+        <p id="dateLabel" style="margin-top:12px"></p>
+
+    </section>
+
+    <section class="panel info">
+
+        <h2>⚙ Timer Settings</h2>
+
+        <div class="toggle-row">
+            <div>
+                <span>Gentle Audio Chimes</span>
+                <small>Play a soft sound when a session ends.</small>
+            </div>
+            <input type="checkbox" id="soundToggle" checked>
+        </div>
+
+        <div class="toggle-row">
+            <div>
+                <span>Tab-Title Countdown</span>
+                <small>Show the remaining time in your browser tab.</small>
+            </div>
+            <input type="checkbox" id="tabToggle" checked>
+        </div>
+
+    </section>
+
+    <section class="panel info">
+        <h2>How Pomodoro Works</h2>
+        <ul>
+            <li>Choose a focus duration.</li>
+            <li>Tap Start to begin your session.</li>
+            <li>Work on one task until the timer ends.</li>
+            <li>Take a short break before your next session.</li>
+            <li>After several focus sessions, take a longer break.</li>
+        </ul>
+    </section>
+
+</main>
+
+<footer>
+    HEXCLØWN © 2026 · POMODORO TIMER
+    <br>Stay focused. Keep creating.
+</footer>
+
+<script>
+(function() {
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const STORAGE_KEY = "hexclown_pomodoro_sessions";
+const SETTINGS_KEY = "hexclown_pomodoro_settings";
+
+let sessions = [];
+let settings = {
+    sound: true,
+    tab: true
+};
+
+let mode = "focus";
+let remaining = 25 * 60;
+let running = false;
+let endTime = 0;
+let interval = null;
+let originalTitle = document.title;
+let audioContext = null;
+
+function today() {
+    const d = new Date();
+
+    return d.getFullYear() + "-" +
+        String(d.getMonth() + 1).padStart(2, "0") + "-" +
+        String(d.getDate()).padStart(2, "0");
+}
+
+function loadData() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        const savedSettings = JSON.parse(localStorage.getItem(SETTINGS_KEY));
+
+        if (Array.isArray(saved)) {
+            sessions = saved.filter(s =>
+                s && typeof s.date === "string"
+            );
+        }
+
+        if (savedSettings && typeof savedSettings === "object") {
+            settings.sound = savedSettings.sound !== false;
+            settings.tab = savedSettings.tab !== false;
+        }
+    } catch(e) {
+        console.warn("Could not load saved data.", e);
+    }
+}
+
+function saveData() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    } catch(e) {
+        console.warn("Could not save data.", e);
+    }
+}
+
+function duration() {
+    if (mode === "focus") {
+        return Number($("focusLength").value) * 60;
+    }
+
+    if (mode === "short") {
+        return Number($("shortLength").value) * 60;
+    }
+
+    return Number($("longLength").value) * 60;
+}
+
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+
+    return String(minutes).padStart(2, "0") + ":" +
+        String(secs).padStart(2, "0");
+}
+
+function updateDisplay() {
+    $("timerDisplay").textContent = formatTime(remaining);
+
+    const total = duration();
+    const progress = total > 0
+        ? ((total - remaining) / total) * 100
+        : 0;
+
+    $("progressBar").style.width =
+        Math.max(0, Math.min(100, progress)) + "%";
+
+    if (settings.tab) {
+        document.title = formatTime(remaining) + " | Pomodoro";
+    } else {
+        document.title = originalTitle;
+    }
+}
+
+function updateModeLabel() {
+    const labels = {
+        focus: "FOCUS SESSION",
+        short: "SHORT BREAK",
+        long: "LONG BREAK"
+    };
+
+    $("modeLabel").textContent = labels[mode];
+}
+
+function setMode(newMode) {
+    stopTimer();
+
+    mode = newMode;
+    remaining = duration();
+
+    updateModeLabel();
+    updateDisplay();
+
+    $("status").textContent =
+        mode === "focus" ? "Ready to focus?" :
+        mode === "short" ? "Time for a short break." :
+        "Time for a long break.";
+
+}
+
+function startTimer() {
+    if (running) return;
+
+    if (remaining <= 0) {
+        remaining = duration();
+    }
+
+    running = true;
+    endTime = Date.now() + remaining * 1000;
+
+    $("startBtn").disabled = true;
+    $("status").textContent = "Session in progress...";
+
+    interval = setInterval(tick, 250);
+    tick();
+}
+
+function pauseTimer() {
+    if (!running) return;
+
+    remaining = Math.max(
+        0,
+        Math.ceil((endTime - Date.now()) / 1000)
+    );
+
+    clearInterval(interval);
+    interval = null;
+    running = false;
+
+    $("startBtn").disabled = false;
+    $("status").textContent = "Timer paused.";
+
+    updateDisplay();
+}
+
+function stopTimer() {
+    clearInterval(interval);
+    interval = null;
+    running = false;
+
+    $("startBtn").disabled = false;
+}
+
+function resetTimer() {
+    stopTimer();
+
+    remaining = duration();
+
+    $("status").textContent = "Timer reset.";
+    updateDisplay();
+}
+
+function tick() {
+    remaining = Math.max(
+        0,
+        Math.ceil((endTime - Date.now()) / 1000)
+    );
+
+    updateDisplay();
+
+    if (remaining <= 0) {
+        finishTimer();
+    }
+}
+
+function finishTimer() {
+    stopTimer();
+
+    if (mode === "focus") {
+        sessions.push({
+            date: today(),
+            completedAt: new Date().toISOString()
+        });
+
+        saveData();
+        renderStats();
+
+        $("status").textContent =
+            "Focus session completed! Excellent work.";
+    } else {
+        $("status").textContent =
+            "Break completed. Ready for another session?";
+    }
+
+    remaining = 0;
+    updateDisplay();
+
+    $("modeLabel").textContent =
+        mode === "focus" ? "FOCUS COMPLETE" : "BREAK COMPLETE";
+
+    playChime();
+}
+
+function playChime() {
+    if (!settings.sound) return;
+
+    try {
+        const AudioCtx =
+            window.AudioContext || window.webkitAudioContext;
+
+        if (!AudioCtx) return;
+
+        audioContext = audioContext || new AudioCtx();
+
+        if (audioContext.state === "suspended") {
+            audioContext.resume();
+        }
+
+        [660, 784, 988].forEach((frequency, index) => {
+            const oscillator = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+
+            const start = audioContext.currentTime + index * 0.22;
+
+            oscillator.type = "sine";
+            oscillator.frequency.value = frequency;
+
+            gain.gain.setValueAtTime(0.0001, start);
+            gain.gain.exponentialRampToValueAtTime(0.12, start + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.4);
+
+            oscillator.connect(gain);
+            gain.connect(audioContext.destination);
+
+            oscillator.start(start);
+            oscillator.stop(start + 0.45);
+        });
+
+    } catch(e) {
+        console.warn("Audio is unavailable.", e);
+    }
+}
+
+function renderStats() {
+    const todaySessions = sessions.filter(s => s.date === today());
+
+    $("todayCount").textContent = todaySessions.length;
+    $("totalCount").textContent = sessions.length;
+
+    $("dateLabel").textContent =
+        "Today: " + new Date().toLocaleDateString(undefined, {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+}
+
+/* BUTTONS */
+
+$("startBtn").addEventListener("click", startTimer);
+$("pauseBtn").addEventListener("click", pauseTimer);
+$("resetBtn").addEventListener("click", resetTimer);
+
+$("focusBtn").addEventListener("click", () => setMode("focus"));
+$("shortBtn").addEventListener("click", () => setMode("short"));
+$("longBtn").addEventListener("click", () => setMode("long"));
+
+["focusLength", "shortLength", "longLength"].forEach(id => {
+    $(id).addEventListener("change", () => {
+        if (!running) {
+            remaining = duration();
+            updateDisplay();
+        }
+    });
+});
+
+$("soundToggle").addEventListener("change", function() {
+    settings.sound = this.checked;
+    saveData();
+});
+
+$("tabToggle").addEventListener("change", function() {
+    settings.tab = this.checked;
+    saveData();
+    updateDisplay();
+});
+
+/* START */
+
+loadData();
+
+$("soundToggle").checked = settings.sound;
+$("tabToggle").checked = settings.tab;
+
+renderStats();
+setMode("focus");
+
+})();
+</script>
+
+</body>
+  </html>
+  
