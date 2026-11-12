@@ -1,1 +1,749 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071321">
+<title>Guitar Rhythm Strips | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg:#071321;
+    --panel:#0d2032;
+    --green:#39ff88;
+    --cyan:#00eaff;
+    --blue:#168bff;
+    --red:#ff426b;
+    --white:#f5faff;
+}
+
+* {
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body {
+    background:var(--bg);
+    color:var(--white);
+    font-family:Arial,sans-serif;
+    min-height:100vh;
+    padding:15px;
+}
+
+header {
+    text-align:center;
+    padding:15px 0 20px;
+}
+
+.logo {
+    color:var(--green);
+    font-size:27px;
+    font-weight:900;
+    letter-spacing:3px;
+    text-shadow:0 0 12px var(--green);
+}
+
+header p {
+    color:#9ab4c8;
+    font-size:13px;
+    margin-top:7px;
+}
+
+nav {
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:9px;
+    margin:0 auto 18px;
+}
+
+nav a {
+    text-decoration:none;
+    color:var(--cyan);
+    border:1px solid #00eaff55;
+    background:var(--panel);
+    padding:9px 13px;
+    border-radius:7px;
+    font-size:12px;
+}
+
+.container {
+    max-width:470px;
+    margin:auto;
+    background:var(--panel);
+    border:1px solid #00eaff55;
+    border-radius:15px;
+    padding:15px;
+    box-shadow:0 0 20px #00eaff12;
+}
+
+h1 {
+    text-align:center;
+    color:var(--cyan);
+    font-size:22px;
+    margin-bottom:7px;
+}
+
+.subtitle {
+    text-align:center;
+    color:#9ab4c8;
+    font-size:12px;
+    margin-bottom:16px;
+}
+
+.stats {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-bottom:13px;
+}
+
+.stat {
+    background:var(--bg);
+    border:1px solid #168bff55;
+    border-radius:8px;
+    text-align:center;
+    padding:10px 3px;
+}
+
+.stat small {
+    display:block;
+    color:#91aabd;
+    font-size:10px;
+    margin-bottom:5px;
+}
+
+.stat strong {
+    color:var(--green);
+    font-size:19px;
+}
+
+#game {
+    position:relative;
+    width:100%;
+    height:min(65vh,530px);
+    min-height:350px;
+    overflow:hidden;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    background:#091827;
+    border:2px solid var(--cyan);
+    border-radius:9px;
+    touch-action:none;
+    user-select:none;
+}
+
+.lane {
+    position:relative;
+    height:100%;
+    border-right:1px solid #24445b;
+    background:linear-gradient(180deg,#10263a,#071321);
+}
+
+.lane:last-child {
+    border-right:none;
+}
+
+.lane:nth-child(1) {--lane-color:#39ff88;}
+.lane:nth-child(2) {--lane-color:#00eaff;}
+.lane:nth-child(3) {--lane-color:#168bff;}
+.lane:nth-child(4) {--lane-color:#ffb84d;}
+
+.strip {
+    position:absolute;
+    left:5px;
+    right:5px;
+    height:35px;
+    top:0;
+    border-radius:6px;
+    background:var(--lane-color);
+    box-shadow:0 0 14px var(--lane-color);
+    border:2px solid #ffffff88;
+}
+
+.hit-zone {
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:65px;
+    height:5px;
+    background:var(--green);
+    box-shadow:0 0 12px var(--green);
+    z-index:3;
+    pointer-events:none;
+}
+
+.lane-button {
+    position:absolute;
+    left:4px;
+    right:4px;
+    bottom:8px;
+    height:48px;
+    border:1px solid var(--lane-color);
+    border-radius:7px;
+    background:#071321;
+    color:var(--lane-color);
+    font-size:18px;
+    font-weight:bold;
+    z-index:4;
+    padding:0;
+    touch-action:manipulation;
+}
+
+.lane-button:active {
+    background:var(--lane-color);
+    color:#071321;
+}
+
+#overlay {
+    position:absolute;
+    inset:0;
+    background:#071321ed;
+    z-index:6;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:20px;
+}
+
+.overlay-box h2 {
+    color:var(--green);
+    font-size:25px;
+    margin-bottom:10px;
+    text-shadow:0 0 10px var(--green);
+}
+
+.overlay-box p {
+    color:#b6cbd9;
+    font-size:13px;
+    line-height:1.7;
+    margin-bottom:17px;
+}
+
+button {
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.primary {
+    color:#071321;
+    background:var(--green);
+    border:none;
+    border-radius:8px;
+    padding:13px 20px;
+    font-size:14px;
+    box-shadow:0 0 12px #39ff8866;
+}
+
+.primary:active {
+    transform:scale(.96);
+}
+
+.controls {
+    display:flex;
+    gap:9px;
+    margin-top:13px;
+}
+
+.secondary {
+    flex:1;
+    color:var(--cyan);
+    background:transparent;
+    border:1px solid var(--cyan);
+    border-radius:8px;
+    padding:12px 8px;
+    font-size:12px;
+}
+
+.message {
+    text-align:center;
+    min-height:20px;
+    margin-top:10px;
+    color:var(--cyan);
+    font-size:12px;
+}
+
+.instructions {
+    margin-top:18px;
+    padding:13px;
+    background:var(--bg);
+    border-radius:9px;
+    border:1px solid #168bff44;
+}
+
+.instructions h3 {
+    color:var(--green);
+    font-size:14px;
+    margin-bottom:8px;
+}
+
+.instructions p {
+    color:#a9c0d0;
+    font-size:12px;
+    line-height:1.8;
+}
+
+footer {
+    text-align:center;
+    color:#70899b;
+    font-size:11px;
+    padding:25px 0 10px;
+}
+
+@media(max-width:380px) {
+    body {padding:8px;}
+    .container {padding:10px;}
+    #game {min-height:330px;}
+    .lane-button {font-size:15px;}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEXCLØWN</div>
+    <p>ENTER THE WORLD OF DIGITAL GAMES</p>
+</header>
+
+<nav>
+    <a href="index.html">Home</a>
+    <a href="GameZone.html">Game Zone</a>
+    <a href="rhyandaud.html">Rhythm & Audio</a>
+</nav>
+
+<main class="container">
+
+    <h1>🎸 GUITAR RHYTHM STRIPS</h1>
+    <p class="subtitle">Follow the rhythm. Hit the right lane!</p>
+
+    <section class="stats">
+        <div class="stat">
+            <small>SCORE</small>
+            <strong id="score">0</strong>
+        </div>
+
+        <div class="stat">
+            <small>BEST</small>
+            <strong id="best">0</strong>
+        </div>
+
+        <div class="stat">
+            <small>LIVES</small>
+            <strong id="lives">❤️❤️❤️</strong>
+        </div>
+    </section>
+
+    <div id="game">
+
+        <div class="lane" data-lane="0"></div>
+        <div class="lane" data-lane="1"></div>
+        <div class="lane" data-lane="2"></div>
+        <div class="lane" data-lane="3"></div>
+
+        <div class="hit-zone"></div>
+
+        <div id="overlay">
+            <div class="overlay-box">
+                <h2 id="overlayTitle">GUITAR RHYTHM</h2>
+                <p id="overlayText">
+                    Tap the matching lane when a coloured strip
+                    reaches the green target line.<br>
+                    Don't let strips pass the target!
+                </p>
+                <button class="primary" id="startBtn">START GAME</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="message" id="message">Ready to play?</div>
+
+    <div class="controls">
+        <button class="secondary" id="restartBtn">RESTART</button>
+        <button class="secondary" id="soundBtn">SOUND: ON</button>
+    </div>
+
+    <section class="instructions">
+        <h3>HOW TO PLAY</h3>
+        <p>
+            • Four coloured lanes represent four guitar strings.<br>
+            • Tap the matching lane when its strip reaches the green line.<br>
+            • Accurate hits earn points.<br>
+            • Missing a strip costs one life.<br>
+            • You have three lives.<br>
+            • The strips get faster as your score increases.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    © 2026 HEXCLØWN. ALL RIGHTS RESERVED.
+</footer>
+
+<script>
+(() => {
+    "use strict";
+
+    const game = document.getElementById("game");
+    const lanes = Array.from(document.querySelectorAll(".lane"));
+    const overlay = document.getElementById("overlay");
+    const overlayTitle = document.getElementById("overlayTitle");
+    const overlayText = document.getElementById("overlayText");
+    const startBtn = document.getElementById("startBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const soundBtn = document.getElementById("soundBtn");
+
+    const scoreDisplay = document.getElementById("score");
+    const bestDisplay = document.getElementById("best");
+    const livesDisplay = document.getElementById("lives");
+    const message = document.getElementById("message");
+
+    const TARGET_DISTANCE = 65;
+    const STRIP_HEIGHT = 35;
+    const STORAGE_KEY = "hexclownGuitarRhythmBest";
+
+    let strips = [];
+    let score = 0;
+    let best = 0;
+    let lives = 3;
+    let running = false;
+    let soundOn = true;
+    let lastTime = 0;
+    let spawnTimer = 0;
+    let spawnInterval = 950;
+    let animationId = null;
+    let audioContext = null;
+    let lastLane = -1;
+
+    try {
+        best = Number(localStorage.getItem(STORAGE_KEY)) || 0;
+    } catch (e) {
+        best = 0;
+    }
+
+    bestDisplay.textContent = best;
+
+    function getAudio() {
+        if (!audioContext) {
+            const AudioClass =
+                window.AudioContext || window.webkitAudioContext;
+
+            if (!AudioClass) return null;
+            audioContext = new AudioClass();
+        }
+
+        if (audioContext.state === "suspended") {
+            audioContext.resume();
+        }
+
+        return audioContext;
+    }
+
+    function playTone(laneIndex, success) {
+        if (!soundOn) return;
+
+        const ctx = getAudio();
+        if (!ctx) return;
+
+        const notes = [196, 246.94, 293.66, 349.23];
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        oscillator.type = "triangle";
+        oscillator.frequency.value = success ? notes[laneIndex] : 110;
+
+        gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(
+            success ? 0.12 : 0.06,
+            ctx.currentTime + 0.02
+        );
+        gain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            ctx.currentTime + 0.25
+        );
+
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+
+        oscillator.start();
+        oscillator.stop(ctx.currentTime + 0.27);
+    }
+
+    function updateStats() {
+        scoreDisplay.textContent = score;
+        livesDisplay.textContent =
+            "❤️".repeat(lives) + "🖤".repeat(3 - lives);
+    }
+
+    function getSpeed() {
+        return 230 + Math.min(score * 5, 300);
+    }
+
+    function createStrip() {
+        if (!running) return;
+
+        let laneIndex = Math.floor(Math.random() * 4);
+
+        // Avoid too many consecutive strips in the same lane.
+        if (laneIndex === lastLane) {
+            laneIndex = (laneIndex + 1 + Math.floor(Math.random() * 3)) % 4;
+        }
+
+        lastLane = laneIndex;
+
+        const strip = document.createElement("div");
+        strip.className = "strip";
+
+        const data = {
+            element: strip,
+            lane: laneIndex,
+            y: -STRIP_HEIGHT,
+            judged: false
+        };
+
+        lanes[laneIndex].appendChild(strip);
+        strips.push(data);
+    }
+
+    function removeStrip(strip) {
+        if (strip.element.parentNode) {
+            strip.element.remove();
+        }
+
+        strips = strips.filter(item => item !== strip);
+    }
+
+    function loseLife() {
+        lives--;
+        updateStats();
+        playTone(0, false);
+
+        message.textContent = "MISSED! Keep going!";
+
+        if (lives <= 0) {
+            endGame();
+        }
+    }
+
+    function pressLane(laneIndex) {
+        if (!running) return;
+
+        const targetY = game.clientHeight - TARGET_DISTANCE;
+
+        const candidates = strips
+            .filter(strip =>
+                strip.lane === laneIndex &&
+                !strip.judged
+            )
+            .sort((a, b) => b.y - a.y);
+
+        if (candidates.length === 0) {
+            message.textContent = "No strip in that lane!";
+            return;
+        }
+
+        const strip = candidates[0];
+        const stripCenter = strip.y + STRIP_HEIGHT / 2;
+        const difference = Math.abs(stripCenter - targetY);
+
+        // Allow a timing window around the target line.
+        if (difference > 75) {
+            message.textContent = "Too early or too late!";
+            return;
+        }
+
+        strip.judged = true;
+        strip.element.style.opacity = "0.35";
+
+        const points = difference <= 25 ? 10 : 5;
+        score += points;
+
+        updateStats();
+        playTone(laneIndex, true);
+
+        message.textContent =
+            difference <= 25 ? "PERFECT! +" + points : "GOOD! +" + points;
+
+        if (score > best) {
+            best = score;
+            bestDisplay.textContent = best;
+
+            try {
+                localStorage.setItem(STORAGE_KEY, best);
+            } catch (e) {}
+        }
+
+        setTimeout(() => removeStrip(strip), 100);
+    }
+
+    function endGame() {
+        if (!running) return;
+
+        running = false;
+
+        if (animationId !== null) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+        }
+
+        overlay.style.display = "flex";
+        overlayTitle.textContent = "GAME OVER!";
+        overlayText.innerHTML =
+            "Your guitar session has ended.<br><br>" +
+            "Your score: <strong>" + score + "</strong><br>" +
+            "Best score: <strong>" + best + "</strong>";
+
+        startBtn.textContent = "PLAY AGAIN";
+        message.textContent = "Game over! Try again.";
+    }
+
+    function updateGame(timestamp) {
+        if (!running) return;
+
+        if (!lastTime) lastTime = timestamp;
+
+        const delta = Math.min(timestamp - lastTime, 40);
+        lastTime = timestamp;
+
+        spawnTimer += delta;
+
+        if (spawnTimer >= spawnInterval) {
+            spawnTimer = 0;
+            createStrip();
+
+            // Gradually increase the challenge.
+            spawnInterval = Math.max(430, 950 - score * 4);
+        }
+
+        const speed = getSpeed();
+        const targetY = game.clientHeight - TARGET_DISTANCE;
+
+        for (let i = strips.length - 1; i >= 0; i--) {
+            const strip = strips[i];
+
+            if (strip.judged) continue;
+
+            strip.y += speed * delta / 1000;
+            strip.element.style.top = strip.y + "px";
+
+            // A strip is missed after its centre passes the target zone.
+            if (strip.y + STRIP_HEIGHT / 2 > targetY + 85) {
+                removeStrip(strip);
+                loseLife();
+
+                if (!running) return;
+            }
+        }
+
+        animationId = requestAnimationFrame(updateGame);
+    }
+
+    function clearStrips() {
+        strips.forEach(strip => {
+            if (strip.element.parentNode) {
+                strip.element.remove();
+            }
+        });
+
+        strips = [];
+    }
+
+    function startGame() {
+        if (running) return;
+
+        getAudio();
+
+        if (animationId !== null) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+        }
+
+        clearStrips();
+
+        score = 0;
+        lives = 3;
+        lastTime = 0;
+        spawnTimer = 0;
+        spawnInterval = 950;
+        lastLane = -1;
+
+        updateStats();
+
+        overlay.style.display = "none";
+        message.textContent = "Follow the rhythm!";
+        running = true;
+
+        createStrip();
+        animationId = requestAnimationFrame(updateGame);
+    }
+
+    function restartGame() {
+        if (running) {
+            running = false;
+
+            if (animationId !== null) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        }
+
+        startGame();
+    }
+
+    function toggleSound() {
+        soundOn = !soundOn;
+        soundBtn.textContent = soundOn ? "SOUND: ON" : "SOUND: OFF";
+
+        if (soundOn) getAudio();
+    }
+
+    // Create the four touch-friendly lane buttons.
+    lanes.forEach((lane, index) => {
+        const button = document.createElement("button");
+        button.className = "lane-button";
+        button.textContent = ["1", "2", "3", "4"][index];
+        button.type = "button";
+        button.setAttribute("aria-label", "Play lane " + (index + 1));
+
+        button.addEventListener("pointerdown", event => {
+            event.preventDefault();
+            pressLane(index);
+        });
+
+        lane.appendChild(button);
+    });
+
+    // Keyboard controls: D, F, J and K.
+    document.addEventListener("keydown", event => {
+        if (!running) return;
+
+        const keys = {
+            d: 0,
+            f: 1,
+            j: 2,
+            k: 3
+        };
+
+        const index = keys[event.key.toLowerCase()];
+
+        if (index !== undefined) {
+            event.preventDefault();
+            pressLane(index);
+        }
+    });
+
+    startBtn.addEventListener("click", startGame);
+    restartBtn.addEventListener("click", restartGame);
+    soundBtn.addEventListener("click", toggleSound);
+
+})();
+</script>
+
+</body>
+      </html>
+
