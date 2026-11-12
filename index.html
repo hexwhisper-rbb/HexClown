@@ -8,521 +8,540 @@
 
 <title>HEXCLØWN | Underground Digital Universe</title>
 
-<meta name="description" content="HEXCLØWN is an underground digital universe where technology, creativity and entertainment collide. Explore games, tools, music and digital experiences.">
+<meta name="description" content="HEXCLØWN is an underground digital universe where technology, creativity and entertainment collide. Explore games, tools, music, Whisper Bots and digital experiences.">
 
 <style>
 :root {
-  --bg: #07131a;
-  --bg2: #0b1c25;
-  --panel: #10232c;
-  --panel2: #142c36;
-  --green: #39ff88;
-  --cyan: #00e5ff;
-  --blue: #287bff;
-  --red: #ff4058;
-  --text: #eafff8;
-  --muted: #9ab5bc;
-  --border: #214451;
+  --bg:#07131a;
+  --bg2:#0b1c25;
+  --panel:#10232c;
+  --panel2:#142c36;
+  --green:#39ff88;
+  --cyan:#00e5ff;
+  --blue:#287bff;
+  --red:#ff4058;
+  --text:#eafff8;
+  --muted:#9ab5bc;
+  --border:#214451;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior:smooth;
 }
 
 body {
   background:
-    radial-gradient(ellipse at 10% 5%, #00e5ff12, transparent 35%),
-    radial-gradient(ellipse at 90% 25%, #39ff8810, transparent 35%),
+    radial-gradient(ellipse at 10% 5%,#00e5ff12,transparent 35%),
+    radial-gradient(ellipse at 90% 25%,#39ff8810,transparent 35%),
     var(--bg);
-  color: var(--text);
-  font-family: Arial, sans-serif;
-  min-height: 100vh;
+  color:var(--text);
+  font-family:Arial,sans-serif;
+  min-height:100vh;
 }
 
 /* HEADER */
 
 header {
-  padding: 17px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #091922;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 4px 20px #0005;
+  padding:17px 16px;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:#091922;
+  position:sticky;
+  top:0;
+  z-index:100;
+  box-shadow:0 4px 20px #0005;
 }
 
 .logo {
-  font-size: 23px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: var(--green);
-  text-shadow: 0 0 12px #39ff8870;
+  font-size:23px;
+  font-weight:900;
+  letter-spacing:2px;
+  color:var(--green);
+  text-shadow:0 0 12px #39ff8870;
 }
 
 .logo span {
-  color: var(--cyan);
+  color:var(--cyan);
 }
 
 .menu-btn {
-  background: #102c36;
-  border: 1px solid var(--cyan);
-  color: var(--cyan);
-  padding: 10px 14px;
-  border-radius: 7px;
-  cursor: pointer;
-  font-weight: bold;
+  background:#102c36;
+  border:1px solid var(--cyan);
+  color:var(--cyan);
+  padding:10px 14px;
+  border-radius:7px;
+  cursor:pointer;
+  font-weight:bold;
 }
 
 /* NAVIGATION */
 
 nav {
-  display: none;
-  background: #0b1c25;
-  padding: 12px 18px;
-  border-bottom: 1px solid var(--border);
+  display:none;
+  background:#0b1c25;
+  padding:12px 18px;
+  border-bottom:1px solid var(--border);
 }
 
 nav.show {
-  display: block;
+  display:block;
 }
 
 nav a {
-  display: block;
-  color: var(--muted);
-  text-decoration: none;
-  padding: 13px 0;
-  border-bottom: 1px solid #1d3944;
-  font-size: 13px;
-  transition: .2s;
+  display:block;
+  color:var(--muted);
+  text-decoration:none;
+  padding:13px 0;
+  border-bottom:1px solid #1d3944;
+  font-size:13px;
+  transition:.2s;
 }
 
 nav a:hover {
-  color: var(--green);
+  color:var(--green);
 }
 
 /* MAIN */
 
 .container {
-  width: 100%;
-  max-width: 1100px;
-  margin: auto;
-  padding: 22px 15px;
+  width:100%;
+  max-width:1100px;
+  margin:auto;
+  padding:22px 15px;
 }
 
 /* HERO */
 
 .hero {
   background:
-    radial-gradient(circle at 90% 15%, #00e5ff26, transparent 35%),
-    radial-gradient(circle at 5% 90%, #39ff8820, transparent 40%),
-    linear-gradient(135deg, #102c36, #0b1b29);
-  border: 1px solid #247080;
-  border-radius: 17px;
-  padding: 34px 21px;
-  margin-bottom: 25px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 25px #00e5ff12;
+    radial-gradient(circle at 90% 15%,#00e5ff26,transparent 35%),
+    radial-gradient(circle at 5% 90%,#39ff8820,transparent 40%),
+    linear-gradient(135deg,#102c36,#0b1b29);
+  border:1px solid #247080;
+  border-radius:17px;
+  padding:34px 21px;
+  margin-bottom:25px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 25px #00e5ff12;
 }
 
 .hero::after {
-  content: "";
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  border: 1px solid #39ff8825;
-  border-radius: 50%;
-  right: -65px;
-  bottom: -75px;
-  box-shadow: 0 0 30px #00e5ff18;
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  border:1px solid #39ff8825;
+  border-radius:50%;
+  right:-65px;
+  bottom:-75px;
+  box-shadow:0 0 30px #00e5ff18;
 }
 
 .hero-tag {
-  color: var(--green);
-  font-size: 11px;
-  letter-spacing: 2px;
-  margin-bottom: 17px;
-  font-weight: bold;
+  color:var(--green);
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:17px;
+  font-weight:bold;
 }
 
 .hero h1 {
-  font-size: 34px;
-  margin-bottom: 14px;
-  line-height: 1.2;
+  font-size:34px;
+  margin-bottom:14px;
+  line-height:1.2;
 }
 
 .hero h1 span {
-  color: var(--cyan);
-  text-shadow: 0 0 15px #00e5ff55;
+  color:var(--cyan);
+  text-shadow:0 0 15px #00e5ff55;
 }
 
 .hero p {
-  color: #bfd5db;
-  font-size: 14px;
-  line-height: 1.8;
-  max-width: 520px;
+  color:#bfd5db;
+  font-size:14px;
+  line-height:1.8;
+  max-width:520px;
 }
 
 .hero-btn {
-  display: inline-block;
-  margin-top: 23px;
-  padding: 13px 19px;
-  background: var(--green);
-  color: #06140d;
-  border-radius: 7px;
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 900;
-  box-shadow: 0 0 16px #39ff8840;
-  transition: .2s;
+  display:inline-block;
+  margin-top:23px;
+  padding:13px 19px;
+  background:var(--green);
+  color:#06140d;
+  border-radius:7px;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:900;
+  box-shadow:0 0 16px #39ff8840;
+  transition:.2s;
 }
 
 .hero-btn:hover {
-  background: var(--cyan);
-  box-shadow: 0 0 22px #00e5ff80;
+  background:var(--cyan);
+  box-shadow:0 0 22px #00e5ff80;
 }
 
 /* SYSTEM STATUS */
 
 .system-status {
-  margin-bottom: 24px;
-  background: #0d2029;
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  padding: 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  margin-bottom:24px;
+  background:#0d2029;
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
 }
 
 .system-status strong {
-  font-size: 11px;
-  letter-spacing: 1px;
+  font-size:11px;
+  letter-spacing:1px;
 }
 
 .online {
-  color: var(--green);
-  font-size: 11px;
-  font-weight: bold;
-}
-
-.online span {
-  text-shadow: 0 0 9px var(--green);
+  color:var(--green);
+  font-size:11px;
+  font-weight:bold;
 }
 
 /* STATS */
 
 .stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-bottom: 28px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-bottom:28px;
 }
 
 .stat {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 11px;
-  padding: 17px 6px;
-  text-align: center;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:17px 6px;
+  text-align:center;
 }
 
 .stat h2 {
-  color: var(--green);
-  font-size: 23px;
-  text-shadow: 0 0 10px #39ff8840;
+  color:var(--green);
+  font-size:23px;
+  text-shadow:0 0 10px #39ff8840;
 }
 
 .stat:nth-child(2) h2 {
-  color: var(--cyan);
+  color:var(--cyan);
 }
 
 .stat:nth-child(3) h2 {
-  color: var(--blue);
+  color:var(--blue);
 }
 
 .stat p {
-  color: var(--muted);
-  font-size: 9px;
-  margin-top: 7px;
+  color:var(--muted);
+  font-size:9px;
+  margin-top:7px;
 }
 
 /* SEARCH */
 
 .search-box {
-  margin-bottom: 27px;
+  margin-bottom:27px;
 }
 
 .search-box input {
-  width: 100%;
-  background: #10232c;
-  color: white;
-  padding: 16px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  outline: none;
-  font-size: 14px;
-  transition: .2s;
+  width:100%;
+  background:#10232c;
+  color:white;
+  padding:16px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  outline:none;
+  font-size:14px;
+  transition:.2s;
 }
 
 .search-box input:focus {
-  border-color: var(--cyan);
-  box-shadow: 0 0 12px #00e5ff25;
+  border-color:var(--cyan);
+  box-shadow:0 0 12px #00e5ff25;
 }
 
 .search-box input::placeholder {
-  color: #829da5;
+  color:#829da5;
 }
 
 /* SECTION HEADINGS */
 
 .section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  margin-bottom:16px;
 }
 
 .section-heading h2 {
-  font-size: 19px;
-  color: var(--text);
+  font-size:19px;
+  color:var(--text);
 }
 
 .section-heading small {
-  color: var(--cyan);
-  font-size: 9px;
-  letter-spacing: 1px;
+  color:var(--cyan);
+  font-size:9px;
+  letter-spacing:1px;
 }
 
 /* CATEGORIES */
 
 .categories {
-  display: flex;
-  gap: 9px;
-  overflow-x: auto;
-  padding-bottom: 13px;
-  margin-bottom: 17px;
-  scrollbar-width: none;
+  display:flex;
+  gap:9px;
+  overflow-x:auto;
+  padding-bottom:13px;
+  margin-bottom:17px;
+  scrollbar-width:none;
 }
 
 .categories::-webkit-scrollbar {
-  display: none;
+  display:none;
 }
 
 .categories button {
-  white-space: nowrap;
-  background: #10232c;
-  color: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 10px 16px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: .2s;
+  white-space:nowrap;
+  background:#10232c;
+  color:var(--muted);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:10px 16px;
+  font-size:12px;
+  cursor:pointer;
+  transition:.2s;
 }
 
 .categories button.active {
-  background: #123c37;
-  color: var(--green);
-  border-color: var(--green);
-  box-shadow: 0 0 12px #39ff8820;
+  background:#123c37;
+  color:var(--green);
+  border-color:var(--green);
+  box-shadow:0 0 12px #39ff8820;
 }
 
 .categories button:hover {
-  border-color: var(--cyan);
-  color: var(--cyan);
+  border-color:var(--cyan);
+  color:var(--cyan);
 }
 
 /* APPLICATION GRID */
 
 .app-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
 }
 
 .app-card {
-  background: linear-gradient(145deg, #142c36, #0e2029);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 17px 13px;
-  min-height: 165px;
-  position: relative;
-  transition: .25s;
+  background:linear-gradient(145deg,#142c36,#0e2029);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:17px 13px;
+  min-height:165px;
+  position:relative;
+  transition:.25s;
 }
 
 .app-card:hover {
-  border-color: var(--green);
-  box-shadow: 0 0 17px #39ff8820;
-  transform: translateY(-3px);
+  border-color:var(--green);
+  box-shadow:0 0 17px #39ff8820;
+  transform:translateY(-3px);
 }
 
 .app-icon {
-  font-size: 29px;
-  margin-bottom: 13px;
+  font-size:29px;
+  margin-bottom:13px;
 }
 
 .app-card h3 {
-  font-size: 14px;
-  margin-bottom: 8px;
-  color: var(--text);
+  font-size:14px;
+  margin-bottom:8px;
+  color:var(--text);
 }
 
 .app-card p {
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 1.6;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.6;
 }
 
 .favorite {
-  position: absolute;
-  top: 11px;
-  right: 11px;
-  background: transparent;
-  border: none;
-  color: #91a9b0;
-  font-size: 20px;
-  cursor: pointer;
+  position:absolute;
+  top:11px;
+  right:11px;
+  background:transparent;
+  border:none;
+  color:#91a9b0;
+  font-size:20px;
+  cursor:pointer;
 }
 
 .favorite.saved {
-  color: #39ff88;
-  text-shadow: 0 0 10px #39ff8870;
+  color:var(--green);
+  text-shadow:0 0 10px #39ff8870;
 }
 
 .open-app {
-  display: inline-block;
-  margin-top: 13px;
-  font-size: 11px;
-  color: var(--cyan);
-  text-decoration: none;
-  font-weight: bold;
+  display:inline-block;
+  margin-top:13px;
+  font-size:11px;
+  color:var(--cyan);
+  text-decoration:none;
+  font-weight:bold;
 }
 
 .open-app:hover {
-  color: var(--green);
+  color:var(--green);
+}
+
+/* WHISPER BOTS CARD */
+
+.whisper-card {
+  border-color:#267c78;
+  background:
+    radial-gradient(circle at 90% 10%,#00e5ff18,transparent 45%),
+    linear-gradient(145deg,#153b40,#10232c);
+}
+
+.whisper-card .app-icon {
+  color:var(--green);
+  text-shadow:0 0 14px #39ff8870;
+}
+
+.whisper-card h3 {
+  color:var(--green);
+}
+
+.whisper-card:hover {
+  border-color:var(--cyan);
+  box-shadow:0 0 20px #00e5ff25;
 }
 
 /* EMPTY SEARCH */
 
 .empty {
-  display: none;
-  text-align: center;
-  padding: 35px 10px;
-  color: var(--muted);
-  font-size: 13px;
+  display:none;
+  text-align:center;
+  padding:35px 10px;
+  color:var(--muted);
+  font-size:13px;
 }
 
 /* FAVOURITES */
 
 .fav-section {
-  margin-top: 35px;
-  padding: 19px;
-  background: #0d2029;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  margin-top:35px;
+  padding:19px;
+  background:#0d2029;
+  border:1px solid var(--border);
+  border-radius:12px;
 }
 
 .fav-section > p {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.7;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
 }
 
 .fav-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
 }
 
 .fav-item {
-  background: #123b34;
-  border: 1px solid #287b60;
-  color: var(--green);
-  padding: 8px 11px;
-  border-radius: 7px;
-  font-size: 11px;
+  background:#123b34;
+  border:1px solid #287b60;
+  color:var(--green);
+  padding:8px 11px;
+  border-radius:7px;
+  font-size:11px;
 }
 
 /* FOOTER */
 
 footer {
-  text-align: center;
-  border-top: 1px solid var(--border);
-  margin-top: 40px;
-  padding: 28px 15px;
-  background: #091922;
-  color: var(--muted);
-  font-size: 11px;
-  line-height: 2;
+  text-align:center;
+  border-top:1px solid var(--border);
+  margin-top:40px;
+  padding:28px 15px;
+  background:#091922;
+  color:var(--muted);
+  font-size:11px;
+  line-height:2;
 }
 
 footer strong {
-  color: var(--green);
-  font-size: 16px;
-  letter-spacing: 2px;
-  text-shadow: 0 0 10px #39ff8840;
+  color:var(--green);
+  font-size:16px;
+  letter-spacing:2px;
+  text-shadow:0 0 10px #39ff8840;
 }
 
 .credit {
-  margin-top: 12px;
-  color: var(--cyan);
-  font-weight: bold;
+  margin-top:12px;
+  color:var(--cyan);
+  font-weight:bold;
 }
 
 .footer-warning {
-  color: var(--red);
-  font-size: 10px;
-  margin-top: 9px;
+  color:var(--red);
+  font-size:10px;
+  margin-top:9px;
 }
 
 /* DESKTOP */
 
-@media (min-width: 650px) {
+@media (min-width:650px) {
   .container {
-    padding: 30px 25px;
+    padding:30px 25px;
   }
 
   .app-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
   }
 
   .hero {
-    padding: 48px 38px;
+    padding:48px 38px;
   }
 
   .hero h1 {
-    font-size: 45px;
+    font-size:45px;
   }
 
   nav.show {
-    display: flex;
-    gap: 27px;
-    padding: 0 25px;
+    display:flex;
+    gap:27px;
+    padding:0 25px;
   }
 
   nav a {
-    border: none;
+    border:none;
   }
 }
 
-@media (min-width: 950px) {
+@media (min-width:950px) {
   .app-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns:repeat(4,1fr);
   }
 }
 </style>
@@ -536,9 +555,11 @@ footer strong {
 </header>
 
 <nav id="navigation">
-  <a href="#">Home</a>
+  <a href="index.html">Home</a>
   <a href="#explore">Explore</a>
   <a href="#apps">Applications</a>
+  <a href="GameZone.html">Game Zone</a>
+  <a href="whisperbots.html">Whisper Bots</a>
   <a href="#favorites">Favourites</a>
   <a href="#about">About</a>
 </nav>
@@ -569,7 +590,7 @@ footer strong {
   <section class="system-status">
     <strong>HEXCLØWN SYSTEM</strong>
     <div class="online">
-      <span>●</span> NETWORK ONLINE
+      ● NETWORK ONLINE
     </div>
   </section>
 
@@ -577,7 +598,7 @@ footer strong {
 
   <section class="stats">
     <div class="stat">
-      <h2 id="appCount">29</h2>
+      <h2 id="appCount">30</h2>
       <p>FEATURES PLANNED</p>
     </div>
 
@@ -598,7 +619,7 @@ footer strong {
     <input
       type="search"
       id="search"
-      placeholder="⌕ Search tools, games, music..."
+      placeholder="⌕ Search tools, games, music, bots..."
       oninput="filterApps()"
     >
   </section>
@@ -649,6 +670,8 @@ footer strong {
 
     <div class="app-grid" id="appGrid">
 
+      <!-- GAME ZONE -->
+
       <article class="app-card" data-category="games">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
         <div class="app-icon">🎮</div>
@@ -656,6 +679,18 @@ footer strong {
         <p>Discover games and interactive challenges.</p>
         <a href="GameZone.html" class="open-app">ENTER GAME ZONE →</a>
       </article>
+
+      <!-- WHISPER BOTS -->
+
+      <article class="app-card whisper-card" data-category="tools">
+        <button class="favorite" onclick="toggleFavorite(this)">☆</button>
+        <div class="app-icon">🤖</div>
+        <h3>Whisper Bots</h3>
+        <p>Meet intelligent digital companions and explore interactive bot experiences.</p>
+        <a href="whisperbots.html" class="open-app">ENTER WHISPER BOTS →</a>
+      </article>
+
+      <!-- QUIZ CENTRE -->
 
       <article class="app-card" data-category="games">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
@@ -665,6 +700,8 @@ footer strong {
         <a href="#" class="open-app">Coming soon →</a>
       </article>
 
+      <!-- FOCUS MANAGER -->
+
       <article class="app-card" data-category="tools">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
         <div class="app-icon">⏱️</div>
@@ -672,6 +709,8 @@ footer strong {
         <p>Organise tasks and manage your time.</p>
         <a href="#" class="open-app">Coming soon →</a>
       </article>
+
+      <!-- TEXT EDITOR -->
 
       <article class="app-card" data-category="tools">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
@@ -681,6 +720,8 @@ footer strong {
         <a href="#" class="open-app">Coming soon →</a>
       </article>
 
+      <!-- AUDIO STUDIO -->
+
       <article class="app-card" data-category="audio">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
         <div class="app-icon">🎵</div>
@@ -688,6 +729,8 @@ footer strong {
         <p>Experiment with sounds and chiptunes.</p>
         <a href="#" class="open-app">Coming soon →</a>
       </article>
+
+      <!-- VOICE FX -->
 
       <article class="app-card" data-category="audio">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
@@ -697,6 +740,8 @@ footer strong {
         <a href="#" class="open-app">Coming soon →</a>
       </article>
 
+      <!-- PIXEL ART -->
+
       <article class="app-card" data-category="creative">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
         <div class="app-icon">🎨</div>
@@ -704,6 +749,8 @@ footer strong {
         <p>Create your own pixel artwork.</p>
         <a href="#" class="open-app">Coming soon →</a>
       </article>
+
+      <!-- LEARNING HUB -->
 
       <article class="app-card" data-category="learning">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
@@ -713,6 +760,8 @@ footer strong {
         <a href="#" class="open-app">Coming soon →</a>
       </article>
 
+      <!-- PASSWORD CHECKER -->
+
       <article class="app-card" data-category="security">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
         <div class="app-icon">🔐</div>
@@ -720,6 +769,8 @@ footer strong {
         <p>Learn about password strength and safety.</p>
         <a href="#" class="open-app">Coming soon →</a>
       </article>
+
+      <!-- QUICK CONVERTER -->
 
       <article class="app-card" data-category="tools">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
@@ -729,6 +780,8 @@ footer strong {
         <a href="#" class="open-app">Coming soon →</a>
       </article>
 
+      <!-- MEMORY MATCH -->
+
       <article class="app-card" data-category="games">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
         <div class="app-icon">🧠</div>
@@ -736,6 +789,8 @@ footer strong {
         <p>Challenge your memory with matching games.</p>
         <a href="#" class="open-app">Coming soon →</a>
       </article>
+
+      <!-- CODE PLAYGROUND -->
 
       <article class="app-card" data-category="creative">
         <button class="favorite" onclick="toggleFavorite(this)">☆</button>
@@ -861,16 +916,13 @@ function filterApps() {
 function getFavorites() {
 
   try {
-
     return JSON.parse(
       localStorage.getItem("hexclown_favorites") || "[]"
     );
-
   } catch (error) {
-
     return [];
-
   }
+
 }
 
 function saveFavorites(favorites) {
@@ -887,6 +939,7 @@ function saveFavorites(favorites) {
     alert("Your browser could not save favourites.");
 
   }
+
 }
 
 function toggleFavorite(button) {
@@ -898,13 +951,9 @@ function toggleFavorite(button) {
   let favorites = getFavorites();
 
   if (favorites.includes(name)) {
-
     favorites = favorites.filter(item => item !== name);
-
   } else {
-
     favorites.push(name);
-
   }
 
   saveFavorites(favorites);
@@ -925,17 +974,11 @@ function loadFavorites() {
     const button = card.querySelector(".favorite");
 
     if (favorites.includes(name)) {
-
       button.classList.add("saved");
-
       button.innerText = "★";
-
     } else {
-
       button.classList.remove("saved");
-
       button.innerText = "☆";
-
     }
 
   });
