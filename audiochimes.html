@@ -1,0 +1,689 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+<title>Audio Chimes | HEXCLØWN</title>
+
+<style>
+:root {
+    --bg: #07131a;
+    --panel: #0d2029;
+    --panel2: #102832;
+    --cyan: #00e5ff;
+    --green: #00ff9d;
+    --text: #e9f7fa;
+    --muted: #8ba6af;
+    --border: rgba(0,229,255,.18);
+    --red: #ff647c;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+header {
+    padding: 17px 5%;
+    background: #091a22;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    color: var(--green);
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: var(--cyan);
+}
+
+.back {
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    padding: 9px 13px;
+    border-radius: 7px;
+}
+
+.container {
+    width: 92%;
+    max-width: 700px;
+    margin: 35px auto;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    color: var(--green);
+    font-size: clamp(27px, 6vw, 38px);
+    margin-bottom: 9px;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 17px;
+}
+
+.card h2 {
+    color: var(--cyan);
+    font-size: 17px;
+    margin-bottom: 16px;
+}
+
+.setting {
+    margin-bottom: 20px;
+}
+
+.setting:last-child {
+    margin-bottom: 0;
+}
+
+.setting label {
+    display: block;
+    color: var(--text);
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.setting small {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 7px;
+    line-height: 1.5;
+}
+
+select, input[type="number"] {
+    width: 100%;
+    padding: 13px;
+    background: #06141b;
+    color: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+select:focus, input:focus {
+    border-color: var(--cyan);
+}
+
+input[type="range"] {
+    width: 100%;
+    accent-color: var(--green);
+    cursor: pointer;
+}
+
+.volume-line {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.toggle-row:last-child {
+    border-bottom: none;
+}
+
+.toggle-info strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.toggle-info small {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.toggle {
+    width: 47px;
+    height: 25px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.toggle input {
+    display: none;
+}
+
+.toggle span {
+    position: absolute;
+    inset: 0;
+    background: #29404a;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.toggle span:before {
+    content: "";
+    position: absolute;
+    height: 19px;
+    width: 19px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: .2s;
+}
+
+.toggle input:checked + span {
+    background: var(--green);
+}
+
+.toggle input:checked + span:before {
+    transform: translateX(22px);
+    background: #06141b;
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 13px 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.primary {
+    background: var(--green);
+    color: #04140e;
+}
+
+.secondary {
+    background: var(--panel2);
+    color: var(--cyan);
+    border: 1px solid var(--border);
+}
+
+.danger {
+    background: rgba(255,100,124,.12);
+    color: var(--red);
+    border: 1px solid rgba(255,100,124,.3);
+}
+
+button:hover {
+    filter: brightness(1.12);
+}
+
+.button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.button-row button {
+    flex: 1;
+    min-width: 120px;
+}
+
+.status {
+    background: #091a22;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 15px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+    margin-top: 15px;
+}
+
+.status strong {
+    color: var(--green);
+}
+
+.note {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+footer {
+    text-align: center;
+    padding: 25px 10px;
+    color: var(--muted);
+    font-size: 11px;
+    border-top: 1px solid var(--border);
+    margin-top: 35px;
+}
+
+@media(max-width: 480px) {
+    .card {
+        padding: 16px;
+    }
+
+    .button-row {
+        flex-direction: column;
+    }
+
+    .button-row button {
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">HEX<span>CLØWN</span></div>
+    <a href="focusmanager.html" class="back">← Focus Manager</a>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <h1>GENTLE AUDIO CHIMES</h1>
+        <p>Simple sound reminders to help you stay focused and organised.</p>
+    </section>
+
+    <section class="card">
+        <h2>SOUND SETTINGS</h2>
+
+        <div class="setting">
+            <label for="soundType">Choose Chime Sound</label>
+            <select id="soundType">
+                <option value="soft">Soft Bell</option>
+                <option value="double">Double Chime</option>
+                <option value="calm">Calm Tones</option>
+                <option value="digital">Digital Pulse</option>
+            </select>
+            <small>Select the sound you prefer for your reminders.</small>
+        </div>
+
+        <div class="setting">
+            <label for="volume">Volume</label>
+            <input type="range" id="volume" min="0" max="100" value="45">
+            <div class="volume-line">
+                <span>Quiet</span>
+                <strong id="volumeValue">45%</strong>
+                <span>Loud</span>
+            </div>
+        </div>
+
+        <div class="button-row">
+            <button class="primary" id="testSound">TEST CHIME</button>
+            <button class="secondary" id="stopSound">STOP SOUND</button>
+        </div>
+
+        <div class="status" id="soundStatus" aria-live="polite">
+            <strong>READY:</strong> Your audio chime system is ready.
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>AUTOMATIC CHIMES</h2>
+
+        <div class="toggle-row">
+            <div class="toggle-info">
+                <strong>Enable Automatic Chimes</strong>
+                <small>Play reminders at your selected interval while this page is open.</small>
+            </div>
+            <label class="toggle">
+                <input type="checkbox" id="autoChimes">
+                <span></span>
+            </label>
+        </div>
+
+        <div class="setting" style="margin-top:20px;">
+            <label for="interval">Reminder Interval (minutes)</label>
+            <input type="number" id="interval" min="1" max="180" value="25">
+            <small>Choose how often you want a gentle reminder.</small>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>FOCUS & BREAK CHIMES</h2>
+
+        <div class="toggle-row">
+            <div class="toggle-info">
+                <strong>Focus Complete Chime</strong>
+                <small>Play a sound when a focus session ends.</small>
+            </div>
+            <label class="toggle">
+                <input type="checkbox" id="focusChime" checked>
+                <span></span>
+            </label>
+        </div>
+
+        <div class="toggle-row">
+            <div class="toggle-info">
+                <strong>Break Complete Chime</strong>
+                <small>Play a sound when a break ends.</small>
+            </div>
+            <label class="toggle">
+                <input type="checkbox" id="breakChime" checked>
+                <span></span>
+            </label>
+        </div>
+
+        <div class="toggle-row">
+            <div class="toggle-info">
+                <strong>Hourly Reminder</strong>
+                <small>Play a gentle reminder every hour while this page is open.</small>
+            </div>
+            <label class="toggle">
+                <input type="checkbox" id="hourlyChime">
+                <span></span>
+            </label>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>CONTROL PANEL</h2>
+
+        <div class="button-row">
+            <button class="primary" id="saveSettings">SAVE SETTINGS</button>
+            <button class="danger" id="resetSettings">RESET SETTINGS</button>
+        </div>
+
+        <p class="note" style="margin-top:15px;">
+            Audio reminders work only while this page is open and active.
+            Your browser may require you to tap TEST CHIME before it allows audio playback.
+        </p>
+    </section>
+
+</main>
+
+<footer>
+    HEXCLØWN DIGITAL UNIVERSE<br>
+    GENTLE AUDIO CHIMES
+</footer>
+
+<script>
+const defaults = {
+    soundType: "soft",
+    volume: 45,
+    interval: 25,
+    autoChimes: false,
+    focusChime: true,
+    breakChime: true,
+    hourlyChime: false
+};
+
+const elements = {
+    soundType: document.getElementById("soundType"),
+    volume: document.getElementById("volume"),
+    interval: document.getElementById("interval"),
+    autoChimes: document.getElementById("autoChimes"),
+    focusChime: document.getElementById("focusChime"),
+    breakChime: document.getElementById("breakChime"),
+    hourlyChime: document.getElementById("hourlyChime")
+};
+
+let audioContext = null;
+let activeOscillators = [];
+let reminderTimer = null;
+let hourlyTimer = null;
+let lastReminderTime = Date.now();
+
+function showStatus(message) {
+    document.getElementById("soundStatus").textContent = message;
+}
+
+function getSettings() {
+    return {
+        soundType: elements.soundType.value,
+        volume: Number(elements.volume.value),
+        interval: Number(elements.interval.value),
+        autoChimes: elements.autoChimes.checked,
+        focusChime: elements.focusChime.checked,
+        breakChime: elements.breakChime.checked,
+        hourlyChime: elements.hourlyChime.checked
+    };
+}
+
+function saveSettings() {
+    const settings = getSettings();
+
+    localStorage.setItem(
+        "hexclown_audiochimes_settings",
+        JSON.stringify(settings)
+    );
+
+    showStatus("SETTINGS SAVED: Your audio preferences have been stored.");
+}
+
+function loadSettings() {
+    let saved = {};
+
+    try {
+        saved = JSON.parse(
+            localStorage.getItem("hexclown_audiochimes_settings")
+        ) || {};
+    } catch (error) {
+        saved = {};
+    }
+
+    const settings = { ...defaults, ...saved };
+
+    elements.soundType.value = settings.soundType;
+    elements.volume.value = Math.max(0, Math.min(100, Number(settings.volume) || 0));
+    elements.interval.value = Math.max(1, Math.min(180, Number(settings.interval) || 25));
+
+    elements.autoChimes.checked = Boolean(settings.autoChimes);
+    elements.focusChime.checked = Boolean(settings.focusChime);
+    elements.breakChime.checked = Boolean(settings.breakChime);
+    elements.hourlyChime.checked = Boolean(settings.hourlyChime);
+
+    updateVolumeText();
+}
+
+function updateVolumeText() {
+    document.getElementById("volumeValue").textContent =
+        elements.volume.value + "%";
+}
+
+function stopSound() {
+    activeOscillators.forEach(oscillator => {
+        try {
+            oscillator.stop();
+        } catch (error) {}
+    });
+
+    activeOscillators = [];
+}
+
+function playTone(frequency, startTime, duration, volume) {
+    const oscillator = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(frequency, startTime);
+
+    gain.gain.setValueAtTime(0.001, startTime);
+    gain.gain.exponentialRampToValueAtTime(
+        Math.max(0.001, volume),
+        startTime + 0.04
+    );
+    gain.gain.exponentialRampToValueAtTime(
+        0.001,
+        startTime + duration
+    );
+
+    oscillator.connect(gain);
+    gain.connect(audioContext.destination);
+
+    oscillator.start(startTime);
+    oscillator.stop(startTime + duration + 0.05);
+
+    activeOscillators.push(oscillator);
+
+    oscillator.onended = () => {
+        activeOscillators = activeOscillators.filter(item => item !== oscillator);
+    };
+}
+
+async function playChime() {
+    try {
+        const AudioContextClass =
+            window.AudioContext || window.webkitAudioContext;
+
+        if (!AudioContextClass) {
+            showStatus("Your browser does not support this audio feature.");
+            return;
+        }
+
+        if (!audioContext) {
+            audioContext = new AudioContextClass();
+        }
+
+        if (audioContext.state === "suspended") {
+            await audioContext.resume();
+        }
+
+        stopSound();
+
+        const volume = Number(elements.volume.value) / 100 * 0.16;
+
+        if (volume <= 0) {
+            showStatus("VOLUME IS MUTED: Increase the volume to hear a chime.");
+            return;
+        }
+
+        const now = audioContext.currentTime;
+        const sound = elements.soundType.value;
+
+        if (sound === "soft") {
+            playTone(880, now, 0.65, volume);
+        }
+
+        if (sound === "double") {
+            playTone(740, now, 0.55, volume);
+            playTone(988, now + 0.42, 0.65, volume);
+        }
+
+        if (sound === "calm") {
+            playTone(523.25, now, 0.7, volume);
+            playTone(659.25, now + 0.5, 0.8, volume);
+        }
+
+        if (sound === "digital") {
+            playTone(660, now, 0.18, volume);
+            playTone(880, now + 0.2, 0.18, volume);
+            playTone(1046, now + 0.4, 0.35, volume);
+        }
+
+        showStatus("CHIME PLAYING: Your selected sound is active.");
+
+    } catch (error) {
+        showStatus("Could not play sound. Try tapping TEST CHIME again.");
+    }
+}
+
+function stopAutomaticTimers() {
+    if (reminderTimer) clearInterval(reminderTimer);
+    if (hourlyTimer) clearInterval(hourlyTimer);
+
+    reminderTimer = null;
+    hourlyTimer = null;
+}
+
+function startAutomaticTimers() {
+    stopAutomaticTimers();
+
+    const settings = getSettings();
+
+    if (settings.autoChimes) {
+        lastReminderTime = Date.now();
+
+        reminderTimer = setInterval(() => {
+            if (document.hidden) return;
+            playChime();
+        }, settings.interval * 60 * 1000);
+    }
+
+    if (settings.hourlyChime) {
+        hourlyTimer = setInterval(() => {
+            if (document.hidden) return;
+            playChime();
+        }, 60 * 60 * 1000);
+    }
+}
+
+document.getElementById("testSound").addEventListener("click", playChime);
+
+document.getElementById("stopSound").addEventListener("click", () => {
+    stopSound();
+    showStatus("SOUND STOPPED.");
+});
+
+elements.volume.addEventListener("input", updateVolumeText);
+
+document.getElementById("saveSettings").addEventListener("click", () => {
+    const interval = Number(elements.interval.value);
+
+    if (!Number.isInteger(interval) || interval < 1 || interval > 180) {
+        alert("Please enter an interval between 1 and 180 minutes.");
+        return;
+    }
+
+    saveSettings();
+    startAutomaticTimers();
+});
+
+document.getElementById("resetSettings").addEventListener("click", () => {
+    if (!confirm("Reset all audio settings to their defaults?")) return;
+
+    localStorage.removeItem("hexclown_audiochimes_settings");
+    stopAutomaticTimers();
+    stopSound();
+    loadSettings();
+    showStatus("SETTINGS RESET TO DEFAULTS.");
+});
+
+document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+        lastReminderTime = Date.now();
+    }
+});
+
+loadSettings();
+startAutomaticTimers();
+</script>
+
+</body>
+</html>
