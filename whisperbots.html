@@ -475,11 +475,100 @@ a {
     grid-template-columns: 1fr;
   }
 }
+ 
+/* ADMIN LOGIN SCREEN */
+
+#loginScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at top right, #103039, transparent 45%),
+    #071014;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 390px;
+  padding: 30px 22px;
+  text-align: center;
+  background: #0d1b21;
+  border: 1px solid rgba(32,217,208,.3);
+  border-radius: 15px;
+  box-shadow: 0 0 35px rgba(32,217,208,.08);
+}
+
+.login-box h2 {
+  color: #20d9d0;
+  font-size: 27px;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.login-box p {
+  color: #8ca8ad;
+  font-size: 11px;
+  margin-bottom: 22px;
+}
+
+#adminPassword {
+  width: 100%;
+  padding: 14px;
+  color: #e9ffff;
+  background: #071014;
+  border: 1px solid rgba(32,217,208,.3);
+  border-radius: 8px;
+  outline: none;
+  margin-bottom: 13px;
+}
+
+#adminPassword:focus {
+  border-color: #20d9d0;
+}
+
+#loginButton {
+  width: 100%;
+  padding: 14px;
+  color: #041315;
+  background: #20d9d0;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+#loginMessage {
+  margin-top: 15px;
+  margin-bottom: 0;
+  color: #ff697d;
+  min-height: 15px;
+}
+  
 </style>
 </head>
 
 <body>
+<div id="loginScreen">
+  <div class="login-box">
+    <h2>HEXCLØWN</h2>
+    <p>WHISPER BOTS · ADMIN ACCESS</p>
 
+    <input
+      type="password"
+      id="adminPassword"
+      placeholder="Enter administrator password"
+    >
+
+    <button id="loginButton">UNLOCK DASHBOARD</button>
+
+    <p id="loginMessage"></p>
+  </div>
+</div>
+
+<div id="protectedArea" style="display:none;">
 <header class="header">
 
   <div class="logo">
@@ -796,8 +885,166 @@ a {
   </main>
 
 </div>
+  
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
 
 <script>
+  
+// SUPABASE CONNECTION
+
+const SUPABASE_URL = "PASTE_YOUR_PROJECT_URL_HERE";
+
+const SUPABASE_PUBLISHABLE_KEY = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+  
+// ==========================================
+// WHISPER BOTS ADMIN AUTHENTICATION
+// ==========================================
+
+const loginScreen = document.getElementById("loginScreen");
+const protectedArea = document.getElementById("protectedArea");
+const passwordInput = document.getElementById("adminPassword");
+const loginButton = document.getElementById("loginButton");
+const loginMessage = document.getElementById("loginMessage");
+
+// SHOW OR HIDE THE DASHBOARD
+
+function showDashboard(isLoggedIn) {
+  loginScreen.style.display = isLoggedIn ? "none" : "flex";
+  protectedArea.style.display = isLoggedIn ? "block" : "none";
+}
+
+// ADMIN LOGIN
+
+async function adminLogin() {
+  const email = prompt("Enter your administrator email:");
+
+  if (!email) return;
+
+  const password = passwordInput.value;
+
+  if (!password) {
+    loginMessage.textContent = "Please enter your password.";
+    return;
+  }
+
+  loginButton.disabled = true;
+  loginButton.textContent = "VERIFYING...";
+
+  loginMessage.textContent = "";
+
+  try {
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email: email.trim(),
+        password: password
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    passwordInput.value = "";
+    loginMessage.textContent = "";
+
+    showDashboard(true);
+
+    refreshDashboard();
+
+  } catch (error) {
+    loginMessage.textContent =
+      error.message || "Login failed. Check your details.";
+
+    showDashboard(false);
+
+  } finally {
+    loginButton.disabled = false;
+    loginButton.textContent = "UNLOCK DASHBOARD";
+  }
+}
+
+// LOGIN BUTTON
+
+loginButton.addEventListener("click", adminLogin);
+
+// ENTER KEY SUPPORT
+
+passwordInput.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    adminLogin();
+  }
+});
+
+// CHECK EXISTING LOGIN SESSION
+
+async function checkAdminSession() {
+  showDashboard(false);
+
+  try {
+    const { data, error } =
+      await supabaseClient.auth.getSession();
+
+    if (error) throw error;
+
+    showDashboard(!!data.session);
+
+  } catch (error) {
+    console.error("Session check failed:", error);
+    showDashboard(false);
+  }
+}
+
+// MONITOR LOGIN AND LOGOUT
+
+supabaseClient.auth.onAuthStateChange(
+  function(event, session) {
+    showDashboard(!!session);
+  }
+);
+
+// INITIAL CHECK
+
+checkAdminSession();
+
+// ADD LOGOUT BUTTON
+
+const logoutButton = document.createElement("button");
+
+logoutButton.textContent = "LOG OUT";
+
+logoutButton.style.cssText = `
+  background:transparent;
+  color:#ff697d;
+  border:1px solid rgba(255,105,125,.4);
+  border-radius:7px;
+  padding:9px 12px;
+  font-size:10px;
+  font-weight:bold;
+  cursor:pointer;
+`;
+
+document.querySelector(".header-right").appendChild(logoutButton);
+
+logoutButton.addEventListener("click", async function() {
+  const confirmed = confirm("Are you sure you want to log out?");
+
+  if (!confirmed) return;
+
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    alert("Logout failed: " + error.message);
+    return;
+  }
+
+  showDashboard(false);
+});
+  
     
 // ==========================================
 // WHISPER BOTS DASHBOARD ENGINE
@@ -1155,6 +1402,6 @@ refreshDashboard();
 console.log("WHISPER BOTS dashboard loaded successfully.");
 
 </script>
-
+</div>
 </body>
 </html>
