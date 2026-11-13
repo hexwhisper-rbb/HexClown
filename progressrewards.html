@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,199 +11,196 @@
 :root{
   --bg:#07131a;
   --panel:#0d2029;
-  --panel2:#102a34;
+  --panel2:#102a35;
   --cyan:#00e5ff;
-  --green:#00ff9d;
-  --text:#e8faff;
-  --muted:#91aab4;
-  --border:rgba(0,229,255,.18);
-  --danger:#ff617c;
+  --green:#39ff88;
+  --text:#e9faff;
+  --muted:#91aab5;
+  --border:#21414e;
+  --danger:#ff647c;
 }
 *{box-sizing:border-box}
 body{
   margin:0;
-  min-height:100vh;
-  background:radial-gradient(circle at top,#102b37,#07131a 50%,#050d12);
+  background:var(--bg);
   color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
+  font-family:Arial,sans-serif;
+}
+button,input,textarea,select{font:inherit}
+button{
+  cursor:pointer;
+  border:0;
 }
 header{
   position:sticky;
   top:0;
   z-index:10;
-  background:rgba(5,15,21,.95);
+  background:#081820;
   border-bottom:1px solid var(--border);
-  padding:15px 5%;
+  padding:15px;
+}
+.header-inner{
+  max-width:1100px;
+  margin:auto;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  backdrop-filter:blur(12px);
 }
 .logo{
   color:var(--green);
-  font-size:20px;
+  font-size:19px;
   font-weight:900;
   letter-spacing:2px;
 }
-.logo span{color:var(--cyan)}
-nav{display:flex;gap:15px;flex-wrap:wrap}
-nav a{
-  color:var(--muted);
+.back{
+  color:var(--cyan);
   text-decoration:none;
   font-size:13px;
 }
-nav a:hover{color:var(--green)}
-main{max-width:1050px;margin:auto;padding:25px 16px 55px}
-.hero{text-align:center;padding:25px 10px 30px}
+main{
+  max-width:1100px;
+  margin:auto;
+  padding:22px 15px 50px;
+}
+.hero{
+  padding:27px 20px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:linear-gradient(135deg,#102d38,#091920);
+  margin-bottom:22px;
+}
 .eyebrow{
   color:var(--green);
   font-size:11px;
-  letter-spacing:3px;
+  letter-spacing:2px;
   font-weight:bold;
 }
-h1{font-size:clamp(28px,6vw,43px);margin:12px 0}
-.hero p{
-  color:var(--muted);
-  line-height:1.6;
-  margin:auto;
-  max-width:650px;
-}
+h1{font-size:27px;margin:10px 0}
+.hero p{color:var(--muted);line-height:1.6;margin-bottom:0}
 .section{
-  background:rgba(13,32,41,.94);
+  background:var(--panel);
   border:1px solid var(--border);
-  border-radius:17px;
-  padding:20px;
-  margin:20px 0;
-  box-shadow:0 12px 35px rgba(0,0,0,.18);
+  border-radius:15px;
+  padding:18px;
+  margin-bottom:20px;
 }
-.section-heading{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:17px;
-}
-.section-icon{
-  width:42px;height:42px;
-  display:grid;place-items:center;
-  border-radius:12px;
-  background:rgba(0,229,255,.1);
-  font-size:21px;
-}
-h2{font-size:21px;margin:0}
-.section-heading p{margin:5px 0 0;color:var(--muted);font-size:13px}
-h3{font-size:15px;margin:18px 0 10px}
-label{
-  display:block;
+.section h2{font-size:19px;margin:0 0 8px}
+.description{
   color:var(--muted);
-  font-size:12px;
-  margin:12px 0 6px;
-}
-input,select,textarea{
-  width:100%;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:9px;
-  background:#071820;
-  color:var(--text);
-  outline:none;
-  font:inherit;
-  font-size:14px;
-}
-input:focus,select:focus,textarea:focus{border-color:var(--cyan)}
-button{
-  border:0;
-  border-radius:9px;
-  padding:11px 15px;
-  background:var(--cyan);
-  color:#031116;
-  font-weight:bold;
-  cursor:pointer;
   font-size:13px;
-}
-button:hover{filter:brightness(1.1)}
-button:disabled{opacity:.4;cursor:not-allowed}
-.btn-green{background:var(--green)}
-.btn-dark{
-  background:#17333e;
-  color:var(--text);
-  border:1px solid var(--border);
-}
-.btn-danger{
-  background:rgba(255,97,124,.12);
-  color:#ff91a4;
-  border:1px solid rgba(255,97,124,.3);
-}
-.btn-small{padding:8px 11px;font-size:12px}
-.button-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.grid-two{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:13px;
-}
-.form-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-.muted{color:var(--muted);font-size:13px;line-height:1.5}
-.status{
-  min-height:19px;
-  color:var(--green);
-  font-size:12px;
-  margin-top:9px;
+  line-height:1.5;
+  margin:0 0 17px;
 }
 .stats{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(4,1fr);
   gap:10px;
-  margin:15px 0;
+  margin-bottom:20px;
 }
 .stat{
-  background:#102a34;
+  background:var(--panel);
   border:1px solid var(--border);
-  border-radius:11px;
-  padding:13px;
+  padding:15px 10px;
+  border-radius:12px;
   text-align:center;
 }
 .stat strong{
   display:block;
+  font-size:23px;
   color:var(--green);
-  font-size:25px;
 }
-.stat span{color:var(--muted);font-size:11px}
+.stat span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+}
+input,textarea,select{
+  width:100%;
+  background:#071820;
+  border:1px solid var(--border);
+  color:var(--text);
+  border-radius:9px;
+  padding:12px;
+  outline:none;
+  margin:5px 0 12px;
+}
+input:focus,textarea:focus,select:focus{
+  border-color:var(--cyan);
+}
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+label{
+  display:block;
+  color:#c5dce4;
+  font-size:12px;
+  font-weight:bold;
+  margin-top:8px;
+}
+.btn{
+  padding:11px 15px;
+  border-radius:9px;
+  background:var(--cyan);
+  color:#00151a;
+  font-weight:bold;
+  font-size:13px;
+}
+.btn-green{
+  background:var(--green);
+  color:#04170c;
+}
+.btn-secondary{
+  background:#193542;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.btn-danger{
+  background:#542331;
+  color:#ffdce2;
+}
+.btn-small{
+  padding:8px 10px;
+  font-size:11px;
+}
+.button-row{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
 .progress-track{
-  height:10px;
-  background:#18323d;
+  height:11px;
+  background:#06141a;
   border-radius:20px;
   overflow:hidden;
-  margin:10px 0;
+  border:1px solid var(--border);
 }
 .progress-fill{
   height:100%;
   width:0;
   background:linear-gradient(90deg,var(--cyan),var(--green));
-  transition:width .3s;
+  border-radius:20px;
+  transition:width .25s;
 }
-.overall-box{
-  text-align:center;
-  padding:18px;
-  border:1px solid var(--border);
-  background:#102a34;
-  border-radius:13px;
-  margin:15px 0;
+.progress-label{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  color:var(--muted);
+  font-size:12px;
+  margin:8px 0;
 }
-.overall-number{
-  font-size:42px;
-  font-weight:900;
-  color:var(--green);
+.subject-list{
+  display:grid;
+  gap:13px;
 }
 .subject-card{
-  background:#102a34;
+  background:#091a22;
   border:1px solid var(--border);
   border-radius:12px;
   padding:15px;
-  margin:12px 0;
 }
 .subject-top{
   display:flex;
@@ -210,26 +208,32 @@ button:disabled{opacity:.4;cursor:not-allowed}
   align-items:flex-start;
   gap:10px;
 }
-.subject-top h3{margin:0;overflow-wrap:anywhere}
-.subject-percent{
-  color:var(--green);
-  font-weight:bold;
-  font-size:18px;
-  white-space:nowrap;
+.subject-top h3{
+  margin:0 0 5px;
+  font-size:16px;
 }
-.topic-list{margin-top:12px}
+.subject-meta{
+  font-size:11px;
+  color:var(--muted);
+}
+.topic-list{
+  display:grid;
+  gap:8px;
+  margin-top:14px;
+}
 .topic-item{
   display:flex;
   align-items:center;
   gap:9px;
-  border-top:1px solid rgba(0,229,255,.1);
-  padding:10px 0;
+  padding:9px;
+  background:#102832;
+  border-radius:8px;
 }
 .topic-item input{
-  width:18px;
-  height:18px;
+  width:17px;
+  height:17px;
+  margin:0;
   accent-color:var(--green);
-  flex-shrink:0;
 }
 .topic-item span{
   flex:1;
@@ -237,118 +241,130 @@ button:disabled{opacity:.4;cursor:not-allowed}
   overflow-wrap:anywhere;
 }
 .topic-item.done span{
-  color:var(--green);
+  color:#83a99a;
   text-decoration:line-through;
 }
-.topic-item button{flex-shrink:0}
+.topic-empty{
+  color:var(--muted);
+  font-size:12px;
+  padding:10px 0;
+}
+.subject-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:12px;
+}
+.subject-actions button{
+  font-size:11px;
+}
 .certificate-preview{
-  background:#f4f0df;
-  color:#15252b;
-  padding:25px 15px;
-  border:7px double #b18b42;
+  background:#f5f0dc;
+  color:#18252a;
+  padding:30px 18px;
+  border:7px double #b28c35;
   text-align:center;
   border-radius:5px;
-  margin-top:18px;
-}
-.certificate-preview .cert-brand{
-  font-weight:900;
-  letter-spacing:4px;
-  color:#17666a;
-  font-size:15px;
+  margin-top:15px;
 }
 .certificate-preview h2{
+  color:#76521a;
   font-family:Georgia,serif;
-  font-size:clamp(22px,5vw,35px);
-  color:#183c42;
-  margin:20px 0;
+  font-size:27px;
+  margin:10px 0;
+}
+.certificate-preview .cert-brand{
+  color:#286c68;
+  font-weight:bold;
+  letter-spacing:3px;
+  font-size:12px;
 }
 .certificate-preview .cert-name{
   font-family:Georgia,serif;
-  font-size:clamp(20px,5vw,30px);
+  font-size:25px;
   font-weight:bold;
-  color:#805f22;
-  border-bottom:1px solid #b18b42;
-  padding:10px;
-  overflow-wrap:anywhere;
+  border-bottom:1px solid #b28c35;
+  display:inline-block;
+  padding:5px 15px;
+  margin:12px 0;
 }
 .certificate-preview p{
-  line-height:1.7;
+  line-height:1.6;
   font-size:13px;
 }
 .certificate-preview .cert-subject{
-  font-size:20px;
+  font-family:Georgia,serif;
+  font-size:22px;
+  color:#286c68;
   font-weight:bold;
-  color:#17666a;
-  margin:12px 0;
 }
-.certificate-preview .cert-date{
-  margin-top:20px;
-  font-size:12px;
-}
-.cert-stamp{
-  display:inline-block;
-  border:2px solid #b18b42;
-  border-radius:50%;
-  padding:12px;
-  color:#805f22;
+.cert-date{
   font-size:11px;
-  font-weight:bold;
-  margin-top:10px;
+  color:#555;
+  margin-top:20px;
+}
+.history-list{
+  display:grid;
+  gap:9px;
 }
 .history-item{
-  background:#102a34;
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:12px;
-  margin:8px 0;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:10px;
+  padding:12px;
+  border:1px solid var(--border);
+  background:#091a22;
+  border-radius:9px;
 }
-.history-item strong{font-size:13px}
-.history-item small{display:block;color:var(--muted);margin-top:4px}
+.history-item strong{
+  display:block;
+  font-size:13px;
+}
+.history-item small{
+  color:var(--muted);
+  font-size:11px;
+}
+.notice{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+  margin-top:12px;
+}
 .hidden{display:none!important}
 footer{
   text-align:center;
-  padding:25px 12px;
-  color:var(--muted);
-  border-top:1px solid var(--border);
-  font-size:12px;
+  padding:20px;
+  color:#67818d;
+  font-size:11px;
 }
 @media(max-width:650px){
-  header{padding:13px 4%;align-items:flex-start;flex-direction:column}
-  nav{gap:12px}
-  main{padding:15px 12px 40px}
-  .section{padding:16px}
-  .grid-two,.form-grid{grid-template-columns:1fr}
-  .stats{grid-template-columns:repeat(3,1fr)}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  h1{font-size:23px}
+  .subject-top{flex-direction:column}
   .history-item{align-items:flex-start;flex-direction:column}
 }
 @media print{
-  body{background:white!important;color:#111!important}
-  header,footer,.hero,#trackerSection,#certificateForm,
-  #certificateHistory,.no-print{display:none!important}
-  main{padding:0!important;margin:0!important}
+  body{background:white!important}
+  header,main>*:not(#certificateSection),footer,
+  #certificateSection>*:not(#certificatePreview),
+  #certificatePreview button{display:none!important}
   #certificateSection{
     display:block!important;
-    background:white!important;
     border:0!important;
     padding:0!important;
     margin:0!important;
-    box-shadow:none!important;
+    background:white!important;
   }
-  .certificate-preview{
+  #certificatePreview{
     display:block!important;
-    margin:10px auto!important;
-    width:100%!important;
-    max-width:900px!important;
-    min-height:500px;
-    padding:45px 25px!important;
+    margin:0!important;
+    width:100%;
+    min-height:90vh;
+    border:8px double #b28c35!important;
     print-color-adjust:exact;
     -webkit-print-color-adjust:exact;
   }
-  @page{size:A4 landscape;margin:12mm}
 }
 </style>
 </head>
@@ -356,309 +372,342 @@ footer{
 <body>
 
 <header>
-  <div class="logo">HEX<span>CLØWN</span></div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="learninghub.html">Learning Hub</a>
-    <a href="#trackerSection">Progress Tracker</a>
-    <a href="#certificateSection">Certificates</a>
-  </nav>
+  <div class="header-inner">
+    <div class="logo">HEXCLØWN</div>
+    <a class="back" href="learninghub.html">← Learning Hub</a>
+  </div>
 </header>
 
 <main>
 
 <section class="hero">
-  <div class="eyebrow">LEARNING HUB / MODULE 03</div>
-  <h1>Progress & <span style="color:var(--green)">Rewards</span></h1>
-  <p>Track your learning journey, measure your mastery and celebrate the subjects you complete with printable certificates.</p>
+  <div class="eyebrow">LEARNING HUB / PROGRESS & REWARDS</div>
+  <h1>Track Your Growth.</h1>
+  <p>
+    Record what you learn, monitor your mastery,
+    celebrate completed subjects and build your
+    personal learning record.
+  </p>
 </section>
 
-<!-- PROGRESS TRACKER -->
-
-<section class="section" id="trackerSection">
-
-  <div class="section-heading">
-    <div class="section-icon">📊</div>
-    <div>
-      <h2>Progress Tracker</h2>
-      <p>Organise subjects and monitor your learning progress.</p>
-    </div>
+<div class="stats">
+  <div class="stat">
+    <strong id="totalSubjects">0</strong>
+    <span>SUBJECTS</span>
   </div>
-
-  <div class="stats">
-    <div class="stat">
-      <strong id="subjectTotal">0</strong>
-      <span>Subjects</span>
-    </div>
-    <div class="stat">
-      <strong id="topicTotal">0</strong>
-      <span>Total Topics</span>
-    </div>
-    <div class="stat">
-      <strong id="masteredTotal">0</strong>
-      <span>Mastered</span>
-    </div>
+  <div class="stat">
+    <strong id="totalTopics">0</strong>
+    <span>TOTAL TOPICS</span>
   </div>
-
-  <div class="overall-box">
-    <div class="muted">OVERALL MASTERY</div>
-    <div class="overall-number" id="overallPercent">0%</div>
-    <div class="progress-track">
-      <div class="progress-fill" id="overallBar"></div>
-    </div>
-    <p class="muted" id="overallMessage">Add your first subject to begin tracking.</p>
+  <div class="stat">
+    <strong id="masteredTopics">0</strong>
+    <span>MASTERED</span>
   </div>
-
-  <h3>Add a Subject</h3>
-
-  <label for="subjectName">Subject name</label>
-  <input id="subjectName" type="text" placeholder="Example: Biology">
-
-  <label for="topicNames">Topics (separate each topic with a new line)</label>
-  <textarea id="topicNames" placeholder="Cell Biology&#10;Genetics&#10;Human Anatomy&#10;Ecology"></textarea>
-
-  <div class="button-row">
-    <button class="btn-green" id="addSubjectBtn">+ Add Subject</button>
+  <div class="stat">
+    <strong id="overallPercent">0%</strong>
+    <span>OVERALL MASTERY</span>
   </div>
+</div>
 
-  <div class="status" id="trackerStatus" aria-live="polite"></div>
-
-  <h3>Your Subjects & Topics</h3>
-  <div id="subjectList">
-    <p class="muted">No subjects added yet.</p>
-  </div>
-
-</section>
-
-<!-- CERTIFICATES -->
-
-<section class="section" id="certificateSection">
-
-  <div class="section-heading">
-    <div class="section-icon">🏆</div>
-    <div>
-      <h2>Printable Study Certificates</h2>
-      <p>Create a personalised certificate for a completed subject.</p>
-    </div>
-  </div>
-
-  <div id="certificateForm">
-
-    <label for="certificateName">Student name</label>
-    <input id="certificateName" type="text" placeholder="Enter your name">
-
-    <label for="certificateSubject">Choose a completed subject</label>
-    <select id="certificateSubject">
-      <option value="">Add and complete a subject first</option>
-    </select>
-
-    <label for="certificateNote">Optional achievement message</label>
-    <textarea id="certificateNote" placeholder="Example: Successfully completed all revision topics."></textarea>
-
-    <div class="button-row">
-      <button class="btn-green" id="generateCertificateBtn">Generate Certificate</button>
-      <button class="btn-dark" id="printCertificateBtn">Print Certificate</button>
-    </div>
-
-    <div class="status" id="certificateStatus" aria-live="polite"></div>
-
-  </div>
-
-  <div class="certificate-preview" id="certificatePreview">
-    <div class="cert-brand">HEXCLØWN</div>
-    <p style="letter-spacing:3px;color:#805f22;font-size:11px">LEARNING HUB • ACHIEVEMENT AWARD</p>
-
-    <h2>Certificate of Completion</h2>
-
-    <p>This certificate is presented to</p>
-
-    <div class="cert-name" id="certStudentName">Student Name</div>
-
-    <p>In recognition of completing the study programme in</p>
-
-    <div class="cert-subject" id="certSubjectName">Subject Name</div>
-
-    <p id="certAchievementNote">For dedication, practice and commitment to learning.</p>
-
-    <div class="cert-stamp">STUDY<br>ACHIEVEMENT</div>
-
-    <div class="cert-date">
-      Date: <span id="certDate"></span>
-      <br>
-      Certificate ID: <span id="certId"></span>
-    </div>
-  </div>
-
-  <p class="muted no-print">
-    Certificates are personal learning achievements generated by this website. They are not accredited academic qualifications.
+<section class="section">
+  <h2>01 / Overall Learning Progress</h2>
+  <p class="description">
+    Your overall mastery is calculated automatically
+    from all the topics in your subject library.
   </p>
 
-  <div id="certificateHistory" style="margin-top:22px">
-    <h3>Certificate History</h3>
-    <div id="historyList">
-      <p class="muted">No certificates generated yet.</p>
-    </div>
+  <div class="progress-label">
+    <span>Overall mastery</span>
+    <strong id="overallLabel">0%</strong>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="overallBar"></div>
+  </div>
+  <p class="notice" id="overallMessage">
+    Add your first subject to begin tracking your progress.
+  </p>
+</section>
+
+<section class="section">
+  <h2>02 / Create a Subject</h2>
+  <p class="description">
+    Add a subject and list the topics you want to study.
+    Enter one topic per line.
+  </p>
+
+  <form id="subjectForm">
+    <label for="subjectName">Subject name</label>
+    <input id="subjectName" maxlength="60"
+      placeholder="Example: Biology" required>
+
+    <label for="subjectTopics">Topics to study</label>
+    <textarea id="subjectTopics"
+      placeholder="Cell Biology&#10;Genetics&#10;Ecology&#10;Human Anatomy"
+      required></textarea>
+
+    <button class="btn btn-green" type="submit">
+      + Add Subject
+    </button>
+  </form>
+  <p class="notice" id="subjectFormStatus" aria-live="polite"></p>
+</section>
+
+<section class="section">
+  <h2>03 / Subject Mastery Tracker</h2>
+  <p class="description">
+    Tick a topic when you feel confident about it.
+    Your mastery percentage will update automatically.
+  </p>
+
+  <div class="subject-list" id="subjectList">
+    <p class="topic-empty">
+      No subjects yet. Create your first subject above.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="certificateSection">
+  <h2>04 / Study Achievement Certificate</h2>
+  <p class="description">
+    Generate a personal certificate when you have
+    mastered every topic in a subject.
+  </p>
+
+  <label for="studentName">Your name</label>
+  <input id="studentName" maxlength="70"
+    placeholder="Enter your name">
+
+  <label for="certificateSubject">
+    Completed subject
+  </label>
+  <select id="certificateSubject">
+    <option value="">Choose a mastered subject</option>
+  </select>
+
+  <label for="achievementMessage">
+    Achievement message (optional)
+  </label>
+  <textarea id="achievementMessage"
+    maxlength="250"
+    placeholder="A short message about your achievement..."></textarea>
+
+  <div class="button-row">
+    <button class="btn btn-green" id="generateCertificateBtn"
+      type="button">
+      Generate Certificate
+    </button>
+    <button class="btn btn-secondary" id="clearCertificateBtn"
+      type="button">
+      Clear Preview
+    </button>
   </div>
 
+  <p class="notice" id="certificateStatus" aria-live="polite"></p>
+
+  <div id="certificatePreview" class="certificate-preview hidden">
+    <div class="cert-brand">HEXCLØWN LEARNING HUB</div>
+    <h2>Certificate of Achievement</h2>
+    <p>This certificate is proudly presented to</p>
+    <div class="cert-name" id="certStudent">Student Name</div>
+    <p>In recognition of successfully mastering</p>
+    <div class="cert-subject" id="certSubject">
+      Subject Name
+    </div>
+    <p id="certMessage">
+      For dedication, effort and commitment to learning.
+    </p>
+    <div class="cert-date" id="certDate"></div>
+    <p style="margin-top:25px;font-weight:bold">
+      PERSONAL LEARNING ACHIEVEMENT
+    </p>
+  </div>
+
+  <div class="button-row" id="certificatePrintActions"
+    style="margin-top:12px">
+    <button class="btn btn-green hidden" id="printCertificateBtn"
+      type="button">
+      Print Certificate
+    </button>
+  </div>
+
+  <p class="notice">
+    These are personal learning achievement certificates,
+    not accredited academic qualifications.
+  </p>
+</section>
+
+<section class="section">
+  <h2>05 / Certificate History</h2>
+  <p class="description">
+    Your generated certificates are saved on this device.
+  </p>
+
+  <div class="history-list" id="certificateHistory">
+    <p class="topic-empty">No certificates generated yet.</p>
+  </div>
 </section>
 
 </main>
 
 <footer>
-  HEXCLØWN LEARNING SYSTEM<br>
-  <span>Track Your Growth • Celebrate Your Progress</span>
+  HEXCLØWN • PROGRESS & REWARDS • KEEP LEARNING
 </footer>
 
 <script>
 
 /* =====================================
-   PROGRESS TRACKER
+   STORAGE AND BASIC HELPERS
 ===================================== */
 
-const PROGRESS_KEY = "hexclown_progressrewards_subjects_v1";
-const CERTIFICATE_KEY = "hexclown_progressrewards_certificates_v1";
+const SUBJECTS_KEY = "hexclown_progressrewards_subjects_v1";
+const CERTIFICATES_KEY = "hexclown_progressrewards_certificates_v1";
+
+const $ = id => document.getElementById(id);
 
 let subjects = [];
 let certificates = [];
+let currentCertificate = null;
 
-function makeId(){
+function createId(){
   return Date.now().toString(36) +
-    Math.random().toString(36).slice(2,8).toUpperCase();
+    Math.random().toString(36).slice(2,8);
 }
 
-function saveProgress(){
+function loadArray(key){
   try{
-    localStorage.setItem(PROGRESS_KEY,JSON.stringify(subjects));
+    const value = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(value) ? value : [];
   }catch(error){
-    document.getElementById("trackerStatus").textContent =
-      "Could not save progress. Browser storage may be full.";
+    return [];
   }
 }
 
-function saveCertificates(){
+function saveArray(key,data){
   try{
-    localStorage.setItem(CERTIFICATE_KEY,JSON.stringify(certificates));
+    localStorage.setItem(key,JSON.stringify(data));
+    return true;
   }catch(error){
-    document.getElementById("certificateStatus").textContent =
-      "Could not save certificate history.";
+    alert("Your browser could not save this data. Check your device storage.");
+    return false;
   }
 }
 
-function loadData(){
-  try{
-    const savedSubjects = JSON.parse(
-      localStorage.getItem(PROGRESS_KEY) || "[]"
-    );
-
-    const savedCertificates = JSON.parse(
-      localStorage.getItem(CERTIFICATE_KEY) || "[]"
-    );
-
-    if(Array.isArray(savedSubjects)){
-      subjects = savedSubjects.filter(subject =>
-        subject &&
-        typeof subject.id === "string" &&
-        typeof subject.name === "string" &&
-        Array.isArray(subject.topics)
-      );
-    }
-
-    if(Array.isArray(savedCertificates)){
-      certificates = savedCertificates.filter(cert =>
-        cert &&
-        typeof cert.id === "string"
-      );
-    }
-
-  }catch(error){
-    subjects = [];
-    certificates = [];
-  }
-
-  renderSubjects();
-  updateStatistics();
-  updateCertificateSubjects();
-  renderCertificateHistory();
+function escapeHTML(value){
+  return String(value).replace(/[&<>"']/g,char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[char]);
 }
 
-function addSubject(){
-  const name = document.getElementById("subjectName").value.trim();
-  const rawTopics = document.getElementById("topicNames").value;
-
-  if(!name){
-    document.getElementById("trackerStatus").textContent =
-      "Please enter a subject name.";
-    return;
-  }
-
-  const topics = rawTopics
-    .split("\n")
-    .map(topic => topic.trim())
-    .filter(Boolean);
-
-  if(topics.length === 0){
-    document.getElementById("trackerStatus").textContent =
-      "Please enter at least one topic.";
-    return;
-  }
-
-  const duplicate = subjects.some(subject =>
-    subject.name.toLowerCase() === name.toLowerCase()
-  );
-
-  if(duplicate){
-    document.getElementById("trackerStatus").textContent =
-      "This subject already exists. Add new topics to that subject instead.";
-    return;
-  }
-
-  subjects.push({
-    id:makeId(),
-    name:name,
-    topics:topics.map(topic=>({
-      id:makeId(),
-      name:topic,
-      mastered:false
-    }))
-  });
-
-  document.getElementById("subjectName").value = "";
-  document.getElementById("topicNames").value = "";
-
-  saveProgress();
-  renderSubjects();
-  updateStatistics();
-  updateCertificateSubjects();
-
-  document.getElementById("trackerStatus").textContent =
-    "Subject added successfully!";
-}
-
-function getSubjectProgress(subject){
+function getSubjectStats(subject){
   const total = subject.topics.length;
-  const mastered = subject.topics.filter(topic=>topic.mastered).length;
+  const mastered = subject.topics.filter(topic => topic.done).length;
 
   return {
     total,
     mastered,
-    percentage:total ? Math.round(mastered / total * 100) : 0
+    percent: total ? Math.round(mastered / total * 100) : 0
   };
 }
 
+function getOverallStats(){
+  let total = 0;
+  let mastered = 0;
+
+  subjects.forEach(subject => {
+    total += subject.topics.length;
+    mastered += subject.topics.filter(topic => topic.done).length;
+  });
+
+  return {
+    subjects:subjects.length,
+    total,
+    mastered,
+    percent:total ? Math.round(mastered / total * 100) : 0
+  };
+}
+
+/* =====================================
+   SUBJECT CREATION
+===================================== */
+
+$("subjectForm").addEventListener("submit",event => {
+  event.preventDefault();
+
+  const name = $("subjectName").value.trim();
+  const rawTopics = $("subjectTopics").value;
+
+  const topicNames = [...new Set(
+    rawTopics.split("\n")
+      .map(topic => topic.trim())
+      .filter(Boolean)
+  )];
+
+  if(!name){
+    $("subjectFormStatus").textContent =
+      "Please enter a subject name.";
+    return;
+  }
+
+  if(topicNames.length === 0){
+    $("subjectFormStatus").textContent =
+      "Please enter at least one topic.";
+    return;
+  }
+
+  const exists = subjects.some(subject =>
+    subject.name.toLowerCase() === name.toLowerCase()
+  );
+
+  if(exists){
+    $("subjectFormStatus").textContent =
+      "This subject already exists. Add a different subject name.";
+    return;
+  }
+
+  const subject = {
+    id:createId(),
+    name,
+    topics:topicNames.map(topic => ({
+      id:createId(),
+      name:topic,
+      done:false
+    })),
+    createdAt:Date.now()
+  };
+
+  subjects.push(subject);
+
+  if(saveArray(SUBJECTS_KEY,subjects)){
+    $("subjectForm").reset();
+    $("subjectFormStatus").textContent =
+      "Subject added successfully!";
+    renderEverything();
+  }
+});
+
+/* =====================================
+   SUBJECT AND TOPIC RENDERING
+===================================== */
+
 function renderSubjects(){
-  const container = document.getElementById("subjectList");
+  const container = $("subjectList");
   container.replaceChildren();
 
   if(subjects.length === 0){
     const empty = document.createElement("p");
-    empty.className = "muted";
-    empty.textContent = "No subjects added yet. Add your first subject above.";
+    empty.className = "topic-empty";
+    empty.textContent =
+      "No subjects yet. Create your first subject above.";
     container.appendChild(empty);
     return;
   }
 
-  subjects.forEach(subject=>{
-    const progress = getSubjectProgress(subject);
+  subjects.forEach(subject => {
+    const stats = getSubjectStats(subject);
 
     const card = document.createElement("div");
     card.className = "subject-card";
@@ -666,145 +715,447 @@ function renderSubjects(){
     const top = document.createElement("div");
     top.className = "subject-top";
 
+    const info = document.createElement("div");
+
     const heading = document.createElement("h3");
     heading.textContent = subject.name;
 
-    const percent = document.createElement("div");
-    percent.className = "subject-percent";
-    percent.textContent = progress.percentage + "%";
+    const meta = document.createElement("div");
+    meta.className = "subject-meta";
+    meta.textContent =
+      stats.mastered + " of " + stats.total + " topics mastered";
 
-    top.append(heading,percent);
+    info.append(heading,meta);
 
-    const detail = document.createElement("p");
-    detail.className = "muted";
-    detail.textContent =
-      progress.mastered + " of " + progress.total + " topics mastered";
+    const percentage = document.createElement("strong");
+    percentage.style.color = "var(--green)";
+    percentage.textContent = stats.percent + "%";
 
-    const bar = document.createElement("div");
-    bar.className = "progress-track";
+    top.append(info,percentage);
+
+    const progressLabel = document.createElement("div");
+    progressLabel.className = "progress-label";
+
+    const left = document.createElement("span");
+    left.textContent = "Subject mastery";
+
+    const right = document.createElement("span");
+    right.textContent = stats.mastered + "/" + stats.total;
+
+    progressLabel.append(left,right);
+
+    const track = document.createElement("div");
+    track.className = "progress-track";
 
     const fill = document.createElement("div");
     fill.className = "progress-fill";
-    fill.style.width = progress.percentage + "%";
+    fill.style.width = stats.percent + "%";
 
-    bar.appendChild(fill);
+    track.appendChild(fill);
 
     const topicList = document.createElement("div");
     topicList.className = "topic-list";
 
-    subject.topics.forEach(topic=>{
-      const row = document.createElement("div");
-      row.className = "topic-item" + (topic.mastered ? " done" : "");
+    subject.topics.forEach(topic => {
+      const item = document.createElement("label");
+      item.className =
+        "topic-item" + (topic.done ? " done" : "");
 
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
-      checkbox.checked = topic.mastered;
-      checkbox.setAttribute("aria-label","Mark " + topic.name + " as mastered");
+      checkbox.checked = Boolean(topic.done);
+      checkbox.setAttribute("aria-label",
+        "Mark " + topic.name + " as mastered");
 
-      checkbox.addEventListener("change",()=>{
-        topic.mastered = checkbox.checked;
-        saveProgress();
-        renderSubjects();
-        updateStatistics();
-        updateCertificateSubjects();
+      checkbox.addEventListener("change",() => {
+        topic.done = checkbox.checked;
+
+        if(saveArray(SUBJECTS_KEY,subjects)){
+          renderEverything();
+        }
       });
 
-      const title = document.createElement("span");
-      title.textContent = topic.name;
+      const name = document.createElement("span");
+      name.textContent = topic.name;
 
-      const remove = document.createElement("button");
-      remove.className = "btn-danger btn-small";
-      remove.textContent = "×";
-      remove.title = "Delete topic";
-
-      remove.addEventListener("click",()=>{
-        if(!confirm("Delete this topic?")) return;
-
-        subject.topics = subject.topics.filter(item=>item.id !== topic.id);
-
-        saveProgress();
-        renderSubjects();
-        updateStatistics();
-        updateCertificateSubjects();
-      });
-
-      row.append(checkbox,title,remove);
-      topicList.appendChild(row);
-    });
-
-    const addTopicButton = document.createElement("button");
-    addTopicButton.className = "btn-dark btn-small";
-    addTopicButton.textContent = "+ Add Topic";
-
-    addTopicButton.addEventListener("click",()=>{
-      const topicName = prompt("Enter the new topic name:");
-
-      if(!topicName || !topicName.trim()) return;
-
-      subject.topics.push({
-        id:makeId(),
-        name:topicName.trim(),
-        mastered:false
-      });
-
-      saveProgress();
-      renderSubjects();
-      updateStatistics();
-      updateCertificateSubjects();
-    });
-
-    const removeSubjectButton = document.createElement("button");
-    removeSubjectButton.className = "btn-danger btn-small";
-    removeSubjectButton.textContent = "Delete Subject";
-
-    removeSubjectButton.addEventListener("click",()=>{
-      if(!confirm("Delete " + subject.name + " and all its topics?")) return;
-
-      subjects = subjects.filter(item=>item.id !== subject.id);
-
-      saveProgress();
-      renderSubjects();
-      updateStatistics();
-      updateCertificateSubjects();
+      item.append(checkbox,name);
+      topicList.appendChild(item);
     });
 
     const actions = document.createElement("div");
-    actions.className = "button-row";
-    actions.append(addTopicButton,removeSubjectButton);
+    actions.className = "subject-actions";
 
-    card.append(top,detail,bar,topicList,actions);
+    const addTopicBtn = document.createElement("button");
+    addTopicBtn.className = "btn btn-secondary btn-small";
+    addTopicBtn.textContent = "+ Add Topic";
+    addTopicBtn.addEventListener("click",() => {
+      addTopic(subject.id);
+    });
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "btn btn-danger btn-small";
+    deleteBtn.textContent = "Delete Subject";
+    deleteBtn.addEventListener("click",() => {
+      deleteSubject(subject.id);
+    });
+
+    actions.append(addTopicBtn,deleteBtn);
+
+    card.append(top,progressLabel,track,topicList,actions);
     container.appendChild(card);
   });
 }
 
-function updateStatistics(){
-  const totalSubjects = subjects.length;
+/* =====================================
+   ADD AND DELETE TOPICS
+===================================== */
 
-  let totalTopics = 0;
-  let totalMastered = 0;
+function addTopic(subjectId){
+  const subject = subjects.find(item => item.id === subjectId);
+  if(!subject) return;
 
-  subjects.forEach(subject=>{
-    totalTopics += subject.topics.length;
-    totalMastered += subject.topics.filter(topic=>topic.mastered).length;
+  const name = prompt("Enter the new topic name:");
+  if(name === null) return;
+
+  const cleanName = name.trim();
+
+  if(!cleanName){
+    alert("Enter a topic name.");
+    return;
+  }
+
+  const exists = subject.topics.some(topic =>
+    topic.name.toLowerCase() === cleanName.toLowerCase()
+  );
+
+  if(exists){
+    alert("That topic already exists in this subject.");
+    return;
+  }
+
+  subject.topics.push({
+    id:createId(),
+    name:cleanName,
+    done:false
   });
 
-  const percentage = totalTopics
-    ? Math.round(totalMastered / totalTopics * 100)
-    : 0;
+  if(saveArray(SUBJECTS_KEY,subjects)){
+    renderEverything();
+  }
+}
 
-  document.getElementById("subjectTotal").textContent =
-    totalSubjects;
+function deleteSubject(subjectId){
+  const subject = subjects.find(item => item.id === subjectId);
+  if(!subject) return;
 
-  document.getElementById("topicTotal").textContent =
-    totalTopics;
+  if(!confirm(
+    "Delete " + subject.name +
+    " and all its topics? This cannot be undone."
+  )) return;
 
-  document.getElementById("masteredTotal").textContent =
-    totalMastered;
+  subjects = subjects.filter(item => item.id !== subjectId);
 
-  document.getElementById("overallPercent").textContent =
-    percentage + "%";
+  if(saveArray(SUBJECTS_KEY,subjects)){
+    renderEverything();
+  }
+}
 
-  document.getElementById("overallBar").style.width =
-    percentage + "%";
+/* =====================================
+   OVERALL PROGRESS
+===================================== */
 
-  document.getElementById("overallMessage").textCont
+function renderStats(){
+  const stats = getOverallStats();
+
+  $("totalSubjects").textContent = stats.subjects;
+  $("totalTopics").textContent = stats.total;
+  $("masteredTopics").textContent = stats.mastered;
+  $("overallPercent").textContent = stats.percent + "%";
+
+  $("overallLabel").textContent = stats.percent + "%";
+  $("overallBar").style.width = stats.percent + "%";
+
+  if(stats.total === 0){
+    $("overallMessage").textContent =
+      "Add your first subject to begin tracking your progress.";
+  }else if(stats.percent === 100){
+    $("overallMessage").textContent =
+      "Excellent! Every topic in your library is marked as mastered.";
+  }else{
+    $("overallMessage").textContent =
+      stats.mastered + " of " + stats.total +
+      " topics mastered. Keep making progress!";
+  }
+}
+/* =====================================
+   CERTIFICATE SUBJECT OPTIONS
+===================================== */
+
+function renderCertificateOptions(){
+  const select = $("certificateSubject");
+  const previousValue = select.value;
+
+  select.replaceChildren();
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "Choose a mastered subject";
+  select.appendChild(defaultOption);
+
+  const completedSubjects = subjects.filter(subject => {
+    const stats = getSubjectStats(subject);
+    return stats.total > 0 && stats.mastered === stats.total;
+  });
+
+  completedSubjects.forEach(subject => {
+    const option = document.createElement("option");
+    option.value = subject.id;
+    option.textContent = subject.name;
+    select.appendChild(option);
+  });
+
+  if(completedSubjects.some(subject => subject.id === previousValue)){
+    select.value = previousValue;
+  }
+
+  if(completedSubjects.length === 0){
+    const option = document.createElement("option");
+    option.disabled = true;
+    option.textContent = "No fully mastered subjects yet";
+    select.appendChild(option);
+  }
+}
+
+/* =====================================
+   GENERATE CERTIFICATE
+===================================== */
+
+function generateCertificate(){
+  const studentName = $("studentName").value.trim();
+  const subjectId = $("certificateSubject").value;
+  const message = $("achievementMessage").value.trim();
+
+  if(!studentName){
+    $("certificateStatus").textContent =
+      "Please enter your name first.";
+    return;
+  }
+
+  if(!subjectId){
+    $("certificateStatus").textContent =
+      "Please choose a completed subject.";
+    return;
+  }
+
+  const subject = subjects.find(item => item.id === subjectId);
+
+  if(!subject){
+    $("certificateStatus").textContent =
+      "The selected subject could not be found.";
+    return;
+  }
+
+  const stats = getSubjectStats(subject);
+
+  if(stats.total === 0 || stats.mastered !== stats.total){
+    $("certificateStatus").textContent =
+      "You must master every topic in this subject first.";
+    renderCertificateOptions();
+    return;
+  }
+
+  currentCertificate = {
+    id:createId(),
+    student:studentName,
+    subject:subject.name,
+    message:message || "For dedication, effort and commitment to learning.",
+    date:new Date().toISOString()
+  };
+
+  displayCertificate(currentCertificate);
+
+  certificates.unshift(currentCertificate);
+
+  if(certificates.length > 50){
+    certificates = certificates.slice(0,50);
+  }
+
+  if(saveArray(CERTIFICATES_KEY,certificates)){
+    $("certificateStatus").textContent =
+      "Your certificate has been generated and saved!";
+    renderCertificateHistory();
+  }else{
+    $("certificateStatus").textContent =
+      "Certificate preview created, but saving failed.";
+  }
+}
+
+/* =====================================
+   DISPLAY CERTIFICATE
+===================================== */
+
+function displayCertificate(certificate){
+  $("certStudent").textContent = certificate.student;
+  $("certSubject").textContent = certificate.subject;
+  $("certMessage").textContent = certificate.message;
+
+  const date = new Date(certificate.date);
+
+  $("certDate").textContent =
+    "Awarded on " + date.toLocaleDateString(undefined,{
+      year:"numeric",
+      month:"long",
+      day:"numeric"
+    });
+
+  $("certificatePreview").classList.remove("hidden");
+  $("printCertificateBtn").classList.remove("hidden");
+}
+
+function clearCertificatePreview(){
+  currentCertificate = null;
+
+  $("certificatePreview").classList.add("hidden");
+  $("printCertificateBtn").classList.add("hidden");
+
+  $("certificateStatus").textContent =
+    "Certificate preview cleared.";
+}
+
+/* =====================================
+   PRINT CERTIFICATE
+===================================== */
+
+function printCertificate(){
+  if(!currentCertificate){
+    $("certificateStatus").textContent =
+      "Generate or open a certificate before printing.";
+    return;
+  }
+
+  window.print();
+}
+
+/* =====================================
+   CERTIFICATE HISTORY
+===================================== */
+
+function renderCertificateHistory(){
+  const container = $("certificateHistory");
+  container.replaceChildren();
+
+  if(certificates.length === 0){
+    const empty = document.createElement("p");
+    empty.className = "topic-empty";
+    empty.textContent = "No certificates generated yet.";
+    container.appendChild(empty);
+    return;
+  }
+
+  certificates.forEach(certificate => {
+    const item = document.createElement("div");
+    item.className = "history-item";
+
+    const info = document.createElement("div");
+
+    const title = document.createElement("strong");
+    title.textContent = certificate.subject;
+
+    const date = document.createElement("small");
+    date.textContent =
+      certificate.student + " • " +
+      new Date(certificate.date).toLocaleDateString();
+
+    info.append(title,date);
+
+    const actions = document.createElement("div");
+    actions.className = "button-row";
+
+    const viewBtn = document.createElement("button");
+    viewBtn.className = "btn btn-secondary btn-small";
+    viewBtn.textContent = "View";
+    viewBtn.addEventListener("click",() => {
+      currentCertificate = certificate;
+      displayCertificate(certificate);
+
+      $("certificateStatus").textContent =
+        "Certificate opened from your history.";
+
+      $("certificateSection").scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+    });
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "btn btn-danger btn-small";
+    deleteBtn.textContent = "Delete";
+    deleteBtn.addEventListener("click",() => {
+      deleteCertificate(certificate.id);
+    });
+
+    actions.append(viewBtn,deleteBtn);
+    item.append(info,actions);
+
+    container.appendChild(item);
+  });
+}
+
+function deleteCertificate(certificateId){
+  if(!confirm("Delete this certificate from your history?")){
+    return;
+  }
+
+  certificates = certificates.filter(
+    certificate => certificate.id !== certificateId
+  );
+
+  if(currentCertificate &&
+     currentCertificate.id === certificateId){
+    clearCertificatePreview();
+  }
+
+  if(saveArray(CERTIFICATES_KEY,certificates)){
+    renderCertificateHistory();
+  }
+}
+
+/* =====================================
+   BUTTON EVENTS
+===================================== */
+
+$("generateCertificateBtn").addEventListener(
+  "click",generateCertificate
+);
+
+$("clearCertificateBtn").addEventListener(
+  "click",clearCertificatePreview
+);
+
+$("printCertificateBtn").addEventListener(
+  "click",printCertificate
+);
+
+/* =====================================
+   INITIALISE THE PAGE
+===================================== */
+
+function renderEverything(){
+  renderStats();
+  renderSubjects();
+  renderCertificateOptions();
+  renderCertificateHistory();
+}
+
+function initialisePage(){
+  subjects = loadArray(SUBJECTS_KEY);
+  certificates = loadArray(CERTIFICATES_KEY);
+
+  renderEverything();
+}
+
+initialisePage();
+
+</script>
+</body>
+</html>
