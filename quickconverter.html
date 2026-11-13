@@ -1,0 +1,2427 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07131a">
+
+<title>HEXCLØWN | Quick Converter</title>
+
+<style>
+:root {
+  --bg: #061016;
+  --panel: #0c1c25;
+  --panel2: #102630;
+  --line: #1c3b46;
+  --cyan: #00e5ff;
+  --green: #00ff9d;
+  --text: #e9faff;
+  --muted: #8ba8b3;
+  --red: #ff526b;
+  --yellow: #ffd166;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, #10323b, transparent 35%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+
+header {
+  text-align: center;
+  padding: 23px 15px;
+  background: rgba(5, 16, 22, .95);
+  border-bottom: 1px solid var(--line);
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: 900;
+  color: var(--cyan);
+  letter-spacing: 3px;
+}
+
+header p {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin: 8px 0 0;
+}
+
+.container {
+  width: min(100% - 24px, 1000px);
+  margin: 22px auto 50px;
+}
+
+.intro {
+  text-align: center;
+  padding: 20px 8px;
+}
+
+.intro h1 {
+  font-size: clamp(26px, 6vw, 38px);
+  margin: 0 0 10px;
+}
+
+.intro h1 span {
+  color: var(--green);
+}
+
+.intro p {
+  max-width: 650px;
+  margin: auto;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.panel {
+  background: linear-gradient(145deg, var(--panel), #09171e);
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  padding: 19px;
+  margin-bottom: 17px;
+  box-shadow: 0 8px 25px #0004;
+}
+
+.panel h2 {
+  color: var(--cyan);
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+.description {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+label {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin: 12px 0 7px;
+}
+
+input, select, textarea {
+  width: 100%;
+  background: #06131a;
+  color: var(--text);
+  border: 1px solid #28505d;
+  border-radius: 9px;
+  padding: 13px;
+  outline: none;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 130px;
+  resize: vertical;
+  line-height: 1.6;
+  font-family: monospace;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 2px #00e5ff20;
+}
+
+button {
+  border: 0;
+  border-radius: 9px;
+  padding: 12px 15px;
+  background: var(--cyan);
+  color: #001318;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+button:active {
+  transform: scale(.97);
+}
+
+button.secondary {
+  background: #17343e;
+  color: var(--text);
+  border: 1px solid #28505d;
+}
+
+button.green {
+  background: var(--green);
+  color: #00180f;
+}
+
+button.danger {
+  background: #491d29;
+  color: #ffb5c0;
+  border: 1px solid #8b3448;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 13px;
+}
+
+.button-row button {
+  flex: 1;
+  min-width: 100px;
+}
+
+.grid-two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.grid-three {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.result-box {
+  background: #071820;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 13px;
+  overflow-wrap: anywhere;
+}
+
+.result-value {
+  color: var(--green);
+  font-size: 23px;
+  font-weight: bold;
+  margin-top: 7px;
+  overflow-wrap: anywhere;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.status {
+  color: var(--yellow);
+  font-size: 12px;
+  min-height: 18px;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.small-title {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 1px;
+  margin-bottom: 7px;
+}
+
+.quick-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.quick-examples button {
+  background: #102a34;
+  color: var(--cyan);
+  border: 1px solid #28505d;
+  font-size: 11px;
+  padding: 8px 10px;
+}
+
+.favorite-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: #081820;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  margin-top: 9px;
+  font-size: 12px;
+}
+
+.favorite-item span {
+  overflow-wrap: anywhere;
+}
+
+.empty-state {
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+  padding: 18px;
+}
+
+.tab-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.tab-row button {
+  background: #102a34;
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+
+.tab-row button.active {
+  background: var(--cyan);
+  color: #001318;
+}
+
+footer {
+  text-align: center;
+  color: #65818c;
+  font-size: 11px;
+  padding: 25px 12px;
+  border-top: 1px solid var(--line);
+}
+
+@media(max-width: 520px) {
+  .grid-two {
+    grid-template-columns: 1fr;
+  }
+
+  .grid-three {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .panel {
+    padding: 15px;
+  }
+
+  .logo {
+    font-size: 21px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">HEXCLØWN</div>
+  <p>SMART DIGITAL CONVERSION SYSTEM</p>
+</header>
+
+<main class="container">
+
+<section class="intro">
+  <h1>Quick <span>Converter</span></h1>
+  <p>
+    Convert units, currencies, cryptocurrencies and
+    developer data formats in one smart workspace.
+  </p>
+</section>
+
+<!-- NATURAL LANGUAGE CONVERTER -->
+
+<section class="panel">
+  <h2>01 / Smart Input</h2>
+
+  <p class="description">
+    Describe what you want to convert in ordinary language.
+  </p>
+
+  <label for="smartInput">What do you want to convert?</label>
+
+  <input
+    type="text"
+    id="smartInput"
+    placeholder="Example: 25 km to miles"
+    autocomplete="off"
+  >
+
+  <div class="button-row">
+    <button type="button" id="smartConvert">
+      CONVERT
+    </button>
+
+    <button type="button" class="secondary" id="smartClear">
+      CLEAR
+    </button>
+  </div>
+
+  <div class="quick-examples">
+    <button type="button" data-example="10 km to miles">
+      10 km to miles
+    </button>
+
+    <button type="button" data-example="50 kg to pounds">
+      50 kg to pounds
+    </button>
+
+    <button type="button" data-example="100 celsius to fahrenheit">
+      100°C to °F
+    </button>
+
+    <button type="button" data-example="5 litres to gallons">
+      5 litres to gallons
+    </button>
+  </div>
+
+  <div class="result-box" id="smartResult">
+    <div class="small-title">CONVERSION RESULT</div>
+    <div class="result-value" id="smartResultValue">
+      Waiting for input...
+    </div>
+    <div class="status" id="smartStatus"></div>
+  </div>
+</section>
+
+<!-- UNIT CONVERTER -->
+
+<section class="panel">
+  <h2>02 / Unit Converter</h2>
+
+  <p class="description">
+    Convert measurements instantly in either direction.
+  </p>
+
+  <label for="unitCategory">Conversion Category</label>
+
+  <select id="unitCategory">
+    <option value="length">Length</option>
+    <option value="weight">Weight / Mass</option>
+    <option value="temperature">Temperature</option>
+    <option value="volume">Volume</option>
+    <option value="area">Area</option>
+    <option value="speed">Speed</option>
+    <option value="time">Time</option>
+    <option value="data">Digital Storage</option>
+    <option value="pressure">Pressure</option>
+    <option value="energy">Energy</option>
+  </select>
+
+  <div class="grid-two">
+    <div>
+      <label for="unitFrom">From</label>
+      <select id="unitFrom"></select>
+    </div>
+
+    <div>
+      <label for="unitTo">To</label>
+      <select id="unitTo"></select>
+    </div>
+  </div>
+
+  <label for="unitAmount">Amount</label>
+
+  <input
+    type="number"
+    id="unitAmount"
+    value="1"
+    step="any"
+    placeholder="Enter amount"
+  >
+
+  <div class="button-row">
+    <button type="button" class="secondary" id="swapUnits">
+      ⇄ SWAP UNITS
+    </button>
+
+    <button type="button" id="copyUnitResult">
+      COPY RESULT
+    </button>
+  </div>
+
+  <div class="result-box">
+    <div class="small-title">CONVERTED VALUE</div>
+    <div class="result-value" id="unitResult">
+      1
+    </div>
+    <div class="status" id="unitStatus">
+      Ready for conversion.
+    </div>
+  </div>
+</section>
+
+<!-- CURRENCY AND CRYPTO -->
+
+<section class="panel">
+  <h2>03 / Currency & Crypto</h2>
+
+  <p class="description">
+    Convert international currencies and popular cryptocurrencies.
+    Online rates require an internet connection.
+  </p>
+
+  <div class="tab-row">
+    <button type="button" class="active" id="fiatTab">
+      FIAT CURRENCY
+    </button>
+
+    <button type="button" id="cryptoTab">
+      CRYPTO
+    </button>
+  </div>
+
+  <div id="fiatSection">
+    <div class="grid-two">
+      <div>
+        <label for="fiatFrom">From Currency</label>
+        <select id="fiatFrom">
+          <option value="USD">USD - US Dollar</option>
+          <option value="NGN">NGN - Nigerian Naira</option>
+          <option value="EUR">EUR - Euro</option>
+          <option value="GBP">GBP - British Pound</option>
+          <option value="CAD">CAD - Canadian Dollar</option>
+          <option value="AUD">AUD - Australian Dollar</option>
+          <option value="JPY">JPY - Japanese Yen</option>
+          <option value="GHS">GHS - Ghanaian Cedi</option>
+          <option value="ZAR">ZAR - South African Rand</option>
+          <option value="INR">INR - Indian Rupee</option>
+          <option value="KES">KES - Kenyan Shilling</option>
+          <option value="CNY">CNY - Chinese Yuan</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="fiatTo">To Currency</label>
+        <select id="fiatTo">
+          <option value="NGN">NGN - Nigerian Naira</option>
+          <option value="USD">USD - US Dollar</option>
+          <option value="EUR">EUR - Euro</option>
+          <option value="GBP">GBP - British Pound</option>
+          <option value="CAD">CAD - Canadian Dollar</option>
+          <option value="AUD">AUD - Australian Dollar</option>
+          <option value="JPY">JPY - Japanese Yen</option>
+          <option value="GHS">GHS - Ghanaian Cedi</option>
+          <option value="ZAR">ZAR - South African Rand</option>
+          <option value="INR">INR - Indian Rupee</option>
+          <option value="KES">KES - Kenyan Shilling</option>
+          <option value="CNY">CNY - Chinese Yuan</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="fiatAmount">Amount</label>
+
+    <input
+      type="number"
+      id="fiatAmount"
+      value="1"
+      min="0"
+      step="any"
+    >
+
+    <div class="button-row">
+      <button type="button" id="convertFiat">
+        CONVERT CURRENCY
+      </button>
+
+      <button type="button" class="secondary" id="swapFiat">
+        ⇄ SWAP
+      </button>
+    </div>
+
+    <div class="result-box">
+      <div class="small-title">CURRENCY RESULT</div>
+      <div class="result-value" id="fiatResult">
+        Waiting for conversion...
+      </div>
+      <div class="status" id="fiatStatus"></div>
+    </div>
+  </div>
+
+  <div id="cryptoSection" hidden>
+    <div class="grid-two">
+      <div>
+        <label for="cryptoFrom">From Asset</label>
+        <select id="cryptoFrom">
+          <option value="bitcoin">Bitcoin (BTC)</option>
+          <option value="ethereum">Ethereum (ETH)</option>
+          <option value="solana">Solana (SOL)</option>
+          <option value="tether">Tether (USDT)</option>
+          <option value="binancecoin">BNB</option>
+          <option value="ripple">XRP</option>
+          <option value="dogecoin">Dogecoin (DOGE)</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="cryptoTo">Display Currency</label>
+        <select id="cryptoTo">
+          <option value="usd">USD</option>
+          <option value="ngn">NGN</option>
+          <option value="eur">EUR</option>
+          <option value="gbp">GBP</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="cryptoAmount">Amount</label>
+
+    <input
+      type="number"
+      id="cryptoAmount"
+      value="1"
+      min="0"
+      step="any"
+    >
+
+    <div class="button-row">
+      <button type="button" id="convertCrypto">
+        CONVERT CRYPTO
+      </button>
+    </div>
+
+    <div class="result-box">
+      <div class="small-title">CRYPTO RESULT</div>
+      <div class="result-value" id="cryptoResult">
+        Waiting for conversion...
+      </div>
+      <div class="status" id="cryptoStatus"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVELOPER TOOLS -->
+
+<section class="panel">
+  <h2>04 / Developer Transformers</h2>
+
+  <p class="description">
+    Transform text, JSON and encoded data.
+  </p>
+
+  <div class="tab-row" id="developerTabs">
+    <button type="button" class="active" data-tool="json">
+      JSON
+    </button>
+
+    <button type="button" data-tool="base64">
+      BASE64
+    </button>
+
+    <button type="button" data-tool="url">
+      URL
+    </button>
+
+    <button type="button" data-tool="text">
+      TEXT
+    </button>
+  </div>
+
+  <label for="developerInput">Input Data</label>
+
+  <textarea
+    id="developerInput"
+    placeholder="Enter your data here..."
+    spellcheck="false"
+  ></textarea>
+
+  <div class="button-row">
+    <button type="button" id="transformData">
+      TRANSFORM
+    </button>
+
+    <button type="button" class="secondary" id="copyDeveloper">
+      COPY OUTPUT
+    </button>
+
+    <button type="button" class="secondary" id="clearDeveloper">
+      CLEAR
+    </button>
+  </div>
+
+  <label for="developerOutput">Output</label>
+
+  <textarea
+    id="developerOutput"
+    readonly
+    placeholder="Your transformed data will appear here..."
+    spellcheck="false"
+  ></textarea>
+
+  <div class="status" id="developerStatus"></div>
+</section>
+
+<!-- FAVORITES -->
+
+<section class="panel">
+  <h2>05 / Pinned Favorites</h2>
+
+  <p class="description">
+    Save your frequently used conversion settings
+    for quick access.
+  </p>
+
+  <div class="button-row">
+    <button type="button" id="pinFavorite">
+      ★ PIN CURRENT CONVERSION
+    </button>
+
+    <button type="button" class="secondary" id="clearFavorites">
+      CLEAR FAVORITES
+    </button>
+  </div>
+
+  <div id="favoritesList">
+    <div class="empty-state">
+      No pinned conversions yet.
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  HEXCLØWN QUICK CONVERTER © 2026<br>
+  SMART TOOLS. SIMPLE CONVERSIONS.
+</footer>
+
+<script>
+  
+// ==========================================
+// HEXCLØWN QUICK CONVERTER
+// PART 2 OF 5
+// UNIT ENGINE + SMART INPUT
+// ==========================================
+
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+let currentUnitResult = "";
+let currentSmartResult = "";
+
+// ==========================================
+// UNIT DATABASE
+// Values are converted through a base unit.
+// ==========================================
+
+const UNIT_DATA = {
+  length: {
+    base: "m",
+    units: {
+      m: ["Metres", 1],
+      km: ["Kilometres", 1000],
+      cm: ["Centimetres", 0.01],
+      mm: ["Millimetres", 0.001],
+      mi: ["Miles", 1609.344],
+      yd: ["Yards", 0.9144],
+      ft: ["Feet", 0.3048],
+      in: ["Inches", 0.0254],
+      nm: ["Nautical miles", 1852]
+    }
+  },
+
+  weight: {
+    base: "kg",
+    units: {
+      kg: ["Kilograms", 1],
+      g: ["Grams", 0.001],
+      mg: ["Milligrams", 0.000001],
+      lb: ["Pounds", 0.45359237],
+      oz: ["Ounces", 0.028349523125],
+      tonne: ["Metric tonnes", 1000],
+      st: ["Stones", 6.35029318]
+    }
+  },
+
+  temperature: {
+    units: {
+      c: ["Celsius"],
+      f: ["Fahrenheit"],
+      k: ["Kelvin"]
+    }
+  },
+
+  volume: {
+    base: "l",
+    units: {
+      l: ["Litres", 1],
+      ml: ["Millilitres", 0.001],
+      m3: ["Cubic metres", 1000],
+      gal: ["US gallons", 3.785411784],
+      ukgal: ["UK gallons", 4.54609],
+      cup: ["US cups", 0.2365882365],
+      pt: ["US pints", 0.473176473],
+      floz: ["US fluid ounces", 0.0295735296]
+    }
+  },
+
+  area: {
+    base: "m2",
+    units: {
+      m2: ["Square metres", 1],
+      km2: ["Square kilometres", 1000000],
+      cm2: ["Square centimetres", 0.0001],
+      ft2: ["Square feet", 0.09290304],
+      yd2: ["Square yards", 0.83612736],
+      acre: ["Acres", 4046.8564224],
+      ha: ["Hectares", 10000]
+    }
+  },
+
+  speed: {
+    base: "mps",
+    units: {
+      mps: ["Metres per second", 1],
+      kph: ["Kilometres per hour", 1 / 3.6],
+      mph: ["Miles per hour", 0.44704],
+      knot: ["Knots", 0.514444]
+    }
+  },
+
+  time: {
+    base: "s",
+    units: {
+      s: ["Seconds", 1],
+      min: ["Minutes", 60],
+      hr: ["Hours", 3600],
+      day: ["Days", 86400],
+      week: ["Weeks", 604800],
+      month: ["30-day months", 2592000],
+      year: ["365-day years", 31536000]
+    }
+  },
+
+  data: {
+    base: "byte",
+    units: {
+      byte: ["Bytes", 1],
+      bit: ["Bits", 0.125],
+      kb: ["Kilobytes", 1000],
+      mb: ["Megabytes", 1000000],
+      gb: ["Gigabytes", 1000000000],
+      tb: ["Terabytes", 1000000000000],
+      kib: ["Kibibytes", 1024],
+      mib: ["Mebibytes", 1048576],
+      gib: ["Gibibytes", 1073741824],
+      tib: ["Tebibytes", 1099511627776]
+    }
+  },
+
+  pressure: {
+    base: "pa",
+    units: {
+      pa: ["Pascals", 1],
+      kpa: ["Kilopascals", 1000],
+      bar: ["Bar", 100000],
+      atm: ["Atmospheres", 101325],
+      psi: ["Pounds per square inch", 6894.757]
+    }
+  },
+
+  energy: {
+    base: "j",
+    units: {
+      j: ["Joules", 1],
+      kj: ["Kilojoules", 1000],
+      cal: ["Calories", 4.184],
+      kcal: ["Kilocalories", 4184],
+      wh: ["Watt-hours", 3600],
+      kwh: ["Kilowatt-hours", 3600000]
+    }
+  }
+};
+
+// ==========================================
+// TEMPERATURE CONVERSION
+// ==========================================
+
+function temperatureToCelsius(value, unit) {
+  if (unit === "c") return value;
+  if (unit === "f") return (value - 32) * 5 / 9;
+  if (unit === "k") return value - 273.15;
+
+  throw new Error("Unknown temperature unit.");
+}
+
+function celsiusToTemperature(value, unit) {
+  if (unit === "c") return value;
+  if (unit === "f") return value * 9 / 5 + 32;
+  if (unit === "k") return value + 273.15;
+
+  throw new Error("Unknown temperature unit.");
+}
+
+function convertUnits(value, category, from, to) {
+  if (!Number.isFinite(value)) {
+    throw new Error("Enter a valid number.");
+  }
+
+  const data = UNIT_DATA[category];
+
+  if (!data) {
+    throw new Error("Unknown conversion category.");
+  }
+
+  if (!data.units[from] || !data.units[to]) {
+    throw new Error("Invalid units selected.");
+  }
+
+  if (category === "temperature") {
+    const celsius = temperatureToCelsius(value, from);
+    const result = celsiusToTemperature(celsius, to);
+
+    if (to === "k" && result < 0) {
+      throw new Error("Temperature cannot be below absolute zero.");
+    }
+
+    return result;
+  }
+
+  const baseValue = value * data.units[from][1];
+
+  return baseValue / data.units[to][1];
+}
+
+function formatNumber(value) {
+  if (!Number.isFinite(value)) return "Invalid result";
+
+  return Number(value.toPrecision(12)).toLocaleString(
+    undefined,
+    {
+      maximumFractionDigits: 10
+    }
+  );
+}
+
+// ==========================================
+// POPULATE UNIT SELECTORS
+// ==========================================
+
+function populateUnits() {
+  const category = $("unitCategory").value;
+  const data = UNIT_DATA[category];
+
+  const from = $("unitFrom");
+  const to = $("unitTo");
+
+  const oldFrom = from.value;
+  const oldTo = to.value;
+
+  from.innerHTML = "";
+  to.innerHTML = "";
+
+  Object.entries(data.units).forEach(([key, details]) => {
+    const option1 = document.createElement("option");
+    const option2 = document.createElement("option");
+
+    option1.value = key;
+    option2.value = key;
+
+    option1.textContent = details[0] + " (" + key + ")";
+    option2.textContent = details[0] + " (" + key + ")";
+
+    from.appendChild(option1);
+    to.appendChild(option2);
+  });
+
+  if (data.units[oldFrom]) {
+    from.value = oldFrom;
+  }
+
+  if (data.units[oldTo]) {
+    to.value = oldTo;
+  }
+
+  if (from.value === to.value) {
+    const keys = Object.keys(data.units);
+
+    if (keys.length > 1) {
+      to.value = keys[1];
+    }
+  }
+
+  updateUnitConversion();
+}
+
+// ==========================================
+// LIVE UNIT CONVERSION
+// ==========================================
+
+function updateUnitConversion() {
+  const amount = Number($("unitAmount").value);
+
+  const category = $("unitCategory").value;
+  const from = $("unitFrom").value;
+  const to = $("unitTo").value;
+
+  if ($("unitAmount").value.trim() === "" || !Number.isFinite(amount)) {
+    $("unitResult").textContent = "Enter a valid amount.";
+    currentUnitResult = "";
+    return;
+  }
+
+  try {
+    const result = convertUnits(amount, category, from, to);
+
+    const formatted = formatNumber(result);
+
+    $("unitResult").textContent = formatted;
+
+    $("unitStatus").textContent =
+      formatNumber(amount) + " " + from +
+      " = " + formatted + " " + to;
+
+    currentUnitResult = formatted;
+
+  } catch (error) {
+    $("unitResult").textContent = "Conversion error";
+
+    $("unitStatus").textContent = error.message;
+
+    currentUnitResult = "";
+  }
+}
+
+// ==========================================
+// SWAP UNIT BUTTON
+// ==========================================
+
+$("swapUnits").addEventListener("click", () => {
+  const from = $("unitFrom");
+  const to = $("unitTo");
+
+  const oldFrom = from.value;
+
+  from.value = to.value;
+  to.value = oldFrom;
+
+  updateUnitConversion();
+});
+
+// ==========================================
+// UNIT EVENT LISTENERS
+// ==========================================
+
+$("unitCategory").addEventListener(
+  "change",
+  populateUnits
+);
+
+$("unitFrom").addEventListener(
+  "change",
+  updateUnitConversion
+);
+
+$("unitTo").addEventListener(
+  "change",
+  updateUnitConversion
+);
+
+$("unitAmount").addEventListener(
+  "input",
+  updateUnitConversion
+);
+
+// ==========================================
+// COPY UNIT RESULT
+// ==========================================
+
+async function copyText(value, statusElement) {
+  if (!value) {
+    statusElement.textContent = "Nothing to copy.";
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(value);
+
+    statusElement.textContent = "Copied successfully.";
+
+  } catch (error) {
+    statusElement.textContent =
+      "Clipboard unavailable. Select and copy manually.";
+  }
+}
+
+$("copyUnitResult").addEventListener("click", () => {
+  copyText(
+    $("unitResult").textContent,
+    $("unitStatus")
+  );
+});
+
+// ==========================================
+// SMART INPUT UNIT ALIASES
+// ==========================================
+
+const UNIT_ALIASES = {
+  "metre": "m",
+  "metres": "m",
+  "meter": "m",
+  "meters": "m",
+  "kilometre": "km",
+  "kilometres": "km",
+  "kilometer": "km",
+  "kilometers": "km",
+  "centimetre": "cm",
+  "centimetres": "cm",
+  "centimeter": "cm",
+  "centimeters": "cm",
+  "millimetre": "mm",
+  "millimetres": "mm",
+  "millimeter": "mm",
+  "millimeters": "mm",
+  "mile": "mi",
+  "miles": "mi",
+  "yard": "yd",
+  "yards": "yd",
+  "foot": "ft",
+  "feet": "ft",
+  "inch": "in",
+  "inches": "in",
+
+  "kilogram": "kg",
+  "kilograms": "kg",
+  "kilo": "kg",
+  "kilos": "kg",
+  "gram": "g",
+  "grams": "g",
+  "milligram": "mg",
+  "milligrams": "mg",
+  "pound": "lb",
+  "pounds": "lb",
+  "lbs": "lb",
+  "ounce": "oz",
+  "ounces": "oz",
+  "tonne": "tonne",
+  "tonnes": "tonne",
+
+  "celsius": "c",
+  "centigrade": "c",
+  "fahrenheit": "f",
+  "kelvin": "k",
+
+  "litre": "l",
+  "litres": "l",
+  "liter": "l",
+  "liters": "l",
+  "millilitre": "ml",
+  "millilitres": "ml",
+  "milliliter": "ml",
+  "milliliters": "ml",
+  "gallon": "gal",
+  "gallons": "gal",
+  "cup": "cup",
+  "cups": "cup",
+
+  "second": "s",
+  "seconds": "s",
+  "minute": "min",
+  "minutes": "min",
+  "hour": "hr",
+  "hours": "hr",
+  "day": "day",
+  "days": "day",
+  "week": "week",
+  "weeks": "week",
+
+  "byte": "byte",
+  "bytes": "byte",
+  "bit": "bit",
+  "bits": "bit",
+  "kilobyte": "kb",
+  "kilobytes": "kb",
+  "megabyte": "mb",
+  "megabytes": "mb",
+  "gigabyte": "gb",
+  "gigabytes": "gb",
+  "terabyte": "tb",
+  "terabytes": "tb"
+};
+
+// ==========================================
+// SMART INPUT PARSER
+// Examples:
+// 10 km to miles
+// 50 kg to pounds
+// 100 celsius to fahrenheit
+// ==========================================
+
+function findUnit(text) {
+  const normalized = text.toLowerCase().trim();
+
+  if (UNIT_ALIASES[normalized]) {
+    return UNIT_ALIASES[normalized];
+  }
+
+  const allUnits = Object.values(UNIT_DATA);
+
+  for (const group of allUnits) {
+    if (group.units[normalized]) {
+      return normalized;
+    }
+  }
+
+  return null;
+}
+
+function findUnitCategory(unit) {
+  for (const [category, data] of Object.entries(UNIT_DATA)) {
+    if (data.units[unit]) {
+      return category;
+    }
+  }
+
+  return null;
+}
+
+function smartConvert() {
+  const input = $("smartInput").value.trim();
+
+  const output = $("smartResultValue");
+  const status = $("smartStatus");
+
+  if (!input) {
+    output.textContent = "Enter a conversion request.";
+    currentSmartResult = "";
+    return;
+  }
+
+  const match = input.match(
+    /^\s*(-?\d+(?:\.\d+)?(?:e[+-]?\d+)?)\s+(.+?)\s+(?:to|in)\s+(.+?)\s*$/i
+  );
+
+  if (!match) {
+    output.textContent = "Could not understand that request.";
+
+    status.textContent =
+      "Try a format like: 10 km to miles";
+
+    currentSmartResult = "";
+    return;
+  }
+
+  const amount = Number(match[1]);
+
+  const from = findUnit(match[2]);
+  const to = findUnit(match[3]);
+
+  if (!from || !to) {
+    output.textContent = "Unknown unit.";
+
+    status.textContent =
+      "Try a supported unit such as km, miles, kg, pounds, litres or celsius.";
+
+    currentSmartResult = "";
+    return;
+  }
+
+  const category = findUnitCategory(from);
+
+  if (!category || category !== findUnitCategory(to)) {
+    output.textContent = "Incompatible units.";
+
+    status.textContent =
+      "Both units must belong to the same category.";
+
+    currentSmartResult = "";
+    return;
+  }
+
+  try {
+    const result = convertUnits(amount, category, from, to);
+
+    const formatted = formatNumber(result);
+
+    output.textContent =
+      formatted + " " + to;
+
+    status.textContent =
+      formatNumber(amount) + " " + from +
+      " converted to " + to + ".";
+
+    currentSmartResult =
+      formatNumber(amount) + " " + from +
+      " = " + formatted + " " + to;
+
+  } catch (error) {
+    output.textContent = "Conversion error.";
+
+    status.textContent = error.message;
+
+    currentSmartResult = "";
+  }
+}
+
+// ==========================================
+// SMART INPUT BUTTONS
+// ==========================================
+
+$("smartConvert").addEventListener(
+  "click",
+  smartConvert
+);
+
+$("smartInput").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    smartConvert();
+  }
+});
+
+$("smartClear").addEventListener("click", () => {
+  $("smartInput").value = "";
+
+  $("smartResultValue").textContent =
+    "Waiting for input...";
+
+  $("smartStatus").textContent = "";
+
+  currentSmartResult = "";
+});
+
+// ==========================================
+// SMART EXAMPLE BUTTONS
+// ==========================================
+
+document.querySelectorAll("[data-example]").forEach(button => {
+  button.addEventListener("click", () => {
+    $("smartInput").value = button.dataset.example;
+
+    smartConvert();
+  });
+});
+
+// ==========================================
+// INITIALIZE UNIT CONVERTER
+// ==========================================
+
+populateUnits();
+
+// ==========================================
+// END OF PART 2
+// ==========================================
+  
+// ==========================================
+// HEXCLØWN QUICK CONVERTER
+// PART 3 OF 5
+// CURRENCY + CRYPTO CONVERTER
+// ==========================================
+
+// ==========================================
+// FIAT CURRENCY CONVERTER
+// ==========================================
+
+let fiatRateCache = {};
+
+async function getFiatRate(from, to) {
+  if (from === to) return 1;
+
+  const cacheKey = from + "_" + to;
+
+  if (
+    fiatRateCache[cacheKey] &&
+    Date.now() - fiatRateCache[cacheKey].time < 300000
+  ) {
+    return fiatRateCache[cacheKey].rate;
+  }
+
+  // First source: Frankfurter API.
+  try {
+    const response = await fetch(
+      "https://api.frankfurter.dev/v1/latest?base=" +
+      encodeURIComponent(from) +
+      "&symbols=" +
+      encodeURIComponent(to)
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+
+      if (data.rates && Number(data.rates[to]) > 0) {
+        const rate = Number(data.rates[to]);
+
+        fiatRateCache[cacheKey] = {
+          rate,
+          time: Date.now()
+        };
+
+        return rate;
+      }
+    }
+  } catch (error) {
+    console.warn("Frankfurter lookup failed:", error);
+  }
+
+  // Second source: open.er-api.
+  try {
+    const response = await fetch(
+      "https://open.er-api.com/v6/latest/" +
+      encodeURIComponent(from)
+    );
+
+    if (!response.ok) {
+      throw new Error("Exchange rate service unavailable.");
+    }
+
+    const data = await response.json();
+
+    if (
+      data.result !== "success" ||
+      !data.rates ||
+      !Number(data.rates[to])
+    ) {
+      throw new Error("Exchange rate not available.");
+    }
+
+    const rate = Number(data.rates[to]);
+
+    fiatRateCache[cacheKey] = {
+      rate,
+      time: Date.now()
+    };
+
+    return rate;
+
+  } catch (error) {
+    console.error("Currency lookup failed:", error);
+
+    throw new Error(
+      "Unable to retrieve exchange rates. Check your connection or try again later."
+    );
+  }
+}
+
+// ==========================================
+// FIAT CONVERSION
+// ==========================================
+
+let fiatRequestNumber = 0;
+
+async function convertFiat() {
+  const button = $("convertFiat");
+
+  const amountInput = $("fiatAmount");
+
+  const from = $("fiatFrom").value;
+  const to = $("fiatTo").value;
+
+  const amount = Number(amountInput.value);
+
+  const output = $("fiatResult");
+  const status = $("fiatStatus");
+
+  const requestNumber = ++fiatRequestNumber;
+
+  if (
+    amountInput.value.trim() === "" ||
+    !Number.isFinite(amount) ||
+    amount < 0
+  ) {
+    output.textContent = "Invalid amount.";
+
+    status.textContent = "Enter a valid non-negative amount.";
+
+    return;
+  }
+
+  button.disabled = true;
+
+  output.textContent = "Loading exchange rate...";
+
+  status.textContent =
+    "Contacting currency exchange service.";
+
+  try {
+    const rate = await getFiatRate(from, to);
+
+    // Ignore outdated requests.
+    if (requestNumber !== fiatRequestNumber) return;
+
+    const result = amount * rate;
+
+    output.textContent =
+      formatNumber(result) + " " + to;
+
+    status.textContent =
+      "1 " + from + " = " +
+      formatNumber(rate) + " " + to +
+      " | Rate retrieved: " +
+      new Date().toLocaleTimeString();
+
+  } catch (error) {
+    if (requestNumber !== fiatRequestNumber) return;
+
+    output.textContent = "Conversion unavailable.";
+
+    status.textContent = error.message;
+
+  } finally {
+    if (requestNumber === fiatRequestNumber) {
+      button.disabled = false;
+    }
+  }
+}
+
+// ==========================================
+// SWAP FIAT CURRENCIES
+// ==========================================
+
+$("swapFiat").addEventListener("click", () => {
+  const from = $("fiatFrom");
+  const to = $("fiatTo");
+
+  const previous = from.value;
+
+  from.value = to.value;
+  to.value = previous;
+
+  convertFiat();
+});
+
+$("convertFiat").addEventListener(
+  "click",
+  convertFiat
+);
+
+// ==========================================
+// CRYPTOCURRENCY CONVERTER
+// ==========================================
+
+let cryptoRateCache = {};
+
+async function getCryptoRate(coin, currency) {
+  const key = coin + "_" + currency;
+
+  if (
+    cryptoRateCache[key] &&
+    Date.now() - cryptoRateCache[key].time < 60000
+  ) {
+    return cryptoRateCache[key].rate;
+  }
+
+  const url =
+    "https://api.coingecko.com/api/v3/simple/price" +
+    "?ids=" + encodeURIComponent(coin) +
+    "&vs_currencies=" + encodeURIComponent(currency);
+
+  const response = await fetch(url, {
+    headers: {
+      "Accept": "application/json"
+    },
+    cache: "no-store"
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      "Crypto price service unavailable. Try again later."
+    );
+  }
+
+  const data = await response.json();
+
+  if (
+    !data[coin] ||
+    typeof data[coin][currency] !== "number"
+  ) {
+    throw new Error(
+      "Price information is currently unavailable."
+    );
+  }
+
+  const rate = data[coin][currency];
+
+  cryptoRateCache[key] = {
+    rate,
+    time: Date.now()
+  };
+
+  return rate;
+}
+
+// ==========================================
+// CRYPTO CONVERSION
+// ==========================================
+
+let cryptoRequestNumber = 0;
+
+async function convertCrypto() {
+  const button = $("convertCrypto");
+
+  const amountInput = $("cryptoAmount");
+
+  const coin = $("cryptoFrom").value;
+  const currency = $("cryptoTo").value;
+
+  const amount = Number(amountInput.value);
+
+  const output = $("cryptoResult");
+  const status = $("cryptoStatus");
+
+  const requestNumber = ++cryptoRequestNumber;
+
+  if (
+    amountInput.value.trim() === "" ||
+    !Number.isFinite(amount) ||
+    amount < 0
+  ) {
+    output.textContent = "Invalid amount.";
+
+    status.textContent =
+      "Enter a valid non-negative amount.";
+
+    return;
+  }
+
+  button.disabled = true;
+
+  output.textContent = "Loading crypto price...";
+
+  status.textContent =
+    "Retrieving current market data.";
+
+  try {
+    const rate = await getCryptoRate(coin, currency);
+
+    if (requestNumber !== cryptoRequestNumber) return;
+
+    const result = amount * rate;
+
+    output.textContent =
+      formatNumber(result) + " " + currency.toUpperCase();
+
+    status.textContent =
+      "1 " + coin.toUpperCase() +
+      " = " + formatNumber(rate) +
+      " " + currency.toUpperCase() +
+      " | Retrieved: " +
+      new Date().toLocaleTimeString();
+
+  } catch (error) {
+    if (requestNumber !== cryptoRequestNumber) return;
+
+    output.textContent = "Crypto conversion unavailable.";
+
+    status.textContent = error.message;
+
+  } finally {
+    if (requestNumber === cryptoRequestNumber) {
+      button.disabled = false;
+    }
+  }
+}
+
+$("convertCrypto").addEventListener(
+  "click",
+  convertCrypto
+);
+
+// ==========================================
+// FIAT / CRYPTO TABS
+// ==========================================
+
+function showConverterTab(tab) {
+  const fiat = $("fiatSection");
+  const crypto = $("cryptoSection");
+
+  const fiatButton = $("fiatTab");
+  const cryptoButton = $("cryptoTab");
+
+  if (tab === "fiat") {
+    fiat.hidden = false;
+    crypto.hidden = true;
+
+    fiatButton.classList.add("active");
+    cryptoButton.classList.remove("active");
+
+  } else {
+    fiat.hidden = true;
+    crypto.hidden = false;
+
+    cryptoButton.classList.add("active");
+    fiatButton.classList.remove("active");
+  }
+}
+
+$("fiatTab").addEventListener("click", () => {
+  showConverterTab("fiat");
+});
+
+$("cryptoTab").addEventListener("click", () => {
+  showConverterTab("crypto");
+});
+
+// ==========================================
+// END OF PART 3
+// ==========================================
+  
+// ==========================================
+// HEXCLØWN QUICK CONVERTER
+// PART 4 OF 5
+// DEVELOPER & DATA TRANSFORMERS
+// ==========================================
+
+let currentDeveloperTool = "json";
+
+// ==========================================
+// DEVELOPER TOOL TAB SWITCHING
+// ==========================================
+
+function selectDeveloperTool(tool) {
+  const allowedTools = [
+    "json",
+    "base64",
+    "url",
+    "text"
+  ];
+
+  if (!allowedTools.includes(tool)) {
+    return;
+  }
+
+  currentDeveloperTool = tool;
+
+  document
+    .querySelectorAll("[data-tool]")
+    .forEach(button => {
+      button.classList.toggle(
+        "active",
+        button.dataset.tool === tool
+      );
+    });
+
+  $("developerInput").placeholder = {
+    json: '{"name":"HEXCLØWN","status":"active"}',
+    base64: "Enter text to encode or Base64 to decode...",
+    url: "Enter URL text to encode or decode...",
+    text: "Enter text to transform..."
+  }[tool];
+
+  $("developerOutput").textContent =
+    "Your transformed result will appear here.";
+
+  $("developerStatus").textContent =
+    "Selected tool: " + tool.toUpperCase();
+}
+
+document
+  .querySelectorAll("[data-tool]")
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      selectDeveloperTool(button.dataset.tool);
+    });
+  });
+
+// ==========================================
+// UTF-8 BASE64 ENCODING
+// ==========================================
+
+function encodeBase64(text) {
+  const bytes = new TextEncoder().encode(text);
+
+  let binary = "";
+
+  bytes.forEach(byte => {
+    binary += String.fromCharCode(byte);
+  });
+
+  return btoa(binary);
+}
+
+// ==========================================
+// UTF-8 BASE64 DECODING
+// ==========================================
+
+function decodeBase64(text) {
+  const clean = text.trim();
+
+  const binary = atob(clean);
+
+  const bytes = Uint8Array.from(
+    binary,
+    character => character.charCodeAt(0)
+  );
+
+  return new TextDecoder("utf-8", {
+    fatal: true
+  }).decode(bytes);
+}
+
+// ==========================================
+// TEXT TRANSFORMATIONS
+// ==========================================
+
+function transformText(text, action) {
+  switch (action) {
+    case "uppercase":
+      return text.toUpperCase();
+
+    case "lowercase":
+      return text.toLowerCase();
+
+    case "titlecase":
+      return text.replace(
+        /\b\w/g,
+        character => character.toUpperCase()
+      );
+
+    case "reverse":
+      return Array.from(text).reverse().join("");
+
+    case "trim":
+      return text.trim();
+
+    case "remove-spaces":
+      return text.replace(/\s+/g, "");
+
+    case "word-count":
+      return "Word count: " +
+        (text.trim() ? text.trim().split(/\s+/).length : 0);
+
+    default:
+      return text;
+  }
+}
+
+// ==========================================
+// DEVELOPER TRANSFORM ENGINE
+// ==========================================
+
+function transformDeveloperData() {
+  const input = $("developerInput").value;
+
+  const output = $("developerOutput");
+  const status = $("developerStatus");
+
+  if (!input.trim()) {
+    output.textContent = "Nothing to transform.";
+
+    status.textContent =
+      "Enter some content first.";
+
+    return;
+  }
+
+  try {
+    let result = "";
+
+    if (currentDeveloperTool === "json") {
+
+      const parsed = JSON.parse(input);
+
+      result = JSON.stringify(parsed, null, 2);
+
+      status.textContent =
+        "Valid JSON. Successfully formatted.";
+
+    }
+
+    else if (currentDeveloperTool === "base64") {
+
+      const looksLikeBase64 =
+        /^[A-Za-z0-9+/]*={0,2}$/.test(input.trim()) &&
+        input.trim().length > 0 &&
+        input.trim().length % 4 === 0;
+
+      if (looksLikeBase64) {
+        try {
+          result = decodeBase64(input);
+
+          status.textContent =
+            "Base64 decoded successfully.";
+
+        } catch (decodeError) {
+          result = encodeBase64(input);
+
+          status.textContent =
+            "Text encoded into Base64.";
+        }
+
+      } else {
+        result = encodeBase64(input);
+
+        status.textContent =
+          "Text encoded into Base64.";
+      }
+
+    }
+
+    else if (currentDeveloperTool === "url") {
+
+      const decoded = (() => {
+        try {
+          return decodeURIComponent(input);
+        } catch (error) {
+          return null;
+        }
+      })();
+
+      if (
+        decoded !== null &&
+        decoded !== input
+      ) {
+        result = decoded;
+
+        status.textContent =
+          "URL text decoded successfully.";
+
+      } else {
+        result = encodeURIComponent(input);
+
+        status.textContent =
+          "URL text encoded successfully.";
+      }
+
+    }
+
+    else if (currentDeveloperTool === "text") {
+
+      const action = $("developerInput").dataset.action;
+
+      result = transformText(
+        input,
+        action || "uppercase"
+      );
+
+      status.textContent =
+        "Text transformation completed.";
+
+    }
+
+    output.textContent = result;
+
+  } catch (error) {
+
+    output.textContent =
+      "Transformation failed: " + error.message;
+
+    status.textContent =
+      "Check your input and try again.";
+  }
+}
+
+// ==========================================
+// TEXT ACTION SELECTOR
+// ==========================================
+
+function setTextAction(action) {
+  $("developerInput").dataset.action = action;
+
+  currentDeveloperTool = "text";
+
+  document
+    .querySelectorAll("[data-tool]")
+    .forEach(button => {
+      button.classList.toggle(
+        "active",
+        button.dataset.tool === "text"
+      );
+    });
+
+  transformDeveloperData();
+}
+
+// ==========================================
+// TRANSFORM BUTTON
+// ==========================================
+
+$("transformData").addEventListener(
+  "click",
+  transformDeveloperData
+);
+
+// ==========================================
+// COPY DEVELOPER RESULT
+// ==========================================
+
+$("copyDeveloper").addEventListener("click", async () => {
+  const result = $("developerOutput").textContent;
+
+  if (
+    !result ||
+    result === "Your transformed result will appear here." ||
+    result === "Nothing to transform."
+  ) {
+    $("developerStatus").textContent =
+      "There is no result to copy.";
+
+    return;
+  }
+
+  await copyText(
+    result,
+    $("developerStatus")
+  );
+});
+
+// ==========================================
+// CLEAR DEVELOPER INPUT
+// ==========================================
+
+$("clearDeveloper").addEventListener("click", () => {
+  $("developerInput").value = "";
+
+  $("developerOutput").textContent =
+    "Your transformed result will appear here.";
+
+  $("developerStatus").textContent =
+    "Input cleared.";
+
+  delete $("developerInput").dataset.action;
+});
+
+// ==========================================
+// INITIAL DEVELOPER TOOL
+// ==========================================
+
+selectDeveloperTool("json");
+
+// ==========================================
+// END OF PART 4
+// ==========================================
+  
+// ==========================================
+// HEXCLØWN QUICK CONVERTER
+// PART 5 OF 5
+// PINNED FAVORITES + FINAL INTEGRATION
+// ==========================================
+
+const FAVORITES_STORAGE_KEY =
+  "hexclown_quickconverter_favorites_v1";
+
+let lastConversionType = "unit";
+
+// ==========================================
+// TRACK THE LAST USED CONVERTER
+// ==========================================
+
+[
+  "unitCategory",
+  "unitFrom",
+  "unitTo",
+  "unitAmount"
+].forEach(id => {
+  $(id).addEventListener("change", () => {
+    lastConversionType = "unit";
+  });
+
+  $(id).addEventListener("input", () => {
+    lastConversionType = "unit";
+  });
+});
+
+$("smartInput").addEventListener("input", () => {
+  lastConversionType = "smart";
+});
+
+$("smartConvert").addEventListener("click", () => {
+  lastConversionType = "smart";
+});
+
+[
+  "fiatFrom",
+  "fiatTo",
+  "fiatAmount"
+].forEach(id => {
+  $(id).addEventListener("change", () => {
+    lastConversionType = "fiat";
+  });
+
+  $(id).addEventListener("input", () => {
+    lastConversionType = "fiat";
+  });
+});
+
+$("convertFiat").addEventListener("click", () => {
+  lastConversionType = "fiat";
+});
+
+[
+  "cryptoFrom",
+  "cryptoTo",
+  "cryptoAmount"
+].forEach(id => {
+  $(id).addEventListener("change", () => {
+    lastConversionType = "crypto";
+  });
+
+  $(id).addEventListener("input", () => {
+    lastConversionType = "crypto";
+  });
+});
+
+$("convertCrypto").addEventListener("click", () => {
+  lastConversionType = "crypto";
+});
+
+// ==========================================
+// LOAD SAVED FAVORITES
+// ==========================================
+
+function loadSavedFavorites() {
+  try {
+    const saved = JSON.parse(
+      localStorage.getItem(FAVORITES_STORAGE_KEY) || "[]"
+    );
+
+    return Array.isArray(saved) ? saved : [];
+
+  } catch (error) {
+    console.error("Could not load favorites:", error);
+    return [];
+  }
+}
+
+let savedFavorites = loadSavedFavorites();
+
+// ==========================================
+// SAVE FAVORITES
+// ==========================================
+
+function saveFavorites() {
+  try {
+    localStorage.setItem(
+      FAVORITES_STORAGE_KEY,
+      JSON.stringify(savedFavorites)
+    );
+
+    return true;
+
+  } catch (error) {
+    console.error("Could not save favorites:", error);
+
+    alert(
+      "Unable to save favorites. Your browser storage may be full or unavailable."
+    );
+
+    return false;
+  }
+}
+
+// ==========================================
+// CREATE FAVORITE ID
+// ==========================================
+
+function createFavoriteId() {
+  if (
+    window.crypto &&
+    typeof window.crypto.randomUUID === "function"
+  ) {
+    return window.crypto.randomUUID();
+  }
+
+  return Date.now().toString(36) +
+    Math.random().toString(36).slice(2);
+}
+
+// ==========================================
+// CREATE A FAVORITE
+// ==========================================
+
+function createCurrentFavorite() {
+  let favorite = null;
+
+  if (lastConversionType === "unit") {
+    favorite = {
+      type: "unit",
+      label:
+        $("unitAmount").value + " " +
+        $("unitFrom").value + " to " +
+        $("unitTo").value,
+      data: {
+        category: $("unitCategory").value,
+        from: $("unitFrom").value,
+        to: $("unitTo").value,
+        amount: $("unitAmount").value
+      }
+    };
+  }
+
+  else if (lastConversionType === "smart") {
+    favorite = {
+      type: "smart",
+      label: $("smartInput").value.trim(),
+      data: {
+        input: $("smartInput").value
+      }
+    };
+  }
+
+  else if (lastConversionType === "fiat") {
+    favorite = {
+      type: "fiat",
+      label:
+        $("fiatAmount").value + " " +
+        $("fiatFrom").value + " to " +
+        $("fiatTo").value,
+      data: {
+        from: $("fiatFrom").value,
+        to: $("fiatTo").value,
+        amount: $("fiatAmount").value
+      }
+    };
+  }
+
+  else if (lastConversionType === "crypto") {
+    favorite = {
+      type: "crypto",
+      label:
+        $("cryptoAmount").value + " " +
+        $("cryptoFrom").value + " to " +
+        $("cryptoTo").value.toUpperCase(),
+      data: {
+        from: $("cryptoFrom").value,
+        to: $("cryptoTo").value,
+        amount: $("cryptoAmount").value
+      }
+    };
+  }
+
+  if (!favorite || !favorite.label.trim()) {
+    alert("Enter a conversion before pinning it.");
+    return;
+  }
+
+  favorite.id = createFavoriteId();
+
+  favorite.createdAt = new Date().toISOString();
+
+  savedFavorites.unshift(favorite);
+
+  if (saveFavorites()) {
+    renderFavorites();
+
+    $("developerStatus").textContent =
+      "Favorite pinned successfully!";
+  } else {
+    savedFavorites.shift();
+  }
+}
+
+// ==========================================
+// PIN FAVORITE BUTTON
+// ==========================================
+
+$("pinFavorite").addEventListener(
+  "click",
+  createCurrentFavorite
+);
+
+// ==========================================
+// RESTORE A FAVORITE
+// ==========================================
+
+async function restoreFavorite(favorite) {
+  if (!favorite || !favorite.data) return;
+
+  const data = favorite.data;
+
+  if (favorite.type === "unit") {
+    $("unitCategory").value = data.category;
+
+    populateUnits();
+
+    $("unitFrom").value = data.from;
+    $("unitTo").value = data.to;
+    $("unitAmount").value = data.amount;
+
+    lastConversionType = "unit";
+
+    updateUnitConversion();
+  }
+
+  else if (favorite.type === "smart") {
+    $("smartInput").value = data.input;
+
+    lastConversionType = "smart";
+
+    smartConvert();
+  }
+
+  else if (favorite.type === "fiat") {
+    $("fiatFrom").value = data.from;
+    $("fiatTo").value = data.to;
+    $("fiatAmount").value = data.amount;
+
+    lastConversionType = "fiat";
+
+    showConverterTab("fiat");
+
+    await convertFiat();
+  }
+
+  else if (favorite.type === "crypto") {
+    $("cryptoFrom").value = data.from;
+    $("cryptoTo").value = data.to;
+    $("cryptoAmount").value = data.amount;
+
+    lastConversionType = "crypto";
+
+    showConverterTab("crypto");
+
+    await convertCrypto();
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+// ==========================================
+// REMOVE A FAVORITE
+// ==========================================
+
+function removeFavorite(id) {
+  savedFavorites = savedFavorites.filter(
+    favorite => favorite.id !== id
+  );
+
+  if (saveFavorites()) {
+    renderFavorites();
+  }
+}
+
+// ==========================================
+// RENDER FAVORITES
+// ==========================================
+
+function renderFavorites() {
+  const container = $("favoritesList");
+
+  container.replaceChildren();
+
+  if (savedFavorites.length === 0) {
+    const empty = document.createElement("p");
+
+    empty.textContent =
+      "No pinned favorites yet. Pin a conversion to see it here.";
+
+    empty.className = "empty-favorites";
+
+    container.appendChild(empty);
+
+    return;
+  }
+
+  savedFavorites.forEach(favorite => {
+    const card = document.createElement("div");
+
+    card.className = "favorite-item";
+
+    const details = document.createElement("div");
+
+    details.className = "favorite-details";
+
+    const title = document.createElement("strong");
+
+    title.textContent = favorite.label;
+
+    const type = document.createElement("small");
+
+    type.textContent =
+      favorite.type.toUpperCase() + " CONVERSION";
+
+    details.appendChild(title);
+    details.appendChild(type);
+
+    const actions = document.createElement("div");
+
+    actions.className = "favorite-actions";
+
+    const loadButton = document.createElement("button");
+
+    loadButton.type = "button";
+    loadButton.textContent = "Load";
+    loadButton.className = "favorite-load";
+
+    loadButton.addEventListener("click", () => {
+      restoreFavorite(favorite);
+    });
+
+    const deleteButton = document.createElement("button");
+
+    deleteButton.type = "button";
+    deleteButton.textContent = "Remove";
+    deleteButton.className = "favorite-delete";
+
+    deleteButton.addEventListener("click", () => {
+      removeFavorite(favorite.id);
+    });
+
+    actions.appendChild(loadButton);
+    actions.appendChild(deleteButton);
+
+    card.appendChild(details);
+    card.appendChild(actions);
+
+    container.appendChild(card);
+  });
+}
+
+// ==========================================
+// CLEAR ALL FAVORITES
+// ==========================================
+
+$("clearFavorites").addEventListener("click", () => {
+  if (savedFavorites.length === 0) {
+    return;
+  }
+
+  const confirmed = confirm(
+    "Are you sure you want to remove all pinned favorites?"
+  );
+
+  if (!confirmed) return;
+
+  const previousFavorites = savedFavorites;
+
+  savedFavorites = [];
+
+  if (saveFavorites()) {
+    renderFavorites();
+  } else {
+    savedFavorites = previousFavorites;
+    renderFavorites();
+  }
+});
+
+// ==========================================
+// INITIALIZE FAVORITES
+// ==========================================
+
+renderFavorites();
+
+// ==========================================
+// FINAL PAGE INITIALIZATION
+// ==========================================
+
+// Make sure the fiat converter is the
+// initially selected currency tab.
+
+showConverterTab("fiat");
+
+// Display the initial unit conversion.
+
+updateUnitConversion();
+
+// ==========================================
+// HEXCLØWN QUICK CONVERTER COMPLETE
+// ==========================================
+
+console.log(
+  "HEXCLØWN QUICK CONVERTER is ready."
+);
+
+  
