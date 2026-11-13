@@ -11,13 +11,14 @@
 :root{
   --bg:#07131a;
   --panel:#0d2029;
-  --panel2:#102a35;
-  --cyan:#00e5ff;
-  --green:#39ff88;
-  --text:#e9faff;
-  --muted:#91aab5;
-  --border:#21414e;
-  --danger:#ff647c;
+  --panel2:#102832;
+  --line:#1c3d48;
+  --text:#e8f5f7;
+  --muted:#91aeb5;
+  --cyan:#25d9e8;
+  --green:#8cf58a;
+  --red:#ff7185;
+  --yellow:#ffd36a;
 }
 *{box-sizing:border-box}
 body{
@@ -25,16 +26,15 @@ body{
   background:var(--bg);
   color:var(--text);
   font-family:Arial,sans-serif;
+  line-height:1.5;
 }
-button,input,textarea,select{font:inherit}
-button{cursor:pointer;border:0}
 header{
+  padding:17px 16px;
+  background:#091a22;
+  border-bottom:1px solid var(--line);
   position:sticky;
   top:0;
-  z-index:10;
-  background:#081820;
-  border-bottom:1px solid var(--border);
-  padding:15px;
+  z-index:5;
 }
 .header-inner{
   max-width:1100px;
@@ -45,1219 +45,903 @@ header{
   gap:12px;
 }
 .logo{
-  color:var(--green);
-  font-size:19px;
+  color:var(--cyan);
   font-weight:900;
   letter-spacing:2px;
+  font-size:19px;
 }
 .back{
-  color:var(--cyan);
+  color:var(--green);
   text-decoration:none;
   font-size:13px;
 }
-main{
-  max-width:1100px;
-  margin:auto;
-  padding:22px 15px 50px;
-}
-.hero{
-  padding:27px 20px;
-  border:1px solid var(--border);
-  border-radius:18px;
-  background:linear-gradient(135deg,#102d38,#091920);
-  margin-bottom:22px;
-}
-.eyebrow{
-  color:var(--green);
-  font-size:11px;
-  letter-spacing:2px;
-  font-weight:bold;
-}
-h1{font-size:27px;margin:10px 0}
-.hero p{
-  color:var(--muted);
-  line-height:1.6;
-  margin-bottom:0;
-}
+main{max-width:1100px;margin:auto;padding:22px 14px 50px}
+.hero{margin-bottom:24px}
+.hero h1{font-size:clamp(25px,5vw,38px);margin:0 0 6px}
+.hero h1 span{color:var(--cyan)}
+.hero p{color:var(--muted);margin:0}
 .section{
   background:var(--panel);
-  border:1px solid var(--border);
+  border:1px solid var(--line);
   border-radius:15px;
-  padding:18px;
-  margin-bottom:20px;
+  padding:17px;
+  margin:18px 0;
+  min-width:0;
 }
-.section h2{
-  font-size:19px;
-  margin:0 0 8px;
-}
-.description{
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.5;
-  margin:0 0 17px;
-}
+.section h2{font-size:20px;margin:0 0 5px}
+.description{color:var(--muted);font-size:13px;margin:0 0 16px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 input,textarea,select{
   width:100%;
   background:#071820;
-  border:1px solid var(--border);
   color:var(--text);
+  border:1px solid var(--line);
   border-radius:9px;
-  padding:12px;
+  padding:11px;
+  font:inherit;
   outline:none;
-  margin:5px 0 12px;
 }
-input:focus,textarea:focus,select:focus{
-  border-color:var(--cyan);
-}
-textarea{
-  min-height:150px;
-  resize:vertical;
-}
-label{
-  display:block;
-  color:#c5dce4;
-  font-size:12px;
-  font-weight:bold;
-  margin-top:8px;
-}
-.btn{
-  padding:11px 15px;
+input:focus,textarea:focus,select:focus{border-color:var(--cyan)}
+button{
+  border:1px solid var(--line);
   border-radius:9px;
-  background:var(--cyan);
-  color:#00151a;
-  font-weight:bold;
-  font-size:13px;
-}
-.btn-green{
-  background:var(--green);
-  color:#04170c;
-}
-.btn-secondary{
-  background:#193542;
+  padding:10px 13px;
+  background:var(--panel2);
   color:var(--text);
-  border:1px solid var(--border);
-}
-.btn-danger{
-  background:#542331;
-  color:#ffdce2;
-}
-.btn-small{
-  padding:8px 10px;
-  font-size:11px;
-}
-.button-row{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
-.hidden{display:none!important}
-.notice{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.5;
-  margin-top:12px;
-}
-
-/* CALCULATOR */
-
-.calculator{
-  max-width:480px;
-  margin:auto;
-}
-.calc-display{
-  background:#041016;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:15px;
-  margin-bottom:12px;
-}
-#calcExpression{
-  min-height:23px;
-  color:var(--muted);
+  font-weight:700;
+  cursor:pointer;
   font-size:13px;
-  overflow-wrap:anywhere;
 }
-#calcResult{
-  display:block;
+button:active{transform:scale(.98)}
+button.primary{background:var(--cyan);color:#031318;border-color:var(--cyan)}
+button.good{background:#183c2c;color:var(--green);border-color:#286343}
+button.danger{color:var(--red)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.calc-top{
+  display:grid;
+  grid-template-columns:1fr 120px;
+  gap:10px;
+  margin-bottom:10px;
+}
+#calcDisplay{
+  min-height:55px;
   text-align:right;
-  font-size:30px;
+  font-size:23px;
   font-weight:bold;
-  color:var(--green);
-  overflow-wrap:anywhere;
-  min-height:40px;
-}
-.calc-mode{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:12px;
-  color:var(--muted);
-  font-size:12px;
+  letter-spacing:1px;
 }
 .calc-grid{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+  grid-template-columns:repeat(5,minmax(0,1fr));
   gap:7px;
 }
-.calc-key{
-  min-height:47px;
-  border-radius:9px;
-  background:#142e39;
-  color:var(--text);
-  border:1px solid var(--border);
-  font-weight:bold;
-  font-size:14px;
-}
-.calc-key:active{transform:scale(.96)}
-.calc-key.function{color:var(--cyan)}
-.calc-key.operator{
-  color:var(--green);
-  background:#12342e;
-}
-.calc-key.clear{
-  color:#ff9baa;
-  background:#3b1d28;
-}
-.calc-key.equals{
-  background:var(--green);
-  color:#04170c;
-}
-.calc-key.wide{grid-column:span 2}
+.calc-grid button{min-height:46px;padding:7px 3px}
+.calc-grid button.operator{color:var(--cyan)}
+.calc-grid button.equals{background:var(--green);color:#07130b}
+.calc-grid button.clear{color:var(--red)}
 .calc-history{
-  margin-top:15px;
-  border-top:1px solid var(--border);
-  padding-top:13px;
+  margin-top:14px;
+  border-top:1px solid var(--line);
+  padding-top:12px;
 }
-.calc-history h3{
-  font-size:13px;
-  margin:0 0 10px;
-}
-.history-list{
-  display:grid;
-  gap:7px;
-}
-.history-entry{
+.history-item{
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  gap:8px;
-  background:#091a22;
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:9px;
-}
-.history-entry span{
-  font-size:12px;
-  overflow-wrap:anywhere;
-}
-.history-entry button{
-  flex-shrink:0;
-}
-
-/* SCRATCHPAD */
-
-.scratch-tools{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
   gap:10px;
-  flex-wrap:wrap;
+  padding:8px 2px;
+  border-bottom:1px solid #18323b;
+  font-size:13px;
 }
-.scratch-stats{
-  display:flex;
-  gap:14px;
-  flex-wrap:wrap;
-  color:var(--muted);
-  font-size:11px;
-}
-.scratch-stats strong{color:var(--green)}
-#scratchpad{
-  min-height:260px;
-  line-height:1.7;
-  font-size:14px;
-}
-
-/* EXAM COUNTDOWN */
-
-.exam-form-grid{
+.history-item span{overflow-wrap:anywhere}
+.history-item strong{color:var(--green)}
+#scratchpad{min-height:220px;resize:vertical;line-height:1.6}
+.small-stats{color:var(--muted);font-size:12px}
+.status{color:var(--green);font-size:12px}
+.exam-form{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:10px;
 }
-.exam-list{
-  display:grid;
-  gap:12px;
-  margin-top:17px;
-}
+.exam-form .wide{grid-column:1/-1}
+.exam-list{display:grid;gap:10px;margin-top:16px}
 .exam-card{
   background:#091a22;
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:15px;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:13px;
 }
-.exam-card-top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  align-items:flex-start;
-}
-.exam-card h3{
-  margin:0 0 5px;
-  font-size:16px;
-}
-.exam-subject{
-  color:var(--muted);
-  font-size:11px;
-}
+.exam-card h3{margin:0 0 5px;font-size:16px}
+.exam-card p{margin:3px 0;color:var(--muted);font-size:12px}
 .countdown{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
+  display:flex;
   gap:7px;
-  margin:15px 0;
+  flex-wrap:wrap;
+  margin:12px 0;
 }
 .time-box{
-  text-align:center;
-  background:#102a35;
-  border:1px solid var(--border);
+  background:#102832;
+  border:1px solid var(--line);
   border-radius:8px;
-  padding:10px 3px;
-}
-.time-box strong{
-  display:block;
-  color:var(--green);
-  font-size:20px;
-}
-.time-box span{
-  display:block;
-  color:var(--muted);
-  font-size:9px;
-  margin-top:4px;
-}
-.exam-status{
-  color:var(--cyan);
-  font-size:11px;
-  margin-top:8px;
-}
-.empty-state{
-  color:var(--muted);
-  font-size:12px;
-  padding:12px 0;
-}
-footer{
+  min-width:62px;
   text-align:center;
-  padding:20px;
-  color:#67818d;
-  font-size:11px;
+  padding:8px 5px;
 }
-@media(max-width:600px){
-  h1{font-size:23px}
-  .exam-form-grid{grid-template-columns:1fr}
+.time-box strong{display:block;color:var(--cyan);font-size:19px}
+.time-box span{font-size:10px;color:var(--muted)}
+.empty{
+  color:var(--muted);
+  text-align:center;
+  padding:18px 8px;
+  border:1px dashed var(--line);
+  border-radius:10px;
+  font-size:13px;
+}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
+@media(max-width:520px){
+  main{padding:17px 10px 35px}
+  .section{padding:13px}
+  .calc-top{grid-template-columns:1fr 95px}
   .calc-grid{gap:5px}
-  .calc-key{min-height:44px;font-size:12px}
-  #calcResult{font-size:25px}
-}
-@media(max-width:350px){
-  .calc-key{min-height:39px;font-size:11px}
-  .countdown{gap:4px}
-  .time-box strong{font-size:17px}
+  .calc-grid button{font-size:12px;min-height:43px}
+  .exam-form{grid-template-columns:1fr}
+  .exam-form .wide{grid-column:auto}
 }
 </style>
 </head>
 
 <body>
-
 <header>
   <div class="header-inner">
     <div class="logo">HEXCLØWN</div>
-    <a class="back" href="learninghub.html">← Learning Hub</a>
+    <a class="back" href="learninghub.html">← LEARNING HUB</a>
   </div>
 </header>
 
 <main>
+  <section class="hero">
+    <h1>Exam <span>& Workspace</span></h1>
+    <p>Your calculator, study notes and exam countdown in one workspace.</p>
+  </section>
 
-<section class="hero">
-  <div class="eyebrow">LEARNING HUB / EXAM & WORKSPACE</div>
-  <h1>Your Personal Exam Workspace.</h1>
-  <p>
-    Calculate, organise your revision notes and keep
-    track of upcoming examinations in one workspace.
-  </p>
-</section>
+  <!-- SCIENTIFIC CALCULATOR -->
+  <section class="section">
+    <h2>01. Scientific Calculator</h2>
+    <p class="description">Perform calculations, use scientific functions and switch between degrees and radians.</p>
 
-<!-- SCIENTIFIC CALCULATOR -->
-
-<section class="section">
-  <h2>01 / Scientific Calculator</h2>
-  <p class="description">
-    A scientific calculator for everyday calculations,
-    mathematics and revision practice.
-  </p>
-
-  <div class="calculator">
-
-    <div class="calc-mode">
-      <span>ANGLE MODE</span>
-      <select id="angleMode"
-        style="width:auto;margin:0;padding:7px">
+    <div class="calc-top">
+      <input id="calcDisplay" type="text" value="0" readonly aria-label="Calculator display">
+      <select id="angleMode" aria-label="Angle mode">
         <option value="DEG">DEG</option>
         <option value="RAD">RAD</option>
       </select>
     </div>
 
-    <div class="calc-display">
-      <div id="calcExpression">Ready</div>
-      <output id="calcResult" aria-live="polite">0</output>
-    </div>
+    <div class="calc-grid" id="calcButtons">
+      <button class="clear" data-action="clear">AC</button>
+      <button class="operator" data-action="backspace">DEL</button>
+      <button class="operator" data-value="(">(</button>
+      <button class="operator" data-value=")">)</button>
+      <button class="operator" data-value="/">÷</button>
 
-    <div class="calc-grid" id="calculatorKeys">
+      <button class="operator" data-value="sin(">sin</button>
+      <button class="operator" data-value="cos(">cos</button>
+      <button class="operator" data-value="tan(">tan</button>
+      <button class="operator" data-value="sqrt(">√</button>
+      <button class="operator" data-value="*">×</button>
 
-      <button class="calc-key function" data-action="insert" data-value="sin(">sin</button>
-      <button class="calc-key function" data-action="insert" data-value="cos(">cos</button>
-      <button class="calc-key function" data-action="insert" data-value="tan(">tan</button>
-      <button class="calc-key function" data-action="insert" data-value="log(">log</button>
-      <button class="calc-key function" data-action="insert" data-value="ln(">ln</button>
+      <button class="operator" data-value="log(">log</button>
+      <button class="operator" data-value="ln(">ln</button>
+      <button class="operator" data-value="^2">x²</button>
+      <button class="operator" data-value="^">xʸ</button>
+      <button class="operator" data-value="-">−</button>
 
-      <button class="calc-key function" data-action="insert" data-value="sqrt(">√</button>
-      <button class="calc-key function" data-action="insert" data-value="^2">x²</button>
-      <button class="calc-key function" data-action="insert" data-value="^">xʸ</button>
-      <button class="calc-key function" data-action="insert" data-value="(">(</button>
-      <button class="calc-key function" data-action="insert" data-value=")">)</button>
+      <button class="operator" data-value="pi">π</button>
+      <button class="operator" data-value="e">e</button>
+      <button class="operator" data-value="!">x!</button>
+      <button class="operator" data-value="%">%</button>
+      <button class="operator" data-value="+">+</button>
 
-      <button class="calc-key function" data-action="insert" data-value="pi">π</button>
-      <button class="calc-key function" data-action="insert" data-value="e">e</button>
-      <button class="calc-key function" data-action="insert" data-value="!">x!</button>
-      <button class="calc-key function" data-action="insert" data-value="%">%</button>
-      <button class="calc-key clear" data-action="clear">AC</button>
+      <button data-value="7">7</button>
+      <button data-value="8">8</button>
+      <button data-value="9">9</button>
+      <button class="operator" data-action="ans">ANS</button>
+      <button class="operator" data-action="reciprocal">1/x</button>
 
-      <button class="calc-key" data-action="insert" data-value="7">7</button>
-      <button class="calc-key" data-action="insert" data-value="8">8</button>
-      <button class="calc-key" data-action="insert" data-value="9">9</button>
-      <button class="calc-key operator" data-action="insert" data-value="/">÷</button>
-      <button class="calc-key clear" data-action="backspace">⌫</button>
+      <button data-value="4">4</button>
+      <button data-value="5">5</button>
+      <button data-value="6">6</button>
+      <button data-value="1">1</button>
+      <button data-value="2">2</button>
 
-      <button class="calc-key" data-action="insert" data-value="4">4</button>
-      <button class="calc-key" data-action="insert" data-value="5">5</button>
-      <button class="calc-key" data-action="insert" data-value="6">6</button>
-      <button class="calc-key operator" data-action="insert" data-value="*">×</button>
-      <button class="calc-key operator" data-action="insert" data-value="-">−</button>
-
-      <button class="calc-key" data-action="insert" data-value="1">1</button>
-      <button class="calc-key" data-action="insert" data-value="2">2</button>
-      <button class="calc-key" data-action="insert" data-value="3">3</button>
-      <button class="calc-key operator" data-action="insert" data-value="+">+</button>
-      <button class="calc-key equals" data-action="calculate">=</button>
-
-      <button class="calc-key wide" data-action="insert" data-value="0">0</button>
-      <button class="calc-key" data-action="insert" data-value=".">.</button>
-      <button class="calc-key function" data-action="ans">ANS</button>
-      <button class="calc-key function" data-action="insert" data-value="^(-1)">1/x</button>
-
+      <button data-value="3">3</button>
+      <button data-value="0">0</button>
+      <button data-value=".">.</button>
+      <button class="equals" data-action="equals">=</button>
+      <button class="operator" data-action="sign">±</button>
     </div>
 
     <div class="calc-history">
-      <h3>Calculation History</h3>
-      <div class="history-list" id="calcHistory">
-        <p class="empty-state">Your calculations will appear here.</p>
+      <div class="row" style="justify-content:space-between">
+        <strong>Calculation History</strong>
+        <button class="danger" id="clearHistory">Clear History</button>
       </div>
-      <button class="btn btn-secondary btn-small"
-        id="clearCalcHistoryBtn" type="button"
-        style="margin-top:10px">
-        Clear History
-      </button>
+      <div id="calcHistory"><div class="empty">Your calculations will appear here.</div></div>
+    </div>
+  </section>
+
+  <!-- SCRATCHPAD -->
+  <section class="section">
+    <h2>02. Study Scratchpad</h2>
+    <p class="description">Write your revision notes. Your text saves automatically in this browser.</p>
+
+    <textarea id="scratchpad" placeholder="Start writing your study notes here..."></textarea>
+
+    <div class="row" style="justify-content:space-between;margin-top:10px">
+      <span class="small-stats" id="noteStats">0 words · 0 characters</span>
+      <span class="status" id="saveStatus">Ready</span>
     </div>
 
-  </div>
-</section>
-
-<!-- STUDY SCRATCHPAD -->
-
-<section class="section">
-  <h2>02 / Study Scratchpad</h2>
-  <p class="description">
-    Write formulas, revision notes, reminders and
-    quick ideas. Your notes save automatically.
-  </p>
-
-  <div class="scratch-tools">
-    <div class="scratch-stats">
-      <span>Words: <strong id="wordCount">0</strong></span>
-      <span>Characters: <strong id="charCount">0</strong></span>
-      <span id="saveStatus">Saved locally</span>
+    <div class="row" style="margin-top:13px">
+      <button class="primary" id="exportNotes">Export TXT</button>
+      <button id="copyNotes">Copy Notes</button>
+      <button class="danger" id="clearNotes">Clear Notes</button>
     </div>
-  </div>
+  </section>
 
-  <textarea id="scratchpad"
-    placeholder="Start writing your revision notes here..."></textarea>
+  <!-- EXAM COUNTDOWN -->
+  <section class="section">
+    <h2>03. Exam Countdown</h2>
+    <p class="description">Add your exam dates and watch the countdown update automatically.</p>
 
-  <div class="button-row">
-    <button class="btn btn-secondary" id="downloadNotesBtn"
-      type="button">Export Notes TXT</button>
-    <button class="btn btn-danger" id="clearNotesBtn"
-      type="button">Clear Notes</button>
-  </div>
+    <form id="examForm" class="exam-form">
+      <input class="wide" id="examName" type="text" maxlength="70" placeholder="Exam name (e.g. Biology)" required>
+      <input id="examDate" type="date" required>
+      <input id="examTime" type="time" value="09:00" required>
+      <button class="primary wide" type="submit">+ Add Exam Countdown</button>
+    </form>
 
-  <p class="notice">
-    Notes are saved in this browser on this device.
-    Export a copy if you want an extra backup.
-  </p>
-</section>
-
-<!-- EXAM COUNTDOWN -->
-
-<section class="section">
-  <h2>03 / Exam Countdown</h2>
-  <p class="description">
-    Add your upcoming exams and watch the countdown
-    update automatically.
-  </p>
-
-  <form id="examForm">
-
-    <label for="examName">Exam name</label>
-    <input id="examName" maxlength="70"
-      placeholder="Example: Biology Final Examination"
-      required>
-
-    <div class="exam-form-grid">
-
-      <div>
-        <label for="examSubject">Subject</label>
-        <input id="examSubject" maxlength="60"
-          placeholder="Example: Biology">
-      </div>
-
-      <div>
-        <label for="examDate">Exam date</label>
-        <input id="examDate" type="date" required>
-      </div>
-
-      <div>
-        <label for="examTime">Exam time</label>
-        <input id="examTime" type="time" value="09:00" required>
-      </div>
-
+    <div class="row" style="justify-content:space-between;margin-top:18px">
+      <strong>Your Exams</strong>
+      <span class="small-stats" id="examTotal">0 exams</span>
     </div>
-
-    <button class="btn btn-green" type="submit">
-      + Add Exam Countdown
-    </button>
-
-    <p class="notice" id="examFormStatus" aria-live="polite"></p>
-
-  </form>
-
-  <div class="exam-list" id="examList">
-    <p class="empty-state">No exams added yet.</p>
-  </div>
-
-</section>
-
+    <div id="examList" class="exam-list">
+      <div class="empty">No exams added yet. Add your first exam above.</div>
+    </div>
+  </section>
 </main>
 
-<footer>
-  HEXCLØWN • EXAM & WORKSPACE • PREPARE AND PROGRESS
-</footer>
+<footer>HEXCLØWN · EXAM & WORKSPACE</footer>
 
 <script>
-
-/* =====================================
-   STORAGE AND HELPERS
-===================================== */
-
-const CALC_HISTORY_KEY = "hexclown_exam_calc_history_v1";
-const SCRATCHPAD_KEY = "hexclown_exam_scratchpad_v1";
-const EXAMS_KEY = "hexclown_exam_countdowns_v1";
+        
+/* =================================
+   HEXCLØWN EXAM WORKSPACE
+   PART 2: CALCULATOR + SCRATCHPAD
+================================= */
 
 const $ = id => document.getElementById(id);
 
-function loadData(key,fallback){
-  try{
+const STORAGE = {
+  history: "hexclown_exam_calc_history_v2",
+  notes: "hexclown_exam_scratchpad_v2",
+  exams: "hexclown_exam_countdowns_v2"
+};
+
+function loadData(key, fallback) {
+  try {
     const data = JSON.parse(localStorage.getItem(key));
     return data === null ? fallback : data;
-  }catch(error){
+  } catch (error) {
     return fallback;
   }
 }
 
-function saveData(key,data){
-  try{
-    localStorage.setItem(key,JSON.stringify(data));
+function saveData(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
     return true;
-  }catch(error){
-    alert("Your browser could not save this data. Check your device storage.");
+  } catch (error) {
+    alert("Your browser could not save this data. Check available storage.");
     return false;
   }
 }
 
-function createId(){
-  return Date.now().toString(36) +
-    Math.random().toString(36).slice(2,8);
-}
+/* CALCULATOR */
 
-/* =====================================
-   SCIENTIFIC CALCULATOR
-===================================== */
-
-let calcExpression = "";
+let expression = "";
 let lastAnswer = 0;
-let calcHistory = loadData(CALC_HISTORY_KEY,[]);
+let calcHistory = loadData(STORAGE.history, []);
 
-function updateCalcDisplay(){
-  $("calcExpression").textContent =
-    calcExpression || "Ready";
+function updateDisplay() {
+  $("calcDisplay").value = expression || "0";
 }
 
-function insertCalcValue(value){
-  if(calcExpression === "Error"){
-    calcExpression = "";
+function appendValue(value) {
+  if (expression === "Error") expression = "";
+  expression += value;
+  updateDisplay();
+}
+
+function factorial(number) {
+  if (!Number.isInteger(number) || number < 0 || number > 170) {
+    throw new Error("Factorial requires a whole number from 0 to 170.");
   }
-
-  calcExpression += value;
-  updateCalcDisplay();
+  let result = 1;
+  for (let i = 2; i <= number; i++) result *= i;
+  return result;
 }
 
-function clearCalculator(){
-  calcExpression = "";
-  $("calcResult").textContent = "0";
-  updateCalcDisplay();
-}
+/*
+  Safe mathematical parser.
+  Does not use eval() or execute user-written JavaScript.
+*/
 
-function backspaceCalculator(){
-  calcExpression = calcExpression.slice(0,-1);
-  updateCalcDisplay();
-}
-
-/* Safe mathematical parser: no eval() */
-
-function tokenize(expression){
-  const tokens = [];
+function calculate(source) {
+  const input = source.replace(/\s+/g, "");
   let position = 0;
+  const angleMode = $("angleMode").value;
 
-  while(position < expression.length){
-    const remaining = expression.slice(position);
-
-    if(/^\s+/.test(remaining)){
-      position += remaining.match(/^\s+/)[0].length;
-      continue;
-    }
-
-    const number = remaining.match(
-      /^(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?/i
-    );
-
-    if(number){
-      tokens.push({
-        type:"number",
-        value:Number(number[0])
-      });
-      position += number[0].length;
-      continue;
-    }
-
-    const identifier = remaining.match(/^[a-z]+/i);
-
-    if(identifier){
-      const name = identifier[0].toLowerCase();
-
-      if(![
-        "sin","cos","tan","log","ln","sqrt","pi","e"
-      ].includes(name)){
-        throw new Error("Unknown function");
-      }
-
-      tokens.push({type:"name",value:name});
-      position += identifier[0].length;
-      continue;
-    }
-
-    const character = expression[position];
-
-    if("+-*/^()%!".includes(character)){
-      tokens.push({type:"symbol",value:character});
-      position++;
-      continue;
-    }
-
-    throw new Error("Invalid character");
+  function peek() {
+    return input[position];
   }
 
-  return tokens;
-}
-
-function evaluateExpression(expression){
-  const tokens = tokenize(expression);
-  let index = 0;
-
-  const peek = () => tokens[index];
-
-  function consume(value){
-    if(peek() && peek().value === value){
-      index++;
+  function eat(character) {
+    if (peek() === character) {
+      position++;
       return true;
     }
     return false;
   }
 
-  function requireClosing(){
-    if(!consume(")")){
-      throw new Error("Missing closing bracket");
+  function parseExpression() {
+    let value = parseTerm();
+
+    while (true) {
+      if (eat("+")) value += parseTerm();
+      else if (eat("-")) value -= parseTerm();
+      else break;
     }
-  }
-
-  function parsePrimary(){
-    const token = peek();
-
-    if(!token){
-      throw new Error("Incomplete expression");
-    }
-
-    if(consume("+")) return parseUnary();
-    if(consume("-")) return -parseUnary();
-
-    if(consume("(")){
-      const value = parseAddSub();
-      requireClosing();
-      return value;
-    }
-
-    if(token.type === "number"){
-      index++;
-      return token.value;
-    }
-
-    if(token.type === "name"){
-      index++;
-
-      if(token.value === "pi") return Math.PI;
-      if(token.value === "e") return Math.E;
-
-      if(!consume("(")){
-        throw new Error("Function needs parentheses");
-      }
-
-      const argument = parseAddSub();
-      requireClosing();
-
-      const mode = $("angleMode").value;
-      const angle = mode === "DEG"
-        ? argument * Math.PI / 180
-        : argument;
-
-      switch(token.value){
-        case "sin": return Math.sin(angle);
-        case "cos": return Math.cos(angle);
-        case "tan":
-          if(Math.abs(Math.cos(angle)) < 1e-12){
-            throw new Error("Tangent is undefined here");
-          }
-          return Math.tan(angle);
-        case "log":
-          if(argument <= 0) throw new Error("Log needs a positive number");
-          return Math.log10(argument);
-        case "ln":
-          if(argument <= 0) throw new Error("Ln needs a positive number");
-          return Math.log(argument);
-        case "sqrt":
-          if(argument < 0) throw new Error("Square root needs a non-negative number");
-          return Math.sqrt(argument);
-      }
-    }
-
-    throw new Error("Invalid expression");
-  }
-
-  function parseFactorial(value){
-    if(value < 0 || !Number.isInteger(value) || value > 170){
-      throw new Error("Factorial needs a whole number from 0 to 170");
-    }
-
-    let result = 1;
-
-    for(let i = 2; i <= value; i++){
-      result *= i;
-    }
-
-    return result;
-  }
-
-  function parsePostfix(){
-    let value = parsePrimary();
-
-    while(peek() && (peek().value === "!" || peek().value === "%")){
-      const operator = tokens[index++].value;
-
-      if(operator === "!"){
-        value = parseFactorial(value);
-      }else{
-        value = value / 100;
-      }
-    }
-
     return value;
   }
 
-  function parsePower(){
-    let value = parsePostfix();
+  function parseTerm() {
+    let value = parseUnary();
 
-    if(consume("^")){
-      const exponent = parseUnary();
-      value = Math.pow(value,exponent);
+    while (true) {
+      if (eat("*")) value *= parseUnary();
+      else if (eat("/")) {
+        const divisor = parseUnary();
+        if (divisor === 0) throw new Error("Cannot divide by zero.");
+        value /= divisor;
+      } else break;
     }
-
     return value;
   }
 
-  function parseUnary(){
+  function parseUnary() {
+    if (eat("+")) return parseUnary();
+    if (eat("-")) return -parseUnary();
     return parsePower();
   }
 
-  function parseMultiplyDivide(){
-    let value = parseUnary();
+  function parsePower() {
+    let value = parsePostfix();
+    if (eat("^")) value = Math.pow(value, parseUnary());
+    return value;
+  }
 
-    while(peek() && ["*","/"].includes(peek().value)){
-      const operator = tokens[index++].value;
-      const right = parseUnary();
+  function parsePostfix() {
+    let value = parsePrimary();
 
-      if(operator === "/"){
-        if(right === 0) throw new Error("Cannot divide by zero");
-        value /= right;
-      }else{
-        value *= right;
-      }
+    while (true) {
+      if (eat("!")) value = factorial(value);
+      else if (eat("%")) value /= 100;
+      else break;
     }
 
     return value;
   }
 
-  function parseAddSub(){
-    let value = parseMultiplyDivide();
+  function parsePrimary() {
+    if (eat("(")) {
+      const value = parseExpression();
+      if (!eat(")")) throw new Error("Missing closing bracket.");
+      return value;
+    }
 
-    while(peek() && ["+","-"].includes(peek().value)){
-      const operator = tokens[index++].value;
-      const right = parseMultiplyDivide();
+    const functions = ["sin", "cos", "tan", "sqrt", "log", "ln"];
 
-      if(operator === "+"){
-        value += right;
-      }else{
-        value -= right;
+    for (const name of functions) {
+      if (input.slice(position, position + name.length) === name) {
+        position += name.length;
+
+        if (!eat("(")) throw new Error(name + " needs brackets.");
+
+        const argument = parseExpression();
+
+        if (!eat(")")) throw new Error("Missing function bracket.");
+
+        if (name === "sqrt") {
+          if (argument < 0) throw new Error("Invalid square root.");
+          return Math.sqrt(argument);
+        }
+
+        if (name === "log") {
+          if (argument <= 0) throw new Error("log requires a positive number.");
+          return Math.log10(argument);
+        }
+
+        if (name === "ln") {
+          if (argument <= 0) throw new Error("ln requires a positive number.");
+          return Math.log(argument);
+        }
+
+        const radians = angleMode === "DEG"
+          ? argument * Math.PI / 180
+          : argument;
+
+        if (name === "sin") return Math.sin(radians);
+        if (name === "cos") return Math.cos(radians);
+
+        if (name === "tan") {
+          const cosine = Math.cos(radians);
+          if (Math.abs(cosine) < 1e-12) {
+            throw new Error("Tangent is undefined here.");
+          }
+          return Math.tan(radians);
+        }
       }
     }
 
-    return value;
+    if (input.slice(position, position + 2) === "pi") {
+      position += 2;
+      return Math.PI;
+    }
+
+    if (peek() === "e") {
+      position++;
+      return Math.E;
+    }
+
+    const remaining = input.slice(position);
+    const match = remaining.match(/^(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?/i);
+
+    if (match) {
+      position += match[0].length;
+      return Number(match[0]);
+    }
+
+    throw new Error("Check your expression.");
   }
 
-  const result = parseAddSub();
+  if (!input) throw new Error("Enter a calculation first.");
 
-  if(index !== tokens.length){
-    throw new Error("Check your expression");
+  const result = parseExpression();
+
+  if (position !== input.length) {
+    throw new Error("Unexpected character in calculation.");
   }
 
-  if(!Number.isFinite(result)){
-    throw new Error("Result is not a finite number");
+  if (!Number.isFinite(result)) {
+    throw new Error("Result is outside the supported range.");
   }
 
   return result;
 }
 
-function formatResult(value){
-  if(Object.is(value,-0)) value = 0;
-
-  return Number(value.toPrecision(12)).toString();
+function formatResult(number) {
+  if (Math.abs(number) < 1e-12) number = 0;
+  return Number(number.toPrecision(12)).toString();
 }
 
-function calculate(){
-  if(!calcExpression.trim()) return;
+function renderHistory() {
+  const container = $("calcHistory");
 
-  try{
-    const expression = calcExpression;
-    const result = evaluateExpression(expression);
-    const formatted = formatResult(result);
+  if (!calcHistory.length) {
+    container.innerHTML = '<div class="empty">Your calculations will appear here.</div>';
+    return;
+  }
 
-    $("calcExpression").textContent = expression + " =";
-    $("calcResult").textContent = formatted;
+  container.innerHTML = "";
 
-    lastAnswer = result;
+  calcHistory.forEach((item, index) => {
+    const row = document.createElement("div");
+    row.className = "history-item";
 
-    calcHistory.unshift({
-      id:createId(),
-      expression,
-      result:formatted,
-      time:Date.now()
+    const left = document.createElement("span");
+    left.textContent = item.expression;
+
+    const right = document.createElement("strong");
+    right.textContent = "= " + item.result;
+
+    const useButton = document.createElement("button");
+    useButton.textContent = "Use";
+    useButton.addEventListener("click", () => {
+      expression = String(item.result);
+      updateDisplay();
     });
 
-    calcHistory = calcHistory.slice(0,30);
-    saveData(CALC_HISTORY_KEY,calcHistory);
-    renderCalcHistory();
-
-    calcExpression = formatted;
-  }catch(error){
-    $("calcExpression").textContent = calcExpression;
-    $("calcResult").textContent = item.result;
-      updateCalcDisplay();
-    });
-
-    row.append(text,useButton);
+    row.append(left, right, useButton);
     container.appendChild(row);
   });
 }
 
-$("clearCalcHistoryBtn").addEventListener("click",() => {
-  if(!confirm("Clear all calculation history?")) return;
+function performCalculation() {
+  try {
+    const original = expression;
+    const result = calculate(original);
+    const formatted = formatResult(result);
 
-  calcHistory = [];
+    lastAnswer = result;
 
-  if(saveData(CALC_HISTORY_KEY,calcHistory)){
-    renderCalcHistory();
-  }
-});
-/* =====================================
-   STUDY SCRATCHPAD
-===================================== */
+    calcHistory.unshift({
+      expression: original,
+      result: formatted,
+      date: new Date().toISOString()
+    });
 
-let scratchSaveTimeout = null;
+    calcHistory = calcHistory.slice(0, 30);
+    saveData(STORAGE.history, calcHistory);
 
-function updateScratchStats(){
-  const text = $("scratchpad").value;
+    expression = formatted;
+    updateDisplay();
+    renderHistory();
 
-  const words = text.trim()
-    ? text.trim().split(/\s+/).length
-    : 0;
-
-  $("wordCount").textContent = words;
-  $("charCount").textContent = text.length;
-}
-
-function saveScratchpad(){
-  const text = $("scratchpad").value;
-
-  try{
-    localStorage.setItem(SCRATCHPAD_KEY,text);
-    $("saveStatus").textContent = "Saved locally";
-  }catch(error){
-    $("saveStatus").textContent = "Save failed";
+  } catch (error) {
+    $("calcDisplay").value = "Error: " + error.message;
+    expression = "";
   }
 }
 
-function handleScratchpadInput(){
-  updateScratchStats();
+$("calcButtons").addEventListener("click", event => {
+  const button = event.target.closest("button");
+  if (!button) return;
 
-  $("saveStatus").textContent = "Saving...";
+  const value = button.dataset.value;
+  const action = button.dataset.action;
 
-  clearTimeout(scratchSaveTimeout);
-
-  scratchSaveTimeout = setTimeout(saveScratchpad,300);
-}
-
-function loadScratchpad(){
-  try{
-    $("scratchpad").value =
-      localStorage.getItem(SCRATCHPAD_KEY) || "";
-  }catch(error){
-    $("scratchpad").value = "";
-  }
-
-  updateScratchStats();
-}
-
-$("scratchpad").addEventListener(
-  "input",handleScratchpadInput
-);
-
-$("clearNotesBtn").addEventListener("click",() => {
-  if(!$("scratchpad").value) return;
-
-  if(!confirm("Are you sure you want to clear all your study notes?")){
+  if (action === "clear") {
+    expression = "";
+    updateDisplay();
     return;
   }
 
-  $("scratchpad").value = "";
-  updateScratchStats();
-  saveScratchpad();
+  if (action === "backspace") {
+    expression = expression.slice(0, -1);
+    updateDisplay();
+    return;
+  }
+
+  if (action === "equals") {
+    performCalculation();
+    return;
+  }
+
+  if (action === "ans") {
+    appendValue(String(lastAnswer));
+    return;
+  }
+
+  if (action === "reciprocal") {
+    expression = expression
+      ? "(" + expression + ")^(-1)"
+      : "";
+    updateDisplay();
+    return;
+  }
+
+  if (action === "sign") {
+    if (expression) expression = "-(" + expression + ")";
+    updateDisplay();
+    return;
+  }
+
+  if (value !== undefined) appendValue(value);
 });
 
-$("downloadNotesBtn").addEventListener("click",() => {
-  const text = $("scratchpad").value;
+$("clearHistory").addEventListener("click", () => {
+  if (!calcHistory.length) return;
 
-  if(!text.trim()){
+  if (confirm("Clear all calculation history?")) {
+    calcHistory = [];
+    saveData(STORAGE.history, calcHistory);
+    renderHistory();
+  }
+});
+
+/* SCRATCHPAD */
+
+let noteSaveTimer;
+
+function updateNoteStats() {
+  const text = $("scratchpad").value;
+  const trimmed = text.trim();
+  const words = trimmed ? trimmed.split(/\s+/).length : 0;
+
+  $("noteStats").textContent =
+    words + " words · " + text.length + " characters";
+}
+
+function saveNotes() {
+  const successful = saveData(STORAGE.notes, $("scratchpad").value);
+
+  $("saveStatus").textContent = successful
+    ? "Saved automatically"
+    : "Could not save";
+
+  return successful;
+}
+
+$("scratchpad").value = loadData(STORAGE.notes, "");
+updateNoteStats();
+
+$("scratchpad").addEventListener("input", () => {
+  updateNoteStats();
+  $("saveStatus").textContent = "Saving...";
+
+  clearTimeout(noteSaveTimer);
+
+  noteSaveTimer = setTimeout(saveNotes, 400);
+});
+
+$("exportNotes").addEventListener("click", () => {
+  const content = $("scratchpad").value;
+
+  if (!content.trim()) {
     alert("Write some notes before exporting.");
     return;
   }
 
-  const blob = new Blob([text],{
-    type:"text/plain;charset=utf-8"
+  const blob = new Blob([content], {
+    type: "text/plain;charset=utf-8"
   });
 
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
 
   link.href = url;
-  link.download = "HEXCLØWN-Study-Notes.txt";
+  link.download = "HEXCLAWN-Study-Notes.txt";
 
   document.body.appendChild(link);
   link.click();
   link.remove();
 
-  setTimeout(() => URL.revokeObjectURL(url),1000);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 
+$("copyNotes").addEventListener("click", async () => {
+  const content = $("scratchpad").value;
 
-/* =====================================
-   EXAM COUNTDOWN SYSTEM
-===================================== */
-
-let exams = loadData(EXAMS_KEY,[]);
-
-function saveExams(){
-  return saveData(EXAMS_KEY,exams);
-}
-
-function getExamDate(exam){
-  return new Date(exam.date + "T" + exam.time + ":00");
-}
-
-function padNumber(number){
-  return String(number).padStart(2,"0");
-}
-
-function createTimeBox(value,label){
-  const box = document.createElement("div");
-  box.className = "time-box";
-
-  const number = document.createElement("strong");
-  number.textContent = padNumber(value);
-
-  const caption = document.createElement("span");
-  caption.textContent = label;
-
-  box.append(number,caption);
-
-  return box;
-}
-
-function renderExams(){
-  const container = $("examList");
-  container.replaceChildren();
-
-  if(exams.length === 0){
-    const empty = document.createElement("p");
-    empty.className = "empty-state";
-    empty.textContent = "No exams added yet.";
-    container.appendChild(empty);
+  if (!content.trim()) {
+    alert("There are no notes to copy.");
     return;
   }
 
+  try {
+    await navigator.clipboard.writeText(content);
+    alert("Notes copied successfully.");
+  } catch (error) {
+    $("scratchpad").focus();
+    $("scratchpad").select();
+
+    try {
+      const copied = document.execCommand("copy");
+      alert(copied
+        ? "Notes copied successfully."
+        : "Please select and copy your notes manually.");
+    } catch (copyError) {
+      alert("Please select and copy your notes manually.");
+    }
+  }
+});
+
+$("clearNotes").addEventListener("click", () => {
+  if (!confirm("Are you sure you want to clear all your notes?")) return;
+
+  $("scratchpad").value = "";
+  updateNoteStats();
+  saveNotes();
+});
+
+/* INITIAL CALCULATOR DISPLAY */
+
+updateDisplay();
+renderHistory();
+  
+/* =================================
+   PART 3: EXAM COUNTDOWN SYSTEM
+================================= */
+
+let exams = loadData(STORAGE.exams, []);
+
+if (!Array.isArray(exams)) exams = [];
+
+function saveExams() {
+  return saveData(STORAGE.exams, exams);
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
+}
+
+function getExamDate(exam) {
+  return new Date(exam.date + "T" + exam.time + ":00");
+}
+
+function renderExams() {
+  const container = $("examList");
+  $("examTotal").textContent =
+    exams.length + (exams.length === 1 ? " exam" : " exams");
+
+  if (!exams.length) {
+    container.innerHTML =
+      '<div class="empty">No exams added yet. Add your first exam above.</div>';
+    return;
+  }
+
+  exams.sort((a, b) => getExamDate(a) - getExamDate(b));
+
+  container.innerHTML = "";
+
   const now = Date.now();
 
-  exams.sort((a,b) =>
-    getExamDate(a).getTime() - getExamDate(b).getTime()
-  );
-
   exams.forEach(exam => {
-    const examDate = getExamDate(exam);
-    const difference = examDate.getTime() - now;
+    const target = getExamDate(exam);
+    const difference = target.getTime() - now;
 
-    const card = document.createElement("div");
+    const card = document.createElement("article");
     card.className = "exam-card";
 
-    const top = document.createElement("div");
-    top.className = "exam-card-top";
+    const heading = document.createElement("h3");
+    heading.textContent = exam.name;
 
-    const info = document.createElement("div");
-
-    const title = document.createElement("h3");
-    title.textContent = exam.name;
-
-    const subject = document.createElement("div");
-    subject.className = "exam-subject";
-
-    subject.textContent =
-      (exam.subject || "General examination") +
-      " • " +
-      examDate.toLocaleString();
-
-    info.append(title,subject);
-
-    const deleteButton = document.createElement("button");
-    deleteButton.className = "btn btn-danger btn-small";
-    deleteButton.textContent = "Delete";
-
-    deleteButton.addEventListener("click",() => {
-      deleteExam(exam.id);
-    });
-
-    top.append(info,deleteButton);
-    card.appendChild(top);
+    const dateText = document.createElement("p");
+    dateText.textContent =
+      "Exam date: " + target.toLocaleString();
 
     const countdown = document.createElement("div");
     countdown.className = "countdown";
 
-    if(difference > 0){
-      const totalSeconds = Math.floor(difference / 1000);
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "danger";
+    deleteButton.textContent = "Delete Exam";
+    deleteButton.addEventListener("click", () => {
+      if (!confirm("Delete this exam countdown?")) return;
 
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
+      exams = exams.filter(item => item.id !== exam.id);
+      saveExams();
+      renderExams();
+    });
 
-      countdown.append(
-        createTimeBox(days,"DAYS"),
-        createTimeBox(hours,"HOURS"),
-        createTimeBox(minutes,"MINUTES"),
-        createTimeBox(seconds,"SECONDS")
-      );
+    if (Number.isNaN(target.getTime())) {
+      const invalid = document.createElement("p");
+      invalid.textContent = "Invalid exam date.";
+      invalid.style.color = "var(--red)";
+      card.append(heading, invalid, deleteButton);
+      container.appendChild(card);
+      return;
+    }
 
-      const status = document.createElement("div");
-      status.className = "exam-status";
-      status.textContent = "Time remaining until your exam.";
+    if (difference <= 0) {
+      const finished = document.createElement("p");
+      finished.textContent = "This exam date has passed or has arrived.";
+      finished.style.color = "var(--yellow)";
+      card.append(heading, dateText, finished, deleteButton);
+    } else {
+      const secondsTotal = Math.floor(difference / 1000);
 
-      card.append(countdown,status);
-    }else{
-      const status = document.createElement("div");
-      status.className = "exam-status";
-      status.textContent =
-        difference > -60000
-          ? "Your exam is happening now."
-          : "This exam date has passed.";
+      const days = Math.floor(secondsTotal / 86400);
+      const hours = Math.floor((secondsTotal % 86400) / 3600);
+      const minutes = Math.floor((secondsTotal % 3600) / 60);
+      const seconds = secondsTotal % 60;
 
-      card.append(status);
+      const values = [
+        ["DAYS", days],
+        ["HOURS", hours],
+        ["MINUTES", minutes],
+        ["SECONDS", seconds]
+      ];
+
+      values.forEach(([label, value]) => {
+        const box = document.createElement("div");
+        box.className = "time-box";
+
+        const number = document.createElement("strong");
+        number.textContent = String(value).padStart(2, "0");
+
+        const caption = document.createElement("span");
+        caption.textContent = label;
+
+        box.append(number, caption);
+        countdown.appendChild(box);
+      });
+
+      card.append(heading, dateText, countdown, deleteButton);
     }
 
     container.appendChild(card);
   });
 }
 
-function addExam(event){
+/* ADD EXAM */
+
+$("examForm").addEventListener("submit", event => {
   event.preventDefault();
 
   const name = $("examName").value.trim();
-  const subject = $("examSubject").value.trim();
   const date = $("examDate").value;
   const time = $("examTime").value;
 
-  if(!name){
-    $("examFormStatus").textContent =
-      "Please enter an exam name.";
-    return;
-  }
-
-  if(!date || !time){
-    $("examFormStatus").textContent =
-      "Please select an exam date and time.";
+  if (!name || !date || !time) {
+    alert("Please complete all exam details.");
     return;
   }
 
   const examDate = new Date(date + "T" + time + ":00");
 
-  if(Number.isNaN(examDate.getTime())){
-    $("examFormStatus").textContent =
-      "Please enter a valid date and time.";
+  if (Number.isNaN(examDate.getTime())) {
+    alert("Please enter a valid date and time.");
     return;
   }
 
-  if(examDate.getTime() <= Date.now()){
-    $("examFormStatus").textContent =
-      "Choose a future date and time for your exam.";
+  if (examDate.getTime() <= Date.now()) {
+    alert("Please choose a future exam date and time.");
     return;
   }
 
   const exam = {
-    id:createId(),
+    id: Date.now().toString() + Math.random().toString(16).slice(2),
     name,
-    subject,
     date,
-    time,
-    createdAt:Date.now()
+    time
   };
 
   exams.push(exam);
 
-  if(saveExams()){
-    $("examForm").reset();
-    $("examTime").value = "09:00";
-
-    $("examFormStatus").textContent =
-      "Exam countdown added successfully!";
-
-    renderExams();
-  }
-}
-
-function deleteExam(examId){
-  if(!confirm("Delete this exam countdown?")){
+  if (!saveExams()) {
+    exams.pop();
     return;
   }
 
-  const previous = exams;
+  $("examName").value = "";
+  $("examDate").value = "";
+  $("examTime").value = "09:00";
 
-  exams = exams.filter(exam => exam.id !== examId);
-
-  if(saveExams()){
-    renderExams();
-  }else{
-    exams = previous;
-  }
-}
-
-$("examForm").addEventListener("submit",addExam);
-
-
-/* =====================================
-   KEYBOARD CALCULATOR SUPPORT
-===================================== */
-
-document.addEventListener("keydown",event => {
-  const active = document.activeElement;
-
-  if(
-    active &&
-    (
-      active.tagName === "INPUT" ||
-      active.tagName === "TEXTAREA" ||
-      active.tagName === "SELECT"
-    )
-  ){
-    return;
-  }
-
-  if(/^[0-9.+*/()%!-]$/.test(event.key)){
-    insertCalcValue(event.key);
-  }
-
-  if(event.key === "Enter" || event.key === "="){
-    event.preventDefault();
-    calculate();
-  }
-
-  if(event.key === "Backspace"){
-    backspaceCalculator();
-  }
-
-  if(event.key === "Escape"){
-    clearCalculator();
-  }
-});
-
-
-/* =====================================
-   PAGE INITIALISATION
-===================================== */
-
-function initialiseWorkspace(){
-  renderCalcHistory();
-  loadScratchpad();
   renderExams();
-}
-
-initialiseWorkspace();
-
-/* Refresh countdowns once every second. */
-setInterval(renderExams,1000);
-
-/* Save scratchpad before leaving the page. */
-window.addEventListener("beforeunload",() => {
-  clearTimeout(scratchSaveTimeout);
-  saveScratchpad();
 });
+
+/* START COUNTDOWN UPDATES */
+
+renderExams();
+
+const countdownInterval = setInterval(renderExams, 1000);
+
+/* SAVE NOTES WHEN LEAVING */
+
+window.addEventListener("beforeunload", () => {
+  clearTimeout(noteSaveTimer);
+
+  try {
+    localStorage.setItem(
+      STORAGE.notes,
+      JSON.stringify($("scratchpad").value)
+    );
+  } catch (error) {
+    // Browser storage may be unavailable.
+  }
+});
+
+/* UPDATE NOTES WHEN PAGE OPENS */
+
+$("saveStatus").textContent = "Your notes are ready";
+
+/* END OF HEXCLØWN EXAM WORKSPACE */
 
 </script>
 </body>
