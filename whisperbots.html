@@ -8,940 +8,1056 @@
 
 <title>WHISPER BOTS | HEXCLØWN</title>
 
-<meta name="description" content="HEXCLØWN Whisper Bots administration dashboard.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root {
-  --bg: #071014;
-  --panel: #0d1b21;
-  --panel2: #10232a;
-  --cyan: #20d9d0;
-  --green: #70ff9b;
-  --text: #e9ffff;
-  --muted: #8ca8ad;
-  --border: rgba(32,217,208,.17);
-  --danger: #ff697d;
+  --bg:#071014;
+  --panel:#0d1b21;
+  --panel2:#10232a;
+  --cyan:#20d9d0;
+  --green:#70ff9b;
+  --text:#e9ffff;
+  --muted:#8ca8ad;
+  --border:rgba(32,217,208,.18);
+  --red:#ff697d;
 }
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 body {
-  background:
-    radial-gradient(circle at top right, #103039 0, transparent 35%),
-    var(--bg);
-  color: var(--text);
-  font-family: Arial, sans-serif;
-  min-height: 100vh;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+  min-height:100vh;
 }
 
-button, input {
-  font: inherit;
+button,input {
+  font:inherit;
 }
 
 button {
-  cursor: pointer;
+  cursor:pointer;
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+  text-decoration:none;
+  color:inherit;
 }
 
-/* HEADER */
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 17px 5%;
-  border-bottom: 1px solid var(--border);
-  background: rgba(7,16,20,.92);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  backdrop-filter: blur(12px);
-}
-
-.logo {
-  font-size: 21px;
-  font-weight: 900;
-  letter-spacing: 2px;
-}
-
-.logo span {
-  color: var(--cyan);
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.status {
-  color: var(--green);
-  font-size: 11px;
-  border: 1px solid rgba(112,255,155,.3);
-  padding: 7px 10px;
-  border-radius: 20px;
-}
-
-/* PAGE LAYOUT */
-
-.layout {
-  display: flex;
-  min-height: calc(100vh - 65px);
-}
-
-.sidebar {
-  width: 245px;
-  flex-shrink: 0;
-  padding: 25px 15px;
-  border-right: 1px solid var(--border);
-  background: rgba(9,22,27,.85);
-}
-
-.sidebar-label {
-  color: var(--muted);
-  font-size: 10px;
-  letter-spacing: 2px;
-  margin: 20px 10px 12px;
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 12px;
-  border-radius: 9px;
-  color: var(--muted);
-  font-size: 13px;
-  margin-bottom: 5px;
-  transition: .2s;
-}
-
-.nav-link:hover,
-.nav-link.active {
-  background: rgba(32,217,208,.11);
-  color: var(--cyan);
-}
-
-.nav-icon {
-  width: 20px;
-  text-align: center;
-  font-size: 17px;
-}
-
-.main {
-  flex: 1;
-  min-width: 0;
-  padding: 30px 4%;
-  max-width: 1500px;
-}
-
-.mobile-menu {
-  display: none;
-}
-
-/* WELCOME */
-
-.welcome {
-  margin-bottom: 28px;
-}
-
-.eyebrow {
-  color: var(--cyan);
-  font-size: 11px;
-  letter-spacing: 3px;
-  margin-bottom: 12px;
-}
-
-.welcome h1 {
-  font-size: clamp(26px, 4vw, 39px);
-  margin-bottom: 10px;
-}
-
-.welcome p {
-  color: var(--muted);
-  line-height: 1.7;
-  font-size: 13px;
-}
-
-/* QUICK ACTIONS */
-
-.quick-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 28px;
-}
-
-.action-btn {
-  background: var(--cyan);
-  color: #041315;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 17px;
-  font-weight: bold;
-  font-size: 12px;
-}
-
-.action-btn.secondary {
-  color: var(--cyan);
-  background: var(--panel);
-  border: 1px solid var(--border);
-}
-
-/* SECTION HEADINGS */
-
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  margin: 28px 0 15px;
-}
-
-.section-heading h2 {
-  font-size: 17px;
-}
-
-.section-heading small {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-/* STATISTICS */
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-}
-
-.stat-card {
-  background: linear-gradient(145deg, var(--panel2), var(--panel));
-  border: 1px solid var(--border);
-  padding: 19px;
-  border-radius: 13px;
-}
-
-.stat-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
-}
-
-.stat-icon {
-  font-size: 23px;
-}
-
-.stat-label {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-.stat-number {
-  font-size: 28px;
-  font-weight: bold;
-  margin-top: 7px;
-}
-
-.stat-note {
-  color: var(--green);
-  font-size: 10px;
-  margin-top: 8px;
-}
-
-/* CONTENT GRID */
-
-.content-grid {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 15px;
-  margin-top: 15px;
-}
-
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  padding: 20px;
-  border-radius: 13px;
-  min-width: 0;
-}
-
-.panel h3 {
-  font-size: 14px;
-  margin-bottom: 17px;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 30px 10px;
-  color: var(--muted);
-}
-
-.empty-state .big-icon {
-  font-size: 35px;
-  margin-bottom: 12px;
-}
-
-.empty-state p {
-  font-size: 12px;
-  line-height: 1.7;
-}
-
-/* ACTIVITY */
-
-.activity-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.activity-item {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 11px;
-  border-radius: 8px;
-  background: rgba(255,255,255,.025);
-}
-
-.activity-icon {
-  width: 35px;
-  height: 35px;
-  display: grid;
-  place-items: center;
-  border-radius: 9px;
-  background: rgba(32,217,208,.1);
-  color: var(--cyan);
-}
-
-.activity-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.activity-text strong {
-  display: block;
-  font-size: 11px;
-  margin-bottom: 5px;
-}
-
-.activity-text small {
-  color: var(--muted);
-  font-size: 10px;
-}
-
-/* MODULE LINKS */
-
-.module-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 13px;
-}
-
-.module-card {
-  display: block;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 17px;
-  transition: .2s;
-}
-
-.module-card:hover {
-  border-color: var(--cyan);
-  transform: translateY(-3px);
-}
-
-.module-card .module-icon {
-  font-size: 24px;
-  margin-bottom: 13px;
-}
-
-.module-card strong {
-  display: block;
-  font-size: 12px;
-  margin-bottom: 7px;
-}
-
-.module-card p {
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.6;
-}
-
-/* SYSTEM STATUS */
-
-.system-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 11px;
-}
-
-.system-row:last-child {
-  border-bottom: none;
-}
-
-.system-ok {
-  color: var(--green);
-}
-
-/* FOOTER */
-
-.footer {
-  text-align: center;
-  color: var(--muted);
-  font-size: 10px;
-  padding: 30px 10px 15px;
-}
-
-/* RESPONSIVE */
-
-@media(max-width: 950px) {
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .module-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media(max-width: 700px) {
-  .layout {
-    display: block;
-  }
-
-  .sidebar {
-    display: none;
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-    padding: 10px 15px;
-  }
-
-  .sidebar.open {
-    display: block;
-  }
-
-  .mobile-menu {
-    display: inline-block;
-    background: var(--panel);
-    color: var(--cyan);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 9px 12px;
-  }
-
-  .main {
-    padding: 24px 16px;
-  }
-
-  .content-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .module-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .logo {
-    font-size: 17px;
-  }
-
-  .status {
-    font-size: 9px;
-  }
-}
-
-@media(max-width: 380px) {
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .module-grid {
-    grid-template-columns: 1fr;
-  }
-}
- 
-/* ADMIN LOGIN SCREEN */
+/* LOGIN SCREEN */
 
 #loginScreen {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
   background:
-    radial-gradient(circle at top right, #103039, transparent 45%),
+    radial-gradient(circle at top right,#123b43,transparent 45%),
     #071014;
 }
 
 .login-box {
-  width: 100%;
-  max-width: 390px;
-  padding: 30px 22px;
-  text-align: center;
-  background: #0d1b21;
-  border: 1px solid rgba(32,217,208,.3);
-  border-radius: 15px;
-  box-shadow: 0 0 35px rgba(32,217,208,.08);
+  width:100%;
+  max-width:410px;
+  background:linear-gradient(145deg,#10232a,#0b171c);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:32px 24px;
+  box-shadow:0 0 40px rgba(32,217,208,.09);
 }
 
-.login-box h2 {
-  color: #20d9d0;
-  font-size: 27px;
-  letter-spacing: 3px;
-  margin-bottom: 12px;
+.login-logo {
+  text-align:center;
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:3px;
+  margin-bottom:8px;
 }
 
-.login-box p {
-  color: #8ca8ad;
-  font-size: 11px;
-  margin-bottom: 22px;
+.login-logo span {
+  color:var(--cyan);
 }
 
-#adminPassword {
-  width: 100%;
-  padding: 14px;
-  color: #e9ffff;
-  background: #071014;
-  border: 1px solid rgba(32,217,208,.3);
-  border-radius: 8px;
-  outline: none;
-  margin-bottom: 13px;
+.login-subtitle {
+  color:var(--muted);
+  text-align:center;
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:28px;
 }
 
-#adminPassword:focus {
-  border-color: #20d9d0;
+.login-icon {
+  width:65px;
+  height:65px;
+  display:grid;
+  place-items:center;
+  margin:0 auto 20px;
+  border-radius:18px;
+  background:rgba(32,217,208,.1);
+  border:1px solid var(--border);
+  font-size:30px;
 }
 
-#loginButton {
-  width: 100%;
-  padding: 14px;
-  color: #041315;
-  background: #20d9d0;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
+.login-box label {
+  display:block;
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+.login-box input {
+  width:100%;
+  padding:14px;
+  background:#071014;
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:8px;
+  outline:none;
+  margin-bottom:17px;
+}
+
+.login-box input:focus {
+  border-color:var(--cyan);
+}
+
+.login-button {
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:8px;
+  background:var(--cyan);
+  color:#041315;
+  font-size:12px;
+  font-weight:900;
+}
+
+.login-button:disabled {
+  opacity:.6;
+  cursor:wait;
 }
 
 #loginMessage {
-  margin-top: 15px;
-  margin-bottom: 0;
-  color: #ff697d;
-  min-height: 15px;
+  min-height:20px;
+  margin-top:15px;
+  font-size:11px;
+  text-align:center;
+  color:var(--red);
+  line-height:1.6;
 }
-  
+
+.login-footer {
+  text-align:center;
+  margin-top:22px;
+  color:#607a80;
+  font-size:10px;
+}
+
+/* PROTECTED DASHBOARD */
+
+#protectedArea {
+  display:none;
+  min-height:100vh;
+}
+
+.header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:17px 5%;
+  border-bottom:1px solid var(--border);
+  background:#09151a;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.logo {
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:2px;
+}
+
+.logo span {
+  color:var(--cyan);
+}
+
+.header-right {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.admin-status {
+  color:var(--green);
+  font-size:10px;
+  border:1px solid rgba(112,255,155,.3);
+  padding:8px 11px;
+  border-radius:20px;
+}
+
+.logout-button {
+  background:transparent;
+  color:var(--red);
+  border:1px solid rgba(255,105,125,.4);
+  border-radius:7px;
+  padding:9px 12px;
+  font-size:10px;
+  font-weight:bold;
+}
+
+.menu-button {
+  display:none;
+  background:var(--panel);
+  color:var(--cyan);
+  border:1px solid var(--border);
+  padding:9px 12px;
+  border-radius:7px;
+}
+
+/* LAYOUT */
+
+.layout {
+  display:flex;
+  min-height:calc(100vh - 65px);
+}
+
+.sidebar {
+  width:245px;
+  flex-shrink:0;
+  padding:23px 14px;
+  background:#09171c;
+  border-right:1px solid var(--border);
+}
+
+.sidebar-label {
+  color:#66838a;
+  font-size:10px;
+  letter-spacing:2px;
+  margin:20px 10px 12px;
+}
+
+.nav-link {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  margin-bottom:5px;
+  border-radius:8px;
+  color:var(--muted);
+  font-size:12px;
+  transition:.2s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color:var(--cyan);
+  background:rgba(32,217,208,.1);
+}
+
+.nav-icon {
+  width:20px;
+  text-align:center;
+  font-size:17px;
+}
+
+.main {
+  flex:1;
+  min-width:0;
+  max-width:1500px;
+  padding:30px 4%;
+}
+
+/* WELCOME */
+
+.eyebrow {
+  color:var(--cyan);
+  font-size:10px;
+  letter-spacing:3px;
+  margin-bottom:12px;
+}
+
+.welcome h1 {
+  font-size:clamp(27px,4vw,40px);
+  margin-bottom:10px;
+}
+
+.welcome p {
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.7;
+  max-width:650px;
+}
+
+.quick-actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:25px 0 30px;
+}
+
+.action-btn {
+  padding:12px 16px;
+  border:0;
+  border-radius:8px;
+  background:var(--cyan);
+  color:#041315;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.action-btn.secondary {
+  background:var(--panel);
+  border:1px solid var(--border);
+  color:var(--cyan);
+}
+
+/* STATISTICS */
+
+.section-heading {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:27px 0 15px;
+}
+
+.section-heading h2 {
+  font-size:17px;
+}
+
+.section-heading small {
+  color:var(--muted);
+  font-size:10px;
+}
+
+.stats-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:13px;
+}
+
+.stat-card {
+  padding:19px;
+  background:linear-gradient(145deg,var(--panel2),var(--panel));
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+
+.stat-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:17px;
+}
+
+.stat-label {
+  color:var(--muted);
+  font-size:10px;
+}
+
+.stat-icon {
+  font-size:22px;
+}
+
+.stat-number {
+  font-size:28px;
+  font-weight:bold;
+}
+
+.stat-note {
+  color:var(--green);
+  font-size:10px;
+  margin-top:8px;
+}
+
+/* PANELS */
+
+.content-grid {
+  display:grid;
+  grid-template-columns:1.4fr 1fr;
+  gap:14px;
+  margin-top:15px;
+}
+
+.panel {
+  min-width:0;
+  padding:20px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+
+.panel h3 {
+  font-size:14px;
+  margin-bottom:17px;
+}
+
+.empty-state {
+  padding:25px 10px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.empty-state .big-icon {
+  font-size:34px;
+  margin-bottom:12px;
+}
+
+.empty-state p {
+  font-size:11px;
+  line-height:1.7;
+}
+
+.activity-list {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.activity-item {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px;
+  background:rgba(255,255,255,.025);
+  border-radius:8px;
+}
+
+.activity-icon {
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  background:rgba(32,217,208,.1);
+  border-radius:8px;
+  color:var(--cyan);
+}
+
+.activity-text {
+  flex:1;
+  min-width:0;
+}
+
+.activity-text strong {
+  display:block;
+  font-size:11px;
+  margin-bottom:5px;
+}
+
+.activity-text small {
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+}
+
+.system-row {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px 0;
+  border-bottom:1px solid var(--border);
+  font-size:10px;
+}
+
+.system-row:last-child {
+  border-bottom:0;
+}
+
+.system-ok {
+  color:var(--green);
+}
+
+/* MODULES */
+
+.module-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:13px;
+}
+
+.module-card {
+  display:block;
+  padding:17px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:11px;
+  transition:.2s;
+}
+
+.module-card:hover {
+  border-color:var(--cyan);
+  transform:translateY(-3px);
+}
+
+.module-icon {
+  font-size:24px;
+  margin-bottom:12px;
+}
+
+.module-card strong {
+  display:block;
+  font-size:12px;
+  margin-bottom:7px;
+}
+
+.module-card p {
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.6;
+}
+
+.footer {
+  padding:30px 10px 15px;
+  text-align:center;
+  color:var(--muted);
+  font-size:10px;
+}
+
+/* MOBILE */
+
+@media(max-width:950px) {
+  .stats-grid {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .module-grid {
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:700px) {
+  .layout {
+    display:block;
+  }
+
+  .sidebar {
+    display:none;
+    width:100%;
+    border-right:0;
+    border-bottom:1px solid var(--border);
+  }
+
+  .sidebar.open {
+    display:block;
+  }
+
+  .menu-button {
+    display:block;
+  }
+
+  .main {
+    padding:24px 15px;
+  }
+
+  .content-grid {
+    grid-template-columns:1fr;
+  }
+
+  .logo {
+    font-size:16px;
+  }
+
+  .admin-status {
+    font-size:9px;
+  }
+}
+
+@media(max-width:380px) {
+  .stats-grid,
+  .module-grid {
+    grid-template-columns:1fr;
+  }
+}
 </style>
 </head>
 
 <body>
+
+<!-- ADMIN LOGIN SCREEN -->
+
 <div id="loginScreen">
+
   <div class="login-box">
-    <h2>HEXCLØWN</h2>
-    <p>WHISPER BOTS · ADMIN ACCESS</p>
+
+    <div class="login-logo">
+      HEXCL<span>Ø</span>WN
+    </div>
+
+    <div class="login-subtitle">
+      WHISPER BOTS · PRIVATE CONTROL CENTRE
+    </div>
+
+    <div class="login-icon">🔐</div>
+
+    <label for="adminEmail">ADMINISTRATOR EMAIL</label>
+
+    <input
+      type="email"
+      id="adminEmail"
+      placeholder="Enter your email address"
+      autocomplete="username"
+    >
+
+    <label for="adminPassword">PASSWORD</label>
 
     <input
       type="password"
       id="adminPassword"
-      placeholder="Enter administrator password"
+      placeholder="Enter your password"
+      autocomplete="current-password"
     >
 
-    <button id="loginButton">UNLOCK DASHBOARD</button>
-
-    <p id="loginMessage"></p>
-  </div>
-</div>
-
-<div id="protectedArea" style="display:none;">
-<header class="header">
-
-  <div class="logo">
-    HEXCL<span>Ø</span>WN
-  </div>
-
-  <div class="header-right">
-    <span class="status">● BOT CONTROL</span>
-
-    <button class="mobile-menu" id="menuButton">
-      ☰ MENU
+    <button
+      class="login-button"
+      id="loginButton"
+      type="button"
+    >
+      UNLOCK DASHBOARD
     </button>
-  </div>
 
-</header>
+    <div id="loginMessage" role="alert"></div>
 
-<div class="layout">
-
-  <aside class="sidebar" id="sidebar">
-
-    <div class="sidebar-label">CONTROL CENTRE</div>
-
-    <a href="whisperbots.html" class="nav-link active">
-      <span class="nav-icon">▦</span>
-      Dashboard
-    </a>
-
-    <a href="mybots.html" class="nav-link">
-      <span class="nav-icon">◈</span>
-      My Bots
-    </a>
-
-    <a href="createbot.html" class="nav-link">
-      <span class="nav-icon">＋</span>
-      Create Bot
-    </a>
-
-    <a href="personalityeditor.html" class="nav-link">
-      <span class="nav-icon">◉</span>
-      Personality Editor
-    </a>
-
-    <a href="botplayground.html" class="nav-link">
-      <span class="nav-icon">⌘</span>
-      Live Playground
-    </a>
-
-    <div class="sidebar-label">BOT INTELLIGENCE</div>
-
-    <a href="botknowledge.html" class="nav-link">
-      <span class="nav-icon">▤</span>
-      Knowledge Centre
-    </a>
-
-    <a href="botcommands.html" class="nav-link">
-      <span class="nav-icon">⌁</span>
-      Commands & Automation
-    </a>
-
-    <a href="botgallery.html" class="nav-link">
-      <span class="nav-icon">▧</span>
-      Bot Gallery
-    </a>
-
-    <a href="whispermemory.html" class="nav-link">
-      <span class="nav-icon">◌</span>
-      Whisper Memory
-    </a>
-
-    <div class="sidebar-label">MONITORING</div>
-
-    <a href="botanalytics.html" class="nav-link">
-      <span class="nav-icon">▥</span>
-      Analytics Centre
-    </a>
-
-    <a href="botdebate.html" class="nav-link">
-      <span class="nav-icon">⇄</span>
-      Bot Debate
-    </a>
-
-    <a href="botadmin.html" class="nav-link">
-      <span class="nav-icon">⚙</span>
-      Administration
-    </a>
-
-  </aside>
-
-  <main class="main">
-
-    <section class="welcome">
-
-      <div class="eyebrow">
-        HEXCLØWN INTELLIGENCE SYSTEM
-      </div>
-
-      <h1>WHISPER BOTS</h1>
-
-      <p>
-        Welcome to your private bot management centre.
-        Create intelligent assistants, configure their
-        personalities and manage your bot ecosystem.
-      </p>
-
-    </section>
-
-    <section class="quick-actions">
-
-      <button class="action-btn"
-        onclick="location.href='createbot.html'">
-        ＋ CREATE NEW BOT
-      </button>
-
-      <button class="action-btn secondary"
-        onclick="location.href='botplayground.html'">
-        OPEN PLAYGROUND ↗
-      </button>
-
-      <button class="action-btn secondary"
-        onclick="location.href='mybots.html'">
-        MANAGE BOTS
-      </button>
-
-    </section>
-
-    <div class="section-heading">
-      <h2>System Overview</h2>
-      <small>YOUR BOT ECOSYSTEM</small>
+    <div class="login-footer">
+      AUTHENTICATED ACCESS · HEXCLØWN 2026
     </div>
 
-    <section class="stats-grid">
+  </div>
 
-      <div class="stat-card">
-        <div class="stat-top">
-          <span class="stat-label">TOTAL BOTS</span>
-          <span class="stat-icon">🤖</span>
+</div>
+
+<!-- PROTECTED DASHBOARD STARTS HERE -->
+
+<div id="protectedArea">
+
+  <header class="header">
+
+    <div class="logo">
+      HEXCL<span>Ø</span>WN
+    </div>
+
+    <div class="header-right">
+
+      <span class="admin-status">
+        ● ADMIN SESSION
+      </span>
+
+      <button class="logout-button" id="logoutButton">
+        LOG OUT
+      </button>
+
+      <button class="menu-button" id="menuButton">
+        ☰ MENU
+      </button>
+
+    </div>
+
+  </header>
+
+  <div class="layout">
+
+    <aside class="sidebar" id="sidebar">
+
+      <div class="sidebar-label">CONTROL CENTRE</div>
+
+      <a href="whisperbots.html" class="nav-link active">
+        <span class="nav-icon">▦</span>
+        Dashboard
+      </a>
+
+      <a href="mybots.html" class="nav-link">
+        <span class="nav-icon">◈</span>
+        My Bots
+      </a>
+
+      <a href="createbot.html" class="nav-link">
+        <span class="nav-icon">＋</span>
+        Create Bot
+      </a>
+
+      <a href="personalityeditor.html" class="nav-link">
+        <span class="nav-icon">◉</span>
+        Personality Editor
+      </a>
+
+      <a href="botplayground.html" class="nav-link">
+        <span class="nav-icon">⌘</span>
+        Live Playground
+      </a>
+
+      <div class="sidebar-label">BOT INTELLIGENCE</div>
+
+      <a href="botknowledge.html" class="nav-link">
+        <span class="nav-icon">▤</span>
+        Knowledge Centre
+      </a>
+
+      <a href="botcommands.html" class="nav-link">
+        <span class="nav-icon">⌁</span>
+        Commands & Automation
+      </a>
+
+      <a href="botgallery.html" class="nav-link">
+        <span class="nav-icon">▧</span>
+        Bot Gallery
+      </a>
+
+      <a href="whispermemory.html" class="nav-link">
+        <span class="nav-icon">◌</span>
+        Whisper Memory
+      </a>
+
+      <div class="sidebar-label">MONITORING</div>
+
+      <a href="botanalytics.html" class="nav-link">
+        <span class="nav-icon">▥</span>
+        Analytics Centre
+      </a>
+
+      <a href="botdebate.html" class="nav-link">
+        <span class="nav-icon">⇄</span>
+        Bot Debate
+      </a>
+
+      <a href="botadmin.html" class="nav-link">
+        <span class="nav-icon">⚙</span>
+        Administration
+      </a>
+
+    </aside>
+
+    <main class="main">
+
+      <section class="welcome">
+
+        <div class="eyebrow">
+          HEXCLØWN INTELLIGENCE SYSTEM
         </div>
 
-        <div class="stat-number" id="totalBots">0</div>
+        <h1>WHISPER BOTS</h1>
 
-        <div class="stat-note">Created bots</div>
+        <p>
+          Welcome to your private bot management centre.
+          Create assistants, configure their personalities,
+          manage knowledge and monitor your bot ecosystem.
+        </p>
+
+      </section>
+
+      <section class="quick-actions">
+
+        <a href="createbot.html" class="action-btn">
+          ＋ CREATE NEW BOT
+        </a>
+
+        <a href="botplayground.html"
+           class="action-btn secondary">
+          OPEN PLAYGROUND ↗
+        </a>
+
+        <a href="mybots.html"
+           class="action-btn secondary">
+          MANAGE BOTS
+        </a>
+
+      </section>
+
+      <div class="section-heading">
+        <h2>System Overview</h2>
+        <small>YOUR BOT ECOSYSTEM</small>
       </div>
 
-      <div class="stat-card">
-        <div class="stat-top">
-          <span class="stat-label">ACTIVE BOTS</span>
-          <span class="stat-icon">⚡</span>
+      <section class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">TOTAL BOTS</span>
+            <span class="stat-icon">🤖</span>
+          </div>
+          <div class="stat-number" id="totalBots">0</div>
+          <div class="stat-note">Created bots</div>
         </div>
 
-        <div class="stat-number" id="activeBots">0</div>
-
-        <div class="stat-note">Currently enabled</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-top">
-          <span class="stat-label">CONVERSATIONS</span>
-          <span class="stat-icon">💬</span>
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">ACTIVE BOTS</span>
+            <span class="stat-icon">⚡</span>
+          </div>
+          <div class="stat-number" id="activeBots">0</div>
+          <div class="stat-note">Currently enabled</div>
         </div>
 
-        <div class="stat-number" id="totalChats">0</div>
-
-        <div class="stat-note">Recorded conversations</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-top">
-          <span class="stat-label">FAVOURITES</span>
-          <span class="stat-icon">★</span>
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">CONVERSATIONS</span>
+            <span class="stat-icon">💬</span>
+          </div>
+          <div class="stat-number" id="totalChats">0</div>
+          <div class="stat-note">Recorded conversations</div>
         </div>
 
-        <div class="stat-number" id="favoriteBots">0</div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">FAVOURITES</span>
+            <span class="stat-icon">★</span>
+          </div>
+          <div class="stat-number" id="favoriteBots">0</div>
+          <div class="stat-note">Favourite bots</div>
+        </div>
 
-        <div class="stat-note">Your favourite bots</div>
-      </div>
+      </section>
 
-    </section>
+      <div class="content-grid">
 
-    <div class="content-grid">
+        <section class="panel">
 
-      <section class="panel">
+          <h3>Recent Bot Activity</h3>
 
-        <h3>Recent Bot Activity</h3>
+          <div class="activity-list" id="activityList">
 
-        <div class="activity-list" id="activityList">
-
-          <div class="empty-state">
-
-            <div class="big-icon">◈</div>
-
-            <p>
-              No bot activity yet.<br>
-              Create your first bot to get started.
-            </p>
+            <div class="empty-state">
+              <div class="big-icon">◈</div>
+              <p>
+                No bot activity yet.<br>
+                Create your first bot to get started.
+              </p>
+            </div>
 
           </div>
 
-        </div>
+        </section>
+
+        <section class="panel">
+
+          <h3>System Information</h3>
+
+          <div class="system-row">
+            <span>Dashboard Interface</span>
+            <span class="system-ok">READY</span>
+          </div>
+
+          <div class="system-row">
+            <span>Local Storage</span>
+            <span class="system-ok">READY</span>
+          </div>
+
+          <div class="system-row">
+            <span>AI Connection</span>
+            <span style="color:#f5c66a">NOT CONFIGURED</span>
+          </div>
+
+          <div class="system-row">
+            <span>Authentication</span>
+            <span class="system-ok">SUPABASE</span>
+          </div>
+
+          <div class="system-row">
+            <span>Platform</span>
+            <span class="system-ok">HEXCLØWN</span>
+          </div>
+
+        </section>
+
+      </div>
+
+      <div class="section-heading">
+        <h2>Management Modules</h2>
+        <small>QUICK ACCESS</small>
+      </div>
+
+      <section class="module-grid">
+
+        <a href="mybots.html" class="module-card">
+          <div class="module-icon">🤖</div>
+          <strong>My Bots</strong>
+          <p>View and manage your created bots.</p>
+        </a>
+
+        <a href="createbot.html" class="module-card">
+          <div class="module-icon">＋</div>
+          <strong>Create Bot</strong>
+          <p>Build a new intelligent assistant.</p>
+        </a>
+
+        <a href="personalityeditor.html" class="module-card">
+          <div class="module-icon">🧠</div>
+          <strong>Personality Editor</strong>
+          <p>Customise bot behaviour and personality.</p>
+        </a>
+
+        <a href="botplayground.html" class="module-card">
+          <div class="module-icon">💬</div>
+          <strong>Live Playground</strong>
+          <p>Test and interact with your bots.</p>
+        </a>
+
+        <a href="botknowledge.html" class="module-card">
+          <div class="module-icon">📚</div>
+          <strong>Knowledge Centre</strong>
+          <p>Manage information available to bots.</p>
+        </a>
+
+        <a href="botcommands.html" class="module-card">
+          <div class="module-icon">⚙</div>
+          <strong>Commands</strong>
+          <p>Configure custom commands and responses.</p>
+        </a>
+
+        <a href="botgallery.html" class="module-card">
+          <div class="module-icon">▧</div>
+          <strong>Bot Gallery</strong>
+          <p>Explore and organise your bot collection.</p>
+        </a>
+
+        <a href="botanalytics.html" class="module-card">
+          <div class="module-icon">📊</div>
+          <strong>Analytics</strong>
+          <p>Monitor bot usage and activity.</p>
+        </a>
+
+        <a href="whispermemory.html" class="module-card">
+          <div class="module-icon">◌</div>
+          <strong>Whisper Memory</strong>
+          <p>Manage saved bot context.</p>
+        </a>
+
+        <a href="botdebate.html" class="module-card">
+          <div class="module-icon">⇄</div>
+          <strong>Bot Debate</strong>
+          <p>Let two bots discuss a topic.</p>
+        </a>
+
+        <a href="botadmin.html" class="module-card">
+          <div class="module-icon">🔐</div>
+          <strong>Administration</strong>
+          <p>Manage system security and settings.</p>
+        </a>
 
       </section>
 
-      <section class="panel">
+      <footer class="footer">
+        HEXCLØWN © 2026 · WHISPER BOTS CONTROL CENTRE
+      </footer>
 
-        <h3>System Information</h3>
+    </main>
 
-        <div class="system-row">
-          <span>Dashboard Interface</span>
-          <span class="system-ok">READY</span>
-        </div>
-
-        <div class="system-row">
-          <span>Bot Storage</span>
-          <span class="system-ok">LOCAL</span>
-        </div>
-
-        <div class="system-row">
-          <span>AI Connection</span>
-          <span style="color:#f5c66a">NOT CONFIGURED</span>
-        </div>
-
-        <div class="system-row">
-          <span>Administrator Access</span>
-          <span style="color:#f5c66a">SETUP REQUIRED</span>
-        </div>
-
-        <div class="system-row">
-          <span>Platform</span>
-          <span class="system-ok">HEXCLØWN</span>
-        </div>
-
-      </section>
-
-    </div>
-
-    <div class="section-heading">
-      <h2>Management Modules</h2>
-      <small>QUICK ACCESS</small>
-    </div>
-
-    <section class="module-grid">
-
-      <a href="mybots.html" class="module-card">
-        <div class="module-icon">🤖</div>
-        <strong>My Bots</strong>
-        <p>View and manage all your created bots.</p>
-      </a>
-
-      <a href="createbot.html" class="module-card">
-        <div class="module-icon">＋</div>
-        <strong>Create Bot</strong>
-        <p>Build a new intelligent assistant.</p>
-      </a>
-
-      <a href="personalityeditor.html" class="module-card">
-        <div class="module-icon">🧠</div>
-        <strong>Personality Editor</strong>
-        <p>Customise bot behaviour and personality.</p>
-      </a>
-
-      <a href="botplayground.html" class="module-card">
-        <div class="module-icon">💬</div>
-        <strong>Live Playground</strong>
-        <p>Test and interact with your bots.</p>
-      </a>
-
-      <a href="botknowledge.html" class="module-card">
-        <div class="module-icon">📚</div>
-        <strong>Knowledge Centre</strong>
-        <p>Manage information available to bots.</p>
-      </a>
-
-      <a href="botcommands.html" class="module-card">
-        <div class="module-icon">⚙</div>
-        <strong>Commands</strong>
-        <p>Configure custom commands and responses.</p>
-      </a>
-
-      <a href="botgallery.html" class="module-card">
-        <div class="module-icon">▧</div>
-        <strong>Bot Gallery</strong>
-        <p>Explore and organise your bot collection.</p>
-      </a>
-
-      <a href="botanalytics.html" class="module-card">
-        <div class="module-icon">📊</div>
-        <strong>Analytics</strong>
-        <p>Monitor bot usage and activity.</p>
-      </a>
-
-      <a href="whispermemory.html" class="module-card">
-        <div class="module-icon">◌</div>
-        <strong>Whisper Memory</strong>
-        <p>Manage saved bot conversation context.</p>
-      </a>
-
-      <a href="botdebate.html" class="module-card">
-        <div class="module-icon">⇄</div>
-        <strong>Bot Debate</strong>
-        <p>Let two bots discuss a topic.</p>
-      </a>
-
-      <a href="botadmin.html" class="module-card">
-        <div class="module-icon">🔐</div>
-        <strong>Administration</strong>
-        <p>Manage system security and settings.</p>
-      </a>
-
-    </section>
-
-    <footer class="footer">
-      HEXCLØWN © 2026 · WHISPER BOTS CONTROL CENTRE
-    </footer>
-
-  </main>
+  </div>
 
 </div>
-  
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
 
 <script>
   
-// SUPABASE CONNECTION
+// ==========================================
+// HEXCLØWN WHISPER BOTS
+// PART 2: AUTHENTICATION ENGINE
+// ==========================================
 
-const SUPABASE_URL = "PASTE_YOUR_PROJECT_URL_HERE";
+// SUPABASE CONFIGURATION
 
-const SUPABASE_PUBLISHABLE_KEY = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
+const SUPABASE_URL =
+  "https://nddaaqvsnnrdylajpdmp.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_DVAyBfoG7N50q4x6Vf1YeA_a7mghWFN";
+
+// INITIALISE SUPABASE
 
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_PUBLISHABLE_KEY
 );
-  
-// ==========================================
-// WHISPER BOTS ADMIN AUTHENTICATION
-// ==========================================
+
+// HTML ELEMENTS
 
 const loginScreen = document.getElementById("loginScreen");
 const protectedArea = document.getElementById("protectedArea");
-const passwordInput = document.getElementById("adminPassword");
+
+const adminEmail = document.getElementById("adminEmail");
+const adminPassword = document.getElementById("adminPassword");
+
 const loginButton = document.getElementById("loginButton");
 const loginMessage = document.getElementById("loginMessage");
 
-// SHOW OR HIDE THE DASHBOARD
+const logoutButton = document.getElementById("logoutButton");
 
-function showDashboard(isLoggedIn) {
-  loginScreen.style.display = isLoggedIn ? "none" : "flex";
-  protectedArea.style.display = isLoggedIn ? "block" : "none";
+// AUTHENTICATION STATE
+
+let authenticationReady = false;
+let dashboardUnlocked = false;
+
+// SHOW LOGIN SCREEN
+
+function showLogin(message = "") {
+  dashboardUnlocked = false;
+
+  loginScreen.style.display = "flex";
+  protectedArea.style.display = "none";
+
+  loginMessage.textContent = message;
+
+  adminPassword.value = "";
 }
 
-// ADMIN LOGIN
+// SHOW DASHBOARD
 
-async function adminLogin() {
-  const email = prompt("Enter your administrator email:");
+function showProtectedDashboard() {
+  dashboardUnlocked = true;
 
-  if (!email) return;
+  loginScreen.style.display = "none";
+  protectedArea.style.display = "block";
 
-  const password = passwordInput.value;
+  loginMessage.textContent = "";
 
-  if (!password) {
-    loginMessage.textContent = "Please enter your password.";
+  if (typeof refreshDashboard === "function") {
+    refreshDashboard();
+  }
+}
+
+// DISPLAY LOGIN ERROR
+
+function showLoginError(message) {
+  loginMessage.textContent = message;
+}
+
+// LOGIN FUNCTION
+
+async function performAdminLogin() {
+
+  if (!authenticationReady) {
+    showLoginError(
+      "Authentication is still loading. Please wait."
+    );
+    return;
+  }
+
+  const email = adminEmail.value.trim();
+  const password = adminPassword.value;
+
+  if (!email || !password) {
+    showLoginError(
+      "Please enter both your administrator email and password."
+    );
     return;
   }
 
   loginButton.disabled = true;
-  loginButton.textContent = "VERIFYING...";
+  loginButton.textContent = "VERIFYING ACCESS...";
 
-  loginMessage.textContent = "";
+  showLoginError("");
 
   try {
+
     const { data, error } =
       await supabaseClient.auth.signInWithPassword({
-        email: email.trim(),
+        email: email,
         password: password
       });
 
@@ -949,459 +1065,429 @@ async function adminLogin() {
       throw error;
     }
 
-    passwordInput.value = "";
-    loginMessage.textContent = "";
+    if (!data.session) {
+      throw new Error(
+        "No valid login session was returned."
+      );
+    }
 
-    showDashboard(true);
+    showProtectedDashboard();
 
-    refreshDashboard();
+    recordBotActivity(
+      "Administrator login",
+      "You accessed the Whisper Bots dashboard.",
+      "🔐"
+    );
 
   } catch (error) {
-    loginMessage.textContent =
-      error.message || "Login failed. Check your details.";
 
-    showDashboard(false);
+    console.error("Administrator login error:", error);
+
+    showLoginError(
+      "Login failed. Check your email and password."
+    );
+
+    showLogin(false);
 
   } finally {
+
     loginButton.disabled = false;
     loginButton.textContent = "UNLOCK DASHBOARD";
+
   }
 }
 
 // LOGIN BUTTON
 
-loginButton.addEventListener("click", adminLogin);
+loginButton.addEventListener(
+  "click",
+  performAdminLogin
+);
 
-// ENTER KEY SUPPORT
+// ENTER KEY LOGIN
 
-passwordInput.addEventListener("keydown", function(event) {
-  if (event.key === "Enter") {
-    adminLogin();
+adminPassword.addEventListener(
+  "keydown",
+  function(event) {
+    if (event.key === "Enter") {
+      performAdminLogin();
+    }
   }
-});
+);
 
-// CHECK EXISTING LOGIN SESSION
+adminEmail.addEventListener(
+  "keydown",
+  function(event) {
+    if (event.key === "Enter") {
+      adminPassword.focus();
+    }
+  }
+);
+
+// CHECK EXISTING SESSION
 
 async function checkAdminSession() {
-  showDashboard(false);
+
+  showLogin();
 
   try {
+
     const { data, error } =
       await supabaseClient.auth.getSession();
 
-    if (error) throw error;
+    if (error) {
+      throw error;
+    }
 
-    showDashboard(!!data.session);
+    if (data.session) {
+      showProtectedDashboard();
+    } else {
+      showLogin();
+    }
 
   } catch (error) {
-    console.error("Session check failed:", error);
-    showDashboard(false);
+
+    console.error("Session verification error:", error);
+
+    showLogin(
+      "Unable to verify your session. Please sign in again."
+    );
+
+  } finally {
+
+    authenticationReady = true;
+
   }
 }
 
-// MONITOR LOGIN AND LOGOUT
+// LOGOUT FUNCTION
+
+async function performAdminLogout() {
+
+  const confirmed = confirm(
+    "Are you sure you want to log out of Whisper Bots?"
+  );
+
+  if (!confirmed) return;
+
+  logoutButton.disabled = true;
+  logoutButton.textContent = "LOGGING OUT...";
+
+  try {
+
+    const { error } =
+      await supabaseClient.auth.signOut();
+
+    if (error) {
+      throw error;
+    }
+
+    showLogin("You have successfully logged out.");
+
+    adminEmail.value = "";
+
+  } catch (error) {
+
+    console.error("Logout error:", error);
+
+    alert(
+      "Logout failed. Please try again."
+    );
+
+  } finally {
+
+    logoutButton.disabled = false;
+    logoutButton.textContent = "LOG OUT";
+
+  }
+}
+
+// LOGOUT BUTTON
+
+logoutButton.addEventListener(
+  "click",
+  performAdminLogout
+);
+
+// MONITOR AUTHENTICATION CHANGES
 
 supabaseClient.auth.onAuthStateChange(
   function(event, session) {
-    showDashboard(!!session);
+
+    if (event === "SIGNED_OUT") {
+      showLogin("Your session has ended.");
+    }
+
+    if (event === "SIGNED_IN" && session) {
+      showProtectedDashboard();
+    }
+
   }
 );
 
-// INITIAL CHECK
+// START AUTHENTICATION CHECK
 
 checkAdminSession();
 
-// ADD LOGOUT BUTTON
-
-const logoutButton = document.createElement("button");
-
-logoutButton.textContent = "LOG OUT";
-
-logoutButton.style.cssText = `
-  background:transparent;
-  color:#ff697d;
-  border:1px solid rgba(255,105,125,.4);
-  border-radius:7px;
-  padding:9px 12px;
-  font-size:10px;
-  font-weight:bold;
-  cursor:pointer;
-`;
-
-document.querySelector(".header-right").appendChild(logoutButton);
-
-logoutButton.addEventListener("click", async function() {
-  const confirmed = confirm("Are you sure you want to log out?");
-
-  if (!confirmed) return;
-
-  const { error } = await supabaseClient.auth.signOut();
-
-  if (error) {
-    alert("Logout failed: " + error.message);
-    return;
-  }
-
-  showDashboard(false);
-});
   
-    
 // ==========================================
-// WHISPER BOTS DASHBOARD ENGINE
-// PART 2 OF 3
+// WHISPER BOTS DASHBOARD STORAGE
 // ==========================================
 
-const WHISPER_STORAGE = {
-  bots: "hexclown_whisper_bots",
-  activity: "hexclown_whisper_activity",
-  chats: "hexclown_whisper_chats"
-};
+const BOTS_STORAGE_KEY = "hexclown_whisper_bots";
+const ACTIVITY_STORAGE_KEY = "hexclown_whisper_activity";
+const CHATS_STORAGE_KEY = "hexclown_whisper_chats";
 
-// SAFE LOCAL STORAGE HELPERS
-
-function readStorage(key, fallback = []) {
-  try {
-    const value = localStorage.getItem(key);
-    return value ? JSON.parse(value) : fallback;
-  } catch (error) {
-    console.warn("Storage read error:", error);
-    return fallback;
-  }
+function readStorage(key, fallback) {
+    try {
+        const saved = localStorage.getItem(key);
+        return saved ? JSON.parse(saved) : fallback;
+    } catch (error) {
+        console.error("Storage error:", error);
+        return fallback;
+    }
 }
 
 function writeStorage(key, value) {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-    return true;
-  } catch (error) {
-    console.warn("Storage write error:", error);
-    return false;
-  }
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+        return true;
+    } catch (error) {
+        console.error("Could not save dashboard data:", error);
+        return false;
+    }
 }
-
-// GET SAVED BOTS
 
 function getBots() {
-  const bots = readStorage(WHISPER_STORAGE.bots, []);
-  return Array.isArray(bots) ? bots : [];
+    const bots = readStorage(BOTS_STORAGE_KEY, []);
+    return Array.isArray(bots) ? bots : [];
 }
-
-// GET SAVED ACTIVITY
 
 function getActivity() {
-  const activity = readStorage(WHISPER_STORAGE.activity, []);
-  return Array.isArray(activity) ? activity : [];
+    const activity = readStorage(ACTIVITY_STORAGE_KEY, []);
+    return Array.isArray(activity) ? activity : [];
 }
 
-// RECORD DASHBOARD ACTIVITY
+// ==========================================
+// ACTIVITY TRACKER
+// ==========================================
 
-function recordBotActivity(title, description, icon = "◈") {
-  const activity = getActivity();
+function recordBotActivity(title, description, icon = "•") {
+    const activity = getActivity();
 
-  activity.unshift({
-    title: String(title),
-    description: String(description),
-    icon: String(icon),
-    time: new Date().toISOString()
-  });
+    activity.unshift({
+        title: String(title),
+        description: String(description),
+        icon: String(icon),
+        time: new Date().toISOString()
+    });
 
-  // Keep the latest 30 activities.
-  writeStorage(
-    WHISPER_STORAGE.activity,
-    activity.slice(0, 30)
-  );
+    // Keep the latest 30 activities
+    writeStorage(
+        ACTIVITY_STORAGE_KEY,
+        activity.slice(0, 30)
+    );
 
-  renderActivity();
+    renderActivity();
+    updateDashboardStats();
 }
 
-// FORMAT ACTIVITY TIME
+function formatActivityTime(value) {
+    const date = new Date(value);
 
-function formatActivityTime(dateString) {
-  const date = new Date(dateString);
+    if (Number.isNaN(date.getTime())) {
+        return "Recently";
+    }
 
-  if (isNaN(date.getTime())) {
-    return "Recently";
-  }
-
-  return date.toLocaleString(undefined, {
-    dateStyle: "medium",
-    timeStyle: "short"
-  });
+    return date.toLocaleString();
 }
-
-// UPDATE DASHBOARD STATISTICS
-
-function updateDashboardStats() {
-  const bots = getBots();
-
-  const total = bots.length;
-
-  const active = bots.filter(bot => {
-    return bot.active === true ||
-      bot.status === "active" ||
-      bot.enabled === true;
-  }).length;
-
-  const favourites = bots.filter(bot => {
-    return bot.favorite === true ||
-      bot.favourite === true;
-  }).length;
-
-  const chats = readStorage(
-    WHISPER_STORAGE.chats,
-    []
-  );
-
-  const chatCount = Array.isArray(chats)
-    ? chats.length
-    : Number(chats) || 0;
-
-  document.getElementById("totalBots").textContent = total;
-
-  document.getElementById("activeBots").textContent = active;
-
-  document.getElementById("totalChats").textContent = chatCount;
-
-  document.getElementById("favoriteBots").textContent = favourites;
-}
-
-// DISPLAY RECENT ACTIVITY
 
 function renderActivity() {
-  const container = document.getElementById("activityList");
+    const activityList = document.getElementById("activityList");
 
-  if (!container) return;
+    if (!activityList) return;
 
-  const activities = getActivity();
+    const activity = getActivity();
 
-  if (activities.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="big-icon">◈</div>
-        <p>
-          No bot activity yet.<br>
-          Create your first bot to get started.
-        </p>
-      </div>
-    `;
-    return;
-  }
-
-  container.innerHTML = "";
-
-  activities.slice(0, 8).forEach(item => {
-    const row = document.createElement("div");
-    row.className = "activity-item";
-
-    const icon = document.createElement("div");
-    icon.className = "activity-icon";
-    icon.textContent = item.icon || "◈";
-
-    const textBox = document.createElement("div");
-    textBox.className = "activity-text";
-
-    const title = document.createElement("strong");
-    title.textContent = item.title || "Bot activity";
-
-    const description = document.createElement("small");
-    description.textContent =
-      (item.description || "") +
-      " · " +
-      formatActivityTime(item.time);
-
-    textBox.appendChild(title);
-    textBox.appendChild(description);
-
-    row.appendChild(icon);
-    row.appendChild(textBox);
-
-    container.appendChild(row);
-  });
-}
-
-// MOBILE NAVIGATION MENU
-
-const menuButton = document.getElementById("menuButton");
-const sidebar = document.getElementById("sidebar");
-
-if (menuButton && sidebar) {
-  menuButton.addEventListener("click", function() {
-    sidebar.classList.toggle("open");
-
-    menuButton.textContent =
-      sidebar.classList.contains("open")
-        ? "✕ CLOSE"
-        : "☰ MENU";
-  });
-}
-
-// CLOSE MOBILE MENU AFTER NAVIGATION
-
-document.querySelectorAll(".sidebar .nav-link").forEach(link => {
-  link.addEventListener("click", function() {
-    if (window.innerWidth <= 700) {
-      sidebar.classList.remove("open");
-      menuButton.textContent = "☰ MENU";
+    if (activity.length === 0) {
+        activityList.innerHTML = `
+            <div class="empty-state">
+                <p>No activity yet.</p>
+                <small>Your Whisper Bots activity will appear here.</small>
+            </div>
+        `;
+        return;
     }
-  });
-});
 
-// DASHBOARD REFRESH
+    activityList.innerHTML = "";
+
+    activity.forEach(item => {
+        const entry = document.createElement("div");
+        entry.className = "activity-item";
+
+        const icon = document.createElement("span");
+        icon.className = "activity-icon";
+        icon.textContent = item.icon || "•";
+
+        const details = document.createElement("div");
+        details.className = "activity-details";
+
+        const heading = document.createElement("strong");
+        heading.textContent = item.title || "Activity";
+
+        const description = document.createElement("p");
+        description.textContent = item.description || "";
+
+        const time = document.createElement("small");
+        time.textContent = formatActivityTime(item.time);
+
+        details.appendChild(heading);
+        details.appendChild(description);
+        details.appendChild(time);
+
+        entry.appendChild(icon);
+        entry.appendChild(details);
+
+        activityList.appendChild(entry);
+    });
+}
+
+// ==========================================
+// DASHBOARD STATISTICS
+// ==========================================
+
+function updateDashboardStats() {
+    const bots = getBots();
+    const activity = getActivity();
+    const chats = readStorage(CHATS_STORAGE_KEY, []);
+
+    const totalBots = document.getElementById("totalBots");
+    const activeBots = document.getElementById("activeBots");
+    const totalChats = document.getElementById("totalChats");
+    const favoriteBots = document.getElementById("favoriteBots");
+
+    if (totalBots) {
+        totalBots.textContent = bots.length;
+    }
+
+    if (activeBots) {
+        activeBots.textContent = bots.filter(bot =>
+            bot && bot.active !== false
+        ).length;
+    }
+
+    if (totalChats) {
+        totalChats.textContent = Array.isArray(chats)
+            ? chats.length
+            : 0;
+    }
+
+    if (favoriteBots) {
+        favoriteBots.textContent = bots.filter(bot =>
+            bot && bot.favorite === true
+        ).length;
+    }
+}
 
 function refreshDashboard() {
-  updateDashboardStats();
-  renderActivity();
+    updateDashboardStats();
+    renderActivity();
 }
 
-// INITIALISE DASHBOARD
-
-refreshDashboard();
-
-// REFRESH WHEN RETURNING TO THIS PAGE
-
-window.addEventListener("pageshow", refreshDashboard);
-
-window.addEventListener("storage", function(event) {
-  if (
-    event.key === WHISPER_STORAGE.bots ||
-    event.key === WHISPER_STORAGE.activity ||
-    event.key === WHISPER_STORAGE.chats
-  ) {
-    refreshDashboard();
-  }
-});
-
-// REFRESH WHEN TAB BECOMES ACTIVE
-
-document.addEventListener("visibilitychange", function() {
-  if (!document.hidden) {
-    refreshDashboard();
-  }
-});
-  
 // ==========================================
-// WHISPER BOTS DASHBOARD
-// FINAL INTEGRATION
+// MOBILE SIDEBAR
 // ==========================================
 
-// DASHBOARD QUICK REFRESH
+const menuButton = document.getElementById("menuButton");
+const sidebar = document.querySelector(".sidebar");
 
-function refreshWhisperDashboard() {
-  refreshDashboard();
+if (menuButton && sidebar) {
+    menuButton.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+    });
 
-  const button = document.getElementById("refreshDashboard");
-
-  if (button) {
-    button.textContent = "✓ UPDATED";
-
-    setTimeout(() => {
-      button.textContent = "↻ REFRESH";
-    }, 1200);
-  }
+    sidebar.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            sidebar.classList.remove("open");
+        });
+    });
 }
 
-// CLEAR RECENT ACTIVITY
+// ==========================================
+// OPTIONAL CLEAR ACTIVITY BUTTON
+// ==========================================
 
-function clearBotActivity() {
-  const activities = getActivity();
+function addClearActivityButton() {
+    const activityList = document.getElementById("activityList");
 
-  if (activities.length === 0) {
-    alert("There is no activity to clear.");
-    return;
-  }
+    if (!activityList) return;
 
-  const confirmed = confirm(
-    "Clear all recent bot activity? This cannot be undone."
-  );
+    const section = activityList.closest("section");
 
-  if (!confirmed) return;
-
-  writeStorage(WHISPER_STORAGE.activity, []);
-
-  renderActivity();
-
-  alert("Recent activity cleared.");
-}
-
-// ADD REFRESH CONTROL
-
-const overviewHeading = document.querySelector(
-  ".section-heading"
-);
-
-if (overviewHeading) {
-  const refreshButton = document.createElement("button");
-
-  refreshButton.id = "refreshDashboard";
-  refreshButton.textContent = "↻ REFRESH";
-
-  refreshButton.style.cssText = `
-    background:#10232a;
-    color:#20d9d0;
-    border:1px solid rgba(32,217,208,.25);
-    border-radius:7px;
-    padding:8px 12px;
-    font-size:10px;
-    font-weight:bold;
-  `;
-
-  refreshButton.addEventListener(
-    "click",
-    refreshWhisperDashboard
-  );
-
-  overviewHeading.appendChild(refreshButton);
-}
-
-// ADD CLEAR ACTIVITY CONTROL
-
-const activityPanel = document.getElementById("activityList");
-
-if (activityPanel) {
-  const clearButton = document.createElement("button");
-
-  clearButton.textContent = "CLEAR ACTIVITY";
-
-  clearButton.style.cssText = `
-    display:block;
-    margin-top:15px;
-    background:transparent;
-    color:#ff697d;
-    border:1px solid rgba(255,105,125,.3);
-    border-radius:7px;
-    padding:8px 11px;
-    font-size:10px;
-  `;
-
-  clearButton.addEventListener(
-    "click",
-    clearBotActivity
-  );
-
-  activityPanel.parentElement.appendChild(clearButton);
-}
-
-// CHECK DASHBOARD PAGE LINKS
-
-document.querySelectorAll(
-  ".module-card, .nav-link, .action-btn"
-).forEach(link => {
-  link.addEventListener("click", function(event) {
-    const destination = this.getAttribute("href");
-
-    if (destination && destination.endsWith(".html")) {
-      console.log("Opening Whisper Bots module:", destination);
+    if (!section || section.querySelector("#clearActivityButton")) {
+        return;
     }
-  });
+
+    const button = document.createElement("button");
+
+    button.id = "clearActivityButton";
+    button.type = "button";
+    button.textContent = "Clear Activity";
+
+    button.style.cssText = `
+        margin: 12px 0;
+        padding: 9px 14px;
+        border: 1px solid #1b6971;
+        border-radius: 7px;
+        background: #0b2027;
+        color: #67e8f9;
+        cursor: pointer;
+        font-size: 12px;
+    `;
+
+    button.addEventListener("click", () => {
+        const confirmed = window.confirm(
+            "Clear your saved activity history?"
+        );
+
+        if (!confirmed) return;
+
+        writeStorage(ACTIVITY_STORAGE_KEY, []);
+        renderActivity();
+        updateDashboardStats();
+    });
+
+    section.insertBefore(button, activityList);
+}
+
+// ==========================================
+// KEEP DASHBOARD UPDATED
+// ==========================================
+
+window.addEventListener("pageshow", () => {
+    refreshDashboard();
 });
 
-// FINAL DASHBOARD INITIALISATION
+window.addEventListener("storage", event => {
+    if (
+        event.key === BOTS_STORAGE_KEY ||
+        event.key === ACTIVITY_STORAGE_KEY ||
+        event.key === CHATS_STORAGE_KEY
+    ) {
+        refreshDashboard();
+    }
+});
 
+// ==========================================
+// INITIALISE DASHBOARD
+// ==========================================
+
+addClearActivityButton();
 refreshDashboard();
 
-console.log("WHISPER BOTS dashboard loaded successfully.");
-
+// ==========================================
+// END OF WHISPER BOTS
+// ==========================================
 </script>
-</div>
 </body>
 </html>
