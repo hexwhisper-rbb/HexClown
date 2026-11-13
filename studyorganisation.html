@@ -11,449 +11,391 @@
 :root{
   --bg:#07131a;
   --panel:#0d2029;
-  --panel2:#102a34;
-  --line:#1c3c48;
-  --text:#e7f5f5;
-  --muted:#8ba7ad;
-  --cyan:#35e0dc;
-  --green:#8cff75;
-  --red:#ff647c;
-  --yellow:#ffd36b;
+  --panel2:#102832;
+  --line:#1c3d48;
+  --text:#e8f5f7;
+  --muted:#91aeb5;
+  --cyan:#25d9e8;
+  --green:#8cf58a;
+  --red:#ff7185;
+  --yellow:#ffd36a;
 }
 *{box-sizing:border-box}
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
+  font-family:Arial,sans-serif;
+  line-height:1.5;
 }
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-
 header{
-  padding:17px 5%;
-  background:#091921;
+  padding:17px 15px;
+  background:#091a22;
   border-bottom:1px solid var(--line);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
   position:sticky;
   top:0;
   z-index:10;
 }
+.header-inner{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
 .logo{
-  font-size:21px;
+  color:var(--cyan);
+  font-size:19px;
   font-weight:900;
   letter-spacing:2px;
-  color:var(--cyan);
 }
-.logo span{color:var(--green)}
 .back{
+  color:var(--green);
   text-decoration:none;
-  color:var(--cyan);
-  border:1px solid var(--line);
-  padding:9px 13px;
-  border-radius:9px;
   font-size:13px;
 }
 main{
   max-width:1100px;
   margin:auto;
-  padding:25px 15px 50px;
+  padding:22px 14px 50px;
 }
-.hero{text-align:center;margin:15px 0 28px}
+.hero{margin-bottom:22px}
 .hero h1{
-  font-size:clamp(25px,5vw,37px);
-  margin:0 0 9px;
+  font-size:clamp(25px,5vw,38px);
+  margin:0 0 6px;
 }
 .hero h1 span{color:var(--cyan)}
-.hero p{
-  color:var(--muted);
-  line-height:1.6;
-  font-size:14px;
-}
+.hero p{color:var(--muted);margin:0}
 .section{
   background:var(--panel);
   border:1px solid var(--line);
-  border-radius:16px;
-  padding:19px;
-  margin-bottom:22px;
+  border-radius:15px;
+  padding:17px;
+  margin:18px 0;
+  min-width:0;
 }
-.section-title{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:12px;
-}
-.section-title span{font-size:23px}
-.section-title h2{font-size:20px;margin:0}
-.subtext{
+.section h2{font-size:20px;margin:0 0 5px}
+.description{
   color:var(--muted);
   font-size:13px;
-  line-height:1.6;
+  margin:0 0 16px;
 }
 input,textarea,select{
   width:100%;
-  background:#061117;
+  background:#071820;
   color:var(--text);
   border:1px solid var(--line);
   border-radius:9px;
-  padding:12px;
+  padding:11px;
+  font:inherit;
   outline:none;
 }
 input:focus,textarea:focus,select:focus{
   border-color:var(--cyan);
 }
-textarea{
-  resize:vertical;
-  min-height:150px;
-  line-height:1.6;
-}
-label{
-  display:block;
-  color:var(--muted);
-  font-size:12px;
-  margin-bottom:7px;
-}
-.field{margin-bottom:13px}
-.primary{
-  background:var(--cyan);
-  color:#061117;
-  border:0;
-  border-radius:9px;
-  padding:12px 16px;
-  font-weight:bold;
-}
-.secondary{
-  background:var(--panel2);
-  color:var(--cyan);
+textarea{resize:vertical}
+button{
   border:1px solid var(--line);
-  border-radius:8px;
-  padding:9px 12px;
-  font-size:12px;
+  border-radius:9px;
+  padding:10px 13px;
+  background:var(--panel2);
+  color:var(--text);
+  font-weight:700;
+  cursor:pointer;
+  font-size:13px;
 }
-.danger{
-  background:transparent;
-  color:var(--red);
-  border:1px solid #63313c;
-  border-radius:8px;
-  padding:8px 10px;
-  font-size:12px;
+button:active{transform:scale(.98)}
+button.primary{
+  background:var(--cyan);
+  color:#031318;
+  border-color:var(--cyan);
 }
-.form-grid{
+button.good{
+  color:var(--green);
+  border-color:#286343;
+}
+button.danger{color:var(--red)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.row{
+  display:flex;
+  gap:9px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.grid-two{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-.full{grid-column:1/-1}
-.toolbar{
-  display:flex;
-  flex-wrap:wrap;
-  gap:9px;
-  margin:13px 0;
+  gap:10px;
 }
 .stats{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin:17px 0;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  margin-bottom:16px;
 }
 .stat{
-  background:#091921;
+  background:#091a22;
   border:1px solid var(--line);
-  border-radius:11px;
-  padding:14px;
-  text-align:center;
+  border-radius:10px;
+  padding:12px;
 }
 .stat strong{
   display:block;
-  font-size:24px;
-  color:var(--green);
+  color:var(--cyan);
+  font-size:21px;
 }
 .stat span{
-  display:block;
   font-size:11px;
   color:var(--muted);
-  margin-top:5px;
 }
-.note-tools{
+.note-form{
   display:grid;
-  grid-template-columns:1fr 180px;
   gap:10px;
-  margin:18px 0;
 }
-.notes-grid{
+#noteContent{min-height:150px}
+.search-area{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:12px;
+  grid-template-columns:1fr 190px;
+  gap:9px;
+  margin:17px 0 12px;
 }
-.note-card{
-  background:#091921;
+.note-list,.task-list{
+  display:grid;
+  gap:10px;
+}
+.note-card,.task-card{
+  background:#091a22;
   border:1px solid var(--line);
-  border-radius:12px;
-  padding:15px;
+  border-radius:11px;
+  padding:13px;
   min-width:0;
 }
-.note-card h3{
-  margin:0 0 8px;
+.note-card h3,.task-card h3{
+  margin:0 0 5px;
   font-size:16px;
   overflow-wrap:anywhere;
 }
-.note-subject{
+.note-meta{
+  color:var(--muted);
   font-size:11px;
-  color:var(--cyan);
-  margin-bottom:10px;
+  margin-bottom:8px;
 }
 .note-preview{
-  color:var(--muted);
   font-size:13px;
-  line-height:1.6;
+  color:#c6d9dc;
   white-space:pre-wrap;
   overflow-wrap:anywhere;
   max-height:100px;
   overflow:hidden;
 }
-.note-date{
-  font-size:10px;
-  color:var(--muted);
-  margin:12px 0;
-}
-.note-actions{
+.card-actions{
   display:flex;
-  flex-wrap:wrap;
   gap:7px;
+  flex-wrap:wrap;
+  margin-top:12px;
 }
+.card-actions button{flex:1}
 .empty{
   color:var(--muted);
+  text-align:center;
+  padding:18px 8px;
+  border:1px dashed var(--line);
+  border-radius:10px;
   font-size:13px;
-  padding:15px 0;
+}
+.status{
+  color:var(--green);
+  font-size:12px;
+}
+.small{
+  color:var(--muted);
+  font-size:12px;
+}
+.divider{
+  border:0;
+  border-top:1px solid var(--line);
+  margin:18px 0;
 }
 .progress-track{
+  width:100%;
   height:10px;
-  background:#061117;
+  background:#071820;
   border-radius:20px;
   overflow:hidden;
-  margin:10px 0;
+  margin:9px 0;
 }
 .progress-fill{
+  width:0%;
   height:100%;
-  width:0;
-  background:linear-gradient(90deg,var(--cyan),var(--green));
-  border-radius:20px;
-  transition:width .25s;
+  background:var(--green);
+  transition:width .2s;
 }
-.progress-label{
+.task-top{
   display:flex;
   justify-content:space-between;
-  font-size:12px;
-  color:var(--muted);
-}
-.planner-form{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:18px;
-}
-.task-list{
-  display:grid;
   gap:10px;
-  margin-top:18px;
-}
-.task{
-  background:#091921;
-  border:1px solid var(--line);
-  border-radius:11px;
-  padding:13px;
-  display:flex;
   align-items:flex-start;
-  gap:11px;
 }
-.task.completed{opacity:.65}
-.task.completed .task-title{text-decoration:line-through}
-.task-check{
-  width:21px;
-  height:21px;
-  accent-color:#35e0dc;
-  flex-shrink:0;
-  margin-top:2px;
-}
-.task-content{flex:1;min-width:0}
-.task-title{
-  font-size:14px;
+.priority{
+  font-size:10px;
   font-weight:bold;
-  overflow-wrap:anywhere;
+  border-radius:20px;
+  padding:4px 8px;
+  white-space:nowrap;
+}
+.priority.High{
+  color:#ff9aa8;
+  background:#49212c;
+}
+.priority.Medium{
+  color:var(--yellow);
+  background:#40351d;
+}
+.priority.Low{
+  color:var(--green);
+  background:#183c2c;
 }
 .task-details{
   color:var(--muted);
-  font-size:11px;
+  font-size:12px;
   margin-top:6px;
-  line-height:1.5;
 }
-.priority{
-  display:inline-block;
-  border-radius:5px;
-  padding:4px 7px;
-  font-size:10px;
-  margin-top:7px;
+.task-complete{
+  opacity:.65;
 }
-.priority.High{color:var(--red);background:#381b25}
-.priority.Medium{color:var(--yellow);background:#382d18}
-.priority.Low{color:var(--green);background:#183322}
-.task-actions{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
+.task-complete h3{
+  text-decoration:line-through;
 }
-.task-actions button{
-  background:transparent;
-  border:1px solid var(--line);
-  color:var(--cyan);
-  border-radius:7px;
-  padding:6px 8px;
-  font-size:11px;
+.task-checkbox{
+  width:19px;
+  height:19px;
+  accent-color:var(--green);
+  flex-shrink:0;
 }
-.task-actions .remove{color:var(--red)}
-.planner-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.planner-top input{max-width:190px}
-.filter-row{
+.filter-buttons{
   display:flex;
   flex-wrap:wrap;
-  gap:8px;
-  margin-top:14px;
+  gap:7px;
+  margin:13px 0;
 }
-.filter-row button.active{
-  background:#164b45;
+.filter-buttons button.active{
+  background:var(--cyan);
+  color:#031318;
   border-color:var(--cyan);
 }
 footer{
   text-align:center;
   color:var(--muted);
-  font-size:12px;
+  font-size:11px;
   padding:20px;
-  border-top:1px solid var(--line);
 }
 @media(max-width:600px){
-  main{padding:18px 11px 35px}
-  .section{padding:14px}
-  .form-grid,.planner-form{grid-template-columns:1fr}
-  .full{grid-column:auto}
-  .note-tools{grid-template-columns:1fr}
+  main{padding:17px 10px 35px}
+  .section{padding:13px}
+  .grid-two{grid-template-columns:1fr}
+  .search-area{grid-template-columns:1fr}
   .stats{gap:6px}
-  .stat{padding:11px 5px}
-  .stat strong{font-size:20px}
-  .task{padding:10px}
+  .stat{padding:9px}
+  .stat strong{font-size:18px}
+  .card-actions button{flex:1 1 40%}
 }
 </style>
 </head>
 
 <body>
-
 <header>
-  <div class="logo">HEXCL<span>Ø</span>WN</div>
-  <a class="back" href="index.html">← Home</a>
+  <div class="header-inner">
+    <div class="logo">HEXCLØWN</div>
+    <a class="back" href="learninghub.html">← LEARNING HUB</a>
+  </div>
 </header>
 
 <main>
 
-  <div class="hero">
-    <h1>STUDY <span>ORGANISATION</span></h1>
-    <p>Organise your revision materials, plan your study sessions and stay focused on your goals.</p>
-  </div>
+  <section class="hero">
+    <h1>Study <span>Organisation</span></h1>
+    <p>Organise your revision notes, plan your study sessions and stay on track.</p>
+  </section>
 
   <!-- STUDY NOTES -->
+
   <section class="section">
-
-    <div class="section-title">
-      <span>📚</span>
-      <h2>Study Notes & Revision Library</h2>
-    </div>
-
-    <p class="subtext">
-      Create your own revision library. Save notes by subject, search your materials and return to them whenever you need.
+    <h2>01. Study Notes & Revision Library</h2>
+    <p class="description">
+      Create, organise, search, edit and export your revision notes.
     </p>
 
     <div class="stats">
       <div class="stat">
-        <strong id="noteTotal">0</strong>
+        <strong id="noteCount">0</strong>
         <span>Total Notes</span>
       </div>
       <div class="stat">
-        <strong id="subjectTotal">0</strong>
+        <strong id="subjectCount">0</strong>
         <span>Subjects</span>
       </div>
       <div class="stat">
-        <strong id="noteWords">0</strong>
+        <strong id="wordCount">0</strong>
         <span>Total Words</span>
       </div>
     </div>
 
-    <div class="field">
-      <label for="noteTitle">Note title</label>
-      <input id="noteTitle" type="text" maxlength="100" placeholder="e.g. Introduction to Cell Biology">
-    </div>
+    <form id="noteForm" class="note-form">
+      <input id="noteTitle" type="text" maxlength="100"
+        placeholder="Note title..." required>
 
-    <div class="form-grid">
-      <div class="field">
-        <label for="noteSubject">Subject</label>
-        <input id="noteSubject" type="text" maxlength="50" placeholder="e.g. Biology">
+      <div class="grid-two">
+        <input id="noteSubject" type="text" maxlength="50"
+          placeholder="Subject (e.g. Biology)" required>
+
+        <input id="noteTopic" type="text" maxlength="70"
+          placeholder="Topic (e.g. Cell Structure)">
       </div>
 
-      <div class="field">
-        <label for="noteTag">Topic / Category</label>
-        <input id="noteTag" type="text" maxlength="50" placeholder="e.g. Cell Structure">
+      <textarea id="noteContent"
+        placeholder="Write your revision notes here..."
+        required></textarea>
+
+      <div class="row">
+        <button class="primary" id="saveNoteButton" type="submit">
+          + Save Note
+        </button>
+        <button id="cancelEditNote" type="button" hidden>
+          Cancel Edit
+        </button>
       </div>
-    </div>
+      <span id="noteStatus" class="status">Ready to create notes.</span>
+    </form>
 
-    <div class="field">
-      <label for="noteContent">Your study notes</label>
-      <textarea id="noteContent" placeholder="Write your notes, definitions, formulas, explanations and revision points here..."></textarea>
-    </div>
+    <hr class="divider">
 
-    <div class="toolbar">
-      <button class="primary" id="saveNote">＋ Save Study Note</button>
-      <button class="secondary" id="cancelEdit" style="display:none">Cancel Editing</button>
-      <button class="secondary" id="exportAllNotes">Export All Notes</button>
-    </div>
+    <div class="search-area">
+      <input id="noteSearch" type="search"
+        placeholder="Search notes, topics or subjects...">
 
-    <div class="note-tools">
-      <input id="searchNotes" type="search" placeholder="Search notes, subjects or topics...">
-      <select id="subjectFilter">
+      <select id="noteSubjectFilter">
         <option value="all">All Subjects</option>
       </select>
     </div>
 
-    <div class="notes-grid" id="notesGrid">
-      <div class="empty">Your saved study notes will appear here.</div>
+    <div class="row" style="justify-content:space-between;margin-bottom:12px">
+      <strong>Your Revision Library</strong>
+      <button id="exportAllNotes">Export All Notes</button>
     </div>
 
+    <div id="noteList" class="note-list">
+      <div class="empty">No notes yet. Create your first revision note.</div>
+    </div>
   </section>
 
   <!-- DAILY STUDY PLANNER -->
+
   <section class="section">
-
-    <div class="section-title">
-      <span>📅</span>
-      <h2>Daily Study Planner & Focus Goals</h2>
-    </div>
-
-    <p class="subtext">
-      Plan your study activities, choose priorities and track your daily achievements.
+    <h2>02. Daily Study Planner & Focus Goals</h2>
+    <p class="description">
+      Schedule your study sessions, set priorities and monitor your daily progress.
     </p>
-
-    <div class="planner-top">
-      <div>
-        <label for="plannerDate">Choose study date</label>
-        <input type="date" id="plannerDate">
-      </div>
-      <div class="subtext" id="plannerDay"></div>
-    </div>
 
     <div class="stats">
       <div class="stat">
@@ -461,385 +403,894 @@ footer{
         <span>Total Tasks</span>
       </div>
       <div class="stat">
-        <strong id="taskDone">0</strong>
+        <strong id="taskCompleted">0</strong>
         <span>Completed</span>
       </div>
       <div class="stat">
-        <strong id="taskPercent">0%</strong>
-        <span>Daily Progress</span>
+        <strong id="taskPending">0</strong>
+        <span>Remaining</span>
       </div>
     </div>
 
-    <div class="progress-label">
-      <span>Daily Goal Progress</span>
-      <span id="progressText">0% completed</span>
+    <div class="row" style="justify-content:space-between">
+      <strong>Daily Progress</strong>
+      <strong id="dailyPercent" style="color:var(--green)">0%</strong>
     </div>
 
     <div class="progress-track">
-      <div class="progress-fill" id="progressFill"></div>
+      <div class="progress-fill" id="dailyProgress"></div>
     </div>
 
-    <form id="taskForm" class="planner-form">
+    <p class="small" id="dailyProgressText">No study tasks completed yet.</p>
 
-      <div class="field">
-        <label for="taskTitle">Study task</label>
-        <input id="taskTitle" type="text" maxlength="100" placeholder="e.g. Revise organic chemistry" required>
-      </div>
+    <hr class="divider">
 
-      <div class="field">
-        <label for="taskSubject">Subject</label>
-        <input id="taskSubject" type="text" maxlength="50" placeholder="e.g. Chemistry">
-      </div>
+    <h3 style="font-size:16px;margin:0 0 12px">Create Study Task</h3>
 
-      <div class="field">
-        <label for="taskTime">Study time</label>
-        <input id="taskTime" type="time">
-      </div>
+    <form id="taskForm" class="note-form">
 
-      <div class="field">
-        <label for="taskDuration">Duration (minutes)</label>
-        <input id="taskDuration" type="number" min="1" max="1440" placeholder="e.g. 45">
-      </div>
+      <input id="taskTitle" type="text" maxlength="100"
+        placeholder="What do you want to study?" required>
 
-      <div class="field">
-        <label for="taskPriority">Priority</label>
-        <select id="taskPriority">
-          <option value="High">High</option>
-          <option value="Medium" selected>Medium</option>
-          <option value="Low">Low</option>
-        </select>
-      </div>
+      <div class="grid-two">
+        <input id="taskSubject" type="text" maxlength="50"
+          placeholder="Subject (e.g. Chemistry)" required>
 
-      <div class="field">
-        <label for="taskDate">Task date</label>
         <input id="taskDate" type="date" required>
       </div>
 
-      <div class="full">
-        <button class="primary" type="submit">＋ Add Study Task</button>
+      <div class="grid-two">
+        <input id="taskTime" type="time" value="16:00" required>
+
+        <input id="taskDuration" type="number"
+          min="5" max="720" value="30"
+          placeholder="Duration in minutes" required>
       </div>
 
+      <select id="taskPriority">
+        <option value="Medium">Medium Priority</option>
+        <option value="High">High Priority</option>
+        <option value="Low">Low Priority</option>
+      </select>
+
+      <div class="row">
+        <button class="primary" id="saveTaskButton" type="submit">
+          + Add Study Task
+        </button>
+        <button id="cancelEditTask" type="button" hidden>
+          Cancel Edit
+        </button>
+      </div>
+
+      <span id="taskStatus" class="status">Ready to plan your study session.</span>
     </form>
 
-    <div class="filter-row" id="taskFilters">
-      <button class="secondary active" data-filter="all">All Tasks</button>
-      <button class="secondary" data-filter="pending">Pending</button>
-      <button class="secondary" data-filter="completed">Completed</button>
-      <button class="secondary" data-filter="High">High Priority</button>
+    <hr class="divider">
+
+    <div class="grid-two">
+      <div>
+        <label for="plannerDate" class="small">Choose planner date</label>
+        <input id="plannerDate" type="date">
+      </div>
+
+      <div>
+        <label for="taskFilter" class="small">Filter tasks</label>
+        <select id="taskFilter">
+          <option value="all">All Tasks</option>
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+          <option value="High">High Priority</option>
+          <option value="Medium">Medium Priority</option>
+          <option value="Low">Low Priority</option>
+        </select>
+      </div>
     </div>
 
-    <div class="task-list" id="taskList">
-      <div class="empty">No study tasks for this date yet.</div>
+    <div class="row" style="justify-content:space-between;margin:16px 0 12px">
+      <strong>Scheduled Study Tasks</strong>
+      <span class="small" id="visibleTaskCount">0 tasks</span>
+    </div>
+
+    <div id="taskList" class="task-list">
+      <div class="empty">No tasks scheduled for this date.</div>
     </div>
 
   </section>
 
 </main>
 
-<footer>
-  HEXCLØWN — Plan Your Work. Master Your Goals.
-</footer>
+<footer>HEXCLØWN · STUDY ORGANISATION</footer>
 
 <script>
-/* ===================================
-   STORAGE
-=================================== */
+  
+/* =========================================
+   HEXCLØWN STUDY ORGANISATION
+   PART 2: STUDY NOTES SYSTEM
+========================================= */
 
-const NOTE_KEY = "hexclown_studyorganisation_notes_v1";
-const TASK_KEY = "hexclown_studyorganisation_tasks_v1";
+const $ = id => document.getElementById(id);
 
-function loadData(key){
-  try{
-    const data = JSON.parse(localStorage.getItem(key) || "[]");
-    return Array.isArray(data) ? data : [];
-  }catch(e){
-    return [];
+const STORAGE = {
+  notes: "hexclown_studyorganisation_notes_v2",
+  tasks: "hexclown_studyorganisation_tasks_v2"
+};
+
+function loadData(key, fallback) {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved === null ? fallback : JSON.parse(saved);
+  } catch (error) {
+    return fallback;
   }
 }
 
-function saveData(key,data){
-  try{
-    localStorage.setItem(key,JSON.stringify(data));
+function saveData(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
     return true;
-  }catch(e){
-    alert("Browser storage is unavailable or full. Export your work before continuing.");
+  } catch (error) {
+    alert("Unable to save. Your browser storage may be full or unavailable.");
     return false;
   }
 }
 
-let notes = loadData(NOTE_KEY);
-let tasks = loadData(TASK_KEY);
-
-function makeId(){
-  return Date.now().toString(36) + Math.random().toString(36).slice(2);
+function makeId() {
+  return Date.now().toString(36) +
+    Math.random().toString(36).slice(2, 9);
 }
 
-function escapeHTML(value){
-  return String(value).replace(/[&<>"']/g,char=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  })[char]);
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
 }
 
-function dateString(date){
-  const year = date.getFullYear();
-  const month = String(date.getMonth()+1).padStart(2,"0");
-  const day = String(date.getDate()).padStart(2,"0");
-  return year + "-" + month + "-" + day;
-}
+/* =========================================
+   NOTES DATA
+========================================= */
 
-
-/* ===================================
-   STUDY NOTES LIBRARY
-=================================== */
-
-const noteTitle = document.getElementById("noteTitle");
-const noteSubject = document.getElementById("noteSubject");
-const noteTag = document.getElementById("noteTag");
-const noteContent = document.getElementById("noteContent");
-const notesGrid = document.getElementById("notesGrid");
-const searchNotes = document.getElementById("searchNotes");
-const subjectFilter = document.getElementById("subjectFilter");
-const saveNoteButton = document.getElementById("saveNote");
-const cancelEditButton = document.getElementById("cancelEdit");
+let notes = loadData(STORAGE.notes, []);
+if (!Array.isArray(notes)) notes = [];
 
 let editingNoteId = null;
 
-function resetNoteForm(){
-  editingNoteId = null;
-  noteTitle.value = "";
-  noteSubject.value = "";
-  noteTag.value = "";
-  noteContent.value = "";
-  saveNoteButton.textContent = "＋ Save Study Note";
-  cancelEditButton.style.display = "none";
+function saveNotes() {
+  return saveData(STORAGE.notes, notes);
 }
 
-function updateNoteStats(){
+function resetNoteForm() {
+  $("noteForm").reset();
+  editingNoteId = null;
+
+  $("saveNoteButton").textContent = "+ Save Note";
+  $("cancelEditNote").hidden = true;
+  $("noteStatus").textContent = "Ready to create notes.";
+}
+
+function updateNoteStats() {
   const subjects = new Set(
-    notes.map(note=>(note.subject || "").trim().toLowerCase()).filter(Boolean)
+    notes.map(note => note.subject.trim().toLowerCase())
   );
 
-  let words = 0;
+  let totalWords = 0;
 
-  notes.forEach(note=>{
-    const content = note.content || "";
-    words += content.trim() ? content.trim().split(/\s+/).length : 0;
+  notes.forEach(note => {
+    const content = (note.title + " " + note.content).trim();
+    if (content) totalWords += content.split(/\s+/).length;
   });
 
-  document.getElementById("noteTotal").textContent = notes.length;
-  document.getElementById("subjectTotal").textContent = subjects.size;
-  document.getElementById("noteWords").textContent = words;
+  $("noteCount").textContent = notes.length;
+  $("subjectCount").textContent = subjects.size;
+  $("wordCount").textContent = totalWords;
 }
 
-function updateSubjectFilter(){
-  const current = subjectFilter.value;
+/* =========================================
+   SUBJECT FILTER
+========================================= */
+
+function renderSubjectFilter() {
+  const select = $("noteSubjectFilter");
+  const previous = select.value;
 
   const subjects = [...new Set(
-    notes.map(note=>(note.subject || "").trim()).filter(Boolean)
-  )].sort((a,b)=>a.localeCompare(b));
+    notes.map(note => note.subject.trim())
+      .filter(Boolean)
+  )].sort((a, b) => a.localeCompare(b));
 
-  subjectFilter.innerHTML = '<option value="all">All Subjects</option>';
+  select.innerHTML = '<option value="all">All Subjects</option>';
 
-  subjects.forEach(subject=>{
+  subjects.forEach(subject => {
     const option = document.createElement("option");
     option.value = subject;
     option.textContent = subject;
-    subjectFilter.appendChild(option);
+    select.appendChild(option);
   });
 
-  if(subjects.includes(current)){
-    subjectFilter.value = current;
+  if (subjects.includes(previous)) {
+    select.value = previous;
   }
 }
 
-function renderNotes(){
-  updateNoteStats();
-  updateSubjectFilter();
+/* =========================================
+   DISPLAY NOTES
+========================================= */
 
-  const search = searchNotes.value.trim().toLowerCase();
-  const selectedSubject = subjectFilter.value;
+function renderNotes() {
+  const container = $("noteList");
 
-  const filtered = notes.filter(note=>{
+  const search = $("noteSearch").value.trim().toLowerCase();
+  const subject = $("noteSubjectFilter").value;
+
+  const filtered = notes.filter(note => {
+    const matchesSubject =
+      subject === "all" || note.subject === subject;
+
     const searchable = [
       note.title,
       note.subject,
-      note.tag,
+      note.topic,
       note.content
     ].join(" ").toLowerCase();
 
     const matchesSearch = searchable.includes(search);
-    const matchesSubject =
-      selectedSubject === "all" || note.subject === selectedSubject;
 
-    return matchesSearch && matchesSubject;
+    return matchesSubject && matchesSearch;
   });
 
-  notesGrid.innerHTML = "";
-
-  if(!filtered.length){
-    const message = document.createElement("div");
-    message.className = "empty";
-    message.textContent = notes.length
-      ? "No notes match your search."
-      : "Your saved study notes will appear here.";
-
-    notesGrid.appendChild(message);
+  if (!filtered.length) {
+    container.innerHTML = notes.length
+      ? '<div class="empty">No matching notes found.</div>'
+      : '<div class="empty">No notes yet. Create your first revision note.</div>';
     return;
   }
 
-  filtered.forEach(note=>{
+  container.innerHTML = "";
+
+  filtered.sort((a, b) =>
+    new Date(b.updatedAt || b.createdAt || 0) -
+    new Date(a.updatedAt || a.createdAt || 0)
+  );
+
+  filtered.forEach(note => {
     const card = document.createElement("article");
     card.className = "note-card";
 
     const title = document.createElement("h3");
     title.textContent = note.title;
 
-    const subject = document.createElement("div");
-    subject.className = "note-subject";
-    subject.textContent =
-      (note.subject || "Uncategorised") +
-      (note.tag ? " · " + note.tag : "");
+    const meta = document.createElement("div");
+    meta.className = "note-meta";
+    meta.textContent =
+      note.subject +
+      (note.topic ? " · " + note.topic : "");
 
     const preview = document.createElement("div");
     preview.className = "note-preview";
     preview.textContent = note.content;
 
-    const date = document.createElement("div");
-    date.className = "note-date";
-    date.textContent = "Last saved: " +
+    const date = document.createElement("p");
+    date.className = "small";
+    date.textContent = "Updated: " +
       new Date(note.updatedAt || note.createdAt).toLocaleString();
 
     const actions = document.createElement("div");
-    actions.className = "note-actions";
+    actions.className = "card-actions";
 
-    const edit = document.createElement("button");
-    edit.className = "secondary";
-    edit.textContent = "Edit";
-    edit.addEventListener("click",()=>editNote(note.id));
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.addEventListener("click", () => editNote(note.id));
 
     const exportButton = document.createElement("button");
-    exportButton.className = "secondary";
-    exportButton.textContent = "Export";
-    exportButton.addEventListener("click",()=>exportSingleNote(note));
+    exportButton.textContent = "Export TXT";
+    exportButton.addEventListener("click", () => exportSingleNote(note.id));
 
-    const remove = document.createElement("button");
-    remove.className = "danger";
-    remove.textContent = "Delete";
-    remove.addEventListener("click",()=>deleteNote(note.id));
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "danger";
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => deleteNote(note.id));
 
-    actions.append(edit,exportButton,remove);
-    card.append(title,subject,preview,date,actions);
-    notesGrid.appendChild(card);
+    actions.append(editButton, exportButton, deleteButton);
+    card.append(title, meta, preview, date, actions);
+    container.appendChild(card);
   });
 }
 
-saveNoteButton.addEventListener("click",()=>{
-  const title = noteTitle.value.trim();
-  const subject = noteSubject.value.trim();
-  const tag = noteTag.value.trim();
-  const content = noteContent.value.trim();
+/* =========================================
+   CREATE AND UPDATE NOTES
+========================================= */
 
-  if(!title || !content){
-    alert("Please enter a note title and some study content.");
+$("noteForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const title = $("noteTitle").value.trim();
+  const subject = $("noteSubject").value.trim();
+  const topic = $("noteTopic").value.trim();
+  const content = $("noteContent").value.trim();
+
+  if (!title || !subject || !content) {
+    alert("Please enter a title, subject and note content.");
     return;
   }
 
-  if(editingNoteId){
-    const note = notes.find(item=>item.id === editingNoteId);
+  const now = new Date().toISOString();
 
-    if(note){
-      note.title = title;
-      note.subject = subject;
-      note.tag = tag;
-      note.content = content;
-      note.updatedAt = new Date().toISOString();
+  if (editingNoteId) {
+    const index = notes.findIndex(note => note.id === editingNoteId);
+
+    if (index === -1) {
+      alert("This note could not be found.");
+      resetNoteForm();
+      return;
     }
-  }else{
-    notes.unshift({
-      id:makeId(),
-      title:title,
-      subject:subject,
-      tag:tag,
-      content:content,
-      createdAt:new Date().toISOString(),
-      updatedAt:new Date().toISOString()
-    });
+
+    const oldNote = notes[index];
+
+    notes[index] = {
+      ...oldNote,
+      title,
+      subject,
+      topic,
+      content,
+      updatedAt: now
+    };
+
+    if (!saveNotes()) return;
+
+    $("noteStatus").textContent = "Note updated successfully.";
+  } else {
+    const newNote = {
+      id: makeId(),
+      title,
+      subject,
+      topic,
+      content,
+      createdAt: now,
+      updatedAt: now
+    };
+
+    notes.unshift(newNote);
+
+    if (!saveNotes()) {
+      notes.shift();
+      return;
+    }
+
+    $("noteStatus").textContent = "Note saved successfully.";
   }
 
-  if(saveData(NOTE_KEY,notes)){
-    resetNoteForm();
-    renderNotes();
-  }
+  resetNoteForm();
+  renderEverything();
 });
 
-function editNote(id){
-  const note = notes.find(item=>item.id === id);
-  if(!note) return;
+function editNote(id) {
+  const note = notes.find(item => item.id === id);
+  if (!note) return;
 
   editingNoteId = id;
-  noteTitle.value = note.title;
-  noteSubject.value = note.subject || "";
-  noteTag.value = note.tag || "";
-  noteContent.value = note.content;
 
-  saveNoteButton.textContent = "Save Changes";
-  cancelEditButton.style.display = "inline-block";
+  $("noteTitle").value = note.title;
+  $("noteSubject").value = note.subject;
+  $("noteTopic").value = note.topic || "";
+  $("noteContent").value = note.content;
 
-  document.getElementById("noteTitle").scrollIntoView({
-    behavior:"smooth",
-    block:"center"
+  $("saveNoteButton").textContent = "Save Changes";
+  $("cancelEditNote").hidden = false;
+  $("noteStatus").textContent = "Editing: " + note.title;
+
+  $("noteForm").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
   });
 }
 
-cancelEditButton.addEventListener("click",resetNoteForm);
+function deleteNote(id) {
+  const note = notes.find(item => item.id === id);
+  if (!note) return;
 
-function deleteNote(id){
-  if(!confirm("Delete this study note permanently?")) return;
+  if (!confirm('Delete the note "' + note.title + '"?')) return;
 
-  notes = notes.filter(note=>note.id !== id);
+  const oldNotes = [...notes];
+  notes = notes.filter(item => item.id !== id);
 
-  if(editingNoteId === id) resetNoteForm();
+  if (!saveNotes()) {
+    notes = oldNotes;
+    return;
+  }
 
-  saveData(NOTE_KEY,notes);
-  renderNotes();
+  if (editingNoteId === id) resetNoteForm();
+
+  renderEverything();
 }
 
-function downloadText(filename,text){
-  const blob = new Blob([text],{type:"text/plain;charset=utf-8"});
+$("cancelEditNote").addEventListener("click", resetNoteForm);
+
+/* =========================================
+   SEARCH AND FILTER
+========================================= */
+
+$("noteSearch").addEventListener("input", renderNotes);
+
+$("noteSubjectFilter").addEventListener("change", renderNotes);
+
+/* =========================================
+   TXT EXPORT
+========================================= */
+
+function downloadTextFile(filename, content) {
+  const blob = new Blob([content], {
+    type: "text/plain;charset=utf-8"
+  });
+
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
 
   link.href = url;
   link.download = filename;
+
   document.body.appendChild(link);
   link.click();
   link.remove();
 
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-function exportSingleNote(note){
-  const text =
-    note.title + "\n" +
-    "Subject: " + (note.subject || "Uncategorised") + "\n" +
-    "Topic: " + (note.tag || "None") + "\n\n" +
+function exportSingleNote(id) {
+  const note = notes.find(item => item.id === id);
+  if (!note) return;
+
+  const content =
+    "HEXCLØWN STUDY NOTES\n" +
+    "====================\n\n" +
+    "Title: " + note.title + "\n" +
+    "Subject: " + note.subject + "\n" +
+    "Topic: " + (note.topic || "Not specified") + "\n\n" +
     note.content;
 
-  downloadText("study-note-" + note.title.replace(/[^a-z0-9]/gi,"-") + ".txt",text);
+  downloadTextFile(
+    "HEXCLAWN-" + note.title.replace(/[^a-z0-9-_]/gi, "_") + ".txt",
+    content
+  );
 }
 
-document.getElementById("exportAllNotes").addEventListener("click",()=>{
-  if(!notes.length){
+$("exportAllNotes").addEventListener("click", () => {
+  if (!notes.length) {
     alert("There are no notes to export.");
     return;
   }
 
-  const text = notes.map(note=>
-    "================================\n" +
-    note.title + "\n" +
-    "Subject: " + (note.subject || "Uncategorised") + "\n" +
-    "T
+  const content = notes.map((note, index) => {
+    return (
+      "NOTE " + (index + 1) + "\n" +
+      "Title: " + note.title + "\n" +
+      "Subject: " + note.subject + "\n" +
+      "Topic: " + (note.topic || "Not specified") + "\n\n" +
+      note.content + "\n\n" +
+      "----------------------------------------\n"
+    );
+  }).join("\n");
+
+  downloadTextFile("HEXCLAWN-All-Study-Notes.txt", content);
+});
+
+/* =========================================
+   NOTES INITIALISATION
+========================================= */
+
+function renderEverything() {
+  updateNoteStats();
+  renderSubjectFilter();
+  renderNotes();
+
+  if (typeof renderTasks === "function") {
+    renderTasks();
+  }
+}
+
+updateNoteStats();
+renderSubjectFilter();
+renderNotes();
+  
+/* =========================================
+   PART 3: DAILY STUDY PLANNER
+========================================= */
+
+let tasks = loadData(STORAGE.tasks, []);
+
+if (!Array.isArray(tasks)) tasks = [];
+
+let editingTaskId = null;
+
+function saveTasks() {
+  return saveData(STORAGE.tasks, tasks);
+}
+
+function getToday() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+
+  return year + "-" + month + "-" + day;
+}
+
+/* SET DEFAULT DATES */
+
+if (!$("taskDate").value) {
+  $("taskDate").value = getToday();
+}
+
+if (!$("plannerDate").value) {
+  $("plannerDate").value = getToday();
+}
+
+/* RESET TASK FORM */
+
+function resetTaskForm() {
+  $("taskForm").reset();
+
+  $("taskTime").value = "16:00";
+  $("taskDuration").value = "30";
+  $("taskPriority").value = "Medium";
+  $("taskDate").value = $("plannerDate").value || getToday();
+
+  editingTaskId = null;
+
+  $("saveTaskButton").textContent = "+ Add Study Task";
+  $("cancelEditTask").hidden = true;
+  $("taskStatus").textContent = "Ready to plan your study session.";
+}
+
+/* =========================================
+   TASK STATISTICS
+========================================= */
+
+function updateTaskStats() {
+  const selectedDate = $("plannerDate").value || getToday();
+
+  const dailyTasks = tasks.filter(task =>
+    task.date === selectedDate
+  );
+
+  const completed = dailyTasks.filter(task =>
+    task.completed
+  ).length;
+
+  const pending = dailyTasks.length - completed;
+
+  const percentage = dailyTasks.length
+    ? Math.round((completed / dailyTasks.length) * 100)
+    : 0;
+
+  $("taskTotal").textContent = dailyTasks.length;
+  $("taskCompleted").textContent = completed;
+  $("taskPending").textContent = pending;
+
+  $("dailyPercent").textContent = percentage + "%";
+  $("dailyProgress").style.width = percentage + "%";
+
+  if (!dailyTasks.length) {
+    $("dailyProgressText").textContent =
+      "No study tasks scheduled for this date.";
+  } else if (percentage === 100) {
+    $("dailyProgressText").textContent =
+      "Excellent! You completed all your tasks for today.";
+  } else {
+    $("dailyProgressText").textContent =
+      completed + " of " + dailyTasks.length +
+      " tasks completed. Keep going!";
+  }
+}
+
+/* =========================================
+   DISPLAY TASKS
+========================================= */
+
+function renderTasks() {
+  const container = $("taskList");
+
+  const selectedDate = $("plannerDate").value || getToday();
+  const filter = $("taskFilter").value;
+
+  let filtered = tasks.filter(task =>
+    task.date === selectedDate
+  );
+
+  if (filter === "pending") {
+    filtered = filtered.filter(task => !task.completed);
+  } else if (filter === "completed") {
+    filtered = filtered.filter(task => task.completed);
+  } else if (["High", "Medium", "Low"].includes(filter)) {
+    filtered = filtered.filter(task =>
+      task.priority === filter
+    );
+  }
+
+  filtered.sort((a, b) =>
+    (a.time || "").localeCompare(b.time || "")
+  );
+
+  $("visibleTaskCount").textContent =
+    filtered.length + (filtered.length === 1 ? " task" : " tasks");
+
+  container.innerHTML = "";
+
+  if (!filtered.length) {
+    container.innerHTML =
+      '<div class="empty">No tasks match this date and filter.</div>';
+
+    updateTaskStats();
+    return;
+  }
+
+  filtered.forEach(task => {
+    const card = document.createElement("article");
+
+    card.className = "task-card" +
+      (task.completed ? " task-complete" : "");
+
+    const top = document.createElement("div");
+    top.className = "task-top";
+
+    const titleArea = document.createElement("div");
+
+    const title = document.createElement("h3");
+    title.textContent = task.title;
+
+    const details = document.createElement("div");
+    details.className = "task-details";
+    details.textContent =
+      task.subject + " · " +
+      task.time + " · " +
+      task.duration + " minutes";
+
+    titleArea.append(title, details);
+
+    const priority = document.createElement("span");
+    priority.className = "priority " + task.priority;
+    priority.textContent = task.priority;
+
+    top.append(titleArea, priority);
+
+    const completionRow = document.createElement("label");
+    completionRow.className = "row";
+    completionRow.style.marginTop = "12px";
+    completionRow.style.fontSize = "12px";
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.className = "task-checkbox";
+    checkbox.checked = Boolean(task.completed);
+    checkbox.setAttribute("aria-label", "Mark task completed");
+
+    checkbox.addEventListener("change", () => {
+      toggleTask(task.id, checkbox.checked);
+    });
+
+    const checkboxText = document.createElement("span");
+    checkboxText.textContent = task.completed
+      ? "Completed"
+      : "Mark as completed";
+
+    completionRow.append(checkbox, checkboxText);
+
+    const actions = document.createElement("div");
+    actions.className = "card-actions";
+
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit Task";
+    editButton.addEventListener("click", () => editTask(task.id));
+
+    const deleteButton = document.createElement("button");
+    deleteButton.className = "danger";
+    deleteButton.textContent = "Delete Task";
+    deleteButton.addEventListener("click", () => deleteTask(task.id));
+
+    actions.append(editButton, deleteButton);
+
+    card.append(top, completionRow, actions);
+    container.appendChild(card);
+  });
+
+  updateTaskStats();
+}
+
+/* =========================================
+   ADD OR UPDATE TASK
+========================================= */
+
+$("taskForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const title = $("taskTitle").value.trim();
+  const subject = $("taskSubject").value.trim();
+  const date = $("taskDate").value;
+  const time = $("taskTime").value;
+  const duration = Number($("taskDuration").value);
+  const priority = $("taskPriority").value;
+
+  if (!title || !subject || !date || !time) {
+    alert("Please complete all task details.");
+    return;
+  }
+
+  if (!Number.isFinite(duration) || duration < 5 || duration > 720) {
+    alert("Study duration must be between 5 and 720 minutes.");
+    return;
+  }
+
+  if (!["High", "Medium", "Low"].includes(priority)) {
+    alert("Please select a valid priority.");
+    return;
+  }
+
+  if (editingTaskId) {
+    const index = tasks.findIndex(task =>
+      task.id === editingTaskId
+    );
+
+    if (index === -1) {
+      alert("This task could not be found.");
+      resetTaskForm();
+      return;
+    }
+
+    const oldTask = tasks[index];
+
+    tasks[index] = {
+      ...oldTask,
+      title,
+      subject,
+      date,
+      time,
+      duration,
+      priority,
+      updatedAt: new Date().toISOString()
+    };
+
+    if (!saveTasks()) {
+      tasks[index] = oldTask;
+      return;
+    }
+
+    $("taskStatus").textContent = "Task updated successfully.";
+
+  } else {
+    const newTask = {
+      id: makeId(),
+      title,
+      subject,
+      date,
+      time,
+      duration,
+      priority,
+      completed: false,
+      createdAt: new Date().toISOString()
+    };
+
+    tasks.push(newTask);
+
+    if (!saveTasks()) {
+      tasks.pop();
+      return;
+    }
+
+    $("taskStatus").textContent = "Study task added successfully.";
+  }
+
+  $("plannerDate").value = date;
+
+  resetTaskForm();
+  renderTasks();
+});
+
+/* =========================================
+   EDIT TASK
+========================================= */
+
+function editTask(id) {
+  const task = tasks.find(item => item.id === id);
+  if (!task) return;
+
+  editingTaskId = id;
+
+  $("taskTitle").value = task.title;
+  $("taskSubject").value = task.subject;
+  $("taskDate").value = task.date;
+  $("taskTime").value = task.time;
+  $("taskDuration").value = task.duration;
+  $("taskPriority").value = task.priority;
+
+  $("saveTaskButton").textContent = "Save Task Changes";
+  $("cancelEditTask").hidden = false;
+  $("taskStatus").textContent = "Editing: " + task.title;
+
+  $("taskForm").scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
+/* =========================================
+   COMPLETE / UNCOMPLETE TASK
+========================================= */
+
+function toggleTask(id, completed) {
+  const task = tasks.find(item => item.id === id);
+  if (!task) return;
+
+  const oldValue = task.completed;
+  task.completed = completed;
+  task.updatedAt = new Date().toISOString();
+
+  if (!saveTasks()) {
+    task.completed = oldValue;
+    renderTasks();
+    return;
+  }
+
+  renderTasks();
+}
+
+/* =========================================
+   DELETE TASK
+========================================= */
+
+function deleteTask(id) {
+  const task = tasks.find(item => item.id === id);
+  if (!task) return;
+
+  if (!confirm('Delete "' + task.title + '" from your planner?')) {
+    return;
+  }
+
+  const oldTasks = [...tasks];
+
+  tasks = tasks.filter(item => item.id !== id);
+
+  if (!saveTasks()) {
+    tasks = oldTasks;
+    return;
+  }
+
+  if (editingTaskId === id) {
+    resetTaskForm();
+  }
+
+  renderTasks();
+}
+
+/* =========================================
+   PLANNER CONTROLS
+========================================= */
+
+$("cancelEditTask").addEventListener("click", resetTaskForm);
+
+$("plannerDate").addEventListener("change", () => {
+  if (!$("plannerDate").value) {
+    $("plannerDate").value = getToday();
+  }
+
+  $("taskDate").value = $("plannerDate").value;
+  resetTaskForm();
+  renderTasks();
+});
+
+$("taskFilter").addEventListener("change", renderTasks);
+
+/* =========================================
+   START THE PAGE
+========================================= */
+
+renderEverything();
+renderTasks();
+
+$("noteStatus").textContent = "Your revision library is ready.";
+$("taskStatus").textContent = "Your study planner is ready.";
+
+</script>
+</body>
+</html>
