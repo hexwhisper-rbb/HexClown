@@ -1,1 +1,670 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090713">
+<title>Personality Editor | HEXCLØWN</title>
+
+<style>
+:root {
+  --bg: #090713;
+  --panel: #131027;
+  --purple: #a855f7;
+  --pink: #ff3cac;
+  --cyan: #00e5ff;
+  --blue: #4169ff;
+  --green: #b7ff35;
+  --gold: #ffd166;
+  --text: #f5f2ff;
+  --muted: #9992b5;
+  --border: rgba(255,255,255,.10);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  padding: 16px;
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  background:
+    radial-gradient(circle at 10% 5%, #281044 0, transparent 32%),
+    radial-gradient(circle at 90% 20%, #092b42 0, transparent 30%),
+    var(--bg);
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+.topbar {
+  max-width: 1050px;
+  margin: auto;
+  padding: 12px 0 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, var(--purple), var(--pink), var(--cyan));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.back-link {
+  color: var(--cyan);
+  text-decoration: none;
+  font-size: 12px;
+  padding: 10px 14px;
+  border: 1px solid rgba(0,229,255,.35);
+  border-radius: 9px;
+}
+
+.container {
+  max-width: 850px;
+  margin: 35px auto;
+}
+
+.eyebrow {
+  color: var(--green);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-size: clamp(27px, 6vw, 42px);
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+h1 span {
+  background: linear-gradient(90deg, var(--purple), var(--pink), var(--cyan));
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.intro {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 23px;
+}
+
+.bot-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 17px;
+  margin-bottom: 20px;
+  background: rgba(168,85,247,.09);
+  border: 1px solid rgba(168,85,247,.3);
+  border-radius: 13px;
+}
+
+.bot-avatar {
+  width: 55px;
+  height: 55px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: 28px;
+  background: #201335;
+  border: 1px solid var(--pink);
+  border-radius: 13px;
+}
+
+.bot-banner small {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.bot-banner h2 {
+  font-size: 17px;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+
+.form-panel {
+  padding: 22px;
+  background: linear-gradient(145deg, rgba(25,19,45,.97), rgba(12,13,29,.97));
+  border: 1px solid rgba(168,85,247,.25);
+  border-radius: 17px;
+  box-shadow: 0 0 35px rgba(110,40,180,.08);
+}
+
+.section-title {
+  color: var(--cyan);
+  font-size: 15px;
+  margin: 27px 0 17px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title:first-child {
+  margin-top: 0;
+}
+
+.field {
+  margin-bottom: 19px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 9px;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 7px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 13px;
+  color: var(--text);
+  background: #090b19;
+  border: 1px solid rgba(168,85,247,.25);
+  border-radius: 9px;
+  outline: none;
+  font-size: 14px;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 12px rgba(0,229,255,.12);
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+select {
+  cursor: pointer;
+}
+
+option {
+  background: #121023;
+  color: white;
+}
+
+.icon-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon-row input {
+  flex: 1;
+}
+
+.icon-preview {
+  width: 52px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  font-size: 25px;
+  background: #201335;
+  border: 1px solid var(--pink);
+  border-radius: 10px;
+}
+
+.grid-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.note {
+  padding: 12px;
+  margin-top: 18px;
+  color: #c9eefa;
+  background: rgba(0,229,255,.06);
+  border-left: 3px solid var(--cyan);
+  border-radius: 5px;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.save-btn {
+  flex: 1;
+  min-width: 180px;
+  padding: 15px;
+  color: white;
+  font-weight: 900;
+  background: linear-gradient(100deg, var(--purple), var(--pink), #e879f9);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255,60,172,.2);
+}
+
+.save-btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+.cancel-btn {
+  padding: 15px 20px;
+  color: var(--text);
+  text-decoration: none;
+  text-align: center;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.message {
+  display: none;
+  padding: 13px;
+  margin-top: 17px;
+  border-radius: 9px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.message.error {
+  display: block;
+  color: #ff9bba;
+  background: rgba(255,60,120,.09);
+  border: 1px solid rgba(255,60,120,.3);
+}
+
+.message.success {
+  display: block;
+  color: var(--green);
+  background: rgba(183,255,53,.08);
+  border: 1px solid rgba(183,255,53,.3);
+}
+
+.footer {
+  text-align: center;
+  color: #716b8b;
+  font-size: 11px;
+  margin: 35px 0 15px;
+  letter-spacing: 1px;
+}
+
+@media(max-width:600px) {
+  body {
+    padding: 13px;
+  }
+
+  .container {
+    margin-top: 25px;
+  }
+
+  .form-panel {
+    padding: 16px;
+  }
+
+  .grid-two {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="logo">HEXCLØWN</div>
+  <a class="back-link" href="mybots.html">← MY BOTS</a>
+</header>
+
+<main class="container">
+
+  <div class="eyebrow">PERSONALITY CONTROL ROOM / 002</div>
+
+  <h1>Rewrite Your <span>Bot's Mind.</span></h1>
+
+  <p class="intro">
+    Customize your bot's identity, personality and communication style.
+    Your changes will be saved to your HEXCLØWN workspace.
+  </p>
+
+  <div class="bot-banner">
+    <div class="bot-avatar" id="botAvatar">🤖</div>
+    <div>
+      <small>EDITING BOT</small>
+      <h2 id="botDisplayName">Loading bot...</h2>
+    </div>
+  </div>
+
+  <form id="personalityForm" class="form-panel">
+
+    <h2 class="section-title">01 / IDENTITY SETTINGS</h2>
+
+    <div class="field">
+      <label for="botName">Bot Name</label>
+      <input type="text" id="botName" maxlength="60" required>
+    </div>
+
+    <div class="field">
+      <label for="botIcon">Bot Icon</label>
+      <div class="icon-row">
+        <input type="text" id="botIcon" maxlength="8">
+        <div class="icon-preview" id="iconPreview">🤖</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="botDescription">Description</label>
+      <textarea id="botDescription" maxlength="500" required></textarea>
+    </div>
+
+    <div class="grid-two">
+
+      <div class="field">
+        <label for="botCategory">Category</label>
+        <select id="botCategory">
+          <option value="General">General</option>
+          <option value="Assistant">Assistant</option>
+          <option value="Education">Education</option>
+          <option value="Coding">Coding</option>
+          <option value="Creative">Creative</option>
+          <option value="Music">Music</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Productivity">Productivity</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="botVisibility">Visibility Preference</label>
+        <select id="botVisibility">
+          <option value="private">Private</option>
+          <option value="unlisted">Unlisted</option>
+          <option value="public">Public</option>
+        </select>
+      </div>
+
+    </div>
+
+    <h2 class="section-title">02 / PERSONALITY ENGINE</h2>
+
+    <div class="field">
+      <label for="botPersonality">Personality</label>
+      <textarea id="botPersonality"
+        placeholder="Describe your bot's personality..."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="responseStyle">Response Style</label>
+      <select id="responseStyle">
+        <option value="friendly">Friendly</option>
+        <option value="professional">Professional</option>
+        <option value="casual">Casual</option>
+        <option value="concise">Concise</option>
+        <option value="creative">Creative</option>
+        <option value="humorous">Humorous</option>
+      </select>
+    </div>
+
+    <h2 class="section-title">03 / BEHAVIOUR & MESSAGES</h2>
+
+    <div class="field">
+      <label for="botInstructions">Custom Instructions</label>
+      <textarea id="botInstructions"
+        placeholder="Rules and instructions for your bot..."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="welcomeMessage">Welcome Message</label>
+      <textarea id="welcomeMessage"
+        placeholder="Your bot's welcome message..."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="conversationStarter">Conversation Starter</label>
+      <input type="text" id="conversationStarter" maxlength="250">
+    </div>
+
+    <div id="formMessage" class="message"></div>
+
+    <div class="note">
+      Your edits update the bot's saved configuration. These settings do not
+      independently connect the bot to a generative AI service.
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="save-btn" id="saveButton" disabled>
+        SAVE CHANGES
+      </button>
+
+      <a href="mybots.html" class="cancel-btn">CANCEL</a>
+    </div>
+
+  </form>
+
+</main>
+
+<footer class="footer">
+  HEXCLØWN BOT ZONE · PERSONALITY SYSTEM
+</footer>
+
+</body>
+  
+<script src="botzone-core.js"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  const form = document.getElementById("personalityForm");
+  const saveButton = document.getElementById("saveButton");
+  const messageBox = document.getElementById("formMessage");
+
+  const params = new URLSearchParams(window.location.search);
+  const botId = params.get("bot");
+
+  let currentBot = null;
+  let saving = false;
+
+  function showMessage(message, type) {
+    messageBox.textContent = message;
+    messageBox.className = "message " + type;
+  }
+
+  function setSaving(value) {
+    saving = value;
+    saveButton.disabled = value || !currentBot;
+    saveButton.textContent = value
+      ? "SAVING CHANGES..."
+      : "SAVE CHANGES";
+  }
+
+  function setValue(id, value) {
+    document.getElementById(id).value = value ?? "";
+  }
+
+  function getValue(id) {
+    return document.getElementById(id).value.trim();
+  }
+
+  function updateBotPreview() {
+    const name = getValue("botName") || "Unnamed Bot";
+    const icon = getValue("botIcon") || "🤖";
+
+    document.getElementById("botDisplayName").textContent = name;
+    document.getElementById("botAvatar").textContent = icon;
+    document.getElementById("iconPreview").textContent = icon;
+  }
+
+  function fillForm(bot) {
+    setValue("botName", bot.name);
+    setValue("botIcon", bot.icon || "🤖");
+    setValue("botDescription", bot.description);
+    setValue("botCategory", bot.category || "General");
+    setValue("botVisibility", bot.visibility || "private");
+    setValue("botPersonality", bot.personality);
+    setValue("responseStyle", bot.response_style || "friendly");
+    setValue("botInstructions", bot.instructions);
+    setValue("welcomeMessage", bot.welcome_message);
+    setValue("conversationStarter", bot.conversation_starter);
+
+    updateBotPreview();
+  }
+
+  async function initializeEditor() {
+    try {
+      if (!botId) {
+        throw new Error(
+          "No bot selected. Open this editor from My Bots."
+        );
+      }
+
+      if (!window.HEX) {
+        throw new Error(
+          "HEXCLØWN Core did not load. Check botzone-core.js."
+        );
+      }
+
+      await HEX.initialize();
+
+      const user = await HEX.getUser();
+
+      if (!user) {
+        window.location.href = "whisperbots.html";
+        return;
+      }
+
+      const bot = await HEX.bots.get(botId);
+
+      if (!bot) {
+        throw new Error("This bot could not be found.");
+      }
+
+      currentBot = bot;
+
+      fillForm(bot);
+
+      saveButton.disabled = false;
+
+      console.log("PERSONALITY EDITOR READY");
+      console.log("BOT:", bot.name);
+      console.log("BOT ID:", bot.id);
+
+    } catch (error) {
+      console.error("EDITOR INITIALIZATION ERROR:", error);
+
+      showMessage(
+        error.message || "Unable to load this bot.",
+        "error"
+      );
+
+      saveButton.disabled = true;
+    }
+  }
+
+  document.getElementById("botName")
+    .addEventListener("input", updateBotPreview);
+
+  document.getElementById("botIcon")
+    .addEventListener("input", updateBotPreview);
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    if (saving || !currentBot) return;
+
+    messageBox.className = "message";
+
+    try {
+      const name = getValue("botName");
+      const description = getValue("botDescription");
+
+      if (!name) {
+        throw new Error("Bot name cannot be empty.");
+      }
+
+      if (!description) {
+        throw new Error("Bot description cannot be empty.");
+      }
+
+      const updates = {
+        name: name,
+        icon: getValue("botIcon") || "🤖",
+        description: description,
+        category: getValue("botCategory"),
+        visibility: getValue("botVisibility"),
+        personality: getValue("botPersonality"),
+        response_style: getValue("responseStyle"),
+        instructions: getValue("botInstructions"),
+        welcome_message: getValue("welcomeMessage"),
+        conversation_starter: getValue("conversationStarter"),
+        updated_at: new Date().toISOString()
+      };
+
+      setSaving(true);
+
+      const result = await HEX.bots.update(botId, updates);
+
+      if (!result) {
+        throw new Error("The update did not return a result.");
+      }
+
+      currentBot = result;
+
+      fillForm(currentBot);
+
+      showMessage(
+        "SUCCESS! Your bot's personality has been updated.",
+        "success"
+      );
+
+      console.log("BOT UPDATED:", result);
+
+      setSaving(false);
+
+    } catch (error) {
+      console.error("BOT UPDATE ERROR:", error);
+
+      showMessage(
+        error.message || "Unable to save your changes.",
+        "error"
+      );
+
+      setSaving(false);
+    }
+  });
+
+  initializeEditor();
+
+})();
+</script>
+
+</body>
+</html>
+
+      </html>
+
