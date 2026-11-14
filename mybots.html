@@ -11,7 +11,7 @@
 :root {
   --bg:#090713;
   --panel:#131020;
-  --panel2:#19132a;
+  --panel2:#1b1530;
   --purple:#a855f7;
   --pink:#f43f9b;
   --cyan:#22d3ee;
@@ -20,7 +20,7 @@
   --gold:#fbbf24;
   --text:#f4efff;
   --muted:#9c94ad;
-  --border:rgba(168,85,247,.23);
+  --border:rgba(168,85,247,.25);
 }
 
 * {
@@ -30,13 +30,13 @@
 }
 
 body {
+  min-height:100vh;
   background:
-    radial-gradient(ellipse at 10% 0%,rgba(168,85,247,.13),transparent 35%),
-    radial-gradient(ellipse at 90% 20%,rgba(244,63,155,.08),transparent 35%),
+    radial-gradient(ellipse at 10% 0%,rgba(168,85,247,.15),transparent 35%),
+    radial-gradient(ellipse at 90% 20%,rgba(244,63,155,.09),transparent 35%),
     var(--bg);
   color:var(--text);
-  font-family:Arial, sans-serif;
-  min-height:100vh;
+  font-family:Arial,sans-serif;
 }
 
 button,input {
@@ -60,7 +60,7 @@ a {
   justify-content:space-between;
   gap:12px;
   border-bottom:1px solid var(--border);
-  background:rgba(9,7,19,.88);
+  background:rgba(9,7,19,.94);
   position:sticky;
   top:0;
   z-index:20;
@@ -85,7 +85,7 @@ a {
   display:flex;
   gap:16px;
   align-items:center;
-  font-size:12px;
+  font-size:11px;
   color:var(--muted);
 }
 
@@ -161,7 +161,6 @@ a {
   border:1px solid var(--border);
   padding:18px;
   border-radius:13px;
-  min-width:0;
 }
 
 .stat-label {
@@ -203,7 +202,6 @@ a {
 
 .search:focus {
   border-color:var(--cyan);
-  box-shadow:0 0 12px rgba(34,211,238,.12);
 }
 
 .filters {
@@ -277,6 +275,7 @@ a {
   background:var(--glow,var(--purple));
   filter:blur(55px);
   opacity:.3;
+  pointer-events:none;
 }
 
 .bot-top {
@@ -284,7 +283,6 @@ a {
   justify-content:space-between;
   align-items:center;
   gap:10px;
-  position:relative;
 }
 
 .bot-icon {
@@ -378,6 +376,12 @@ a {
   grid-column:span 2;
 }
 
+.action:disabled,
+.primary-btn:disabled {
+  opacity:.5;
+  cursor:not-allowed;
+}
+
 .empty {
   grid-column:1/-1;
   text-align:center;
@@ -411,6 +415,7 @@ a {
   border-radius:8px;
   font-size:12px;
   line-height:1.6;
+  overflow-wrap:anywhere;
 }
 
 .notice.error {
@@ -476,7 +481,7 @@ a {
 
 <main class="container">
 
-  <div class="hero">
+  <section class="hero">
     <div>
       <div class="eyebrow">PERSONAL AI WORKSPACE / 01</div>
       <h1>MY <span class="gradient-text">BOTS</span></h1>
@@ -490,7 +495,7 @@ a {
       onclick="location.href='createbot.html'">
       + CREATE NEW BOT
     </button>
-  </div>
+  </section>
 
   <div id="notice" class="notice"></div>
 
@@ -499,17 +504,14 @@ a {
       <div class="stat-label">Total Bots</div>
       <div class="stat-number" id="totalBots">—</div>
     </div>
-
     <div class="stat">
       <div class="stat-label">Active</div>
       <div class="stat-number" id="activeBots">—</div>
     </div>
-
     <div class="stat">
       <div class="stat-label">Favorites</div>
       <div class="stat-number" id="favoriteBots">—</div>
     </div>
-
     <div class="stat">
       <div class="stat-label">Inactive</div>
       <div class="stat-number" id="inactiveBots">—</div>
@@ -548,19 +550,18 @@ a {
   HEXCLØWN BOT ZONE · PERSONAL BOT MANAGEMENT SYSTEM
 </footer>
 
-<script src="botzone-core.js?v=4.0.0"></script>
-
 <script>
 (function () {
   "use strict";
 
-  const HEX = window["HEXCLØWN"];
-  const grid = document.getElementById("botGrid");
-  const notice = document.getElementById("notice");
-
+  let HEX = null;
   let allBots = [];
   let currentFilter = "all";
   let searchText = "";
+  let busy = false;
+
+  const grid = document.getElementById("botGrid");
+  const notice = document.getElementById("notice");
 
   function escapeHTML(value) {
     return String(value == null ? "" : value)
@@ -579,6 +580,53 @@ a {
   function clearNotice() {
     notice.className = "notice";
     notice.textContent = "";
+  }
+
+  function showLoading(message) {
+    grid.innerHTML =
+      '<div class="loading">' + escapeHTML(message) + '</div>';
+  }
+
+  function loadCore() {
+    return new Promise(function (resolve, reject) {
+      const script = document.createElement("script");
+
+      script.src = "./botzone-core.js?v=4.0.1";
+      script.async = true;
+
+      script.onload = function () {
+        const core = window["HEXCLØWN"] || window.HEX;
+
+        if (!core) {
+          reject(new Error(
+            "The core script loaded, but its HEXCLØWN global was not found. Check the global export in botzone-core.js."
+          ));
+          return;
+        }
+
+        if (
+          typeof core.initialize !== "function" ||
+          typeof core.getSession !== "function" ||
+          !core.bots ||
+          typeof core.bots.list !== "function"
+        ) {
+          reject(new Error(
+            "The core loaded, but required functions are missing. Check botzone-core.js."
+          ));
+          return;
+        }
+
+        resolve(core);
+      };
+
+      script.onerror = function () {
+        reject(new Error(
+          "Could not load botzone-core.js. Check the file path and GitHub Pages deployment."
+        ));
+      };
+
+      document.head.appendChild(script);
+    });
   }
 
   function updateStats() {
@@ -616,7 +664,8 @@ a {
     const filtered = getFilteredBots();
 
     document.getElementById("resultCount").textContent =
-      filtered.length + " BOT" + (filtered.length === 1 ? "" : "S");
+      filtered.length + " BOT" +
+      (filtered.length === 1 ? "" : "S");
 
     if (!filtered.length) {
       const isEmpty = allBots.length === 0;
@@ -646,10 +695,9 @@ a {
       const category = escapeHTML(bot.category || "General");
 
       return `
-        <article class="bot-card" data-id="${id}">
+        <article class="bot-card">
           <div class="bot-top">
             <div class="bot-icon">${icon}</div>
-
             <button
               class="favorite ${bot.favorite ? "on" : ""}"
               data-action="favorite"
@@ -660,7 +708,6 @@ a {
           </div>
 
           <h3 class="bot-name">${name}</h3>
-
           <p class="bot-description">${description}</p>
 
           <div class="bot-meta">
@@ -672,26 +719,22 @@ a {
 
           <div class="bot-actions">
             <button class="action wide"
-              data-action="play"
-              data-id="${id}">
+              data-action="play" data-id="${id}">
               OPEN PLAYGROUND ↗
             </button>
 
             <button class="action"
-              data-action="edit"
-              data-id="${id}">
+              data-action="edit" data-id="${id}">
               EDIT BOT
             </button>
 
             <button class="action"
-              data-action="toggle"
-              data-id="${id}">
+              data-action="toggle" data-id="${id}">
               ${bot.active ? "DEACTIVATE" : "ACTIVATE"}
             </button>
 
             <button class="action danger wide"
-              data-action="delete"
-              data-id="${id}">
+              data-action="delete" data-id="${id}">
               DELETE BOT
             </button>
           </div>
@@ -701,23 +744,25 @@ a {
   }
 
   async function loadBots() {
-    grid.innerHTML =
-      '<div class="loading">CONNECTING TO YOUR BOT DATABASE...</div>';
-
+    showLoading("CONNECTING TO YOUR BOT DATABASE...");
     clearNotice();
 
     try {
-      if (!HEX) {
-        throw new Error("HEXCLØWN core was not found.");
-      }
-
       const initialized = await HEX.initialize();
 
-      if (!initialized.authenticated || !initialized.user) {
+      if (
+        !initialized ||
+        !initialized.authenticated ||
+        !initialized.user
+      ) {
+        allBots = [];
+        updateStats();
+
         showNotice(
-          "Your session has expired. Please sign in again.",
+          "Your session is not authenticated. Please sign in again.",
           "error"
         );
+
         grid.innerHTML = `
           <div class="empty">
             <div class="empty-icon">🔐</div>
@@ -732,7 +777,15 @@ a {
         return;
       }
 
-      allBots = await HEX.bots.list();
+      const result = await HEX.bots.list();
+
+      if (!Array.isArray(result)) {
+        throw new Error(
+          "Unexpected response from the bot database."
+        );
+      }
+
+      allBots = result;
 
       updateStats();
       renderBots();
@@ -740,12 +793,18 @@ a {
     } catch (error) {
       console.error("MY BOTS ERROR:", error);
 
+      showNotice(
+        error.message || "Unable to load your bots.",
+        "error"
+      );
+
       grid.innerHTML = `
         <div class="empty">
           <div class="empty-icon">⚠️</div>
           <h3>Unable to Load Bots</h3>
           <p>${escapeHTML(error.message)}</p>
-          <button class="primary-btn" onclick="location.reload()">
+          <button class="primary-btn"
+            onclick="location.reload()">
             TRY AGAIN
           </button>
         </div>
@@ -754,6 +813,8 @@ a {
   }
 
   async function handleAction(action, id) {
+    if (busy) return;
+
     const bot = allBots.find(item => item.id === id);
 
     if (!bot) {
@@ -761,46 +822,60 @@ a {
       return;
     }
 
+    if (action === "edit") {
+      location.href =
+        "personalityeditor.html?bot=" + encodeURIComponent(id);
+      return;
+    }
+
+    if (action === "play") {
+      location.href =
+        "botplayground.html?bot=" + encodeURIComponent(id);
+      return;
+    }
+
+    if (action === "delete") {
+      const confirmed = confirm(
+        'Delete "' + (bot.name || "this bot") +
+        '"? This action cannot be undone.'
+      );
+
+      if (!confirmed) return;
+    }
+
+    busy = true;
+
     try {
       clearNotice();
 
       if (action === "favorite") {
         await HEX.bots.toggleFavorite(id);
-        showNotice("Favorite status updated.", "success");
-        await loadBots();
-      }
-
-      if (action === "toggle") {
+      } else if (action === "toggle") {
         await HEX.bots.toggleActive(id);
-        showNotice("Bot status updated.", "success");
-        await loadBots();
-      }
-
-      if (action === "delete") {
-        const confirmed = confirm(
-          'Delete "' + bot.name + '"? This action cannot be undone.'
-        );
-
-        if (!confirmed) return;
-
+      } else if (action === "delete") {
         await HEX.bots.delete(id);
+      }
+
+      await loadBots();
+
+      if (action === "favorite") {
+        showNotice("Favorite status updated.", "success");
+      } else if (action === "toggle") {
+        showNotice("Bot status updated.", "success");
+      } else if (action === "delete") {
         showNotice("Bot deleted successfully.", "success");
-        await loadBots();
-      }
-
-      if (action === "edit") {
-        location.href =
-          "personalityeditor.html?bot=" + encodeURIComponent(id);
-      }
-
-      if (action === "play") {
-        location.href =
-          "botplayground.html?bot=" + encodeURIComponent(id);
       }
 
     } catch (error) {
       console.error("BOT ACTION ERROR:", error);
-      showNotice(error.message || "That action failed.", "error");
+
+      showNotice(
+        error.message || "That action failed.",
+        "error"
+      );
+
+    } finally {
+      busy = false;
     }
   }
 
@@ -833,9 +908,38 @@ a {
     });
   });
 
-  loadBots();
+  async function start() {
+    try {
+      showLoading("LOADING HEXCLØWN CORE...");
 
-})();
+      HEX = await loadCore();
+
+      console.log(
+        "HEXCLØWN CORE LOADED:",
+        HEX.version || "Version not exposed"
+      );
+
+      await loadBots();
+
+    } catch (error) {
+      console.error("HEXCLØWN CORE LOAD ERROR:", error);
+
+      showNotice(error.message, "error");
+
+      grid.innerHTML = `
+        <div class="empty">
+          <div class="empty-icon">⚠️</div>
+          <h3>HEXCLØWN Core Error</h3>
+          <p>${escapeHTML(error.message)}</p>
+          <button class="primary-btn"
+            onclick="location.reload()">
+            RETRY CONNECTION
+          </button></div>
+      `;
+    }
+  }
+
+  start();})();
 </script>
 
 </body>
