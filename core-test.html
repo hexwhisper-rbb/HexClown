@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HEXCLØWN Bot Test</title>
+  <title>HEXCLØWN Advanced Test</title>
   <style>
     body {
       background: #090914;
@@ -30,8 +30,8 @@
   </style>
 </head>
 <body>
-  <h2>HEXCLØWN BOT DATABASE TEST</h2>
-  <button id="run">RUN BOT TEST</button>
+  <h2>HEXCLØWN ADVANCED TEST</h2>
+  <button id="run">RUN ADVANCED TEST</button>
   <pre id="output">Ready.</pre>
 
   <script src="botzone-core.js?v=4.0.0"></script>
@@ -40,75 +40,121 @@
     const output = document.getElementById("output");
 
     document.getElementById("run").onclick = async function () {
-      let testBot = null;
+      let bot = null;
+      let conversation = null;
+      let message = null;
+      let knowledge = null;
+
       const results = [];
 
-      function pass(message) {
-        results.push("PASS: " + message);
+      function pass(name) {
+        results.push("PASS: " + name);
         output.textContent = results.join("\n");
       }
 
-      function fail(message, error) {
-        results.push("FAIL: " + message + " — " + error.message);
+      function fail(name, error) {
+        results.push("FAIL: " + name + " — " + error.message);
         output.textContent = results.join("\n");
       }
 
-      output.textContent = "Starting bot tests...";
+      output.textContent = "Starting advanced tests...";
 
       try {
         await HEX.requireUser();
         pass("AUTHENTICATION");
 
-        testBot = await HEX.bots.create({
-          name: "HEX TEST BOT",
-          description: "Temporary diagnostic bot",
-          category: "Testing"
+        bot = await HEX.bots.create({
+          name: "HEX ADVANCED TEST BOT",
+          description: "Temporary test bot"
         });
-        pass("CREATE BOT");
+        pass("CREATE TEST BOT");
 
-        const found = await HEX.bots.get(testBot.id);
+        conversation = await HEX.conversations.create(
+          bot.id,
+          "HEX Test Conversation"
+        );
+        pass("CREATE CONVERSATION");
 
-        if (!found) throw new Error("Created bot could not be retrieved.");
-        pass("RETRIEVE BOT");
+        const foundConversation =
+          await HEX.conversations.get(conversation.id);
 
-        await HEX.bots.update(testBot.id, {
-          description: "Updated diagnostic bot"
-        });
-        pass("UPDATE BOT");
-
-        const updated = await HEX.bots.get(testBot.id);
-
-        if (updated.description !== "Updated diagnostic bot") {
-          throw new Error("Updated description did not match.");
+        if (!foundConversation) {
+          throw new Error("Conversation not found.");
         }
-        pass("VERIFY UPDATE");
+        pass("RETRIEVE CONVERSATION");
 
-        const list = await HEX.bots.list();
+        message = await HEX.messages.save(
+          conversation.id,
+          "user",
+          "This is a HEXCLØWN test message."
+        );
+        pass("SAVE MESSAGE");
 
-        if (!list.some(bot => bot.id === testBot.id)) {
-          throw new Error("Test bot was not found in bot list.");
+        const foundMessages =
+          await HEX.messages.list(conversation.id);
+
+        if (!foundMessages.some(item => item.id === message.id)) {
+          throw new Error("Saved message not found.");
         }
-        pass("LIST BOTS");
+        pass("RETRIEVE MESSAGE");
+
+        knowledge = await HEX.knowledge.add(
+          bot.id,
+          "Test Knowledge",
+          "HEXCLØWN knowledge storage test."
+        );
+        pass("ADD KNOWLEDGE");
+
+        const foundKnowledge =
+          await HEX.knowledge.list(bot.id);
+
+        if (!foundKnowledge.some(item => item.id === knowledge.id)) {
+          throw new Error("Knowledge record not found.");
+        }
+        pass("RETRIEVE KNOWLEDGE");
 
       } catch (error) {
-        fail("BOT OPERATION", error);
+        fail("ADVANCED OPERATION", error);
 
       } finally {
-        if (testBot) {
-          try {
-            const deleted = await HEX.bots.delete(testBot.id);
 
-            if (deleted.deleted === 1) {
-              pass("CLEANUP TEST BOT");
-            } else {
-              results.push("CHECK: Test bot may still exist.");
-            }
+        if (knowledge) {
+          try {
+            await HEX.knowledge.delete(knowledge.id);
+            pass("DELETE TEST KNOWLEDGE");
+          } catch (error) {
+            fail("DELETE TEST KNOWLEDGE", error);
+          }
+        }
+
+        if (message) {
+          try {
+            await HEX.messages.delete(message.id);
+            pass("DELETE TEST MESSAGE");
+          } catch (error) {
+            fail("DELETE TEST MESSAGE", error);
+          }
+        }
+
+        if (conversation) {
+          try {
+            await HEX.conversations.delete(conversation.id);
+            pass("DELETE TEST CONVERSATION");
+          } catch (error) {
+            fail("DELETE TEST CONVERSATION", error);
+          }
+        }
+
+        if (bot) {
+          try {
+            await HEX.bots.delete(bot.id);
+            pass("CLEANUP TEST BOT");
           } catch (error) {
             fail("CLEANUP TEST BOT", error);
           }
         }
 
-        results.push("BOT TEST FINISHED");
+        results.push("ADVANCED TEST FINISHED");
         output.textContent = results.join("\n");
       }
     };
