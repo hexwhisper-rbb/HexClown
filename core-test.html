@@ -4,67 +4,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HEXCLØWN Core Test</title>
+  <title>HEXCLØWN Auth Test</title>
   <style>
     body {
       background: #090914;
-      color: #e9e9ff;
+      color: white;
       font-family: Arial, sans-serif;
       padding: 20px;
     }
-    h2 { color: #bd65ff; }
+    input, button {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      margin: 8px 0;
+      border-radius: 8px;
+    }
+    input {
+      background: #17172a;
+      color: white;
+      border: 1px solid #555;
+    }
+    button {
+      background: #a855f7;
+      color: white;
+      border: 0;
+      font-weight: bold;
+    }
     pre {
       background: #17172a;
-      border: 1px solid #454064;
       padding: 15px;
-      border-radius: 10px;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
     }
   </style>
 </head>
 <body>
-  <h2>HEXCLØWN CORE DIAGNOSTIC</h2>
-  <p>Checking your Bot Zone core...</p>
-  <pre id="results">Starting test...</pre>
+  <h2>HEXCLØWN AUTHENTICATION TEST</h2>
+
+  <input id="email" type="email" placeholder="Your account email">
+  <input id="password" type="password" placeholder="Your password">
+
+  <button id="login">TEST SIGN IN</button>
+  <button id="session">CHECK SESSION</button>
+  <button id="logout">SIGN OUT</button>
+
+  <pre id="output">Ready.</pre>
 
   <script src="botzone-core.js?v=4.0.0"></script>
   <script>
-    const output = document.getElementById("results");
-
-    function report(message) {
-      output.textContent += "\n" + message;
-    }
-
-    output.textContent = "CORE GLOBAL: " +
-      (window["HEXCLØWN"] ? "PASS" : "FAIL");
-
-    report("HEX GLOBAL: " +
-      (window.HEX ? "PASS" : "FAIL"));
-
+    const output = document.getElementById("output");
     const HEX = window["HEXCLØWN"];
 
-    if (HEX) {
-      report("CORE VERSION: " + HEX.version);
-      report("getSession: " +
-        (typeof HEX.getSession === "function" ? "PASS" : "FAIL"));
-      report("signIn: " +
-        (typeof HEX.signIn === "function" ? "PASS" : "FAIL"));
-      report("signOut: " +
-        (typeof HEX.signOut === "function" ? "PASS" : "FAIL"));
-      report("initialize: " +
-        (typeof HEX.initialize === "function" ? "PASS" : "FAIL"));
-      report("bots.list: " +
-        (typeof HEX.bots?.list === "function" ? "PASS" : "FAIL"));
-      report("conversations.list: " +
-        (typeof HEX.conversations?.list === "function" ? "PASS" : "FAIL"));
-      report("messages.save: " +
-        (typeof HEX.messages?.save === "function" ? "PASS" : "FAIL"));
-      report("knowledge.add: " +
-        (typeof HEX.knowledge?.add === "function" ? "PASS" : "FAIL"));
-      report("analytics.overview: " +
-        (typeof HEX.analytics?.overview === "function" ? "PASS" : "FAIL"));
+    function show(message) {
+      output.textContent = message;
     }
+
+    document.getElementById("login").onclick = async function () {
+      show("Testing sign in...");
+
+      try {
+        const result = await HEX.signIn(
+          document.getElementById("email").value,
+          document.getElementById("password").value
+        );
+
+        show(
+          "SIGN IN: PASS\n" +
+          "USER ID: " + result.user.id + "\n" +
+          "SESSION: " + !!result.session
+        );
+      } catch (error) {
+        show("SIGN IN: FAIL\n" + error.message);
+      }
+    };
+
+    document.getElementById("session").onclick = async function () {
+      show("Checking session...");
+
+      try {
+        const session = await HEX.getSession();
+
+        show(
+          session
+            ? "SESSION: ACTIVE\nUSER ID: " + session.user.id
+            : "SESSION: NOT FOUND"
+        );
+      } catch (error) {
+        show("SESSION ERROR:\n" + error.message);
+      }
+    };
+
+    document.getElementById("logout").onclick = async function () {
+      try {
+        await HEX.signOut();
+        show("SIGN OUT: PASS");
+      } catch (error) {
+        show("SIGN OUT: FAIL\n" + error.message);
+      }
+    };
   </script>
 </body>
 </html>
