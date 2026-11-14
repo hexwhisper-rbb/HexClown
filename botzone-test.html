@@ -41,41 +41,97 @@
   <div id="result">Waiting for test...</div>
 
   
+
 <script src="./botzone-core.js"></script>
 
 <script>
 async function runTests() {
   const output = document.getElementById("result");
 
-  output.textContent = "Checking authentication and database...";
+  let testBot = null;
+  let report = [];
+
+  output.textContent = "Starting bot database tests...";
 
   try {
     await window.HEXCLØWN.ready();
 
+    // Check authentication
     const user = await window.HEXCLØWN.auth.getUser();
 
     if (!user) {
-      output.textContent =
-        "AUTHENTICATION: NOT SIGNED IN\n\n" +
-        "Please sign in again.";
-      return;
+      throw new Error("Please sign in first.");
     }
 
-    const bots = await window.HEXCLØWN.bots.list();
+    report.push("AUTHENTICATION: PASS");
 
-    output.textContent =
-      "CORE: LOADED\n\n" +
-      "AUTHENTICATION: SUCCESSFUL\n\n" +
-      "DATABASE ACCESS: SUCCESSFUL\n\n" +
-      "ACCOUNT: " + user.email + "\n\n" +
-      "BOTS FOUND: " + bots.length;
+    // CREATE
+    testBot = await window.HEXCLØWN.bots.create({
+      name: "HEXCLØWN Temporary Test Bot",
+      description: "Temporary database test. Safe to delete.",
+      category: "Testing",
+      icon: "🧪",
+      visibility: "private",
+      personality: "Helpful",
+      response_style: "Friendly",
+      active: true,
+      favorite: false,
+      settings: {
+        temporary_test: true
+      }
+    });
+
+    report.push("CREATE BOT: PASS");
+
+    // RETRIEVE
+    const foundBot =
+      await window.HEXCLØWN.bots.get(testBot.id);
+
+    if (!foundBot) {
+      throw new Error("Created bot could not be retrieved.");
+    }
+
+    report.push("RETRIEVE BOT: PASS");
+
+    // UPDATE
+    const updatedBot =
+      await window.HEXCLØWN.bots.update(testBot.id, {
+        description: "Updated successfully during database test."
+      });
+
+    if (
+      updatedBot.description !==
+      "Updated successfully during database test."
+    ) {
+      throw new Error("Bot update verification failed.");
+    }
+
+    report.push("UPDATE BOT: PASS");
 
   } catch (error) {
-    output.textContent =
-      "TEST FAILED\n\n" + error.message;
+    report.push("ERROR: " + error.message);
+
+  } finally {
+
+    // DELETE ONLY THE TEMPORARY BOT CREATED ABOVE
+    if (testBot && testBot.id) {
+      try {
+        await window.HEXCLØWN.bots.delete(testBot.id);
+        report.push("DELETE TEST BOT: PASS");
+      } catch (error) {
+        report.push(
+          "DELETE TEST BOT: FAILED - " + error.message
+        );
+      }
+    } else {
+      report.push("DELETE TEST BOT: NOT NEEDED");
+    }
+
+    output.textContent = report.join("\n\n");
   }
 }
 </script>
+  
   
 
 </body>
