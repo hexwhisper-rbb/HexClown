@@ -699,14 +699,41 @@ h1 span {
         );
       }
 
-      await HEX.initialize();
+      
+try {
+  if (!window.HEX) {
+    throw new Error("HEX Core object is missing.");
+  }
 
-      const user = await HEX.getUser();
+  await HEX.db();
 
-      if (!user) {
-        window.location.href = "whisperbots.html";
-        return;
-      }
+  const session = await HEX.getSession();
+
+  if (!session) {
+    window.location.href = "whisperbots.html";
+    return;
+  }
+
+  const user = await HEX.getUser();
+
+  if (!user) {
+    window.location.href = "whisperbots.html";
+    return;
+  }
+
+  await HEX.initialize();
+
+  console.log("HEXCLØWN CORE INITIALIZED:", user.id);
+
+} catch (error) {
+  console.error("HEXCLØWN INITIALIZATION ERROR:", error);
+
+  alert(
+    "HEXCLØWN ERROR: " +
+    (error.message || "Unknown initialization error")
+  );
+}
+      
 
       currentBot = await HEX.bots.get(botId);
 
