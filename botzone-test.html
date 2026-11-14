@@ -1,153 +1,322 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HEXCLØWN Backend Test</title>
-  <style>
-    body {
-      background: #080d12;
-      color: #e8f5f5;
-      font-family: Arial, sans-serif;
-      padding: 25px;
-    }
-    h2 { color: #00e5c3; }
-    button {
-      background: #00bfa5;
-      color: #001410;
-      border: 0;
-      padding: 13px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-    #result {
-      margin-top: 20px;
-      padding: 15px;
-      background: #121e26;
-      border-radius: 8px;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HEXCLØWN | Backend Test</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 22px;
+  background: #080d12;
+  color: #dce8ed;
+  font-family: Arial, sans-serif;
+}
+
+.panel {
+  max-width: 650px;
+  margin: 35px auto;
+  padding: 24px;
+  background: #101a22;
+  border: 1px solid #1d3945;
+  border-radius: 14px;
+}
+
+h1 {
+  color: #39e6d0;
+  font-size: 23px;
+}
+
+p {
+  color: #9bb0ba;
+  line-height: 1.6;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  border: 0;
+  border-radius: 8px;
+  background: #16cbb5;
+  color: #04110f;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
+#result {
+  margin-top: 20px;
+  padding: 15px;
+  min-height: 100px;
+  border-radius: 8px;
+  background: #070c10;
+  color: #b8f5e9;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+  font-size: 13px;
+}
+
+.status {
+  color: #39e6d0;
+  font-weight: bold;
+}
+</style>
 </head>
+
 <body>
 
-  <h2>HEXCLØWN</h2>
-  <p>Bot Zone Backend Diagnostics</p>
+<div class="panel">
+  <h1>HEXCLØWN BACKEND TEST</h1>
 
-  <button onclick="runTests()">RUN BACKEND TEST</button>
+  <p>
+    This test checks usage tracking, record deletion,
+    and analytics using your signed-in account.
+  </p>
 
-  <div id="result">Waiting for test...</div>
+  <button id="testButton" onclick="runTests()">
+    RUN USAGE & ANALYTICS TEST
+  </button>
 
-  
+  <div id="result">Ready. Press the button to begin.</div>
+</div>
 
-<script src="./botzone-core.js"></script>
+<script src="botzone-core.js"></script>
 
 <script>
+const output = document.getElementById("result");
+const testButton = document.getElementById("testButton");
+
+function log(message) {
+  output.textContent += "\n" + message;
+}
+
+function pass(message) {
+  log("PASS: " + message);
+}
+
+function fail(message) {
+  log("FAIL: " + message);
+}
+
 async function runTests() {
-  const output = document.getElementById("result");
+  testButton.disabled = true;
+  output.textContent = "STARTING HEXCLØWN TEST...\n";
 
   let testBot = null;
-  let testKnowledge = null;
-  let report = [];
-
-  output.textContent = "Starting knowledge tests...";
+  let testConversation = null;
+  let testUsage = null;
+  let testFailed = false;
 
   try {
-    await window.HEXCLØWN.ready();
+    const core = window["HEXCLØWN"];
 
-    const user = await window.HEXCLØWN.auth.getUser();
+    if (!core) {
+      throw new Error("HEXCLØWN core was not found.");
+    }
 
-    if (!user) throw new Error("Please sign in first.");
+    if (!core.ready) {
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error("Core initialization timed out."));
+        }, 15000);
 
-    report.push("AUTHENTICATION: PASS");
+        window.addEventListener("hexclown:ready", () => {
+          clearTimeout(timeout);
+          resolve();
+        }, { once: true });
+      });
+    }
 
-    testBot = await window.HEXCLØWN.bots.create({
-      name: "HEXCLØWN Knowledge Test Bot",
-      description: "Temporary knowledge test",
+    pass("CORE INITIALIZED");
+
+    const user = await core.auth.getUser();
+
+    if (!user) {
+      throw new Error("Please sign in before running this test.");
+    }
+
+    pass("AUTHENTICATION");
+
+    log("Creating temporary test bot...");
+
+    testBot = await core.bots.create({
+      name: "HEXCLØWN Usage Test",
+      description: "Temporary backend test bot",
       category: "Testing",
-      visibility: "private",
       active: true
     });
 
-    report.push("CREATE TEST BOT: PASS");
-
-    testKnowledge = await window.HEXCLØWN.knowledge.add(
-      testBot.id,
-      {
-        title: "HEXCLØWN Test Knowledge",
-        content: "This is temporary test information.",
-        source_type: "manual",
-        metadata: {
-          temporary_test: true
-        }
-      }
-    );
-
-    if (!testKnowledge || !testKnowledge.id) {
-      throw new Error("Knowledge creation failed.");
+    if (!testBot || !testBot.id) {
+      throw new Error("Test bot creation returned no ID.");
     }
 
-    report.push("ADD KNOWLEDGE: PASS");
+    pass("CREATE TEST BOT");
 
-    const items =
-      await window.HEXCLØWN.knowledge.list(testBot.id);
+    log("Creating temporary conversation...");
 
-    const found = items.find(
-      item => item.id === testKnowledge.id
+    testConversation = await core.conversations.create(
+      testBot.id,
+      "Usage Analytics Test"
+    );
+
+    if (!testConversation || !testConversation.id) {
+      throw new Error("Conversation creation returned no ID.");
+    }
+
+    pass("CREATE TEST CONVERSATION");
+
+    log("Recording test usage...");    testUsage = await core.usage.record({
+      bot_id: testBot.id,
+      conversation_id: testConversation.id,
+      provider: "internal",
+      model: "rule-based-test",
+      request_type: "backend_test",
+      input_tokens: 12,
+      output_tokens: 8
+    });
+
+    if (!testUsage || !testUsage.id) {
+      throw new Error("Usage record was not created.");
+    }
+
+    pass("CREATE USAGE RECORD");
+
+    log("Retrieving usage records...");
+
+    const records = await core.usage.list(testBot.id);
+
+    const found = records.find(
+      item => item.id === testUsage.id
     );
 
     if (!found) {
-      throw new Error("Knowledge retrieval failed.");
+      throw new Error("Saved usage record was not found.");
     }
 
-    report.push("RETRIEVE KNOWLEDGE: PASS");    await window.HEXCLØWN.knowledge.delete(
-      testKnowledge.id
-    );
+    pass("RETRIEVE USAGE RECORD");
 
-    report.push("DELETE KNOWLEDGE: PASS");
+    log("Checking individual bot analytics...");
 
-    const remaining =
-      await window.HEXCLØWN.knowledge.list(testBot.id);
+    const botStats = await core.analytics.bot(testBot.id);
 
-    if (remaining.some(item => item.id === testKnowledge.id)) {
-      throw new Error("Deleted knowledge still exists.");
+    if (
+      botStats.total_requests < 1 ||
+      botStats.input_tokens < 12 ||
+      botStats.output_tokens < 8 ||
+      botStats.total_tokens < 20
+    ) {
+      throw new Error("Bot analytics returned incorrect totals.");
     }
 
-    report.push("VERIFY DELETION: PASS");
+    pass("BOT ANALYTICS");
+
+    log("Checking overall analytics...");
+
+    const overview = await core.analytics.overview();
+
+    const requiredNumbers = [
+      "total_bots",
+      "active_bots",
+      "favorite_bots",
+      "total_conversations",
+      "total_requests",
+      "input_tokens",
+      "output_tokens",
+      "total_tokens"
+    ];
+
+    for (const field of requiredNumbers) {
+      if (typeof overview[field] !== "number") {
+        throw new Error(
+          "Analytics field is missing or invalid: " + field
+        );
+      }
+    }
+
+    pass("OVERALL ANALYTICS");
+
+    log("Deleting test usage record...");
+
+    await core.usage.delete(testUsage.id);
+    testUsage = null;
+
+    const afterDelete = await core.usage.list(testBot.id);
+
+    if (afterDelete.some(item => item.id === found.id)) {
+      throw new Error("Usage record still exists after deletion.");
+    }
+
+    pass("DELETE USAGE RECORD");
+
+    log("Deleting temporary conversation...");
+
+    await core.conversations.delete(testConversation.id);
+    testConversation = null;
+
+    pass("CLEANUP TEST CONVERSATION");
+
+    log("Deleting temporary bot...");
+
+    await core.bots.delete(testBot.id);
+    testBot = null;
+
+    pass("CLEANUP TEST BOT");
+
+    log("\n================================");
+    log("ALL USAGE & ANALYTICS TESTS PASSED");
+    log("================================");
 
   } catch (error) {
-    report.push("ERROR: " + error.message);
+    testFailed = true;
+
+    fail(error.message || String(error));
 
   } finally {
 
-    if (testKnowledge && testKnowledge.id) {
+    if (testUsage) {
       try {
-        const remaining =
-          await window.HEXCLØWN.knowledge.list(testBot.id);
-
-        for (const item of remaining) {
-          if (item.id === testKnowledge.id) {
-            await window.HEXCLØWN.knowledge.delete(item.id);
-          }
-        }
+        await window["HEXCLØWN"].usage.delete(testUsage.id);
+        log("CLEANUP: TEST USAGE REMOVED");
       } catch (error) {
-        report.push("KNOWLEDGE CLEANUP: FAILED - " + error.message);
+        log("CLEANUP WARNING: Usage record could not be removed.");
       }
     }
 
-    if (testBot && testBot.id) {
+    if (testConversation) {
       try {
-        await window.HEXCLØWN.bots.delete(testBot.id);
-        report.push("CLEANUP TEST BOT: PASS");
-
+        await window["HEXCLØWN"].conversations.delete(
+          testConversation.id
+        );
+        log("CLEANUP: TEST CONVERSATION REMOVED");
       } catch (error) {
-        report.push("CLEANUP TEST BOT: FAILED - " + error.message);
+        log("CLEANUP WARNING: Conversation could not be removed.");
       }
     }
 
-    output.textContent = report.join("\n\n");
+    if (testBot) {
+      try {
+        await window["HEXCLØWN"].bots.delete(testBot.id);
+        log("CLEANUP: TEST BOT REMOVED");
+      } catch (error) {
+        log("CLEANUP WARNING: Test bot could not be removed.");
+      }
+    }
+
+    testButton.disabled = false;
+
+    if (testFailed) {
+      log("\nTEST FINISHED WITH ERRORS.");
+    }
   }
 }
 </script>
