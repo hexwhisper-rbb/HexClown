@@ -47,24 +47,25 @@
 <script>
 async function runTests() {
   const output = document.getElementById("result");
+
   let testBot = null;
-  let testConversation = null;
-  let testMessage = null;
+  let testKnowledge = null;
   let report = [];
 
-  output.textContent = "Running conversation tests...";
+  output.textContent = "Starting knowledge tests...";
 
   try {
     await window.HEXCLØWN.ready();
 
     const user = await window.HEXCLØWN.auth.getUser();
+
     if (!user) throw new Error("Please sign in first.");
 
     report.push("AUTHENTICATION: PASS");
 
     testBot = await window.HEXCLØWN.bots.create({
-      name: "HEXCLØWN Conversation Test Bot",
-      description: "Temporary test bot",
+      name: "HEXCLØWN Knowledge Test Bot",
+      description: "Temporary knowledge test",
       category: "Testing",
       visibility: "private",
       active: true
@@ -72,76 +73,67 @@ async function runTests() {
 
     report.push("CREATE TEST BOT: PASS");
 
-    testConversation = await window.HEXCLØWN.conversations.create({
-      bot_id: testBot.id,
-      title: "HEXCLØWN Test Conversation"
-    });
-
-    if (!testConversation || !testConversation.id) {
-      throw new Error("Conversation creation failed.");
-    }
-
-    report.push("CREATE CONVERSATION: PASS");
-
-    const conversations =
-      await window.HEXCLØWN.conversations.list(testBot.id);
-
-    const foundConversation = conversations.find(
-      item => item.id === testConversation.id
+    testKnowledge = await window.HEXCLØWN.knowledge.add(
+      testBot.id,
+      {
+        title: "HEXCLØWN Test Knowledge",
+        content: "This is temporary test information.",
+        source_type: "manual",
+        metadata: {
+          temporary_test: true
+        }
+      }
     );
 
-    if (!foundConversation) {
-      throw new Error("Conversation retrieval failed.");
+    if (!testKnowledge || !testKnowledge.id) {
+      throw new Error("Knowledge creation failed.");
     }
 
-    report.push("RETRIEVE CONVERSATION: PASS");
+    report.push("ADD KNOWLEDGE: PASS");
 
-        testMessage = await window.HEXCLØWN.messages.save(
-      testConversation.id,
-      "user",
-      "Hello HEXCLØWN. This is a backend test."
+    const items =
+      await window.HEXCLØWN.knowledge.list(testBot.id);
+
+    const found = items.find(
+      item => item.id === testKnowledge.id
     );
 
-    if (!testMessage || !testMessage.id) {
-      throw new Error("Message saving failed.");
+    if (!found) {
+      throw new Error("Knowledge retrieval failed.");
     }
 
-    report.push("SAVE MESSAGE: PASS");
-
-    const messages =
-      await window.HEXCLØWN.messages.list(testConversation.id);
-
-    const foundMessage = messages.find(
-      item => item.id === testMessage.id
+    report.push("RETRIEVE KNOWLEDGE: PASS");    await window.HEXCLØWN.knowledge.delete(
+      testKnowledge.id
     );
 
-    if (!foundMessage) {
-      throw new Error("Message retrieval failed.");
+    report.push("DELETE KNOWLEDGE: PASS");
+
+    const remaining =
+      await window.HEXCLØWN.knowledge.list(testBot.id);
+
+    if (remaining.some(item => item.id === testKnowledge.id)) {
+      throw new Error("Deleted knowledge still exists.");
     }
 
-    report.push("RETRIEVE MESSAGE: PASS");
+    report.push("VERIFY DELETION: PASS");
 
   } catch (error) {
     report.push("ERROR: " + error.message);
 
   } finally {
-    if (testConversation && testConversation.id) {
+
+    if (testKnowledge && testKnowledge.id) {
       try {
-        const messages =
-          await window.HEXCLØWN.messages.list(testConversation.id);
+        const remaining =
+          await window.HEXCLØWN.knowledge.list(testBot.id);
 
-        for (const message of messages) {
-          await window.HEXCLØWN.messages.delete(message.id);
+        for (const item of remaining) {
+          if (item.id === testKnowledge.id) {
+            await window.HEXCLØWN.knowledge.delete(item.id);
+          }
         }
-
-        await window.HEXCLØWN.conversations.delete(
-          testConversation.id
-        );
-
-        report.push("CLEANUP CONVERSATION: PASS");
-
       } catch (error) {
-        report.push("CLEANUP CONVERSATION: FAILED - " + error.message);
+        report.push("KNOWLEDGE CLEANUP: FAILED - " + error.message);
       }
     }
 
