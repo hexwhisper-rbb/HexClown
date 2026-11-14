@@ -40,35 +40,43 @@
 
   <div id="result">Waiting for test...</div>
 
-  <script src="./botzone-core.js"></script>
+  
+<script src="./botzone-core.js"></script>
 
-  <script>
-    async function runTests() {
-      const output = document.getElementById("result");
+<script>
+async function runTests() {
+  const output = document.getElementById("result");
 
-      output.textContent = "Running tests...";
+  output.textContent = "Checking authentication and database...";
 
-      try {
-        const health = await window.HEXCLØWN.health.check();
+  try {
+    await window.HEXCLØWN.ready();
 
-        await window.HEXCLØWN.ready();
+    const user = await window.HEXCLØWN.auth.getUser();
 
-        output.textContent =
-          "CORE: LOADED\n\n" +
-          "SUPABASE LIBRARY: INITIALIZED\n\n" +
-          "BACKEND: " +
-          (health.online ? "ONLINE" : "OFFLINE") +
-          "\n\n" +
-          "STATUS: " + health.status +
-          "\n\n" +
-          "MESSAGE: " + health.message;
-
-      } catch (error) {
-        output.textContent =
-          "TEST FAILED\n\n" + error.message;
-      }
+    if (!user) {
+      output.textContent =
+        "AUTHENTICATION: NOT SIGNED IN\n\n" +
+        "Please sign in again.";
+      return;
     }
-  </script>
+
+    const bots = await window.HEXCLØWN.bots.list();
+
+    output.textContent =
+      "CORE: LOADED\n\n" +
+      "AUTHENTICATION: SUCCESSFUL\n\n" +
+      "DATABASE ACCESS: SUCCESSFUL\n\n" +
+      "ACCOUNT: " + user.email + "\n\n" +
+      "BOTS FOUND: " + bots.length;
+
+  } catch (error) {
+    output.textContent =
+      "TEST FAILED\n\n" + error.message;
+  }
+}
+</script>
+  
 
 </body>
 </html>
