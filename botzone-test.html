@@ -47,90 +47,54 @@
 <script>
 async function runTests() {
   const output = document.getElementById("result");
-
   let testBot = null;
+  let testConversation = null;
+  let testMessage = null;
   let report = [];
 
-  output.textContent = "Starting bot database tests...";
+  output.textContent = "Running conversation tests...";
 
   try {
     await window.HEXCLØWN.ready();
 
-    // Check authentication
     const user = await window.HEXCLØWN.auth.getUser();
-
-    if (!user) {
-      throw new Error("Please sign in first.");
-    }
+    if (!user) throw new Error("Please sign in first.");
 
     report.push("AUTHENTICATION: PASS");
 
-    // CREATE
     testBot = await window.HEXCLØWN.bots.create({
-      name: "HEXCLØWN Temporary Test Bot",
-      description: "Temporary database test. Safe to delete.",
+      name: "HEXCLØWN Conversation Test Bot",
+      description: "Temporary test bot",
       category: "Testing",
-      icon: "🧪",
       visibility: "private",
-      personality: "Helpful",
-      response_style: "Friendly",
-      active: true,
-      favorite: false,
-      settings: {
-        temporary_test: true
-      }
+      active: true
     });
 
-    report.push("CREATE BOT: PASS");
+    report.push("CREATE TEST BOT: PASS");
 
-    // RETRIEVE
-    const foundBot =
-      await window.HEXCLØWN.bots.get(testBot.id);
+    testConversation = await window.HEXCLØWN.conversations.create({
+      bot_id: testBot.id,
+      title: "HEXCLØWN Test Conversation"
+    });
 
-    if (!foundBot) {
-      throw new Error("Created bot could not be retrieved.");
+    if (!testConversation || !testConversation.id) {
+      throw new Error("Conversation creation failed.");
     }
 
-    report.push("RETRIEVE BOT: PASS");
+    report.push("CREATE CONVERSATION: PASS");
 
-    // UPDATE
-    const updatedBot =
-      await window.HEXCLØWN.bots.update(testBot.id, {
-        description: "Updated successfully during database test."
-      });
+    const conversations =
+      await window.HEXCLØWN.conversations.list(testBot.id);
 
-    if (
-      updatedBot.description !==
-      "Updated successfully during database test."
-    ) {
-      throw new Error("Bot update verification failed.");
+    const foundConversation = conversations.find(
+      item => item.id === testConversation.id
+    );
+
+    if (!foundConversation) {
+      throw new Error("Conversation retrieval failed.");
     }
 
-    report.push("UPDATE BOT: PASS");
-
-  } catch (error) {
-    report.push("ERROR: " + error.message);
-
-  } finally {
-
-    // DELETE ONLY THE TEMPORARY BOT CREATED ABOVE
-    if (testBot && testBot.id) {
-      try {
-        await window.HEXCLØWN.bots.delete(testBot.id);
-        report.push("DELETE TEST BOT: PASS");
-      } catch (error) {
-        report.push(
-          "DELETE TEST BOT: FAILED - " + error.message
-        );
-      }
-    } else {
-      report.push("DELETE TEST BOT: NOT NEEDED");
-    }
-
-    output.textContent = report.join("\n\n");
-  }
-}
-</script>
+    report.push("RETRIEVE CONVERSATION: PASS");
   
   
 
