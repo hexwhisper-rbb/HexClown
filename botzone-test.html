@@ -95,8 +95,70 @@ async function runTests() {
     }
 
     report.push("RETRIEVE CONVERSATION: PASS");
-  
-  
+
+        testMessage = await window.HEXCLØWN.messages.save(
+      testConversation.id,
+      "user",
+      "Hello HEXCLØWN. This is a backend test."
+    );
+
+    if (!testMessage || !testMessage.id) {
+      throw new Error("Message saving failed.");
+    }
+
+    report.push("SAVE MESSAGE: PASS");
+
+    const messages =
+      await window.HEXCLØWN.messages.list(testConversation.id);
+
+    const foundMessage = messages.find(
+      item => item.id === testMessage.id
+    );
+
+    if (!foundMessage) {
+      throw new Error("Message retrieval failed.");
+    }
+
+    report.push("RETRIEVE MESSAGE: PASS");
+
+  } catch (error) {
+    report.push("ERROR: " + error.message);
+
+  } finally {
+    if (testConversation && testConversation.id) {
+      try {
+        const messages =
+          await window.HEXCLØWN.messages.list(testConversation.id);
+
+        for (const message of messages) {
+          await window.HEXCLØWN.messages.delete(message.id);
+        }
+
+        await window.HEXCLØWN.conversations.delete(
+          testConversation.id
+        );
+
+        report.push("CLEANUP CONVERSATION: PASS");
+
+      } catch (error) {
+        report.push("CLEANUP CONVERSATION: FAILED - " + error.message);
+      }
+    }
+
+    if (testBot && testBot.id) {
+      try {
+        await window.HEXCLØWN.bots.delete(testBot.id);
+        report.push("CLEANUP TEST BOT: PASS");
+
+      } catch (error) {
+        report.push("CLEANUP TEST BOT: FAILED - " + error.message);
+      }
+    }
+
+    output.textContent = report.join("\n\n");
+  }
+}
+</script>
 
 </body>
 </html>
