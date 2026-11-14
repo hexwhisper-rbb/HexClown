@@ -1,26 +1,29 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#071014">
+<meta name="theme-color" content="#080710">
+<title>WHISPERBOTS | HEXCLØWN</title>
 
-<title>WHISPER BOTS | HEXCLØWN</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg:#071014;
-  --panel:#0d1b21;
-  --panel2:#10232a;
-  --cyan:#20d9d0;
-  --green:#70ff9b;
-  --text:#e9ffff;
-  --muted:#8ca8ad;
-  --border:rgba(32,217,208,.18);
-  --red:#ff697d;
+  --bg:#080710;
+  --panel:#100e1c;
+  --panel2:#171329;
+  --purple:#bd65ff;
+  --cyan:#36eaff;
+  --pink:#ff4fbd;
+  --green:#80ff72;
+  --blue:#568dff;
+  --gold:#ffe36b;
+  --text:#f3efff;
+  --muted:#9690ad;
+  --line:rgba(189,101,255,.22);
+  --danger:#ff5577;
 }
 
 * {
@@ -29,14 +32,36 @@
   padding:0;
 }
 
-body {
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,sans-serif;
-  min-height:100vh;
+html {
+  scroll-behavior:smooth;
 }
 
-button,input {
+body {
+  background:
+    radial-gradient(ellipse at 10% 0%,rgba(135,45,220,.17),transparent 35%),
+    radial-gradient(ellipse at 90% 15%,rgba(0,205,255,.12),transparent 32%),
+    radial-gradient(ellipse at 50% 100%,rgba(255,40,160,.08),transparent 40%),
+    var(--bg);
+  color:var(--text);
+  font-family:'Rajdhani',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  opacity:.13;
+  background-image:
+    linear-gradient(rgba(120,100,180,.12) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(120,100,180,.12) 1px,transparent 1px);
+  background-size:35px 35px;
+}
+
+button,input,select {
   font:inherit;
 }
 
@@ -45,632 +70,431 @@ button {
 }
 
 a {
-  text-decoration:none;
   color:inherit;
+  text-decoration:none;
 }
 
-/* LOGIN SCREEN */
-
-#loginScreen {
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:
-    radial-gradient(circle at top right,#123b43,transparent 45%),
-    #071014;
-}
-
-.login-box {
+.app {
+  position:relative;
+  z-index:1;
   width:100%;
-  max-width:410px;
-  background:linear-gradient(145deg,#10232a,#0b171c);
-  border:1px solid var(--border);
-  border-radius:17px;
-  padding:32px 24px;
-  box-shadow:0 0 40px rgba(32,217,208,.09);
+  max-width:1500px;
+  margin:auto;
+  padding:18px;
 }
 
-.login-logo {
-  text-align:center;
-  font-size:27px;
-  font-weight:900;
-  letter-spacing:3px;
-  margin-bottom:8px;
-}
+/* TOP BAR */
 
-.login-logo span {
-  color:var(--cyan);
-}
-
-.login-subtitle {
-  color:var(--muted);
-  text-align:center;
-  font-size:11px;
-  letter-spacing:2px;
-  margin-bottom:28px;
-}
-
-.login-icon {
-  width:65px;
-  height:65px;
-  display:grid;
-  place-items:center;
-  margin:0 auto 20px;
-  border-radius:18px;
-  background:rgba(32,217,208,.1);
-  border:1px solid var(--border);
-  font-size:30px;
-}
-
-.login-box label {
-  display:block;
-  font-size:11px;
-  color:var(--muted);
-  margin-bottom:8px;
-}
-
-.login-box input {
-  width:100%;
-  padding:14px;
-  background:#071014;
-  color:var(--text);
-  border:1px solid var(--border);
-  border-radius:8px;
-  outline:none;
-  margin-bottom:17px;
-}
-
-.login-box input:focus {
-  border-color:var(--cyan);
-}
-
-.login-button {
-  width:100%;
-  padding:14px;
-  border:0;
-  border-radius:8px;
-  background:var(--cyan);
-  color:#041315;
-  font-size:12px;
-  font-weight:900;
-}
-
-.login-button:disabled {
-  opacity:.6;
-  cursor:wait;
-}
-
-#loginMessage {
-  min-height:20px;
-  margin-top:15px;
-  font-size:11px;
-  text-align:center;
-  color:var(--red);
-  line-height:1.6;
-}
-
-.login-footer {
-  text-align:center;
-  margin-top:22px;
-  color:#607a80;
-  font-size:10px;
-}
-
-/* PROTECTED DASHBOARD */
-
-#protectedArea {
-  display:none;
-  min-height:100vh;
-}
-
-.header {
+.topbar {
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  padding:17px 5%;
-  border-bottom:1px solid var(--border);
-  background:#09151a;
-  position:sticky;
-  top:0;
-  z-index:100;
+  gap:15px;
+  padding:15px 18px;
+  background:rgba(16,14,28,.88);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:0 0 25px rgba(160,70,255,.08);
+  backdrop-filter:blur(15px);
 }
 
-.logo {
-  font-size:20px;
-  font-weight:900;
-  letter-spacing:2px;
-}
-
-.logo span {
-  color:var(--cyan);
-}
-
-.header-right {
+.brand {
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:12px;
 }
 
-.admin-status {
-  color:var(--green);
-  font-size:10px;
-  border:1px solid rgba(112,255,155,.3);
-  padding:8px 11px;
-  border-radius:20px;
-}
-
-.logout-button {
-  background:transparent;
-  color:var(--red);
-  border:1px solid rgba(255,105,125,.4);
-  border-radius:7px;
-  padding:9px 12px;
-  font-size:10px;
-  font-weight:bold;
-}
-
-.menu-button {
-  display:none;
-  background:var(--panel);
+.brand-icon {
+  width:43px;
+  height:43px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
   color:var(--cyan);
-  border:1px solid var(--border);
-  padding:9px 12px;
-  border-radius:7px;
+  font-size:22px;
+  font-family:'Orbitron',sans-serif;
+  border:1px solid var(--cyan);
+  box-shadow:0 0 15px rgba(54,234,255,.25);
 }
 
-/* LAYOUT */
+.brand-name {
+  font-family:'Orbitron',sans-serif;
+  font-size:17px;
+  font-weight:800;
+  letter-spacing:1px;
+}
 
-.layout {
+.brand-name span {
+  color:var(--purple);
+}
+
+.brand-sub {
+  color:var(--muted);
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  margin-top:4px;
+  letter-spacing:1px;
+}
+
+.top-actions {
   display:flex;
-  min-height:calc(100vh - 65px);
+  align-items:center;
+  gap:9px;
 }
+
+.status-pill {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:var(--green);
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  padding:8px 11px;
+  border:1px solid rgba(128,255,114,.3);
+  border-radius:30px;
+  background:rgba(128,255,114,.06);
+}
+
+.status-dot {
+  width:7px;
+  height:7px;
+  background:var(--green);
+  border-radius:50%;
+  box-shadow:0 0 10px var(--green);
+}
+
+/* BUTTONS */
+
+.neon-btn {
+  border:1px solid var(--purple);
+  background:rgba(189,101,255,.12);
+  color:#e9caff;
+  padding:10px 15px;
+  border-radius:9px;
+  font-weight:700;
+  transition:.2s;
+}
+
+.neon-btn:hover {
+  background:rgba(189,101,255,.25);
+  box-shadow:0 0 18px rgba(189,101,255,.2);
+}
+
+.primary-btn {
+  border:1px solid var(--cyan);
+  background:linear-gradient(120deg,rgba(54,234,255,.17),rgba(189,101,255,.17));
+  color:var(--cyan);
+  padding:11px 17px;
+  border-radius:9px;
+  font-weight:700;
+  box-shadow:0 0 15px rgba(54,234,255,.08);
+  transition:.2s;
+}
+
+.primary-btn:hover {
+  box-shadow:0 0 22px rgba(54,234,255,.25);
+  transform:translateY(-1px);
+}
+
+/* MAIN LAYOUT */
+
+.main-grid {
+  display:grid;
+  grid-template-columns:225px minmax(0,1fr);
+  gap:18px;
+  margin-top:18px;
+}
+
+/* SIDEBAR */
 
 .sidebar {
-  width:245px;
-  flex-shrink:0;
-  padding:23px 14px;
-  background:#09171c;
-  border-right:1px solid var(--border);
+  background:rgba(16,14,28,.9);
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:17px 12px;
+  height:max-content;
+  position:sticky;
+  top:15px;
 }
 
-.sidebar-label {
-  color:#66838a;
+.side-label {
+  color:var(--muted);
+  font-family:'Share Tech Mono',monospace;
   font-size:10px;
   letter-spacing:2px;
-  margin:20px 10px 12px;
+  padding:10px 10px;
 }
 
 .nav-link {
   display:flex;
   align-items:center;
-  gap:12px;
-  padding:12px;
-  margin-bottom:5px;
-  border-radius:8px;
-  color:var(--muted);
-  font-size:12px;
+  gap:11px;
+  padding:12px 11px;
+  border-radius:9px;
+  color:#b9b1d0;
+  font-size:15px;
+  font-weight:600;
+  margin:3px 0;
   transition:.2s;
 }
 
 .nav-link:hover,
 .nav-link.active {
   color:var(--cyan);
-  background:rgba(32,217,208,.1);
+  background:rgba(54,234,255,.08);
+  border-left:3px solid var(--cyan);
 }
 
 .nav-icon {
-  width:20px;
+  width:21px;
   text-align:center;
   font-size:17px;
 }
 
-.main {
-  flex:1;
-  min-width:0;
-  max-width:1500px;
-  padding:30px 4%;
+.side-bottom {
+  margin-top:25px;
+  padding:13px 10px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  line-height:1.8;
 }
 
-/* WELCOME */
+/* CONTENT */
+
+.content {
+  min-width:0;
+}
+
+.hero {
+  position:relative;
+  overflow:hidden;
+  padding:27px;
+  border:1px solid rgba(189,101,255,.35);
+  border-radius:17px;
+  background:
+    linear-gradient(110deg,rgba(93,29,150,.28),rgba(12,32,65,.3)),
+    var(--panel);
+  box-shadow:0 0 30px rgba(130,55,255,.08);
+}
+
+.hero::after {
+  content:"</>";
+  position:absolute;
+  right:25px;
+  top:10px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:90px;
+  color:rgba(54,234,255,.08);
+  transform:rotate(-8deg);
+}
 
 .eyebrow {
-  color:var(--cyan);
-  font-size:10px;
-  letter-spacing:3px;
-  margin-bottom:12px;
-}
-
-.welcome h1 {
-  font-size:clamp(27px,4vw,40px);
+  color:var(--pink);
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  letter-spacing:2px;
   margin-bottom:10px;
 }
 
-.welcome p {
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.7;
-  max-width:650px;
+.hero h1 {
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(24px,4vw,39px);
+  line-height:1.25;
+  margin-bottom:10px;
 }
 
-.quick-actions {
+.hero h1 span {
+  color:var(--cyan);
+  text-shadow:0 0 18px rgba(54,234,255,.35);
+}
+
+.hero p {
+  color:#b9b1ce;
+  font-size:16px;
+  max-width:600px;
+  line-height:1.6;
+}
+
+.hero-actions {
   display:flex;
   flex-wrap:wrap;
   gap:10px;
-  margin:25px 0 30px;
-}
-
-.action-btn {
-  padding:12px 16px;
-  border:0;
-  border-radius:8px;
-  background:var(--cyan);
-  color:#041315;
-  font-size:11px;
-  font-weight:bold;
-}
-
-.action-btn.secondary {
-  background:var(--panel);
-  border:1px solid var(--border);
-  color:var(--cyan);
+  margin-top:20px;
 }
 
 /* STATISTICS */
 
-.section-heading {
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin:27px 0 15px;
-}
-
-.section-heading h2 {
-  font-size:17px;
-}
-
-.section-heading small {
-  color:var(--muted);
-  font-size:10px;
-}
-
 .stats-grid {
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:13px;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-top:17px;
 }
 
 .stat-card {
-  padding:19px;
-  background:linear-gradient(145deg,var(--panel2),var(--panel));
-  border:1px solid var(--border);
+  background:rgba(16,14,28,.88);
+  border:1px solid var(--line);
   border-radius:12px;
-}
-
-.stat-top {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:17px;
-}
-
-.stat-label {
-  color:var(--muted);
-  font-size:10px;
+  padding:16px;
+  min-width:0;
 }
 
 .stat-icon {
-  font-size:22px;
+  font-size:19px;
+  margin-bottom:10px;
 }
 
 .stat-number {
-  font-size:28px;
-  font-weight:bold;
+  font-family:'Orbitron',sans-serif;
+  font-size:25px;
+  font-weight:700;
 }
 
-.stat-note {
-  color:var(--green);
-  font-size:10px;
-  margin-top:8px;
-}
-
-/* PANELS */
-
-.content-grid {
-  display:grid;
-  grid-template-columns:1.4fr 1fr;
-  gap:14px;
-  margin-top:15px;
-}
-
-.panel {
-  min-width:0;
-  padding:20px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:12px;
-}
-
-.panel h3 {
-  font-size:14px;
-  margin-bottom:17px;
-}
-
-.empty-state {
-  padding:25px 10px;
-  text-align:center;
+.stat-title {
   color:var(--muted);
-}
-
-.empty-state .big-icon {
-  font-size:34px;
-  margin-bottom:12px;
-}
-
-.empty-state p {
-  font-size:11px;
-  line-height:1.7;
-}
-
-.activity-list {
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.activity-item {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:11px;
-  background:rgba(255,255,255,.025);
-  border-radius:8px;
-}
-
-.activity-icon {
-  width:34px;
-  height:34px;
-  display:grid;
-  place-items:center;
-  background:rgba(32,217,208,.1);
-  border-radius:8px;
-  color:var(--cyan);
-}
-
-.activity-text {
-  flex:1;
-  min-width:0;
-}
-
-.activity-text strong {
-  display:block;
-  font-size:11px;
-  margin-bottom:5px;
-}
-
-.activity-text small {
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.5;
-}
-
-.system-row {
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding:12px 0;
-  border-bottom:1px solid var(--border);
-  font-size:10px;
-}
-
-.system-row:last-child {
-  border-bottom:0;
-}
-
-.system-ok {
-  color:var(--green);
-}
-
-/* MODULES */
-
-.module-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:13px;
-}
-
-.module-card {
-  display:block;
-  padding:17px;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:11px;
-  transition:.2s;
-}
-
-.module-card:hover {
-  border-color:var(--cyan);
-  transform:translateY(-3px);
-}
-
-.module-icon {
-  font-size:24px;
-  margin-bottom:12px;
-}
-
-.module-card strong {
-  display:block;
   font-size:12px;
-  margin-bottom:7px;
+  margin-top:5px;
+  letter-spacing:1px;
 }
 
-.module-card p {
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.6;
-}
+.stat-purple .stat-number {color:var(--purple)}
+.stat-cyan .stat-number {color:var(--cyan)}
+.stat-pink .stat-number {color:var(--pink)}
+.stat-green .stat-number {color:var(--green)}
 
-.footer {
-  padding:30px 10px 15px;
-  text-align:center;
-  color:var(--muted);
-  font-size:10px;
-}
+/* RESPONSIVE */
 
-/* MOBILE */
-
-@media(max-width:950px) {
-  .stats-grid {
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .module-grid {
-    grid-template-columns:repeat(2,1fr);
-  }
-}
-
-@media(max-width:700px) {
-  .layout {
-    display:block;
+@media(max-width:850px) {
+  .main-grid {
+    grid-template-columns:1fr;
   }
 
   .sidebar {
+    position:static;
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px;
+    padding:9px;
+  }
+
+  .side-label,
+  .side-bottom {
     display:none;
-    width:100%;
-    border-right:0;
-    border-bottom:1px solid var(--border);
   }
 
-  .sidebar.open {
-    display:block;
-  }
-
-  .menu-button {
-    display:block;
-  }
-
-  .main {
-    padding:24px 15px;
-  }
-
-  .content-grid {
-    grid-template-columns:1fr;
-  }
-
-  .logo {
-    font-size:16px;
-  }
-
-  .admin-status {
-    font-size:9px;
+  .nav-link {
+    flex:1 1 auto;
+    justify-content:center;
+    padding:10px;
+    font-size:13px;
   }
 }
 
-@media(max-width:380px) {
-  .stats-grid,
-  .module-grid {
-    grid-template-columns:1fr;
+@media(max-width:560px) {
+  .app {
+    padding:10px;
+  }
+
+  .topbar {
+    padding:11px;
+  }
+
+  .brand-name {
+    font-size:14px;
+  }
+
+  .brand-sub {
+    font-size:8px;
+  }
+
+  .brand-icon {
+    width:37px;
+    height:37px;
+  }
+
+  .status-pill {
+    font-size:9px;
+    padding:7px;
+  }
+
+  .top-actions .neon-btn {
+    display:none;
+  }
+
+  .hero {
+    padding:21px 17px;
+  }
+
+  .hero::after {
+    font-size:55px;
+    right:10px;
+  }
+
+  .stats-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .stat-card {
+    padding:13px;
+  }
+
+  .stat-number {
+    font-size:21px;
   }
 }
 </style>
-</head>
+</head><body>
 
-<body>
+<div class="app">
 
-<!-- ADMIN LOGIN SCREEN -->
+  <!-- TOP NAVIGATION -->
+  <header class="topbar">
 
-<div id="loginScreen">
+    <div class="brand">
+      <div class="brand-icon">H</div>
 
-  <div class="login-box">
-
-    <div class="login-logo">
-      HEXCL<span>Ø</span>WN
+      <div>
+        <div class="brand-name">HEX<span>CLØWN</span></div>
+        <div class="brand-sub">BOT NETWORK // CONTROL CENTER</div>
+      </div>
     </div>
 
-    <div class="login-subtitle">
-      WHISPER BOTS · PRIVATE CONTROL CENTRE
-    </div>
+    <div class="top-actions">
 
-    <div class="login-icon">🔐</div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        SYSTEM ONLINE
+      </div>
 
-    <label for="adminEmail">ADMINISTRATOR EMAIL</label>
-
-    <input
-      type="email"
-      id="adminEmail"
-      placeholder="Enter your email address"
-      autocomplete="username"
-    >
-
-    <label for="adminPassword">PASSWORD</label>
-
-    <input
-      type="password"
-      id="adminPassword"
-      placeholder="Enter your password"
-      autocomplete="current-password"
-    >
-
-    <button
-      class="login-button"
-      id="loginButton"
-      type="button"
-    >
-      UNLOCK DASHBOARD
-    </button>
-
-    <div id="loginMessage" role="alert"></div>
-
-    <div class="login-footer">
-      AUTHENTICATED ACCESS · HEXCLØWN 2026
-    </div>
-
-  </div>
-
-</div>
-
-<!-- PROTECTED DASHBOARD STARTS HERE -->
-
-<div id="protectedArea">
-
-  <header class="header">
-
-    <div class="logo">
-      HEXCL<span>Ø</span>WN
-    </div>
-
-    <div class="header-right">
-
-      <span class="admin-status">
-        ● ADMIN SESSION
-      </span>
-
-      <button class="logout-button" id="logoutButton">
-        LOG OUT
+      <button class="neon-btn"
+        onclick="window.location.href='mybots.html'">
+        MY BOTS
       </button>
 
-      <button class="menu-button" id="menuButton">
-        ☰ MENU
+      <button class="primary-btn"
+        onclick="window.location.href='createbot.html'">
+        + CREATE BOT
       </button>
 
     </div>
 
   </header>
 
-  <div class="layout">
 
-    <aside class="sidebar" id="sidebar">
+  <!-- MAIN GRID -->
+  <div class="main-grid">
 
-      <div class="sidebar-label">CONTROL CENTRE</div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="side-label">MAIN SYSTEM</div>
 
       <a href="whisperbots.html" class="nav-link active">
-        <span class="nav-icon">▦</span>
-        Dashboard
+        <span class="nav-icon">⌘</span>
+        Bot Dashboard
       </a>
 
       <a href="mybots.html" class="nav-link">
@@ -679,815 +503,955 @@ a {
       </a>
 
       <a href="createbot.html" class="nav-link">
-        <span class="nav-icon">＋</span>
+        <span class="nav-icon">✚</span>
         Create Bot
       </a>
 
+      <div class="side-label">BOT DEVELOPMENT</div>
+
       <a href="personalityeditor.html" class="nav-link">
-        <span class="nav-icon">◉</span>
-        Personality Editor
+        <span class="nav-icon">✧</span>
+        Personality Lab
       </a>
 
       <a href="botplayground.html" class="nav-link">
-        <span class="nav-icon">⌘</span>
-        Live Playground
+        <span class="nav-icon">⌨</span>
+        Bot Playground
       </a>
-
-      <div class="sidebar-label">BOT INTELLIGENCE</div>
 
       <a href="botknowledge.html" class="nav-link">
         <span class="nav-icon">▤</span>
-        Knowledge Centre
+        Knowledge Base
       </a>
 
       <a href="botcommands.html" class="nav-link">
-        <span class="nav-icon">⌁</span>
-        Commands & Automation
+        <span class="nav-icon">⚡</span>
+        Commands
       </a>
 
+      <div class="side-label">INTELLIGENCE</div>
+
       <a href="botgallery.html" class="nav-link">
-        <span class="nav-icon">▧</span>
+        <span class="nav-icon">▦</span>
         Bot Gallery
+      </a>
+
+      <a href="botanalytics.html" class="nav-link">
+        <span class="nav-icon">◉</span>
+        Analytics
       </a>
 
       <a href="whispermemory.html" class="nav-link">
         <span class="nav-icon">◌</span>
-        Whisper Memory
-      </a>
-
-      <div class="sidebar-label">MONITORING</div>
-
-      <a href="botanalytics.html" class="nav-link">
-        <span class="nav-icon">▥</span>
-        Analytics Centre
+        Bot Memory
       </a>
 
       <a href="botdebate.html" class="nav-link">
-        <span class="nav-icon">⇄</span>
+        <span class="nav-icon">⚔</span>
         Bot Debate
       </a>
+
+      <div class="side-label">CONTROL</div>
 
       <a href="botadmin.html" class="nav-link">
         <span class="nav-icon">⚙</span>
         Administration
       </a>
 
-    </aside>
-
-    <main class="main">
-
-      <section class="welcome">
-
-        <div class="eyebrow">
-          HEXCLØWN INTELLIGENCE SYSTEM
-        </div>
-
-        <h1>WHISPER BOTS</h1>
-
-        <p>
-          Welcome to your private bot management centre.
-          Create assistants, configure their personalities,
-          manage knowledge and monitor your bot ecosystem.
-        </p>
-
-      </section>
-
-      <section class="quick-actions">
-
-        <a href="createbot.html" class="action-btn">
-          ＋ CREATE NEW BOT
-        </a>
-
-        <a href="botplayground.html"
-           class="action-btn secondary">
-          OPEN PLAYGROUND ↗
-        </a>
-
-        <a href="mybots.html"
-           class="action-btn secondary">
-          MANAGE BOTS
-        </a>
-
-      </section>
-
-      <div class="section-heading">
-        <h2>System Overview</h2>
-        <small>YOUR BOT ECOSYSTEM</small>
+      <div class="side-bottom">
+        HEXCLØWN CORE v2.0.0<br>
+        BOT NETWORK ACTIVE<br>
+        ACCESS: AUTHENTICATED
       </div>
 
-      <section class="stats-grid">
+    </aside>
 
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-label">TOTAL BOTS</span>
-            <span class="stat-icon">🤖</span>
-          </div>
-          <div class="stat-number" id="totalBots">0</div>
-          <div class="stat-note">Created bots</div>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+
+      <!-- HERO -->
+      <section class="hero">
+
+        <div class="eyebrow">
+          // WELCOME TO THE BOT LABORATORY
         </div>
 
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-label">ACTIVE BOTS</span>
-            <span class="stat-icon">⚡</span>
-          </div>
-          <div class="stat-number" id="activeBots">0</div>
-          <div class="stat-note">Currently enabled</div>
-        </div>
+        <h1>
+          ENTER THE <span>WHISPER</span><br>
+          NETWORK.
+        </h1>
 
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-label">CONVERSATIONS</span>
-            <span class="stat-icon">💬</span>
-          </div>
-          <div class="stat-number" id="totalChats">0</div>
-          <div class="stat-note">Recorded conversations</div>
-        </div>
+        <p>
+          Build intelligent personalities, manage your digital
+          creations, experiment with knowledge and explore the
+          HEXCLØWN bot ecosystem.
+        </p>
 
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-label">FAVOURITES</span>
-            <span class="stat-icon">★</span>
-          </div>
-          <div class="stat-number" id="favoriteBots">0</div>
-          <div class="stat-note">Favourite bots</div>
+        <div class="hero-actions">
+
+          <button class="primary-btn"
+            onclick="window.location.href='createbot.html'">
+            + BUILD A BOT
+          </button>
+
+          <button class="neon-btn"
+            onclick="window.location.href='botplayground.html'">
+            OPEN PLAYGROUND ↗
+          </button>
+
         </div>
 
       </section>
 
-      <div class="content-grid">
 
-        <section class="panel">
+      <!-- STATISTICS -->
+      <section class="stats-grid">
 
-          <h3>Recent Bot Activity</h3>
+        <div class="stat-card stat-purple">
+          <div class="stat-icon">◈</div>
+          <div class="stat-number" id="totalBots">--</div>
+          <div class="stat-title">TOTAL BOTS</div>
+        </div>
 
-          <div class="activity-list" id="activityList">
+        <div class="stat-card stat-cyan">
+          <div class="stat-icon">⌘</div>
+          <div class="stat-number" id="activeBots">--</div>
+          <div class="stat-title">ACTIVE BOTS</div>
+        </div>
 
-            <div class="empty-state">
-              <div class="big-icon">◈</div>
-              <p>
-                No bot activity yet.<br>
-                Create your first bot to get started.
-              </p>
+        <div class="stat-card stat-pink">
+          <div class="stat-icon">▤</div>
+          <div class="stat-number" id="totalConversations">--</div>
+          <div class="stat-title">CONVERSATIONS</div>
+        </div>
+
+        <div class="stat-card stat-green">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-number" id="totalRequests">--</div>
+          <div class="stat-title">TOTAL REQUESTS</div>
+        </div>
+
+      </section>
+
+
+      <!-- BOT WORKSPACE -->
+      <section style="margin-top:27px;">
+
+        <div style="
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          flex-wrap:wrap;
+          gap:12px;
+          margin-bottom:15px;
+        ">
+
+          <div>
+            <div class="eyebrow">// YOUR DIGITAL CREATIONS</div>
+            <h2 style="
+              font-family:'Orbitron',sans-serif;
+              font-size:19px;
+            ">
+              BOT WORKSPACE
+            </h2>
+          </div>
+
+          <button class="neon-btn"
+            onclick="window.location.href='mybots.html'">
+            VIEW ALL BOTS →
+          </button>
+
+        </div>
+
+
+        <!-- SEARCH AND FILTER -->
+        <div style="
+          display:flex;
+          flex-wrap:wrap;
+          gap:10px;
+          margin-bottom:16px;
+        ">
+
+          <input
+            type="search"
+            id="botSearch"
+            placeholder="⌕ Search your bots..."
+            style="
+              flex:1;
+              min-width:180px;
+              background:#100e1c;
+              border:1px solid rgba(54,234,255,.3);
+              color:white;
+              border-radius:9px;
+              padding:12px;
+              outline:none;
+            "
+          >
+
+          <select
+            id="categoryFilter"
+            style="
+              min-width:140px;
+              background:#100e1c;
+              border:1px solid rgba(189,101,255,.3);
+              color:white;
+              border-radius:9px;
+              padding:12px;
+              outline:none;
+            "
+          >
+            <option value="all">All Categories</option>
+            <option value="assistant">Assistant</option>
+            <option value="creative">Creative</option>
+            <option value="coding">Coding</option>
+            <option value="music">Music</option>
+            <option value="education">Education</option>
+            <option value="other">Other</option>
+          </select>
+
+        </div>
+
+
+        <!-- BOT LIST -->
+        <div id="botList" style="
+          display:grid;
+          grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+          gap:13px;
+        ">
+
+          <div style="
+            grid-column:1/-1;
+            padding:35px 15px;
+            text-align:center;
+            background:rgba(16,14,28,.8);
+            border:1px dashed rgba(189,101,255,.3);
+            border-radius:13px;
+            color:#9690ad;
+          ">
+            <div style="font-size:27px;margin-bottom:10px;">
+              ⌘
+            </div>
+
+            <div style="
+              font-family:'Share Tech Mono',monospace;
+              font-size:12px;
+            ">
+              INITIALIZING BOT NETWORK...
             </div>
 
           </div>
 
-        </section>
-
-        <section class="panel">
-
-          <h3>System Information</h3>
-
-          <div class="system-row">
-            <span>Dashboard Interface</span>
-            <span class="system-ok">READY</span>
-          </div>
-
-          <div class="system-row">
-            <span>Local Storage</span>
-            <span class="system-ok">READY</span>
-          </div>
-
-          <div class="system-row">
-            <span>AI Connection</span>
-            <span style="color:#f5c66a">NOT CONFIGURED</span>
-          </div>
-
-          <div class="system-row">
-            <span>Authentication</span>
-            <span class="system-ok">SUPABASE</span>
-          </div>
-
-          <div class="system-row">
-            <span>Platform</span>
-            <span class="system-ok">HEXCLØWN</span>
-          </div>
-
-        </section>
-
-      </div>
-
-      <div class="section-heading">
-        <h2>Management Modules</h2>
-        <small>QUICK ACCESS</small>
-      </div>
-
-      <section class="module-grid">
-
-        <a href="mybots.html" class="module-card">
-          <div class="module-icon">🤖</div>
-          <strong>My Bots</strong>
-          <p>View and manage your created bots.</p>
-        </a>
-
-        <a href="createbot.html" class="module-card">
-          <div class="module-icon">＋</div>
-          <strong>Create Bot</strong>
-          <p>Build a new intelligent assistant.</p>
-        </a>
-
-        <a href="personalityeditor.html" class="module-card">
-          <div class="module-icon">🧠</div>
-          <strong>Personality Editor</strong>
-          <p>Customise bot behaviour and personality.</p>
-        </a>
-
-        <a href="botplayground.html" class="module-card">
-          <div class="module-icon">💬</div>
-          <strong>Live Playground</strong>
-          <p>Test and interact with your bots.</p>
-        </a>
-
-        <a href="botknowledge.html" class="module-card">
-          <div class="module-icon">📚</div>
-          <strong>Knowledge Centre</strong>
-          <p>Manage information available to bots.</p>
-        </a>
-
-        <a href="botcommands.html" class="module-card">
-          <div class="module-icon">⚙</div>
-          <strong>Commands</strong>
-          <p>Configure custom commands and responses.</p>
-        </a>
-
-        <a href="botgallery.html" class="module-card">
-          <div class="module-icon">▧</div>
-          <strong>Bot Gallery</strong>
-          <p>Explore and organise your bot collection.</p>
-        </a>
-
-        <a href="botanalytics.html" class="module-card">
-          <div class="module-icon">📊</div>
-          <strong>Analytics</strong>
-          <p>Monitor bot usage and activity.</p>
-        </a>
-
-        <a href="whispermemory.html" class="module-card">
-          <div class="module-icon">◌</div>
-          <strong>Whisper Memory</strong>
-          <p>Manage saved bot context.</p>
-        </a>
-
-        <a href="botdebate.html" class="module-card">
-          <div class="module-icon">⇄</div>
-          <strong>Bot Debate</strong>
-          <p>Let two bots discuss a topic.</p>
-        </a>
-
-        <a href="botadmin.html" class="module-card">
-          <div class="module-icon">🔐</div>
-          <strong>Administration</strong>
-          <p>Manage system security and settings.</p>
-        </a>
+        </div>
 
       </section>
 
-      <footer class="footer">
-        HEXCLØWN © 2026 · WHISPER BOTS CONTROL CENTRE
-      </footer>
+
+      <!-- SYSTEM ACTIVITY -->
+      <section style="
+        margin-top:25px;
+        background:rgba(16,14,28,.85);
+        border:1px solid rgba(54,234,255,.2);
+        border-radius:13px;
+        padding:17px;
+      ">
+
+        <div style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:10px;
+          margin-bottom:13px;
+        ">
+
+          <h3 style="
+            font-family:'Orbitron',sans-serif;
+            font-size:13px;
+            color:var(--cyan);
+          ">
+            SYSTEM TERMINAL
+          </h3>
+
+          <span style="
+            color:var(--green);
+            font-family:'Share Tech Mono',monospace;
+            font-size:10px;
+          ">
+            ● LIVE
+          </span>
+
+        </div>
+
+        <div id="systemLog" style="
+          font-family:'Share Tech Mono',monospace;
+          font-size:11px;
+          line-height:2;
+          color:var(--green);
+        ">
+          [HEXCLØWN] Dashboard interface loaded.<br>
+          [SYSTEM] Waiting for backend connection...
+        </div>
+
+      </section>
+
 
     </main>
 
   </div>
 
-</div>
+              </div><!-- HEXCLØWN CORE -->
+<script src="botzone-core.js"></script>
 
 <script>
-  
-// ==========================================
-// HEXCLØWN WHISPER BOTS
-// PART 2: AUTHENTICATION ENGINE
-// ==========================================
+"use strict";
 
-// SUPABASE CONFIGURATION
+/* =================================
+   HEXCLØWN WHISPERBOTS DASHBOARD
+================================= */
 
-const SUPABASE_URL =
-  "https://nddaaqvsnnrdylajpdmp.supabase.co";
+const HEX = window["HEXCLØWN"];
 
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_DVAyBfoG7N50q4x6Vf1YeA_a7mghWFN";
+let allBots = [];
+let currentUser = null;
 
-// INITIALISE SUPABASE
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+/* SYSTEM LOG */
 
-// HTML ELEMENTS
+function systemLog(message, type = "normal") {
 
-const loginScreen = document.getElementById("loginScreen");
-const protectedArea = document.getElementById("protectedArea");
+  const terminal = document.getElementById("systemLog");
 
-const adminEmail = document.getElementById("adminEmail");
-const adminPassword = document.getElementById("adminPassword");
+  if (!terminal) return;
 
-const loginButton = document.getElementById("loginButton");
-const loginMessage = document.getElementById("loginMessage");
+  const colors = {
+    normal: "#80ff72",
+    info: "#36eaff",
+    warning: "#ffe36b",
+    error: "#ff5577",
+    success: "#bd65ff"
+  };
 
-const logoutButton = document.getElementById("logoutButton");
+  const line = document.createElement("div");
 
-// AUTHENTICATION STATE
+  line.style.color = colors[type] || colors.normal;
+  line.textContent = "[HEXCLØWN] " + message;
 
-let authenticationReady = false;
-let dashboardUnlocked = false;
+  terminal.appendChild(line);
 
-// SHOW LOGIN SCREEN
-
-function showLogin(message = "") {
-  dashboardUnlocked = false;
-
-  loginScreen.style.display = "flex";
-  protectedArea.style.display = "none";
-
-  loginMessage.textContent = message;
-
-  adminPassword.value = "";
-}
-
-// SHOW DASHBOARD
-
-function showProtectedDashboard() {
-  dashboardUnlocked = true;
-
-  loginScreen.style.display = "none";
-  protectedArea.style.display = "block";
-
-  loginMessage.textContent = "";
-
-  if (typeof refreshDashboard === "function") {
-    refreshDashboard();
+  while (terminal.children.length > 8) {
+    terminal.removeChild(terminal.firstChild);
   }
 }
 
-// DISPLAY LOGIN ERROR
 
-function showLoginError(message) {
-  loginMessage.textContent = message;
+/* SAFE RESULT HANDLING */
+
+function getRows(result) {
+
+  if (Array.isArray(result)) {
+    return result;
+  }
+
+  if (result && Array.isArray(result.data)) {
+    return result.data;
+  }
+
+  return [];
 }
 
-// LOGIN FUNCTION
 
-async function performAdminLogin() {
+function showError(error) {
 
-  if (!authenticationReady) {
-    showLoginError(
-      "Authentication is still loading. Please wait."
-    );
-    return;
-  }
+  console.error("HEXCLØWN:", error);
 
-  const email = adminEmail.value.trim();
-  const password = adminPassword.value;
-
-  if (!email || !password) {
-    showLoginError(
-      "Please enter both your administrator email and password."
-    );
-    return;
-  }
-
-  loginButton.disabled = true;
-  loginButton.textContent = "VERIFYING ACCESS...";
-
-  showLoginError("");
-
-  try {
-
-    const { data, error } =
-      await supabaseClient.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
-
-    if (error) {
-      throw error;
-    }
-
-    if (!data.session) {
-      throw new Error(
-        "No valid login session was returned."
-      );
-    }
-
-    showProtectedDashboard();
-
-    recordBotActivity(
-      "Administrator login",
-      "You accessed the Whisper Bots dashboard.",
-      "🔐"
-    );
-
-  } catch (error) {
-
-    console.error("Administrator login error:", error);
-
-    showLoginError(
-      "Login failed. Check your email and password."
-    );
-
-    showLogin(false);
-
-  } finally {
-
-    loginButton.disabled = false;
-    loginButton.textContent = "UNLOCK DASHBOARD";
-
-  }
+  systemLog(
+    error && error.message
+      ? error.message
+      : "An unexpected error occurred.",
+    "error"
+  );
 }
 
-// LOGIN BUTTON
 
-loginButton.addEventListener(
-  "click",
-  performAdminLogin
-);
+/* NUMBER FORMAT */
 
-// ENTER KEY LOGIN
+function formatNumber(value) {
 
-adminPassword.addEventListener(
-  "keydown",
-  function(event) {
-    if (event.key === "Enter") {
-      performAdminLogin();
-    }
-  }
-);
-
-adminEmail.addEventListener(
-  "keydown",
-  function(event) {
-    if (event.key === "Enter") {
-      adminPassword.focus();
-    }
-  }
-);
-
-// CHECK EXISTING SESSION
-
-async function checkAdminSession() {
-
-  showLogin();
-
-  try {
-
-    const { data, error } =
-      await supabaseClient.auth.getSession();
-
-    if (error) {
-      throw error;
-    }
-
-    if (data.session) {
-      showProtectedDashboard();
-    } else {
-      showLogin();
-    }
-
-  } catch (error) {
-
-    console.error("Session verification error:", error);
-
-    showLogin(
-      "Unable to verify your session. Please sign in again."
-    );
-
-  } finally {
-
-    authenticationReady = true;
-
-  }
+  return Number(value || 0).toLocaleString();
 }
 
-// LOGOUT FUNCTION
 
-async function performAdminLogout() {
+/* DASHBOARD STATISTICS */
 
-  const confirmed = confirm(
-    "Are you sure you want to log out of Whisper Bots?"
+function updateStatistics(bots, conversations, usage) {
+
+  const active = bots.filter(bot => bot.active === true);
+
+  const totalRequests = usage.reduce(
+    (sum, item) => sum + 1,
+    0
   );
 
-  if (!confirmed) return;
+  document.getElementById("totalBots").textContent =
+    formatNumber(bots.length);
 
-  logoutButton.disabled = true;
-  logoutButton.textContent = "LOGGING OUT...";
+  document.getElementById("activeBots").textContent =
+    formatNumber(active.length);
 
-  try {
+  document.getElementById("totalConversations").textContent =
+    formatNumber(conversations.length);
 
-    const { error } =
-      await supabaseClient.auth.signOut();
+  document.getElementById("totalRequests").textContent =
+    formatNumber(totalRequests);
+}
 
-    if (error) {
-      throw error;
-    }
 
-    showLogin("You have successfully logged out.");
+/* BOT CATEGORY */
 
-    adminEmail.value = "";
+function normalizeCategory(category) {
 
-  } catch (error) {
+  const value = String(category || "other")
+    .toLowerCase()
+    .trim();
 
-    console.error("Logout error:", error);
+  const allowed = [
+    "assistant",
+    "creative",
+    "coding",
+    "music",
+    "education",
+    "other"
+  ];
 
-    alert(
-      "Logout failed. Please try again."
+  return allowed.includes(value) ? value : "other";
+}
+
+
+/* BOT CARD */
+
+function createBotCard(bot) {
+
+  const card = document.createElement("article");
+
+  card.style.cssText = `
+    background:linear-gradient(
+      145deg,
+      rgba(28,20,48,.96),
+      rgba(12,17,34,.96)
     );
+    border:1px solid rgba(189,101,255,.25);
+    border-radius:13px;
+    padding:16px;
+    min-width:0;
+    transition:.2s;
+  `;
 
-  } finally {
+  card.onmouseenter = () => {
+    card.style.borderColor = "#36eaff";
+    card.style.boxShadow = "0 0 20px rgba(54,234,255,.12)";
+  };
 
-    logoutButton.disabled = false;
-    logoutButton.textContent = "LOG OUT";
+  card.onmouseleave = () => {
+    card.style.borderColor = "rgba(189,101,255,.25)";
+    card.style.boxShadow = "none";
+  };
 
-  }
-}
+  const category = normalizeCategory(bot.category);
 
-// LOGOUT BUTTON
+  const colors = {
+    assistant: "#36eaff",
+    creative: "#ff4fbd",
+    coding: "#80ff72",
+    music: "#ffe36b",
+    education: "#568dff",
+    other: "#bd65ff"
+  };
 
-logoutButton.addEventListener(
-  "click",
-  performAdminLogout
-);
+  const color = colors[category];
 
-// MONITOR AUTHENTICATION CHANGES
+  const heading = document.createElement("div");
 
-supabaseClient.auth.onAuthStateChange(
-  function(event, session) {
+  heading.style.cssText = `
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  `;
 
-    if (event === "SIGNED_OUT") {
-      showLogin("Your session has ended.");
-    }
+  const icon = document.createElement("div");
 
-    if (event === "SIGNED_IN" && session) {
-      showProtectedDashboard();
-    }
+  icon.textContent = bot.icon || "◈";
 
-  }
-);
+  icon.style.cssText = `
+    width:43px;
+    height:43px;
+    display:grid;
+    place-items:center;
+    background:${color}16;
+    border:1px solid ${color}66;
+    border-radius:11px;
+    font-size:21px;
+    color:${color};
+  `;
 
-// START AUTHENTICATION CHECK
+  const status = document.createElement("span");
 
-checkAdminSession();
+  status.textContent = bot.active ? "● ACTIVE" : "○ INACTIVE";
 
-  
-// ==========================================
-// WHISPER BOTS DASHBOARD STORAGE
-// ==========================================
+  status.style.cssText = `
+    color:${bot.active ? "#80ff72" : "#9690ad"};
+    font-family:'Share Tech Mono',monospace;
+    font-size:9px;
+  `;
 
-const BOTS_STORAGE_KEY = "hexclown_whisper_bots";
-const ACTIVITY_STORAGE_KEY = "hexclown_whisper_activity";
-const CHATS_STORAGE_KEY = "hexclown_whisper_chats";
+  heading.append(icon, status);
 
-function readStorage(key, fallback) {
-    try {
-        const saved = localStorage.getItem(key);
-        return saved ? JSON.parse(saved) : fallback;
-    } catch (error) {
-        console.error("Storage error:", error);
-        return fallback;
-    }
-}
 
-function writeStorage(key, value) {
-    try {
-        localStorage.setItem(key, JSON.stringify(value));
-        return true;
-    } catch (error) {
-        console.error("Could not save dashboard data:", error);
-        return false;
-    }
-}
+  const name = document.createElement("h3");
 
-function getBots() {
-    const bots = readStorage(BOTS_STORAGE_KEY, []);
-    return Array.isArray(bots) ? bots : [];
-}
+  name.textContent = bot.name || "Unnamed Bot";
 
-function getActivity() {
-    const activity = readStorage(ACTIVITY_STORAGE_KEY, []);
-    return Array.isArray(activity) ? activity : [];
-}
+  name.style.cssText = `
+    font-family:'Orbitron',sans-serif;
+    font-size:14px;
+    margin-top:15px;
+    overflow-wrap:anywhere;
+  `;
 
-// ==========================================
-// ACTIVITY TRACKER
-// ==========================================
 
-function recordBotActivity(title, description, icon = "•") {
-    const activity = getActivity();
+  const description = document.createElement("p");
 
-    activity.unshift({
-        title: String(title),
-        description: String(description),
-        icon: String(icon),
-        time: new Date().toISOString()
-    });
+  description.textContent =
+    bot.description || "No description provided.";
 
-    // Keep the latest 30 activities
-    writeStorage(
-        ACTIVITY_STORAGE_KEY,
-        activity.slice(0, 30)
-    );
+  description.style.cssText = `
+    color:#a9a1bd;
+    font-size:13px;
+    line-height:1.5;
+    margin-top:8px;
+    min-height:39px;
+    overflow-wrap:anywhere;
+  `;
 
-    renderActivity();
-    updateDashboardStats();
-}
 
-function formatActivityTime(value) {
-    const date = new Date(value);
+  const categoryLabel = document.createElement("div");
 
-    if (Number.isNaN(date.getTime())) {
-        return "Recently";
-    }
+  categoryLabel.textContent = category.toUpperCase();
 
-    return date.toLocaleString();
-}
+  categoryLabel.style.cssText = `
+    display:inline-block;
+    color:${color};
+    border:1px solid ${color}55;
+    background:${color}12;
+    border-radius:20px;
+    padding:5px 9px;
+    font-family:'Share Tech Mono',monospace;
+    font-size:9px;
+    margin-top:12px;
+  `;
 
-function renderActivity() {
-    const activityList = document.getElementById("activityList");
 
-    if (!activityList) return;
+  const actions = document.createElement("div");
 
-    const activity = getActivity();
+  actions.style.cssText = `
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:15px;
+  `;
 
-    if (activity.length === 0) {
-        activityList.innerHTML = `
-            <div class="empty-state">
-                <p>No activity yet.</p>
-                <small>Your Whisper Bots activity will appear here.</small>
-            </div>
-        `;
-        return;
-    }
 
-    activityList.innerHTML = "";
-
-    activity.forEach(item => {
-        const entry = document.createElement("div");
-        entry.className = "activity-item";
-
-        const icon = document.createElement("span");
-        icon.className = "activity-icon";
-        icon.textContent = item.icon || "•";
-
-        const details = document.createElement("div");
-        details.className = "activity-details";
-
-        const heading = document.createElement("strong");
-        heading.textContent = item.title || "Activity";
-
-        const description = document.createElement("p");
-        description.textContent = item.description || "";
-
-        const time = document.createElement("small");
-        time.textContent = formatActivityTime(item.time);
-
-        details.appendChild(heading);
-        details.appendChild(description);
-        details.appendChild(time);
-
-        entry.appendChild(icon);
-        entry.appendChild(details);
-
-        activityList.appendChild(entry);
-    });
-}
-
-// ==========================================
-// DASHBOARD STATISTICS
-// ==========================================
-
-function updateDashboardStats() {
-    const bots = getBots();
-    const activity = getActivity();
-    const chats = readStorage(CHATS_STORAGE_KEY, []);
-
-    const totalBots = document.getElementById("totalBots");
-    const activeBots = document.getElementById("activeBots");
-    const totalChats = document.getElementById("totalChats");
-    const favoriteBots = document.getElementById("favoriteBots");
-
-    if (totalBots) {
-        totalBots.textContent = bots.length;
-    }
-
-    if (activeBots) {
-        activeBots.textContent = bots.filter(bot =>
-            bot && bot.active !== false
-        ).length;
-    }
-
-    if (totalChats) {
-        totalChats.textContent = Array.isArray(chats)
-            ? chats.length
-            : 0;
-    }
-
-    if (favoriteBots) {
-        favoriteBots.textContent = bots.filter(bot =>
-            bot && bot.favorite === true
-        ).length;
-    }
-}
-
-function refreshDashboard() {
-    updateDashboardStats();
-    renderActivity();
-}
-
-// ==========================================
-// MOBILE SIDEBAR
-// ==========================================
-
-const menuButton = document.getElementById("menuButton");
-const sidebar = document.querySelector(".sidebar");
-
-if (menuButton && sidebar) {
-    menuButton.addEventListener("click", () => {
-        sidebar.classList.toggle("open");
-    });
-
-    sidebar.querySelectorAll("a").forEach(link => {
-        link.addEventListener("click", () => {
-            sidebar.classList.remove("open");
-        });
-    });
-}
-
-// ==========================================
-// OPTIONAL CLEAR ACTIVITY BUTTON
-// ==========================================
-
-function addClearActivityButton() {
-    const activityList = document.getElementById("activityList");
-
-    if (!activityList) return;
-
-    const section = activityList.closest("section");
-
-    if (!section || section.querySelector("#clearActivityButton")) {
-        return;
-    }
+  function makeButton(label, action, buttonColor) {
 
     const button = document.createElement("button");
 
-    button.id = "clearActivityButton";
     button.type = "button";
-    button.textContent = "Clear Activity";
+    button.textContent = label;
 
     button.style.cssText = `
-        margin: 12px 0;
-        padding: 9px 14px;
-        border: 1px solid #1b6971;
-        border-radius: 7px;
-        background: #0b2027;
-        color: #67e8f9;
-        cursor: pointer;
-        font-size: 12px;
+      flex:1;
+      min-width:65px;
+      padding:8px 7px;
+      border-radius:7px;
+      border:1px solid ${buttonColor}77;
+      background:${buttonColor}12;
+      color:${buttonColor};
+      font-size:11px;
+      font-weight:700;
     `;
 
-    button.addEventListener("click", () => {
-        const confirmed = window.confirm(
-            "Clear your saved activity history?"
-        );
+    button.addEventListener("click", action);
 
-        if (!confirmed) return;
+    return button;
+  }
 
-        writeStorage(ACTIVITY_STORAGE_KEY, []);
-        renderActivity();
-        updateDashboardStats();
-    });
 
-    section.insertBefore(button, activityList);
+  const openButton = makeButton(
+    "OPEN",
+    () => {
+      window.location.href =
+        "botplayground.html?bot=" +
+        encodeURIComponent(bot.id);
+    },
+    "#36eaff"
+  );
+
+
+  const favoriteButton = makeButton(
+    bot.favorite ? "★ SAVED" : "☆ SAVE",
+    async () => {
+
+      try {
+
+        await HEX.bots.toggleFavorite(bot.id);
+
+        systemLog("Favorite status updated.", "success");
+
+        await loadDashboard();
+
+      } catch (error) {
+        showError(error);
+      }
+
+    },
+    "#ffe36b"
+  );
+
+
+  const activeButton = makeButton(
+    bot.active ? "PAUSE" : "ACTIVATE",
+    async () => {
+
+      try {
+
+        await HEX.bots.toggleActive(bot.id);
+
+        systemLog("Bot status updated.", "success");
+
+        await loadDashboard();
+
+      } catch (error) {
+        showError(error);
+      }
+
+    },
+    "#80ff72"
+  );
+
+
+  actions.append(
+    openButton,
+    favoriteButton,
+    activeButton
+  );
+
+  card.append(
+    heading,
+    name,
+    description,
+    categoryLabel,
+    actions
+  );
+
+  return card;
 }
 
-// ==========================================
-// KEEP DASHBOARD UPDATED
-// ==========================================
 
-window.addEventListener("pageshow", () => {
-    refreshDashboard();
-});
+/* DISPLAY BOTS */
 
-window.addEventListener("storage", event => {
-    if (
-        event.key === BOTS_STORAGE_KEY ||
-        event.key === ACTIVITY_STORAGE_KEY ||
-        event.key === CHATS_STORAGE_KEY
-    ) {
-        refreshDashboard();
+function renderBots() {
+
+  const container = document.getElementById("botList");
+
+  const search =
+    document.getElementById("botSearch")
+      .value
+      .toLowerCase()
+      .trim();
+
+  const category =
+    document.getElementById("categoryFilter").value;
+
+  container.innerHTML = "";
+
+  const filtered = allBots.filter(bot => {
+
+    const name = String(bot.name || "").toLowerCase();
+
+    const description =
+      String(bot.description || "").toLowerCase();
+
+    const matchesSearch =
+      name.includes(search) ||
+      description.includes(search);
+
+    const matchesCategory =
+      category === "all" ||
+      normalizeCategory(bot.category) === category;
+
+    return matchesSearch && matchesCategory;
+
+  });
+
+
+  if (filtered.length === 0) {
+
+    const empty = document.createElement("div");
+
+    empty.style.cssText = `
+      grid-column:1/-1;
+      text-align:center;
+      padding:35px 15px;
+      border:1px dashed rgba(189,101,255,.35);
+      border-radius:12px;
+      color:#9690ad;
+    `;
+
+    empty.textContent = allBots.length === 0
+      ? "NO BOTS FOUND. CREATE YOUR FIRST BOT."
+      : "NO BOTS MATCH YOUR SEARCH.";
+
+    container.appendChild(empty);
+
+    return;
+  }
+
+
+  filtered.forEach(bot => {
+
+    container.appendChild(
+      createBotCard(bot)
+    );
+
+  });
+
+}
+
+
+/* LOAD DASHBOARD DATA */
+
+async function loadDashboard() {
+
+  try {
+
+    systemLog("Connecting to HEXCLØWN database...", "info");
+
+    const results = await Promise.all([
+
+      HEX.bots.list(),
+
+      HEX.conversations.list(),
+
+      HEX.usage.list()
+
+    ]);
+
+    allBots = getRows(results[0]);
+
+    const conversations = getRows(results[1]);
+
+    const usage = getRows(results[2]);
+
+
+    updateStatistics(
+      allBots,
+      conversations,
+      usage
+    );
+
+    renderBots();
+
+    systemLog("Bot network synchronized.", "success");
+
+    systemLog(
+      allBots.length + " bot(s) loaded successfully.",
+      "info"
+    );
+
+  } catch (error) {
+
+    showError(error);
+
+    document.getElementById("botList").textContent =
+      "Unable to load bots. Please refresh and try again.";
+
+  }
+
+}
+
+
+/* INITIALIZE */
+
+async function initializeWhisperBots() {
+
+  try {
+
+    if (!HEX) {
+      throw new Error(
+        "HEXCLØWN core was not found. Check botzone-core.js."
+      );
     }
-});
 
-// ==========================================
-// INITIALISE DASHBOARD
-// ==========================================
+    systemLog("Initializing HEXCLØWN core...", "info");
 
-addClearActivityButton();
-refreshDashboard();
+    await HEX.initialize();
 
-// ==========================================
-// END OF WHISPER BOTS
-// ==========================================
-</script>
+    currentUser = await HEX.requireUser();
+
+    if (!currentUser) {
+
+      systemLog("Authentication required.", "warning");
+
+      document.getElementById("botList").textContent =
+        "Please sign in to access your Bot Zone.";
+
+      return;
+    }
+
+    systemLog("Authentication successful.", "success");
+
+    await loadDashboard();
+
+  } catch (error) {
+
+    showError(error);
+
+    document.getElementById("botList").textContent =
+      "Dashboard initialization failed. Check your connection and sign-in status.";
+
+  }
+
+}
+
+
+/* SEARCH EVENTS */
+
+document.getElementById("botSearch")
+  .addEventListener("input", renderBots);
+
+document.getElementById("categoryFilter")
+  .addEventListener("change", renderBots);
+
+
+/* START */
+
+initializeWhisperBots();
+
+</script><style>
+
+/* FINAL DASHBOARD POLISH */
+
+.content {
+  animation:hexAppear .7s ease both;
+}
+
+@keyframes hexAppear {
+  from {
+    opacity:0;
+    transform:translateY(12px);
+  }
+  to {
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+.stat-card {
+  transition:transform .2s,border-color .2s;
+}
+
+.stat-card:hover {
+  transform:translateY(-3px);
+  border-color:var(--cyan);
+}
+
+#botSearch:focus,
+#categoryFilter:focus {
+  border-color:var(--cyan);
+  box-shadow:0 0 13px rgba(54,234,255,.12);
+}
+
+#botList article {
+  animation:hexAppear .35s ease both;
+}
+
+.system-footer {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:25px;
+  padding:17px 5px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+}
+
+.system-footer span {
+  color:var(--purple);
+}
+
+.refresh-btn {
+  background:rgba(54,234,255,.08);
+  border:1px solid rgba(54,234,255,.35);
+  color:var(--cyan);
+  padding:8px 13px;
+  border-radius:7px;
+  font-size:11px;
+}
+
+.refresh-btn:active {
+  transform:scale(.97);
+}
+
+@media(max-width:560px) {
+  .system-footer {
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .hero-actions button {
+    flex:1;
+  }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:.01ms !important;
+    transition-duration:.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+
+</style>
+
+
+<!-- FOOTER -->
+
+<footer class="system-footer">
+
+  <div>
+    HEXCLØWN <span>BOT NETWORK</span> © 2026
+  </div>
+
+  <button
+    class="refresh-btn"
+    type="button"
+    onclick="loadDashboard()"
+  >
+    ↻ REFRESH NETWORK
+  </button>
+
+  <div>
+    DESIGNED FOR CREATORS // POWERED BY HEXCLØWN CORE
+  </div>
+
+</footer>
+
 </body>
 </html>
