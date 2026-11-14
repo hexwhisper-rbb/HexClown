@@ -3,7 +3,7 @@
 
 /* =====================================
    HEXCLØWN BOT ZONE CORE
-   PART 1: CORE + AUTH + BOT DATABASE
+   VERSION 1.1.0
 ===================================== */
 
 const CONFIG = {
@@ -15,6 +15,10 @@ const CONFIG = {
 let supabase = null;
 let initializationPromise = null;
 
+/* =====================================
+   SUPABASE INITIALIZATION
+===================================== */
+
 function loadLibrary() {
   return new Promise((resolve, reject) => {
     if (window.supabase && window.supabase.createClient) {
@@ -23,12 +27,15 @@ function loadLibrary() {
     }
 
     const script = document.createElement("script");
+
     script.src =
       "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
 
     script.onload = resolve;
-    script.onerror = () =>
+
+    script.onerror = () => {
       reject(new Error("Could not load Supabase library."));
+    };
 
     document.head.appendChild(script);
   });
@@ -37,7 +44,9 @@ function loadLibrary() {
 async function initialize() {
   if (supabase) return supabase;
 
-  if (initializationPromise) return initializationPromise;
+  if (initializationPromise) {
+    return initializationPromise;
+  }
 
   initializationPromise = (async () => {
     await loadLibrary();
@@ -84,9 +93,7 @@ async function requireUser() {
 }
 
 function handleError(error) {
-  if (error) {
-    throw error;
-  }
+  if (error) throw error;
 }
 
 /* =====================================
@@ -146,10 +153,11 @@ const auth = {
   async requireUser() {
     return requireUser();
   }
+
 };
 
 /* =====================================
-   BACKEND HEALTH CHECK
+   BACKEND HEALTH
 ===================================== */
 
 const health = {
@@ -161,7 +169,7 @@ const health = {
       throw new Error("Backend health check failed.");
     }
 
-    return await response.json();
+    return response.json();
   }
 
 };
@@ -252,19 +260,19 @@ const bots = {
       "settings"
     ];
 
-    const cleanUpdates = {};
+    const clean = {};
 
     allowed.forEach(key => {
       if (Object.prototype.hasOwnProperty.call(updates, key)) {
-        cleanUpdates[key] = updates[key];
+        clean[key] = updates[key];
       }
     });
 
-    cleanUpdates.updated_at = new Date().toISOString();
+    clean.updated_at = new Date().toISOString();
 
     const { data, error } = await client
       .from("hexclown_bots")
-      .update(cleanUpdates)
+      .update(clean)
       .eq("id", botId)
       .eq("owner_id", user.id)
       .select()
@@ -289,7 +297,7 @@ const bots = {
     handleError(error);
 
     if (!data) {
-      throw new Error("Bot was not found or could not be deleted.");
+      throw new Error("Bot not found or could not be deleted.");
     }
 
     return true;
@@ -318,7 +326,6 @@ const bots = {
 };
 
 /* END OF PART 1
-   DO NOT ADD ANOTHER IIFE.
    WAIT FOR PART 2.
 *//* =====================================
    CONVERSATION DATABASE
@@ -365,9 +372,7 @@ const conversations = {
       .select("*")
       .eq("owner_id", user.id);
 
-    if (botId) {
-      query = query.eq("bot_id", botId);
-    }
+    if (botId) query = query.eq("bot_id", botId);
 
     const { data, error } = await query
       .order("created_at", { ascending: false });
@@ -423,7 +428,19 @@ const conversations = {
     const client = await db();
     const user = await requireUser();
 
-    // Remove messages belonging to this conversation first.
+    const { data: conversation, error: checkError } = await client
+      .from("hexclown_conversations")
+      .select("id")
+      .eq("id", conversationId)
+      .eq("owner_id", user.id)
+      .maybeSingle();
+
+    handleError(checkError);
+
+    if (!conversation) {
+      throw new Error("Conversation not found.");
+    }
+
     const { error: messageError } = await client
       .from("hexclown_messages")
       .delete()
@@ -443,7 +460,7 @@ const conversations = {
     handleError(error);
 
     if (!data) {
-      throw new Error("Conversation not found or could not be deleted.");
+      throw new Error("Conversation deletion failed.");
     }
 
     return true;
@@ -611,106 +628,146 @@ const knowledge = {
 
 /* END OF PART 2
    WAIT FOR PART 3.
-*//* =====================================
-   USAGE TRACKING
-===================================== */
+*//* =====================================================
+   PART 3 — USAGE TRACKING, ANALYTICS & PUBLIC API
+===================================================== */
+
+/* USAGE TRACKING */
 
 const usage = {
 
   async record(data = {}) {
-    const client = await db();
-    const user = await requireUser();
+    const user = await auth.getUser();
 
-    const { data: result, error } = await client
+    if (!user) {
+      throw new Error("You must sign in first.");
+    }
+
+    const record = {
+      owner_id: user.id,
+      bot_id: data.bot_id || null,
+      conversation_id: data.conversation_id || null,
+      provider: data.provider || "internal",
+      model: data.model || "rule-based",
+      request_type: data.request_type || "chat",
+      input_tokens: Number(data.input_tokens || 0),
+      output_tokens: Number(data.output_tokens || 0)
+    };
+
+    const { data: saved, error } = await supabase
       .from("hexclown_usage")
-      .insert({
-        owner_id: user.id,
-        bot_id: data.bot_id || null,
-        conversation_id: data.conversation_id || null,
-        provider: data.provider || "internal",
-        model: data.model || "rule-based",
-        request_type: data.request_type || "chat",
-        input_tokens: Number(data.input_tokens) || 0,
-        output_tokens: Number(data.output_tokens) || 0
-      })
-      .select()
+      .insert(record)
+      .select("*")
       .single();
 
-    handleError(error);
-    return result;
+    if (error) throw error;
+
+    return saved;
   },
 
-  async list(botId) {
-    const client = await db();
-    const user = await requireUser();
+  async list(botId = null) {
+    const user = await auth.getUser();
 
-    let query = client
+    if (!user) {
+      throw new Error("You must sign in first.");
+    }
+
+    let query = supabase
       .from("hexclown_usage")
       .select("*")
-      .eq("owner_id", user.id);
+      .eq("owner_id", user.id)
+      .order("created_at", { ascending: false });
 
     if (botId) {
       query = query.eq("bot_id", botId);
     }
 
-    const { data, error } = await query
-      .order("created_at", { ascending: false });
+    const { data, error } = await query;
 
-    handleError(error);
+    if (error) throw error;
+
     return data || [];
+  },
+
+  async delete(usageId) {
+    const user = await auth.getUser();
+
+    if (!user) {
+      throw new Error("You must sign in first.");
+    }
+
+    const { data, error } = await supabase
+      .from("hexclown_usage")
+      .delete()
+      .eq("id", usageId)
+      .eq("owner_id", user.id)
+      .select("id")
+      .maybeSingle();
+
+    if (error) throw error;
+
+    if (!data) {
+      throw new Error("Usage record was not found or could not be deleted.");
+    }
+
+    return true;
   }
 
 };
 
-/* =====================================
-   ANALYTICS
-===================================== */
+
+/* ANALYTICS */
 
 const analytics = {
 
   async overview() {
-    const [
-      botList,
-      conversationList,
-      usageList
-    ] = await Promise.all([
-      bots.list(),
-      conversations.list(),
-      usage.list()
-    ]);
+    const [allBots, allConversations, allUsage] =
+      await Promise.all([
+        bots.list(),
+        conversations.list(),
+        usage.list()
+      ]);
 
-    const activeBots = botList.filter(bot => bot.active).length;
-
-    const favorites = botList.filter(bot => bot.favorite).length;
-
-    const totalInput = usageList.reduce(
-      (sum, item) => sum + (item.input_tokens || 0),
+    const totalInput = allUsage.reduce(
+      (sum, item) => sum + Number(item.input_tokens || 0),
       0
     );
 
-    const totalOutput = usageList.reduce(
-      (sum, item) => sum + (item.output_tokens || 0),
+    const totalOutput = allUsage.reduce(
+      (sum, item) => sum + Number(item.output_tokens || 0),
       0
     );
 
     return {
-      total_bots: botList.length,
-      active_bots: activeBots,
-      favorite_bots: favorites,
-      total_conversations: conversationList.length,
-      total_requests: usageList.length,
+      total_bots: allBots.length,
+
+      active_bots: allBots.filter(
+        bot => bot.active === true
+      ).length,
+
+      favorite_bots: allBots.filter(
+        bot => bot.favorite === true
+      ).length,
+
+      total_conversations: allConversations.length,
+
+      total_requests: allUsage.length,
+
       input_tokens: totalInput,
+
       output_tokens: totalOutput,
+
       total_tokens: totalInput + totalOutput
     };
   },
 
+
   async bot(botId) {
     const [
       bot,
-      conversationList,
-      knowledgeList,
-      usageList
+      botConversations,
+      botKnowledge,
+      botUsage
     ] = await Promise.all([
       bots.get(botId),
       conversations.list(botId),
@@ -718,76 +775,92 @@ const analytics = {
       usage.list(botId)
     ]);
 
-    if (!bot) {
-      throw new Error("Bot not found.");
-    }
+    const inputTokens = botUsage.reduce(
+      (sum, item) => sum + Number(item.input_tokens || 0),
+      0
+    );
+
+    const outputTokens = botUsage.reduce(
+      (sum, item) => sum + Number(item.output_tokens || 0),
+      0
+    );
 
     return {
-      bot,
-      total_conversations: conversationList.length,
-      total_knowledge: knowledgeList.length,
-      total_requests: usageList.length,
-      input_tokens: usageList.reduce(
-        (sum, item) => sum + (item.input_tokens || 0), 0
-      ),
-      output_tokens: usageList.reduce(
-        (sum, item) => sum + (item.output_tokens || 0), 0
-      )
+      bot: bot,
+
+      total_conversations: botConversations.length,
+
+      total_knowledge: botKnowledge.length,
+
+      total_requests: botUsage.length,
+
+      input_tokens: inputTokens,
+
+      output_tokens: outputTokens,
+
+      total_tokens: inputTokens + outputTokens
     };
   }
 
 };
 
-/* =====================================
-   PUBLIC CORE CONNECTION
-===================================== */
 
-const HEXCLOWN = {
+/* PUBLIC HEXCLØWN API */
 
-  version: "1.0.0",
+const HEXCLØWN = {
 
-  ready: initialize,
+  version: "1.1.0",
 
-  initialize,
+  ready: false,
 
-  auth,
+  initialize: initialize,
 
-  health,
+  auth: auth,
 
-  bots,
+  health: health,
 
-  conversations,
+  bots: bots,
 
-  messages,
+  conversations: conversations,
 
-  knowledge,
+  messages: messages,
 
-  usage,
+  knowledge: knowledge,
 
-  analytics,
+  usage: usage,
 
-  async getUser() {
-    return requireUser();
-  }
+  analytics: analytics,
+
+  getUser: auth.getUser
 
 };
 
-window.HEXCLØWN = HEXCLOWN;
 
-/* =====================================
-   CORE READY EVENT
-===================================== */
+/* EXPOSE CORE TO OTHER PAGES */
+
+window["HEXCLØWN"] = HEXCLØWN;
+
+
+/* INITIALIZE CORE */
 
 initialize()
-  .then(() => {
-    console.log("HEXCLØWN CORE: READY");
+  .then(function () {
+    HEXCLØWN.ready = true;
 
     window.dispatchEvent(
       new CustomEvent("hexclown:ready")
     );
+
+    console.log("HEXCLØWN CORE READY");
   })
-  .catch(error => {
-    console.error("HEXCLØWN CORE ERROR:", error);
+  .catch(function (error) {
+    console.error(
+      "HEXCLØWN INITIALIZATION FAILED:",
+      error
+    );
   });
+
+
+/* END OF BOTZONE CORE */
 
 })();
