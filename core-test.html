@@ -4,75 +4,153 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090914">
   <title>HEXCLØWN Analytics Test</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       background: #090914;
-      color: white;
+      color: #fff;
       font-family: Arial, sans-serif;
       padding: 20px;
+      margin: 0;
     }
+
+    h2 {
+      color: #c084fc;
+      font-size: 21px;
+    }
+
+    p {
+      color: #aaa;
+      font-size: 13px;
+    }
+
     button {
       width: 100%;
-      padding: 15px;
-      background: #a855f7;
+      padding: 16px;
+      background: linear-gradient(90deg, #9333ea, #db2777);
       color: white;
       border: 0;
-      border-radius: 8px;
+      border-radius: 9px;
       font-weight: bold;
+      font-size: 15px;
+      cursor: pointer;
     }
+
+    button:disabled {
+      opacity: 0.5;
+    }
+
     pre {
       background: #17172a;
+      border: 1px solid #37305a;
       padding: 15px;
+      border-radius: 10px;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
+      line-height: 1.7;
+      font-size: 13px;
+      min-height: 200px;
     }
   </style>
 </head>
-<body>
-  <h2>HEXCLØWN USAGE & ANALYTICS TEST</h2>
-  <button id="run">RUN FINAL TEST</button>
-  <pre id="output">Ready.</pre>
 
-  <script src="botzone-core.js?v=4.0.0"></script>
+<body>
+
+  <h2>HEXCLØWN</h2>
+  <p>BOT ZONE — USAGE & ANALYTICS DIAGNOSTICS</p>
+
+  <button id="run">RUN FINAL TEST</button>
+
+  <pre id="output">Ready. Waiting for test...</pre>
+
+  <script src="./botzone-core.js?v=4.1.0"></script>
+
   <script>
     const HEX = window["HEXCLØWN"];
     const output = document.getElementById("output");
+    const runButton = document.getElementById("run");
 
-    document.getElementById("run").onclick = async function () {
+    runButton.addEventListener("click", async function () {
+
+      if (!HEX) {
+        output.textContent =
+          "FAIL: HEXCLØWN CORE NOT LOADED.\n" +
+          "Check botzone-core.js and refresh this page.";
+        return;
+      }
+
+      runButton.disabled = true;
+
       let bot = null;
       let conversation = null;
       let usageRecord = null;
+
       const results = [];
+
+      function display() {
+        output.textContent = results.join("\n");
+      }
 
       function pass(name) {
         results.push("PASS: " + name);
-        output.textContent = results.join("\n");
+        display();
       }
 
       function fail(name, error) {
-        results.push("FAIL: " + name + " — " + error.message);
-        output.textContent = results.join("\n");
+        const message =
+          error && error.message
+            ? error.message
+            : String(error);
+
+        results.push("FAIL: " + name + " — " + message);
+        display();
       }
 
-      output.textContent = "Starting final tests...";
+      output.textContent = "Starting HEXCLØWN tests...";
 
       try {
+
+        // 1. AUTHENTICATION
         await HEX.requireUser();
         pass("AUTHENTICATION");
 
+
+        // 2. CREATE TEST BOT
         bot = await HEX.bots.create({
           name: "HEX ANALYTICS TEST BOT",
-          description: "Temporary analytics test"
+          description: "Temporary analytics test",
+          category: "Testing",
+          active: true
         });
+
+        if (!bot || !bot.id) {
+          throw new Error("Test bot was not created.");
+        }
+
         pass("CREATE TEST BOT");
 
-        conversation = await HEX.conversations.create(
-          bot.id,
-          "Analytics Test Conversation"
-        );
+
+        // 3. CREATE TEST CONVERSATION
+        conversation = await HEX.conversations.create({
+          bot_id: bot.id,
+          title: "Analytics Test Conversation",
+          status: "active"
+        });
+
+        if (!conversation || !conversation.id) {
+          throw new Error("Test conversation was not created.");
+        }
+
         pass("CREATE TEST CONVERSATION");
 
+
+        // 4. CREATE USAGE RECORD
         usageRecord = await HEX.usage.record({
           bot_id: bot.id,
           conversation_id: conversation.id,
@@ -82,42 +160,79 @@
           input_tokens: 10,
           output_tokens: 20
         });
+
+        if (!usageRecord || !usageRecord.id) {
+          throw new Error("Usage record was not created.");
+        }
+
         pass("CREATE USAGE RECORD");
 
+
+        // 5. RETRIEVE USAGE RECORD
         const usageRows = await HEX.usage.list(bot.id);
 
-        if (!usageRows.some(item => item.id === usageRecord.id)) {
+        const foundUsage = usageRows.some(function (item) {
+          return item.id === usageRecord.id;
+        });
+
+        if (!foundUsage) {
           throw new Error("Usage record was not retrieved.");
         }
+
         pass("RETRIEVE USAGE RECORD");
 
+
+        // 6. BOT ANALYTICS
         const botStats = await HEX.analytics.bot(bot.id);
 
-        if (
-          botStats.requests < 1 ||
-          botStats.input_tokens < 10 ||
-          botStats.output_tokens < 20
-        ) {
-          throw new Error("Bot analytics values did not match.");
+        if (!botStats) {
+          throw new Error("Bot analytics returned no result.");
         }
+
+        if (botStats.usage < 1) {
+          throw new Error("Bot usage count is incorrect.");
+        }
+
+        if (botStats.totalInputTokens < 10) {
+          throw new Error("Input token total is incorrect.");
+        }
+
+        if (botStats.totalOutputTokens < 20) {
+          throw new Error("Output token total is incorrect.");
+        }
+
         pass("BOT ANALYTICS");
 
+
+        // 7. OVERALL ANALYTICS
         const overview = await HEX.analytics.overview();
 
-        if (
-          overview.bots < 1 ||
-          overview.conversations < 1 ||
-          overview.requests < 1
-        ) {
-          throw new Error("Overall analytics values did not match.");
+        if (!overview) {
+          throw new Error("Overall analytics returned no result.");
         }
+
+        if (overview.bots < 1) {
+          throw new Error("Bot count is incorrect.");
+        }
+
+        if (overview.conversations < 1) {
+          throw new Error("Conversation count is incorrect.");
+        }
+
+        if (overview.usage < 1) {
+          throw new Error("Usage count is incorrect.");
+        }
+
         pass("OVERALL ANALYTICS");
 
+
       } catch (error) {
+
         fail("ANALYTICS OPERATION", error);
 
       } finally {
 
+        // 8. DELETE TEST USAGE
         if (usageRecord) {
           try {
             await HEX.usage.delete(usageRecord.id);
@@ -127,6 +242,7 @@
           }
         }
 
+        // 9. DELETE TEST CONVERSATION
         if (conversation) {
           try {
             await HEX.conversations.delete(conversation.id);
@@ -136,6 +252,7 @@
           }
         }
 
+        // 10. DELETE TEST BOT
         if (bot) {
           try {
             await HEX.bots.delete(bot.id);
@@ -145,10 +262,16 @@
           }
         }
 
+        results.push("");
         results.push("FINAL TEST FINISHED");
-        output.textContent = results.join("\n");
+
+        display();
+
+        runButton.disabled = false;
       }
-    };
+
+    });
   </script>
+
 </body>
 </html>
