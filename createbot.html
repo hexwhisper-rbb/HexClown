@@ -4,489 +4,320 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#07131a">
-
-<title>CREATE BOT | HEXCLØWN</title>
+<meta name="theme-color" content="#090713">
+<title>Create Bot | HEXCLØWN</title>
 
 <style>
 :root {
-    --bg: #061016;
-    --panel: #0b1b23;
-    --panel2: #102630;
-    --cyan: #45e6ee;
-    --green: #7cffb2;
-    --text: #e8f5f7;
-    --muted: #8ba5ad;
-    --border: #1c3b45;
-    --red: #ff7582;
+  --bg: #090713;
+  --panel: #121023;
+  --purple: #a855f7;
+  --pink: #ff3cac;
+  --cyan: #00e5ff;
+  --blue: #4169ff;
+  --green: #b7ff35;
+  --gold: #ffd166;
+  --text: #f5f2ff;
+  --muted: #9992b5;
+  --border: rgba(255,255,255,.10);
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    min-height: 100vh;
-    background: var(--bg);
-    color: var(--text);
-    font-family: Arial, sans-serif;
+  background:
+    radial-gradient(circle at 10% 5%, #281044 0, transparent 32%),
+    radial-gradient(circle at 90% 20%, #092b42 0, transparent 30%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  padding: 18px;
 }
 
 button, input, textarea, select {
-    font: inherit;
-}
-
-button {
-    cursor: pointer;
+  font: inherit;
 }
 
 .topbar {
-    min-height: 68px;
-    padding: 14px 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    background: #091820;
-    border-bottom: 1px solid var(--border);
+  max-width: 1050px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 0 25px;
+  border-bottom: 1px solid var(--border);
 }
 
 .logo {
-    color: var(--cyan);
-    font-size: 19px;
-    font-weight: 900;
-    letter-spacing: 2px;
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(90deg, var(--purple), var(--pink), var(--cyan));
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-.top-links {
-    display: flex;
-    gap: 18px;
-    flex-wrap: wrap;
+.back-link {
+  color: var(--cyan);
+  text-decoration: none;
+  font-size: 13px;
+  border: 1px solid rgba(0,229,255,.35);
+  padding: 10px 14px;
+  border-radius: 9px;
 }
 
-.top-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 13px;
+.container {
+  max-width: 850px;
+  margin: 35px auto;
 }
 
-.top-links a:hover {
-    color: var(--cyan);
+.eyebrow {
+  color: var(--green);
+  font-size: 11px;
+  letter-spacing: 3px;
+  font-weight: bold;
+  margin-bottom: 12px;
 }
 
-.layout {
-    display: flex;
-    min-height: calc(100vh - 68px);
+h1 {
+  font-size: clamp(27px, 6vw, 42px);
+  margin-bottom: 12px;
+  line-height: 1.15;
 }
 
-.sidebar {
-    width: 225px;
-    flex-shrink: 0;
-    padding: 24px 14px;
-    background: #091820;
-    border-right: 1px solid var(--border);
+h1 span {
+  background: linear-gradient(90deg, var(--purple), var(--pink), var(--cyan));
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-.sidebar h3 {
-    color: var(--muted);
-    font-size: 10px;
-    letter-spacing: 2px;
-    margin: 12px 10px 15px;
+.intro {
+  color: var(--muted);
+  line-height: 1.7;
+  font-size: 14px;
+  margin-bottom: 25px;
 }
 
-.sidebar a {
-    display: block;
-    padding: 12px;
-    margin-bottom: 6px;
-    border-radius: 7px;
-    text-decoration: none;
-    color: #a9c0c7;
-    font-size: 13px;
+.studio-status {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(183,255,53,.07);
+  border: 1px solid rgba(183,255,53,.2);
+  border-radius: 10px;
+  padding: 12px;
+  color: var(--green);
+  font-size: 12px;
+  margin-bottom: 22px;
 }
 
-.sidebar a:hover,
-.sidebar a.active {
-    background: #102b35;
-    color: var(--cyan);
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--green);
 }
 
-.main {
-    flex: 1;
-    min-width: 0;
-    max-width: 1400px;
-    padding: 30px;
+.form-panel {
+  background: linear-gradient(145deg, rgba(25,19,45,.97), rgba(12,13,29,.97));
+  border: 1px solid rgba(168,85,247,.25);
+  border-radius: 17px;
+  padding: 22px;
+  box-shadow: 0 0 35px rgba(110,40,180,.08);
 }
 
-.page-heading {
-    margin-bottom: 25px;
+.section-title {
+  font-size: 16px;
+  margin: 26px 0 17px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid var(--border);
+  color: var(--cyan);
 }
 
-.page-heading h1 {
-    font-size: 26px;
-    margin-bottom: 8px;
+.section-title:first-child {
+  margin-top: 0;
 }
 
-.page-heading p {
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.6;
+.field {
+  margin-bottom: 19px;
 }
 
-.workspace {
-    display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(260px, .8fr);
-    gap: 20px;
-    align-items: start;
+label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 9px;
 }
 
-.editor-panel,
-.preview-panel {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 11px;
-    padding: 22px;
-    min-width: 0;
+.hint {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 7px;
 }
 
-.panel-title {
-    font-size: 16px;
-    margin-bottom: 20px;
-    color: var(--cyan);
+input, textarea, select {
+  width: 100%;
+  background: #090b19;
+  border: 1px solid rgba(168,85,247,.25);
+  color: var(--text);
+  padding: 13px;
+  border-radius: 9px;
+  outline: none;
+  font-size: 14px;
 }
 
-.form-group {
-    margin-bottom: 19px;
+input:focus, textarea:focus, select:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 12px rgba(0,229,255,.12);
 }
 
-.form-group label {
-    display: block;
-    color: #c1d3d8;
-    font-size: 12px;
-    margin-bottom: 8px;
+textarea {
+  min-height: 105px;
+  resize: vertical;
+  line-height: 1.6;
 }
 
-.form-group small {
-    display: block;
-    color: var(--muted);
-    font-size: 11px;
-    line-height: 1.5;
-    margin-top: 7px;
+select {
+  cursor: pointer;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
-    width: 100%;
-    padding: 12px;
-    color: var(--text);
-    background: #06141a;
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    outline: none;
+option {
+  background: #121023;
+  color: white;
 }
 
-.form-group input:focus,
-.form-group textarea:focus,
-.form-group select:focus {
-    border-color: var(--cyan);
+.grid-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
 }
 
-.form-group textarea {
-    min-height: 100px;
-    resize: vertical;
-    line-height: 1.6;
+.icon-input {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }
 
-.form-group select option {
-    background: #0b1b23;
+.icon-input input {
+  flex: 1;
 }
 
-.char-count {
-    text-align: right;
-    color: var(--muted);
-    font-size: 10px;
-    margin-top: 5px;
+.icon-preview {
+  width: 52px;
+  height: 48px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: #201335;
+  border: 1px solid var(--pink);
+  border-radius: 10px;
+  font-size: 25px;
 }
 
-.two-columns {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 13px;
+.note {
+  background: rgba(0,229,255,.06);
+  border-left: 3px solid var(--cyan);
+  color: #c9eefa;
+  padding: 12px;
+  font-size: 11px;
+  line-height: 1.6;
+  border-radius: 5px;
+  margin-top: 18px;
 }
 
-.avatar-options {
-    display: flex;
-    gap: 9px;
-    flex-wrap: wrap;
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 25px;
 }
 
-.avatar-option {
-    width: 43px;
-    height: 43px;
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    background: #102630;
-    color: white;
-    font-size: 21px;
+.create-btn {
+  flex: 1;
+  min-width: 180px;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  background: linear-gradient(100deg, var(--purple), var(--pink), #e879f9);
+  color: white;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(255,60,172,.2);
 }
 
-.avatar-option.selected {
-    border: 2px solid var(--cyan);
-    background: #153943;
+.create-btn:disabled {
+  opacity: .55;
+  cursor: not-allowed;
 }
 
-.custom-avatar {
-    margin-top: 10px;
+.cancel-btn {
+  border: 1px solid var(--border);
+  padding: 15px 20px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  text-decoration: none;
+  text-align: center;
+  font-size: 13px;
 }
 
-.style-options {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 9px;
+.message {
+  display: none;
+  padding: 13px;
+  border-radius: 9px;
+  margin-top: 17px;
+  font-size: 13px;
+  line-height: 1.5;
 }
 
-.style-option {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px;
-    background: #07171e;
-    color: var(--text);
-    text-align: left;
+.message.error {
+  display: block;
+  color: #ff9bba;
+  background: rgba(255,60,120,.09);
+  border: 1px solid rgba(255,60,120,.3);
 }
 
-.style-option.selected {
-    border-color: var(--cyan);
-    background: #10313a;
+.message.success {
+  display: block;
+  color: var(--green);
+  background: rgba(183,255,53,.08);
+  border: 1px solid rgba(183,255,53,.3);
 }
 
-.style-option strong {
-    display: block;
-    font-size: 12px;
-    margin-bottom: 5px;
+.footer {
+  text-align: center;
+  color: #716b8b;
+  font-size: 11px;
+  margin: 35px 0 15px;
+  letter-spacing: 1px;
 }
 
-.style-option span {
-    color: var(--muted);
-    font-size: 10px;
-    line-height: 1.5;
-}
-
-.checkbox-row {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    color: #b7cbd0;
-    font-size: 12px;
-}
-
-.checkbox-row input {
-    width: 16px;
-    height: 16px;
-    accent-color: var(--cyan);
-}
-
-.preview-panel {
-    position: sticky;
-    top: 15px;
-}
-
-.preview-top {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
-}
-
-.preview-avatar {
-    width: 55px;
-    height: 55px;
-    display: grid;
-    place-items: center;
-    border-radius: 13px;
-    background: #12313a;
-    font-size: 27px;
-}
-
-.preview-name {
-    font-size: 17px;
-    overflow-wrap: anywhere;
-}
-
-.preview-category {
-    color: var(--cyan);
-    font-size: 11px;
-    margin-top: 5px;
-}
-
-.preview-description {
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.7;
-    margin-bottom: 18px;
-    overflow-wrap: anywhere;
-}
-
-.preview-divider {
-    border: 0;
-    border-top: 1px solid var(--border);
-    margin: 15px 0;
-}
-
-.preview-label {
-    color: var(--cyan);
-    font-size: 11px;
-    margin-bottom: 7px;
-}
-
-.preview-text {
-    color: #b9cbd0;
-    font-size: 12px;
-    line-height: 1.7;
-    overflow-wrap: anywhere;
-}
-
-.preview-message {
+@media(max-width:600px) {
+  body {
     padding: 13px;
-    margin-top: 12px;
-    background: #102630;
-    border-radius: 9px;
-    color: #dceef0;
-    font-size: 12px;
-    line-height: 1.6;
-    overflow-wrap: anywhere;
-}
+  }
 
-.preview-note {
-    color: var(--muted);
-    font-size: 10px;
-    line-height: 1.6;
-    margin-top: 15px;
-}
+  .form-panel {
+    padding: 16px;
+  }
 
-.action-bar {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-top: 22px;
-}
+  .grid-two {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
 
-.primary-btn,
-.secondary-btn,
-.danger-btn {
-    padding: 12px 17px;
-    border-radius: 7px;
-    font-weight: bold;
-    font-size: 12px;
-}
-
-.primary-btn {
-    border: 0;
-    background: var(--cyan);
-    color: #041317;
-}
-
-.primary-btn:hover {
-    filter: brightness(1.12);
-}
-
-.secondary-btn {
-    border: 1px solid var(--border);
-    background: #102630;
-    color: var(--text);
-}
-
-.danger-btn {
-    border: 1px solid #67333b;
-    background: #29171c;
-    color: var(--red);
-}
-
-.primary-btn:disabled {
-    opacity: .5;
-    cursor: not-allowed;
-}
-
-.form-status {
-    min-height: 20px;
-    margin-top: 13px;
-    color: var(--green);
-    font-size: 12px;
-    line-height: 1.5;
-}
-
-footer {
-    text-align: center;
-    padding: 25px 10px;
-    color: #68828a;
-    font-size: 11px;
-}
-
-@media(max-width: 1000px) {
-    .workspace {
-        grid-template-columns: 1fr;
-    }
-
-    .preview-panel {
-        position: static;
-    }
-}
-
-@media(max-width: 760px) {
-    .layout {
-        display: block;
-    }
-
-    .sidebar {
-        width: 100%;
-        display: flex;
-        gap: 5px;
-        overflow-x: auto;
-        padding: 10px;
-        border-right: 0;
-        border-bottom: 1px solid var(--border);
-    }
-
-    .sidebar h3 {
-        display: none;
-    }
-
-    .sidebar a {
-        white-space: nowrap;
-        margin: 0;
-        padding: 10px;
-    }
-
-    .main {
-        padding: 20px 14px;
-    }
-
-    .topbar {
-        padding: 13px 15px;
-    }
-
-    .top-links {
-        gap: 10px;
-    }
-}
-
-@media(max-width: 450px) {
-    .two-columns {
-        grid-template-columns: 1fr;
-    }
-
-    .style-options {
-        grid-template-columns: 1fr;
-    }
-
-    .action-bar button {
-        flex: 1;
-    }
-
-    .page-heading h1 {
-        font-size: 22px;
-    }
+  .container {
+    margin-top: 25px;
+  }
 }
 </style>
 </head>
@@ -494,824 +325,322 @@ footer {
 <body>
 
 <header class="topbar">
-    <div class="logo">HEXCLØWN</div>
-
-    <nav class="top-links">
-        <a href="index.html">Home</a>
-        <a href="whisperbots.html">Bot Zone</a>
-        <a href="mybots.html">My Bots</a>
-    </nav>
+  <div class="logo">HEXCLØWN</div>
+  <a class="back-link" href="mybots.html">← MY BOTS</a>
 </header>
 
-<div class="layout">
+<main class="container">
 
-    <aside class="sidebar">
-        <h3>BOT ZONE</h3>
-        <a href="whisperbots.html">◈ Dashboard</a>
-        <a href="mybots.html">◈ My Bots</a>
-        <a href="createbot.html" class="active">◈ Create Bot</a>
-        <a href="personalityeditor.html">◈ Personality</a>
-        <a href="botplayground.html">◈ Playground</a>
-        <a href="botknowledge.html">◈ Knowledge Base</a>
-        <a href="botcommands.html">◈ Commands</a>
-        <a href="botgallery.html">◈ Bot Gallery</a>
-        <a href="whispermemory.html">◈ Whisper Memory</a>
-        <a href="botanalytics.html">◈ Analytics</a>
-        <a href="botdebate.html">◈ Bot Debate</a>
-        <a href="botadmin.html">◈ Administration</a>
-    </aside>
+  <div class="eyebrow">BOT CREATION STUDIO / 001</div>
 
-    <main class="main">
+  <h1>Build Your <span>Whisper Bot.</span></h1>
 
-        <section class="page-heading">
-            <h1>WHISPER BOT CREATION STUDIO</h1>
-            <p>
-                Build a bot identity, define its personality,
-                and customise how it communicates.
-            </p>
-        </section>
+  <p class="intro">
+    Give your bot an identity, personality and purpose.
+    Configure its behaviour and save your creation to your HEXCLØWN workspace.
+  </p>
 
-        <div class="workspace">
+  <div class="studio-status">
+    <span class="status-dot"></span>
+    CREATION STUDIO READY
+  </div>
 
-            <section class="editor-panel">
+  <form id="createBotForm" class="form-panel">
 
-                <h2 class="panel-title">01 / BOT IDENTITY</h2>
+    <h2 class="section-title">01 / BOT IDENTITY</h2>
 
-                <form id="createBotForm">
+    <div class="field">
+      <label for="botName">Bot Name *</label>
+      <input
+        type="text"
+        id="botName"
+        maxlength="60"
+        placeholder="e.g. WhisperX"
+        required
+      >
+    </div>
 
-                    <input type="hidden" id="editingBotId">
+    <div class="field">
+      <label for="botIcon">Bot Icon</label>
+      <div class="icon-input">
+        <input
+          type="text"
+          id="botIcon"
+          maxlength="8"
+          value="🤖"
+          placeholder="🤖"
+        >
+        <div class="icon-preview" id="iconPreview">🤖</div>
+      </div>
+      <p class="hint">Choose an emoji to represent your bot.</p>
+    </div>
 
-                    <div class="form-group">
-                        <label for="botName">Bot Name</label>
-                        <input
-                            type="text"
-                            id="botName"
-                            maxlength="40"
-                            placeholder="e.g. Whisper Assistant"
-                            required
-                        >
-                        <div class="char-count" id="nameCount">
-                            0 / 40
-                        </div>
-                    </div>
+    <div class="field">
+      <label for="botDescription">Description *</label>
+      <textarea
+        id="botDescription"
+        maxlength="500"
+        placeholder="What is this bot designed to do?"
+        required
+      ></textarea>
+    </div>
 
-                    <div class="form-group">
-                        <label for="botDescription">Bot Description</label>
-                        <textarea
-                            id="botDescription"
-                            maxlength="250"
-                            placeholder="Describe what your bot is designed to do..."
-                        ></textarea>
-                        <div class="char-count" id="descriptionCount">
-                            0 / 250
-                        </div>
-                    </div>
+    <div class="grid-two">
 
-                    <div class="two-columns">
+      <div class="field">
+        <label for="botCategory">Category</label>
+        <select id="botCategory">
+          <option value="General">General</option>
+          <option value="Assistant">Assistant</option>
+          <option value="Education">Education</option>
+          <option value="Coding">Coding</option>
+          <option value="Creative">Creative</option>
+          <option value="Music">Music</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Productivity">Productivity</option>
+        </select>
+      </div>
 
-                        <div class="form-group">
-                            <label for="botCategory">Bot Category</label>
-                            <select id="botCategory">
-                                <option value="Assistant">Assistant</option>
-                                <option value="Creative">Creative</option>
-                                <option value="Study">Study</option>
-                                <option value="Entertainment">Entertainment</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
+      <div class="field">
+        <label for="botVisibility">Visibility Preference</label>
+        <select id="botVisibility">
+          <option value="private">Private</option>
+          <option value="unlisted">Unlisted</option>
+          <option value="public">Public</option>
+        </select>
+      </div>
 
-                        <div class="form-group">
-                            <label for="botVisibility">Bot Visibility</label>
-                            <select id="botVisibility">
-                                <option value="Private">Private</option>
-                                <option value="Unlisted">Unlisted</option>
-                                <option value="Public">Public</option>
-                            </select>
-                        </div>
+    </div>
 
-                    </div>
+    <h2 class="section-title">02 / PERSONALITY ENGINE</h2>
 
-                    <div class="form-group">
-                        <label>Choose Bot Avatar</label>
+    <div class="field">
+      <label for="botPersonality">Personality</label>
+      <textarea
+        id="botPersonality"
+        placeholder="Describe how your bot should behave. Example: Calm, intelligent, curious and helpful."
+      ></textarea>
+      <p class="hint">Define your bot's character and general behaviour.</p>
+    </div>
 
-                        <div class="avatar-options" id="avatarOptions">
-                            <button type="button" class="avatar-option selected" data-avatar="🤖">🤖</button>
-                            <button type="button" class="avatar-option" data-avatar="👾">👾</button>
-                            <button type="button" class="avatar-option" data-avatar="🧠">🧠</button>
-                            <button type="button" class="avatar-option" data-avatar="👻">👻</button>
-                            <button type="button" class="avatar-option" data-avatar="⚡">⚡</button>
-                            <button type="button" class="avatar-option" data-avatar="🦾">🦾</button>
-                            <button type="button" class="avatar-option" data-avatar="🌌">🌌</button>
-                        </div>
+    <div class="field">
+      <label for="responseStyle">Response Style</label>
+      <select id="responseStyle">
+        <option value="friendly">Friendly</option>
+        <option value="professional">Professional</option>
+        <option value="casual">Casual</option>
+        <option value="concise">Concise</option>
+        <option value="creative">Creative</option>
+        <option value="humorous">Humorous</option>
+      </select>
+    </div>
 
-                        <input
-                            class="custom-avatar"
-                            type="text"
-                            id="customAvatar"
-                            maxlength="8"
-                            placeholder="Or enter your own emoji"
-                        >
-                    </div>
+    <h2 class="section-title">03 / CUSTOM INSTRUCTIONS</h2>
 
-                    <hr class="preview-divider">
+    <div class="field">
+      <label for="botInstructions">Bot Instructions</label>
+      <textarea
+        id="botInstructions"
+        placeholder="Write the rules and instructions your bot should follow..."
+      ></textarea>
+    </div>
 
-                    <h2 class="panel-title">02 / PERSONALITY</h2>
+    <div class="field">
+      <label for="welcomeMessage">Welcome Message</label>
+      <textarea
+        id="welcomeMessage"
+        placeholder="What should users see when they open this bot?"
+      ></textarea>
+    </div>
 
-                    <div class="form-group">
-                        <label for="botPersonality">
-                            Personality Description
-                        </label>
+    <div class="field">
+      <label for="conversationStarter">Conversation Starter</label>
+      <input
+        type="text"
+        id="conversationStarter"
+        maxlength="250"
+        placeholder="e.g. What would you like to explore today?"
+      >
+    </div>
 
-                        <textarea
-                            id="botPersonality"
-                            maxlength="1000"
-                            placeholder="Describe how your bot should behave..."
-                        ></textarea>
-                        <small>
-                            Example: Friendly, patient, curious and helpful.
-                        </small>
-                    </div>
+    <div class="note">
+      IMPORTANT: Visibility is currently saved as a preference only.
+      Your database access remains controlled by Supabase security policies.
+      Saving a bot does not publish it or connect it to a generative AI service.
+    </div>
 
-                    <div class="form-group">
-                        <label>Response Style</label>
+    <div id="formMessage" class="message"></div>
 
-                        <div class="style-options" id="styleOptions">
+    <div class="actions">
+      <button type="submit" class="create-btn" id="createButton">
+        ✦ CREATE BOT
+      </button>
 
-                            <button type="button" class="style-option selected" data-style="Friendly">
-                                <strong>Friendly</strong>
-                                <span>Warm and approachable.</span>
-                            </button>
+      <a href="mybots.html" class="cancel-btn">CANCEL</a>
+    </div>
 
-                            <button type="button" class="style-option" data-style="Professional">
-                                <strong>Professional</strong>
-                                <span>Clear and formal.</span>
-                            </button>
+  </form>
 
-                            <button type="button" class="style-option" data-style="Casual">
-                                <strong>Casual</strong>
-                                <span>Relaxed everyday language.</span>
-                            </button>
+</main>
 
-                            <button type="button" class="style-option" data-style="Creative">
-                                <strong>Creative</strong>
-                                <span>Expressive and imaginative.</span>
-                            </button>
-
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="botInstructions">
-                            Special Instructions
-                        </label>
-
-                        <textarea
-                            id="botInstructions"
-                            maxlength="1500"
-                            placeholder="Add extra rules or instructions for this bot..."
-                        ></textarea>
-                    </div>
-
-                    <hr class="preview-divider">
-
-                    <h2 class="panel-title">03 / CONVERSATION</h2>
-
-                    <div class="form-group">
-                        <label for="welcomeMessage">
-                            Welcome Message
-                        </label>
-
-                        <textarea
-                            id="welcomeMessage"
-                            maxlength="500"
-                            placeholder="Hello! I'm your new Whisper Bot. How can I help?"
-                        ></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="botStarter">
-                            Suggested Conversation Starter
-                        </label>
-
-                        <input
-                            type="text"
-                            id="botStarter"
-                            maxlength="120"
-                            placeholder="e.g. Help me organise my ideas"
-                        >
-                    </div>
-
-                    <div class="form-group">
-                        <label class="checkbox-row">
-                            <input type="checkbox" id="botActive" checked>
-                            Activate this bot after saving
-                        </label>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="checkbox-row">
-                            <input type="checkbox" id="botFavorite">
-                            Add this bot to favourites
-                        </label>
-                    </div>
-
-                    <div class="action-bar">
-                        <button type="submit" class="primary-btn" id="saveBot">
-                            Save Bot
-                        </button>
-
-                        <button type="button" class="secondary-btn" id="previewBot">
-                            Update Preview
-                        </button>
-
-                        <button type="button" class="secondary-btn" id="resetForm">
-                            Reset
-                        </button>
-                    </div>
-
-                    <p class="form-status" id="formStatus"></p>
-
-                </form>
-            </section>
-
-            <aside class="preview-panel">
-
-                <h2 class="panel-title">LIVE BOT PREVIEW</h2>
-
-                <div class="preview-top">
-                    <div class="preview-avatar" id="previewAvatar">🤖</div>
-
-                    <div>
-                        <h3 class="preview-name" id="previewName">
-                            Your New Bot
-                        </h3>
-
-                        <p class="preview-category" id="previewCategory">
-                            Assistant
-                        </p>
-                    </div>
-                </div>
-
-                <p class="preview-description" id="previewDescription">
-                    Your bot description will appear here.
-                </p>
-
-                <hr class="preview-divider">
-
-                <p class="preview-label">PERSONALITY</p>
-                <p class="preview-text" id="previewPersonality">
-                    Your bot personality will appear here.
-                </p>
-
-                <hr class="preview-divider">
-
-                <p class="preview-label">RESPONSE STYLE</p>
-                <p class="preview-text" id="previewStyle">
-                    Friendly
-                </p>
-
-                <hr class="preview-divider">
-
-                <p class="preview-label">WELCOME MESSAGE</p>
-
-                <div class="preview-message" id="previewWelcome">
-                    Hello! I'm your new Whisper Bot. How can I help?
-                </div>
-
-                <p class="preview-note">
-                    This preview shows your saved bot configuration.
-                    It does not generate AI replies by itself.
-                </p>
-
-            </aside>
-
-        </div>
-
-    </main>
-</div>
-
-<footer>
-    HEXCLØWN • WHISPER BOT CREATION STUDIO
+<footer class="footer">
+  HEXCLØWN BOT ZONE · CREATION SYSTEM
 </footer>
+</body>
+    
+<script src="botzone-core.js"></script>
 
 <script>
-  
-// ==========================================
-// HEXCLØWN BOT CREATION STUDIO
-// PART 2 — INTERACTIONS & LIVE PREVIEW
-// ==========================================
+(function () {
+  "use strict";
 
-const STORAGE_KEY = "hexclown_whisper_bots";
+  const form = document.getElementById("createBotForm");
+  const createButton = document.getElementById("createButton");
+  const formMessage = document.getElementById("formMessage");
+  const iconInput = document.getElementById("botIcon");
+  const iconPreview = document.getElementById("iconPreview");
 
-// Main form elements
-const createBotForm = document.getElementById("createBotForm");
+  let currentUser = null;
+  let saving = false;
 
-const nameInput = document.getElementById("botName");
-const descriptionInput = document.getElementById("botDescription");
-const categoryInput = document.getElementById("botCategory");
-const visibilityInput = document.getElementById("botVisibility");
+  function showMessage(message, type) {
+    formMessage.textContent = message;
+    formMessage.className = "message " + type;
+  }
 
-const personalityInput = document.getElementById("botPersonality");
-const instructionsInput = document.getElementById("botInstructions");
-const welcomeInput = document.getElementById("welcomeMessage");
-const starterInput = document.getElementById("botStarter");
+  function clearMessage() {
+    formMessage.textContent = "";
+    formMessage.className = "message";
+  }
 
-const activeInput = document.getElementById("botActive");
-const favoriteInput = document.getElementById("botFavorite");
+  function setSaving(value) {
+    saving = value;
+    createButton.disabled = value;
+    createButton.textContent = value
+      ? "SAVING BOT..."
+      : "✦ CREATE BOT";
+  }
 
-const customAvatarInput = document.getElementById("customAvatar");
-const editingBotIdInput = document.getElementById("editingBotId");
+  function getValue(id) {
+    return document.getElementById(id).value.trim();
+  }
 
-const statusMessage = document.getElementById("formStatus");
-
-// Preview elements
-const previewAvatar = document.getElementById("previewAvatar");
-const previewName = document.getElementById("previewName");
-const previewCategory = document.getElementById("previewCategory");
-const previewDescription = document.getElementById("previewDescription");
-const previewPersonality = document.getElementById("previewPersonality");
-const previewStyle = document.getElementById("previewStyle");
-const previewWelcome = document.getElementById("previewWelcome");
-
-// Selected settings
-let selectedAvatar = "🤖";
-let selectedStyle = "Friendly";
-
-// ==========================================
-// STORAGE HELPERS
-// ==========================================
-
-function getStoredBots() {
+  async function initializeStudio() {
     try {
-        const saved = JSON.parse(
-            localStorage.getItem(STORAGE_KEY) || "[]"
-        );
+      if (!window.HEX) {
+        throw new Error("HEXCLØWN Core did not load. Check botzone-core.js.");
+      }
 
-        return Array.isArray(saved) ? saved : [];
+      await HEX.initialize();
+
+      currentUser = await HEX.getUser();
+
+      if (!currentUser) {
+        window.location.href = "whisperbots.html";
+        return;
+      }
+
+      console.log("HEXCLØWN CREATION STUDIO READY");
+      console.log("SIGNED IN:", currentUser.id);
+
     } catch (error) {
-        console.error("Bot storage error:", error);
-        return [];
+      console.error("Studio initialization error:", error);
+
+      showMessage(
+        error.message || "Unable to initialize the creation studio.",
+        "error"
+      );
     }
-}
+  }
 
-function saveStoredBots(bots) {
-    try {
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(bots)
-        );
+  iconInput.addEventListener("input", function () {
+    iconPreview.textContent = iconInput.value.trim() || "🤖";
+  });
 
-        return true;
-    } catch (error) {
-        console.error("Could not save bots:", error);
-        showStatus("Could not save. Check your browser storage.");
-        return false;
-    }
-}
-
-// ==========================================
-// STATUS MESSAGE
-// ==========================================
-
-function showStatus(message, isError = false) {
-    statusMessage.textContent = message;
-    statusMessage.style.color = isError
-        ? "#ff7582"
-        : "#7cffb2";
-}
-
-// ==========================================
-// AVATAR SELECTION
-// ==========================================
-
-const avatarButtons = document.querySelectorAll(".avatar-option");
-
-avatarButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        avatarButtons.forEach(item => {
-            item.classList.remove("selected");
-        });
-
-        button.classList.add("selected");
-
-        selectedAvatar = button.dataset.avatar;
-
-        customAvatarInput.value = "";
-
-        updatePreview();
-    });
-});
-
-customAvatarInput.addEventListener("input", () => {
-    const customValue = customAvatarInput.value.trim();
-
-    if (customValue) {
-        selectedAvatar = customValue;
-
-        avatarButtons.forEach(button => {
-            button.classList.remove("selected");
-        });
-    }
-
-    updatePreview();
-});
-
-// ==========================================
-// RESPONSE STYLE SELECTION
-// ==========================================
-
-const styleButtons = document.querySelectorAll(".style-option");
-
-styleButtons.forEach(button => {
-    button.addEventListener("click", () => {
-        styleButtons.forEach(item => {
-            item.classList.remove("selected");
-        });
-
-        button.classList.add("selected");
-
-        selectedStyle = button.dataset.style;
-
-        updatePreview();
-    });
-});
-
-// ==========================================
-// CHARACTER COUNTERS
-// ==========================================
-
-function updateCounter(inputId, counterId, maximum) {
-    const input = document.getElementById(inputId);
-    const counter = document.getElementById(counterId);
-
-    if (!input || !counter) return;
-
-    counter.textContent =
-        input.value.length + " / " + maximum;
-}
-
-nameInput.addEventListener("input", () => {
-    updateCounter("botName", "nameCount", 40);
-});
-
-descriptionInput.addEventListener("input", () => {
-    updateCounter(
-        "botDescription",
-        "descriptionCount",
-        250
-    );
-});
-
-// ==========================================
-// LIVE PREVIEW
-// ==========================================
-
-function updatePreview() {
-    previewAvatar.textContent = selectedAvatar || "🤖";
-
-    previewName.textContent =
-        nameInput.value.trim() || "Your New Bot";
-
-    previewCategory.textContent =
-        categoryInput.value || "Assistant";
-
-    previewDescription.textContent =
-        descriptionInput.value.trim() ||
-        "Your bot description will appear here.";
-
-    previewPersonality.textContent =
-        personalityInput.value.trim() ||
-        "Your bot personality will appear here.";
-
-    previewStyle.textContent = selectedStyle;
-
-    previewWelcome.textContent =
-        welcomeInput.value.trim() ||
-        "Hello! I'm your new Whisper Bot. How can I help?";
-}
-
-// Listen for changes to preview fields
-[
-    nameInput,
-    descriptionInput,
-    categoryInput,
-    personalityInput,
-    welcomeInput
-].forEach(element => {
-    element.addEventListener("input", updatePreview);
-    element.addEventListener("change", updatePreview);
-});
-
-// Preview button
-document.getElementById("previewBot")
-    .addEventListener("click", () => {
-        updatePreview();
-        showStatus("Live preview updated successfully.");
-    });
-
-// ==========================================
-// COLLECT FORM DATA
-// ==========================================
-
-function collectBotData() {
-    return {
-        name: nameInput.value.trim(),
-
-        description: descriptionInput.value.trim(),
-
-        category: categoryInput.value,
-
-        visibility: visibilityInput.value,
-
-        icon: selectedAvatar || "🤖",
-
-        personality: personalityInput.value.trim(),
-
-        responseStyle: selectedStyle,
-
-        instructions: instructionsInput.value.trim(),
-
-        welcomeMessage: welcomeInput.value.trim(),
-
-        conversationStarter: starterInput.value.trim(),
-
-        active: activeInput.checked,
-
-        favorite: favoriteInput.checked
-    };
-}
-
-// ==========================================
-// RESET FORM
-// ==========================================
-
-function resetCreationForm() {
-    createBotForm.reset();
-
-    editingBotIdInput.value = "";
-
-    selectedAvatar = "🤖";
-    selectedStyle = "Friendly";
-
-    avatarButtons.forEach(button => {
-        button.classList.toggle(
-            "selected",
-            button.dataset.avatar === "🤖"
-        );
-    });
-
-    styleButtons.forEach(button => {
-        button.classList.toggle(
-            "selected",
-            button.dataset.style === "Friendly"
-        );
-    });
-
-    document.getElementById("saveBot").textContent =
-        "Save Bot";
-
-    document.querySelector(".page-heading h1").textContent =
-        "WHISPER BOT CREATION STUDIO";
-
-    updateCounter("botName", "nameCount", 40);
-
-    updateCounter(
-        "botDescription",
-        "descriptionCount",
-        250
-    );
-
-    updatePreview();
-
-    showStatus("Form reset.");
-}
-
-document.getElementById("resetForm")
-    .addEventListener("click", () => {
-        const hasContent =
-            nameInput.value.trim() ||
-            descriptionInput.value.trim() ||
-            personalityInput.value.trim() ||
-            instructionsInput.value.trim();
-
-        if (hasContent) {
-            const confirmed = window.confirm(
-                "Reset the form? Unsaved changes will be lost."
-            );
-
-            if (!confirmed) return;
-        }
-
-        resetCreationForm();
-    });
-
-// ==========================================
-// LOAD EXISTING BOT FOR EDITING
-// ==========================================
-
-function loadBotForEditing(id) {
-    const bots = getStoredBots();
-
-    const bot = bots.find(item =>
-        String(item.id) === String(id)
-    );
-
-    if (!bot) {
-        showStatus("Bot not found.", true);
-        return false;
-    }
-
-    editingBotIdInput.value = bot.id;
-
-    nameInput.value = bot.name || "";
-    descriptionInput.value = bot.description || "";
-
-    categoryInput.value =
-        bot.category || "Assistant";
-
-    visibilityInput.value =
-        bot.visibility || "Private";
-
-    personalityInput.value =
-        bot.personality || "";
-
-    instructionsInput.value =
-        bot.instructions || "";
-
-    welcomeInput.value =
-        bot.welcomeMessage || "";
-
-    starterInput.value =
-        bot.conversationStarter || "";
-
-    activeInput.checked =
-        bot.active !== false;
-
-    favoriteInput.checked =
-        bot.favorite === true;
-
-    selectedAvatar = bot.icon || "🤖";
-
-    selectedStyle =
-        bot.responseStyle || "Friendly";
-
-    customAvatarInput.value = "";
-
-    avatarButtons.forEach(button => {
-        button.classList.toggle(
-            "selected",
-            button.dataset.avatar === selectedAvatar
-        );
-    });
-
-    styleButtons.forEach(button => {
-        button.classList.toggle(
-            "selected",
-            button.dataset.style === selectedStyle
-        );
-    });
-
-    document.getElementById("saveBot").textContent =
-        "Update Bot";
-
-    document.querySelector(".page-heading h1").textContent =
-        "EDIT WHISPER BOT";
-
-    updateCounter("botName", "nameCount", 40);
-
-    updateCounter(
-        "botDescription",
-        "descriptionCount",
-        250
-    );
-
-    updatePreview();
-
-    showStatus("Existing bot loaded. You can now edit it.");
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-
-    return true;
-}
-
-// ==========================================
-// CHECK FOR EDIT REQUEST IN URL
-// ==========================================
-
-function checkEditRequest() {
-    const params = new URLSearchParams(window.location.search);
-
-    const editId = params.get("edit");
-
-    if (editId) {
-        loadBotForEditing(editId);
-    }
-}
-
-// ==========================================
-// INITIALISE PART 2
-// ==========================================
-
-updateCounter("botName", "nameCount", 40);
-
-updateCounter(
-    "botDescription",
-    "descriptionCount",
-    250
-);
-
-updatePreview();
-
-checkEditRequest();
-  
-/* SAVE OR UPDATE BOT */
-
-document.getElementById("botForm").addEventListener("submit", function (event) {
+  form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    const botData = collectBotData();
+    if (saving) return;
 
-    if (!botData.name || !botData.name.trim()) {
-        showStatus("Please enter a bot name.", true);
-        return;
+    clearMessage();
+
+    try {
+      if (!window.HEX) {
+        throw new Error("HEXCLØWN Core is unavailable.");
+      }
+
+      if (!currentUser) {
+        throw new Error("Your session is not ready. Please refresh the page.");
+      }
+
+      const name = getValue("botName");
+      const description = getValue("botDescription");
+
+      if (!name) {
+        throw new Error("Please enter a bot name.");
+      }
+
+      if (!description) {
+        throw new Error("Please enter a bot description.");
+      }
+
+      const botData = {
+        name: name,
+        description: description,
+        category: getValue("botCategory"),
+        icon: getValue("botIcon") || "🤖",
+        visibility: getValue("botVisibility"),
+        personality: getValue("botPersonality"),
+        response_style: getValue("responseStyle"),
+        instructions: getValue("botInstructions"),
+        welcome_message: getValue("welcomeMessage"),
+        conversation_starter: getValue("conversationStarter"),
+        active: true,
+        favorite: false,
+        settings: {
+          created_from: "createbot.html",
+          version: "1.0"
+        }
+      };
+
+      setSaving(true);
+
+      const result = await HEX.bots.create(botData);
+
+      if (!result || !result.id) {
+        throw new Error("The bot was not saved. Please try again.");
+      }
+
+      showMessage(
+        "SUCCESS! Your bot has been saved. Opening My Bots...",
+        "success"
+      );
+
+      createButton.textContent = "BOT CREATED ✓";
+
+      setTimeout(function () {
+        window.location.href = "mybots.html";
+      }, 1200);
+
+    } catch (error) {
+      console.error("BOT CREATION ERROR:", error);
+
+      showMessage(
+        error.message || "Something went wrong while creating your bot.",
+        "error"
+      );
+
+      setSaving(false);
     }
+  });
 
-    const bots = getStoredBots();
-    const editingId = editingBotIdInput.value.trim();
+  initializeStudio();
 
-    if (editingId) {
-        const index = bots.findIndex(bot => bot.id === editingId);
-
-        if (index === -1) {
-            showStatus("This bot could not be found. Please return to My Bots.", true);
-            return;
-        }
-
-        const existingBot = bots[index];
-
-        bots[index] = {
-            ...existingBot,
-            ...botData,
-            id: existingBot.id,
-            createdAt: existingBot.createdAt || new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        };
-
-        if (!saveStoredBots(bots)) {
-            showStatus("Could not save changes. Check your browser storage.", true);
-            return;
-        }
-
-        showStatus("Your bot has been updated successfully!");
-
-    } else {
-        const newBot = {
-            id: "bot_" + Date.now() + "_" + Math.random().toString(36).slice(2, 9),
-            ...botData,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-        };
-
-        bots.unshift(newBot);
-
-        if (!saveStoredBots(bots)) {
-            showStatus("Could not save your bot. Check your browser storage.", true);
-            return;
-        }
-
-        showStatus("Your new bot has been created successfully!");
-    }
-
-    /* Add a link to My Bots after saving */
-    const statusArea = document.getElementById("formStatus");
-
-    const oldLink = document.getElementById("myBotsAfterSave");
-    if (oldLink) oldLink.remove();
-
-    const link = document.createElement("a");
-    link.id = "myBotsAfterSave";
-    link.href = "mybots.html";
-    link.textContent = "Open My Bots →";
-    link.style.display = "inline-block";
-    link.style.marginTop = "12px";
-    link.style.padding = "10px 16px";
-    link.style.borderRadius = "8px";
-    link.style.background = "#00d9c5";
-    link.style.color = "#061313";
-    link.style.fontWeight = "700";
-    link.style.textDecoration = "none";
-
-    statusArea.appendChild(link);
-});
-
-/* KEEP THE PREVIEW UPDATED */
-updatePreview();
-
-/* CHECK WHETHER THE PAGE IS IN EDIT MODE */
-checkEditRequest();
+})();
 </script>
+
 </body>
 </html>
+
+    </html>
+    
