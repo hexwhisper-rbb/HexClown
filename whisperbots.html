@@ -1,1331 +1,842 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080710">
-<title>WHISPERBOTS | HEXCLØWN</title>
+<meta name="theme-color" content="#080711">
+<title>Whisper Bots | HEXCLØWN</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg:#080710;
-  --panel:#100e1c;
+  --bg:#080711;
+  --panel:#100e1d;
   --panel2:#171329;
-  --purple:#bd65ff;
-  --cyan:#36eaff;
-  --pink:#ff4fbd;
-  --green:#80ff72;
-  --blue:#568dff;
-  --gold:#ffe36b;
+  --purple:#a855f7;
+  --pink:#ff36bd;
+  --cyan:#19e6ff;
+  --green:#a5ff35;
+  --blue:#497bff;
+  --gold:#ffc857;
   --text:#f3efff;
-  --muted:#9690ad;
-  --line:rgba(189,101,255,.22);
-  --danger:#ff5577;
+  --muted:#918ba9;
+  --border:rgba(168,85,247,.25);
+  --shadow:0 0 25px rgba(168,85,247,.12);
 }
-
-* {
-  box-sizing:border-box;
+*{box-sizing:border-box}
+body{
   margin:0;
-  padding:0;
-}
-
-html {
-  scroll-behavior:smooth;
-}
-
-body {
   background:
-    radial-gradient(ellipse at 10% 0%,rgba(135,45,220,.17),transparent 35%),
-    radial-gradient(ellipse at 90% 15%,rgba(0,205,255,.12),transparent 32%),
-    radial-gradient(ellipse at 50% 100%,rgba(255,40,160,.08),transparent 40%),
+    radial-gradient(circle at 15% 10%,rgba(168,85,247,.13),transparent 35%),
+    radial-gradient(circle at 90% 80%,rgba(25,230,255,.08),transparent 35%),
     var(--bg);
   color:var(--text);
   font-family:'Rajdhani',sans-serif;
   min-height:100vh;
-  overflow-x:hidden;
 }
+button,input,select{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
 
-body::before {
-  content:"";
+/* LOGIN SCREEN */
+#loginGate{
   position:fixed;
   inset:0;
-  pointer-events:none;
-  z-index:0;
-  opacity:.13;
-  background-image:
-    linear-gradient(rgba(120,100,180,.12) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(120,100,180,.12) 1px,transparent 1px);
-  background-size:35px 35px;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:
+    linear-gradient(rgba(8,7,17,.94),rgba(8,7,17,.97)),
+    repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.025) 4px);
 }
-
-button,input,select {
-  font:inherit;
-}
-
-button {
-  cursor:pointer;
-}
-
-a {
-  color:inherit;
-  text-decoration:none;
-}
-
-.app {
-  position:relative;
-  z-index:1;
+.login-card{
   width:100%;
-  max-width:1500px;
-  margin:auto;
-  padding:18px;
+  max-width:430px;
+  padding:32px 25px;
+  background:rgba(16,14,29,.96);
+  border:1px solid rgba(168,85,247,.5);
+  border-radius:18px;
+  box-shadow:0 0 50px rgba(168,85,247,.15),0 0 25px rgba(25,230,255,.07);
+  position:relative;
+  overflow:hidden;
+}
+.login-card:before{
+  content:"";
+  position:absolute;
+  height:3px;
+  top:0;left:0;right:0;
+  background:linear-gradient(90deg,var(--purple),var(--pink),var(--cyan),var(--green));
+}
+.brand{
+  font-family:'Orbitron',sans-serif;
+  font-size:25px;
+  font-weight:800;
+  letter-spacing:3px;
+  text-align:center;
+  background:linear-gradient(90deg,var(--purple),var(--pink),var(--cyan));
+  -webkit-background-clip:text;
+  color:transparent;
+}
+.login-sub{
+  text-align:center;
+  color:var(--muted);
+  letter-spacing:3px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  margin:10px 0 25px;
+}
+.login-icon{
+  width:68px;height:68px;
+  display:grid;place-items:center;
+  margin:0 auto 18px;
+  border:1px solid var(--cyan);
+  border-radius:20px;
+  color:var(--cyan);
+  font-size:30px;
+  box-shadow:0 0 25px rgba(25,230,255,.16);
+}
+.login-card h2{
+  font-family:'Orbitron',sans-serif;
+  text-align:center;
+  font-size:17px;
+  letter-spacing:2px;
+  margin:0 0 8px;
+}
+.login-description{
+  text-align:center;
+  color:var(--muted);
+  font-size:15px;
+  margin:0 0 25px;
+}
+.field-label{
+  display:block;
+  color:var(--cyan);
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  margin:16px 0 7px;
+}
+.login-input{
+  width:100%;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  background:#090815;
+  color:white;
+  outline:none;
+}
+.login-input:focus{
+  border-color:var(--cyan);
+  box-shadow:0 0 12px rgba(25,230,255,.12);
+}
+.login-button{
+  width:100%;
+  padding:14px;
+  margin-top:22px;
+  border:0;
+  border-radius:9px;
+  background:linear-gradient(100deg,var(--purple),var(--pink));
+  color:white;
+  font-family:'Orbitron',sans-serif;
+  font-weight:700;
+  letter-spacing:1px;
+}
+.login-button:disabled{opacity:.55;cursor:wait}
+.login-message{
+  min-height:22px;
+  margin-top:15px;
+  text-align:center;
+  font-size:13px;
+  color:var(--gold);
+}
+.login-foot{
+  text-align:center;
+  color:#625d75;
+  font:10px 'Share Tech Mono',monospace;
+  margin-top:22px;
 }
 
-/* TOP BAR */
-
-.topbar {
+/* DASHBOARD */
+#dashboard{min-height:100vh}
+.topbar{
+  height:68px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:15px;
-  padding:15px 18px;
-  background:rgba(16,14,28,.88);
-  border:1px solid var(--line);
-  border-radius:16px;
-  box-shadow:0 0 25px rgba(160,70,255,.08);
-  backdrop-filter:blur(15px);
-}
-
-.brand {
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.brand-icon {
-  width:43px;
-  height:43px;
-  display:grid;
-  place-items:center;
-  border-radius:12px;
-  color:var(--cyan);
-  font-size:22px;
-  font-family:'Orbitron',sans-serif;
-  border:1px solid var(--cyan);
-  box-shadow:0 0 15px rgba(54,234,255,.25);
-}
-
-.brand-name {
-  font-family:'Orbitron',sans-serif;
-  font-size:17px;
-  font-weight:800;
-  letter-spacing:1px;
-}
-
-.brand-name span {
-  color:var(--purple);
-}
-
-.brand-sub {
-  color:var(--muted);
-  font-family:'Share Tech Mono',monospace;
-  font-size:10px;
-  margin-top:4px;
-  letter-spacing:1px;
-}
-
-.top-actions {
-  display:flex;
-  align-items:center;
-  gap:9px;
-}
-
-.status-pill {
-  display:flex;
-  align-items:center;
-  gap:7px;
-  color:var(--green);
-  font-family:'Share Tech Mono',monospace;
-  font-size:11px;
-  padding:8px 11px;
-  border:1px solid rgba(128,255,114,.3);
-  border-radius:30px;
-  background:rgba(128,255,114,.06);
-}
-
-.status-dot {
-  width:7px;
-  height:7px;
-  background:var(--green);
-  border-radius:50%;
-  box-shadow:0 0 10px var(--green);
-}
-
-/* BUTTONS */
-
-.neon-btn {
-  border:1px solid var(--purple);
-  background:rgba(189,101,255,.12);
-  color:#e9caff;
-  padding:10px 15px;
-  border-radius:9px;
-  font-weight:700;
-  transition:.2s;
-}
-
-.neon-btn:hover {
-  background:rgba(189,101,255,.25);
-  box-shadow:0 0 18px rgba(189,101,255,.2);
-}
-
-.primary-btn {
-  border:1px solid var(--cyan);
-  background:linear-gradient(120deg,rgba(54,234,255,.17),rgba(189,101,255,.17));
-  color:var(--cyan);
-  padding:11px 17px;
-  border-radius:9px;
-  font-weight:700;
-  box-shadow:0 0 15px rgba(54,234,255,.08);
-  transition:.2s;
-}
-
-.primary-btn:hover {
-  box-shadow:0 0 22px rgba(54,234,255,.25);
-  transform:translateY(-1px);
-}
-
-/* MAIN LAYOUT */
-
-.main-grid {
-  display:grid;
-  grid-template-columns:225px minmax(0,1fr);
-  gap:18px;
-  margin-top:18px;
-}
-
-/* SIDEBAR */
-
-.sidebar {
-  background:rgba(16,14,28,.9);
-  border:1px solid var(--line);
-  border-radius:15px;
-  padding:17px 12px;
-  height:max-content;
+  padding:0 22px;
+  border-bottom:1px solid var(--border);
+  background:rgba(10,8,20,.92);
   position:sticky;
-  top:15px;
+  top:0;
+  z-index:20;
+  backdrop-filter:blur(12px);
 }
-
-.side-label {
-  color:var(--muted);
-  font-family:'Share Tech Mono',monospace;
-  font-size:10px;
+.logo{
+  font:800 18px 'Orbitron',sans-serif;
   letter-spacing:2px;
-  padding:10px 10px;
+  background:linear-gradient(90deg,var(--purple),var(--pink),var(--cyan));
+  -webkit-background-clip:text;
+  color:transparent;
 }
-
-.nav-link {
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:12px 11px;
-  border-radius:9px;
-  color:#b9b1d0;
-  font-size:15px;
-  font-weight:600;
-  margin:3px 0;
-  transition:.2s;
+.top-right{display:flex;align-items:center;gap:12px}
+.status{
+  color:var(--green);
+  font:10px 'Share Tech Mono',monospace;
 }
-
-.nav-link:hover,
-.nav-link.active {
-  color:var(--cyan);
-  background:rgba(54,234,255,.08);
-  border-left:3px solid var(--cyan);
-}
-
-.nav-icon {
-  width:21px;
-  text-align:center;
-  font-size:17px;
-}
-
-.side-bottom {
-  margin-top:25px;
-  padding:13px 10px;
-  border-top:1px solid var(--line);
-  color:var(--muted);
-  font-family:'Share Tech Mono',monospace;
-  font-size:10px;
-  line-height:1.8;
-}
-
-/* CONTENT */
-
-.content {
-  min-width:0;
-}
-
-.hero {
-  position:relative;
-  overflow:hidden;
-  padding:27px;
-  border:1px solid rgba(189,101,255,.35);
-  border-radius:17px;
-  background:
-    linear-gradient(110deg,rgba(93,29,150,.28),rgba(12,32,65,.3)),
-    var(--panel);
-  box-shadow:0 0 30px rgba(130,55,255,.08);
-}
-
-.hero::after {
-  content:"</>";
-  position:absolute;
-  right:25px;
-  top:10px;
-  font-family:'Share Tech Mono',monospace;
-  font-size:90px;
-  color:rgba(54,234,255,.08);
-  transform:rotate(-8deg);
-}
-
-.eyebrow {
+.logout-btn{
+  padding:8px 13px;
+  border:1px solid rgba(255,54,189,.5);
+  background:transparent;
   color:var(--pink);
-  font-family:'Share Tech Mono',monospace;
-  font-size:11px;
+  border-radius:7px;
+}
+.layout{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  min-height:calc(100vh - 68px);
+}
+.sidebar{
+  padding:22px 13px;
+  border-right:1px solid var(--border);
+  background:rgba(12,10,23,.7);
+}
+.side-label{
+  color:#625d75;
+  font:10px 'Share Tech Mono',monospace;
+  padding:10px;
   letter-spacing:2px;
-  margin-bottom:10px;
 }
-
-.hero h1 {
-  font-family:'Orbitron',sans-serif;
-  font-size:clamp(24px,4vw,39px);
-  line-height:1.25;
-  margin-bottom:10px;
+.nav-link{
+  display:block;
+  padding:11px 12px;
+  margin:4px 0;
+  border-radius:8px;
+  text-decoration:none;
+  color:#b8b1ca;
+  font-size:15px;
+  border:1px solid transparent;
 }
-
-.hero h1 span {
+.nav-link:hover,.nav-link.current{
+  color:white;
+  border-color:var(--border);
+  background:linear-gradient(90deg,rgba(168,85,247,.15),rgba(25,230,255,.04));
+}
+.nav-link.current{color:var(--cyan)}
+main{padding:27px;min-width:0}
+.eyebrow{
   color:var(--cyan);
-  text-shadow:0 0 18px rgba(54,234,255,.35);
+  font:11px 'Share Tech Mono',monospace;
+  letter-spacing:3px;
 }
-
-.hero p {
-  color:#b9b1ce;
-  font-size:16px;
-  max-width:600px;
-  line-height:1.6;
+h1{
+  font:700 clamp(23px,4vw,34px) 'Orbitron',sans-serif;
+  margin:10px 0;
 }
-
-.hero-actions {
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin-top:20px;
-}
-
-/* STATISTICS */
-
-.stats-grid {
+.hero-text{color:var(--muted);font-size:16px;margin:0 0 25px}
+.stats{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:12px;
-  margin-top:17px;
+  gap:13px;
+  margin-bottom:25px;
 }
-
-.stat-card {
-  background:rgba(16,14,28,.88);
-  border:1px solid var(--line);
+.stat-card{
+  padding:17px;
+  background:linear-gradient(140deg,var(--panel2),var(--panel));
+  border:1px solid var(--border);
   border-radius:12px;
-  padding:16px;
-  min-width:0;
+  box-shadow:var(--shadow);
 }
-
-.stat-icon {
-  font-size:19px;
-  margin-bottom:10px;
+.stat-card small{
+  color:var(--muted);
+  font:10px 'Share Tech Mono',monospace;
 }
-
-.stat-number {
-  font-family:'Orbitron',sans-serif;
-  font-size:25px;
+.stat-card strong{
+  display:block;
+  margin-top:9px;
+  font:700 27px 'Orbitron',sans-serif;
+}
+.stat-card:nth-child(1) strong{color:var(--purple)}
+.stat-card:nth-child(2) strong{color:var(--green)}
+.stat-card:nth-child(3) strong{color:var(--cyan)}
+.stat-card:nth-child(4) strong{color:var(--pink)}
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:28px 0 14px;
+}
+.section-head h2{
+  font:600 16px 'Orbitron',sans-serif;
+}
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:17px;
+}
+.controls input,.controls select{
+  flex:1;
+  min-width:140px;
+  padding:11px;
+  border:1px solid var(--border);
+  background:var(--panel);
+  color:white;
+  border-radius:8px;
+  outline:none;
+}
+.primary-btn{
+  padding:11px 15px;
+  border:0;
+  border-radius:8px;
+  background:linear-gradient(100deg,var(--purple),var(--blue));
+  color:white;
   font-weight:700;
 }
-
-.stat-title {
+.bot-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.bot-card{
+  padding:17px;
+  border:1px solid var(--border);
+  background:linear-gradient(145deg,#171329,#0d0b18);
+  border-radius:12px;
+  min-width:0;
+}
+.bot-top{display:flex;align-items:center;gap:12px}
+.bot-icon{
+  width:45px;height:45px;
+  display:grid;place-items:center;
+  border-radius:12px;
+  background:rgba(168,85,247,.13);
+  border:1px solid var(--purple);
+  font-size:22px;
+}
+.bot-name{
+  font:600 14px 'Orbitron',sans-serif;
+  overflow-wrap:anywhere;
+}
+.bot-category{font-size:12px;color:var(--cyan)}
+.bot-description{
   color:var(--muted);
+  font-size:14px;
+  margin:15px 0;
+  min-height:35px;
+}
+.bot-actions{display:flex;gap:7px;flex-wrap:wrap}
+.bot-actions button{
+  padding:7px 10px;
+  border-radius:7px;
+  background:#211b36;
+  border:1px solid var(--border);
+  color:white;
   font-size:12px;
-  margin-top:5px;
-  letter-spacing:1px;
 }
-
-.stat-purple .stat-number {color:var(--purple)}
-.stat-cyan .stat-number {color:var(--cyan)}
-.stat-pink .stat-number {color:var(--pink)}
-.stat-green .stat-number {color:var(--green)}
-
-/* RESPONSIVE */
-
-@media(max-width:850px) {
-  .main-grid {
-    grid-template-columns:1fr;
-  }
-
-  .sidebar {
-    position:static;
+.bot-actions .open-btn{
+  background:rgba(25,230,255,.12);
+  border-color:var(--cyan);
+  color:var(--cyan);
+}
+.empty-state,.error-state{
+  grid-column:1/-1;
+  text-align:center;
+  padding:35px 15px;
+  color:var(--muted);
+  background:var(--panel);
+  border:1px dashed var(--border);
+  border-radius:12px;
+}
+.system-log{
+  padding:15px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:#090815;
+  color:var(--green);
+  font:11px 'Share Tech Mono',monospace;
+  line-height:1.8;
+  overflow-wrap:anywhere;
+}
+footer{
+  padding:25px;
+  color:#625d75;
+  text-align:center;
+  font:10px 'Share Tech Mono',monospace;
+}
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{
     display:flex;
-    flex-wrap:wrap;
-    gap:4px;
-    padding:9px;
+    overflow-x:auto;
+    gap:5px;
+    padding:8px;
+    border-right:0;
+    border-bottom:1px solid var(--border);
   }
-
-  .side-label,
-  .side-bottom {
-    display:none;
-  }
-
-  .nav-link {
-    flex:1 1 auto;
-    justify-content:center;
-    padding:10px;
-    font-size:13px;
-  }
+  .side-label{display:none}
+  .nav-link{white-space:nowrap;font-size:13px;padding:9px}
+  main{padding:18px}
 }
-
-@media(max-width:560px) {
-  .app {
-    padding:10px;
-  }
-
-  .topbar {
-    padding:11px;
-  }
-
-  .brand-name {
-    font-size:14px;
-  }
-
-  .brand-sub {
-    font-size:8px;
-  }
-
-  .brand-icon {
-    width:37px;
-    height:37px;
-  }
-
-  .status-pill {
-    font-size:9px;
-    padding:7px;
-  }
-
-  .top-actions .neon-btn {
-    display:none;
-  }
-
-  .hero {
-    padding:21px 17px;
-  }
-
-  .hero::after {
-    font-size:55px;
-    right:10px;
-  }
-
-  .stats-grid {
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
-  .stat-card {
-    padding:13px;
-  }
-
-  .stat-number {
-    font-size:21px;
-  }
+@media(max-width:600px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .bot-list{grid-template-columns:1fr}
+  .topbar{padding:0 13px}
+  .logo{font-size:15px}
+  .status{display:none}
+  main{padding:15px}
 }
 </style>
-</head><body>
+</head>
 
-<div class="app">
+<body>
 
-  <!-- TOP NAVIGATION -->
+<!-- LOGIN GATE -->
+<section id="loginGate">
+  <div class="login-card">
+    <div class="brand">HEXCLØWN</div>
+    <div class="login-sub">BOT ZONE // SECURE ACCESS</div>
+
+    <div class="login-icon">⌘</div>
+    <h2>WHISPER BOTS</h2>
+    <p class="login-description">
+      Authenticate to access your private bot workspace.
+    </p>
+
+    <form id="loginForm">
+      <label class="field-label" for="loginEmail">ACCOUNT EMAIL</label>
+      <input
+        class="login-input"
+        id="loginEmail"
+        type="email"
+        placeholder="Enter your account email"
+        autocomplete="username"
+        required
+      >
+
+      <label class="field-label" for="loginPassword">PASSWORD</label>
+      <input
+        class="login-input"
+        id="loginPassword"
+        type="password"
+        placeholder="Enter your password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button class="login-button" id="loginButton" type="submit">
+        ACCESS BOT ZONE →
+      </button>
+
+      <div class="login-message" id="loginMessage" role="status"></div>
+    </form>
+
+    <div class="login-foot">
+      HEXCLØWN SECURITY SYSTEM // AUTHENTICATED ACCESS
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden">
+
   <header class="topbar">
-
-    <div class="brand">
-      <div class="brand-icon">H</div>
-
-      <div>
-        <div class="brand-name">HEX<span>CLØWN</span></div>
-        <div class="brand-sub">BOT NETWORK // CONTROL CENTER</div>
-      </div>
+    <div class="logo">HEXCLØWN</div>
+    <div class="top-right">
+      <span class="status">● SYSTEM ONLINE</span>
+      <button class="logout-btn" id="logoutButton">SIGN OUT</button>
     </div>
-
-    <div class="top-actions">
-
-      <div class="status-pill">
-        <span class="status-dot"></span>
-        SYSTEM ONLINE
-      </div>
-
-      <button class="neon-btn"
-        onclick="window.location.href='mybots.html'">
-        MY BOTS
-      </button>
-
-      <button class="primary-btn"
-        onclick="window.location.href='createbot.html'">
-        + CREATE BOT
-      </button>
-
-    </div>
-
   </header>
 
+  <div class="layout">
 
-  <!-- MAIN GRID -->
-  <div class="main-grid">
-
-
-    <!-- SIDEBAR -->
     <aside class="sidebar">
-
       <div class="side-label">MAIN SYSTEM</div>
-
-      <a href="whisperbots.html" class="nav-link active">
-        <span class="nav-icon">⌘</span>
-        Bot Dashboard
-      </a>
-
-      <a href="mybots.html" class="nav-link">
-        <span class="nav-icon">◈</span>
-        My Bots
-      </a>
-
-      <a href="createbot.html" class="nav-link">
-        <span class="nav-icon">✚</span>
-        Create Bot
-      </a>
-
-      <div class="side-label">BOT DEVELOPMENT</div>
-
-      <a href="personalityeditor.html" class="nav-link">
-        <span class="nav-icon">✧</span>
-        Personality Lab
-      </a>
-
-      <a href="botplayground.html" class="nav-link">
-        <span class="nav-icon">⌨</span>
-        Bot Playground
-      </a>
-
-      <a href="botknowledge.html" class="nav-link">
-        <span class="nav-icon">▤</span>
-        Knowledge Base
-      </a>
-
-      <a href="botcommands.html" class="nav-link">
-        <span class="nav-icon">⚡</span>
-        Commands
-      </a>
-
-      <div class="side-label">INTELLIGENCE</div>
-
-      <a href="botgallery.html" class="nav-link">
-        <span class="nav-icon">▦</span>
-        Bot Gallery
-      </a>
-
-      <a href="botanalytics.html" class="nav-link">
-        <span class="nav-icon">◉</span>
-        Analytics
-      </a>
-
-      <a href="whispermemory.html" class="nav-link">
-        <span class="nav-icon">◌</span>
-        Bot Memory
-      </a>
-
-      <a href="botdebate.html" class="nav-link">
-        <span class="nav-icon">⚔</span>
-        Bot Debate
-      </a>
-
-      <div class="side-label">CONTROL</div>
-
-      <a href="botadmin.html" class="nav-link">
-        <span class="nav-icon">⚙</span>
-        Administration
-      </a>
-
-      <div class="side-bottom">
-        HEXCLØWN CORE v2.0.0<br>
-        BOT NETWORK ACTIVE<br>
-        ACCESS: AUTHENTICATED
-      </div>
-
+      <a class="nav-link current" href="whisperbots.html">⌘ Whisper Bots</a>
+      <a class="nav-link" href="mybots.html">◈ My Bots</a>
+      <a class="nav-link" href="createbot.html">＋ Create Bot</a>
+      <a class="nav-link" href="personalityeditor.html">✧ Personality Editor</a>
+      <a class="nav-link" href="botplayground.html">⚡ Bot Playground</a>
+      <a class="nav-link" href="botknowledge.html">▤ Bot Knowledge</a>
+      <a class="nav-link" href="botcommands.html">⌨ Bot Commands</a>
+      <a class="nav-link" href="botgallery.html">▦ Bot Gallery</a>
+      <a class="nav-link" href="botanalytics.html">◷ Bot Analytics</a>
+      <a class="nav-link" href="whispermemory.html">◉ Whisper Memory</a>
+      <a class="nav-link" href="botdebate.html">⇄ Bot Debate</a>
+      <a class="nav-link" href="botadmin.html">⚙ Bot Admin</a>
     </aside>
 
+    <main>
+      <div class="eyebrow">ARTIFICIAL INTELLIGENCE // BOT MANAGEMENT</div>
+      <h1>WHISPER BOTS</h1>
+      <p class="hero-text">
+        Your personal command centre for managing intelligent bots.
+      </p>
 
-    <!-- MAIN CONTENT -->
-    <main class="content">
-
-
-      <!-- HERO -->
-      <section class="hero">
-
-        <div class="eyebrow">
-          // WELCOME TO THE BOT LABORATORY
+      <section class="stats">
+        <div class="stat-card">
+          <small>TOTAL BOTS</small>
+          <strong id="totalBots">0</strong>
         </div>
-
-        <h1>
-          ENTER THE <span>WHISPER</span><br>
-          NETWORK.
-        </h1>
-
-        <p>
-          Build intelligent personalities, manage your digital
-          creations, experiment with knowledge and explore the
-          HEXCLØWN bot ecosystem.
-        </p>
-
-        <div class="hero-actions">
-
-          <button class="primary-btn"
-            onclick="window.location.href='createbot.html'">
-            + BUILD A BOT
-          </button>
-
-          <button class="neon-btn"
-            onclick="window.location.href='botplayground.html'">
-            OPEN PLAYGROUND ↗
-          </button>
-
+        <div class="stat-card">
+          <small>ACTIVE BOTS</small>
+          <strong id="activeBots">0</strong>
         </div>
-
+        <div class="stat-card">
+          <small>CONVERSATIONS</small>
+          <strong id="totalConversations">0</strong>
+        </div>
+        <div class="stat-card">
+          <small>TOTAL REQUESTS</small>
+          <strong id="totalRequests">0</strong>
+        </div>
       </section>
 
+      <div class="section-head">
+        <h2>YOUR BOT COLLECTION</h2>
+        <button class="primary-btn" id="refreshButton">↻ REFRESH</button>
+      </div>
 
-      <!-- STATISTICS -->
-      <section class="stats-grid">
+      <div class="controls">
+        <input id="botSearch" type="search" placeholder="Search your bots...">
+        <select id="categoryFilter">
+          <option value="all">All categories</option>
+          <option value="assistant">Assistant</option>
+          <option value="creative">Creative</option>
+          <option value="coding">Coding</option>
+          <option value="education">Education</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
 
-        <div class="stat-card stat-purple">
-          <div class="stat-icon">◈</div>
-          <div class="stat-number" id="totalBots">--</div>
-          <div class="stat-title">TOTAL BOTS</div>
-        </div>
+      <div class="bot-list" id="botList">
+        <div class="empty-state">Loading your bot collection...</div>
+      </div>
 
-        <div class="stat-card stat-cyan">
-          <div class="stat-icon">⌘</div>
-          <div class="stat-number" id="activeBots">--</div>
-          <div class="stat-title">ACTIVE BOTS</div>
-        </div>
+      <div class="section-head">
+        <h2>SYSTEM TERMINAL</h2>
+      </div>
 
-        <div class="stat-card stat-pink">
-          <div class="stat-icon">▤</div>
-          <div class="stat-number" id="totalConversations">--</div>
-          <div class="stat-title">CONVERSATIONS</div>
-        </div>
+      <div class="system-log" id="systemLog">
+        [HEXCLØWN] Waiting for initialization...
+      </div>
 
-        <div class="stat-card stat-green">
-          <div class="stat-icon">⚡</div>
-          <div class="stat-number" id="totalRequests">--</div>
-          <div class="stat-title">TOTAL REQUESTS</div>
-        </div>
-
-      </section>
-
-
-      <!-- BOT WORKSPACE -->
-      <section style="margin-top:27px;">
-
-        <div style="
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          flex-wrap:wrap;
-          gap:12px;
-          margin-bottom:15px;
-        ">
-
-          <div>
-            <div class="eyebrow">// YOUR DIGITAL CREATIONS</div>
-            <h2 style="
-              font-family:'Orbitron',sans-serif;
-              font-size:19px;
-            ">
-              BOT WORKSPACE
-            </h2>
-          </div>
-
-          <button class="neon-btn"
-            onclick="window.location.href='mybots.html'">
-            VIEW ALL BOTS →
-          </button>
-
-        </div>
-
-
-        <!-- SEARCH AND FILTER -->
-        <div style="
-          display:flex;
-          flex-wrap:wrap;
-          gap:10px;
-          margin-bottom:16px;
-        ">
-
-          <input
-            type="search"
-            id="botSearch"
-            placeholder="⌕ Search your bots..."
-            style="
-              flex:1;
-              min-width:180px;
-              background:#100e1c;
-              border:1px solid rgba(54,234,255,.3);
-              color:white;
-              border-radius:9px;
-              padding:12px;
-              outline:none;
-            "
-          >
-
-          <select
-            id="categoryFilter"
-            style="
-              min-width:140px;
-              background:#100e1c;
-              border:1px solid rgba(189,101,255,.3);
-              color:white;
-              border-radius:9px;
-              padding:12px;
-              outline:none;
-            "
-          >
-            <option value="all">All Categories</option>
-            <option value="assistant">Assistant</option>
-            <option value="creative">Creative</option>
-            <option value="coding">Coding</option>
-            <option value="music">Music</option>
-            <option value="education">Education</option>
-            <option value="other">Other</option>
-          </select>
-
-        </div>
-
-
-        <!-- BOT LIST -->
-        <div id="botList" style="
-          display:grid;
-          grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-          gap:13px;
-        ">
-
-          <div style="
-            grid-column:1/-1;
-            padding:35px 15px;
-            text-align:center;
-            background:rgba(16,14,28,.8);
-            border:1px dashed rgba(189,101,255,.3);
-            border-radius:13px;
-            color:#9690ad;
-          ">
-            <div style="font-size:27px;margin-bottom:10px;">
-              ⌘
-            </div>
-
-            <div style="
-              font-family:'Share Tech Mono',monospace;
-              font-size:12px;
-            ">
-              INITIALIZING BOT NETWORK...
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- SYSTEM ACTIVITY -->
-      <section style="
-        margin-top:25px;
-        background:rgba(16,14,28,.85);
-        border:1px solid rgba(54,234,255,.2);
-        border-radius:13px;
-        padding:17px;
-      ">
-
-        <div style="
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-          gap:10px;
-          margin-bottom:13px;
-        ">
-
-          <h3 style="
-            font-family:'Orbitron',sans-serif;
-            font-size:13px;
-            color:var(--cyan);
-          ">
-            SYSTEM TERMINAL
-          </h3>
-
-          <span style="
-            color:var(--green);
-            font-family:'Share Tech Mono',monospace;
-            font-size:10px;
-          ">
-            ● LIVE
-          </span>
-
-        </div>
-
-        <div id="systemLog" style="
-          font-family:'Share Tech Mono',monospace;
-          font-size:11px;
-          line-height:2;
-          color:var(--green);
-        ">
-          [HEXCLØWN] Dashboard interface loaded.<br>
-          [SYSTEM] Waiting for backend connection...
-        </div>
-
-      </section>
-
-
+      <footer>
+        HEXCLØWN BOT ZONE · PRIVATE WORKSPACE · 2026
+      </footer>
     </main>
-
   </div>
+</div>
 
-              </div><!-- HEXCLØWN CORE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="botzone-core.js"></script>
 
 <script>
 "use strict";
 
-/* =================================
-   HEXCLØWN WHISPERBOTS DASHBOARD
-================================= */
-
 const HEX = window["HEXCLØWN"];
+
+const loginGate = document.getElementById("loginGate");
+const dashboard = document.getElementById("dashboard");
+const loginForm = document.getElementById("loginForm");
+const loginButton = document.getElementById("loginButton");
+const loginMessage = document.getElementById("loginMessage");
+const loginEmail = document.getElementById("loginEmail");
+const loginPassword = document.getElementById("loginPassword");
+const botList = document.getElementById("botList");
+const systemLog = document.getElementById("systemLog");
 
 let allBots = [];
 let currentUser = null;
+let authListenerStarted = false;
 
-
-/* SYSTEM LOG */
-
-function systemLog(message, type = "normal") {
-
-  const terminal = document.getElementById("systemLog");
-
-  if (!terminal) return;
-
-  const colors = {
-    normal: "#80ff72",
-    info: "#36eaff",
-    warning: "#ffe36b",
-    error: "#ff5577",
-    success: "#bd65ff"
-  };
-
-  const line = document.createElement("div");
-
-  line.style.color = colors[type] || colors.normal;
-  line.textContent = "[HEXCLØWN] " + message;
-
-  terminal.appendChild(line);
-
-  while (terminal.children.length > 8) {
-    terminal.removeChild(terminal.firstChild);
-  }
+function log(message) {
+  const time = new Date().toLocaleTimeString();
+  systemLog.textContent = `[${time}] ${message}\n` + systemLog.textContent;
 }
 
+function showLogin(message = "") {
+  dashboard.classList.add("hidden");
+  loginGate.classList.remove("hidden");
+  loginMessage.textContent = message;
+}
 
-/* SAFE RESULT HANDLING */
+function showDashboard() {
+  loginGate.classList.add("hidden");
+  dashboard.classList.remove("hidden");
+}
+
+function setLoginBusy(busy) {
+  loginButton.disabled = busy;
+  loginButton.textContent = busy ? "AUTHENTICATING..." : "ACCESS BOT ZONE →";
+}
 
 function getRows(result) {
-
-  if (Array.isArray(result)) {
-    return result;
-  }
-
-  if (result && Array.isArray(result.data)) {
-    return result.data;
-  }
-
+  if (Array.isArray(result)) return result;
+  if (result && Array.isArray(result.data)) return result.data;
   return [];
 }
 
+async function loadDashboard() {
+  if (!currentUser) return;
 
-function showError(error) {
+  botList.innerHTML =
+    '<div class="empty-state">Synchronizing bot collection...</div>';
 
-  console.error("HEXCLØWN:", error);
+  try {
+    const [botsResult, conversationsResult, usageResult] =
+      await Promise.all([
+        HEX.bots.list(),
+        HEX.conversations.list(),
+        HEX.usage.list()
+      ]);
 
-  systemLog(
-    error && error.message
-      ? error.message
-      : "An unexpected error occurred.",
-    "error"
-  );
-}
+    allBots = getRows(botsResult);
+    const conversations = getRows(conversationsResult);
+    const usage = getRows(usageResult);
 
+    document.getElementById("totalBots").textContent = allBots.length;
+    document.getElementById("activeBots").textContent =
+      allBots.filter(bot => bot.active).length;
+    document.getElementById("totalConversations").textContent =
+      conversations.length;
+    document.getElementById("totalRequests").textContent = usage.length;
 
-/* NUMBER FORMAT */
-
-function formatNumber(value) {
-
-  return Number(value || 0).toLocaleString();
-}
-
-
-/* DASHBOARD STATISTICS */
-
-function updateStatistics(bots, conversations, usage) {
-
-  const active = bots.filter(bot => bot.active === true);
-
-  const totalRequests = usage.reduce(
-    (sum, item) => sum + 1,
-    0
-  );
-
-  document.getElementById("totalBots").textContent =
-    formatNumber(bots.length);
-
-  document.getElementById("activeBots").textContent =
-    formatNumber(active.length);
-
-  document.getElementById("totalConversations").textContent =
-    formatNumber(conversations.length);
-
-  document.getElementById("totalRequests").textContent =
-    formatNumber(totalRequests);
-}
-
-
-/* BOT CATEGORY */
-
-function normalizeCategory(category) {
-
-  const value = String(category || "other")
-    .toLowerCase()
-    .trim();
-
-  const allowed = [
-    "assistant",
-    "creative",
-    "coding",
-    "music",
-    "education",
-    "other"
-  ];
-
-  return allowed.includes(value) ? value : "other";
-}
-
-
-/* BOT CARD */
-
-function createBotCard(bot) {
-
-  const card = document.createElement("article");
-
-  card.style.cssText = `
-    background:linear-gradient(
-      145deg,
-      rgba(28,20,48,.96),
-      rgba(12,17,34,.96)
-    );
-    border:1px solid rgba(189,101,255,.25);
-    border-radius:13px;
-    padding:16px;
-    min-width:0;
-    transition:.2s;
-  `;
-
-  card.onmouseenter = () => {
-    card.style.borderColor = "#36eaff";
-    card.style.boxShadow = "0 0 20px rgba(54,234,255,.12)";
-  };
-
-  card.onmouseleave = () => {
-    card.style.borderColor = "rgba(189,101,255,.25)";
-    card.style.boxShadow = "none";
-  };
-
-  const category = normalizeCategory(bot.category);
-
-  const colors = {
-    assistant: "#36eaff",
-    creative: "#ff4fbd",
-    coding: "#80ff72",
-    music: "#ffe36b",
-    education: "#568dff",
-    other: "#bd65ff"
-  };
-
-  const color = colors[category];
-
-  const heading = document.createElement("div");
-
-  heading.style.cssText = `
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-  `;
-
-  const icon = document.createElement("div");
-
-  icon.textContent = bot.icon || "◈";
-
-  icon.style.cssText = `
-    width:43px;
-    height:43px;
-    display:grid;
-    place-items:center;
-    background:${color}16;
-    border:1px solid ${color}66;
-    border-radius:11px;
-    font-size:21px;
-    color:${color};
-  `;
-
-  const status = document.createElement("span");
-
-  status.textContent = bot.active ? "● ACTIVE" : "○ INACTIVE";
-
-  status.style.cssText = `
-    color:${bot.active ? "#80ff72" : "#9690ad"};
-    font-family:'Share Tech Mono',monospace;
-    font-size:9px;
-  `;
-
-  heading.append(icon, status);
-
-
-  const name = document.createElement("h3");
-
-  name.textContent = bot.name || "Unnamed Bot";
-
-  name.style.cssText = `
-    font-family:'Orbitron',sans-serif;
-    font-size:14px;
-    margin-top:15px;
-    overflow-wrap:anywhere;
-  `;
-
-
-  const description = document.createElement("p");
-
-  description.textContent =
-    bot.description || "No description provided.";
-
-  description.style.cssText = `
-    color:#a9a1bd;
-    font-size:13px;
-    line-height:1.5;
-    margin-top:8px;
-    min-height:39px;
-    overflow-wrap:anywhere;
-  `;
-
-
-  const categoryLabel = document.createElement("div");
-
-  categoryLabel.textContent = category.toUpperCase();
-
-  categoryLabel.style.cssText = `
-    display:inline-block;
-    color:${color};
-    border:1px solid ${color}55;
-    background:${color}12;
-    border-radius:20px;
-    padding:5px 9px;
-    font-family:'Share Tech Mono',monospace;
-    font-size:9px;
-    margin-top:12px;
-  `;
-
-
-  const actions = document.createElement("div");
-
-  actions.style.cssText = `
-    display:flex;
-    flex-wrap:wrap;
-    gap:7px;
-    margin-top:15px;
-  `;
-
-
-  function makeButton(label, action, buttonColor) {
-
-    const button = document.createElement("button");
-
-    button.type = "button";
-    button.textContent = label;
-
-    button.style.cssText = `
-      flex:1;
-      min-width:65px;
-      padding:8px 7px;
-      border-radius:7px;
-      border:1px solid ${buttonColor}77;
-      background:${buttonColor}12;
-      color:${buttonColor};
-      font-size:11px;
-      font-weight:700;
-    `;
-
-    button.addEventListener("click", action);
-
-    return button;
+    renderBots();
+    log("Dashboard synchronized successfully.");
+  } catch (error) {
+    console.error(error);
+    botList.innerHTML =
+      '<div class="error-state">Could not load your bots. Check your connection and account permissions.</div>';
+    log("Dashboard error: " + error.message);
   }
-
-
-  const openButton = makeButton(
-    "OPEN",
-    () => {
-      window.location.href =
-        "botplayground.html?bot=" +
-        encodeURIComponent(bot.id);
-    },
-    "#36eaff"
-  );
-
-
-  const favoriteButton = makeButton(
-    bot.favorite ? "★ SAVED" : "☆ SAVE",
-    async () => {
-
-      try {
-
-        await HEX.bots.toggleFavorite(bot.id);
-
-        systemLog("Favorite status updated.", "success");
-
-        await loadDashboard();
-
-      } catch (error) {
-        showError(error);
-      }
-
-    },
-    "#ffe36b"
-  );
-
-
-  const activeButton = makeButton(
-    bot.active ? "PAUSE" : "ACTIVATE",
-    async () => {
-
-      try {
-
-        await HEX.bots.toggleActive(bot.id);
-
-        systemLog("Bot status updated.", "success");
-
-        await loadDashboard();
-
-      } catch (error) {
-        showError(error);
-      }
-
-    },
-    "#80ff72"
-  );
-
-
-  actions.append(
-    openButton,
-    favoriteButton,
-    activeButton
-  );
-
-  card.append(
-    heading,
-    name,
-    description,
-    categoryLabel,
-    actions
-  );
-
-  return card;
 }
-
-
-/* DISPLAY BOTS */
 
 function renderBots() {
+  const search = document.getElementById("botSearch").value
+    .trim().toLowerCase();
 
-  const container = document.getElementById("botList");
-
-  const search =
-    document.getElementById("botSearch")
-      .value
-      .toLowerCase()
-      .trim();
-
-  const category =
-    document.getElementById("categoryFilter").value;
-
-  container.innerHTML = "";
+  const category = document.getElementById("categoryFilter").value;
 
   const filtered = allBots.filter(bot => {
-
-    const name = String(bot.name || "").toLowerCase();
-
-    const description =
-      String(bot.description || "").toLowerCase();
+    const name = (bot.name || "").toLowerCase();
+    const description = (bot.description || "").toLowerCase();
+    const botCategory = (bot.category || "other").toLowerCase();
 
     const matchesSearch =
-      name.includes(search) ||
-      description.includes(search);
+      name.includes(search) || description.includes(search);
 
     const matchesCategory =
-      category === "all" ||
-      normalizeCategory(bot.category) === category;
+      category === "all" || botCategory === category;
 
     return matchesSearch && matchesCategory;
-
   });
 
-
-  if (filtered.length === 0) {
-
-    const empty = document.createElement("div");
-
-    empty.style.cssText = `
-      grid-column:1/-1;
-      text-align:center;
-      padding:35px 15px;
-      border:1px dashed rgba(189,101,255,.35);
-      border-radius:12px;
-      color:#9690ad;
-    `;
-
-    empty.textContent = allBots.length === 0
-      ? "NO BOTS FOUND. CREATE YOUR FIRST BOT."
-      : "NO BOTS MATCH YOUR SEARCH.";
-
-    container.appendChild(empty);
-
+  if (!filtered.length) {
+    botList.innerHTML = `
+      <div class="empty-state">
+        No bots found.<br>
+        Create your first bot to get started.
+      </div>`;
     return;
   }
 
+  botList.innerHTML = "";
 
   filtered.forEach(bot => {
+    const card = document.createElement("article");
+    card.className = "bot-card";
 
-    container.appendChild(
-      createBotCard(bot)
-    );
+    const top = document.createElement("div");
+    top.className = "bot-top";
 
+    const icon = document.createElement("div");
+    icon.className = "bot-icon";
+    icon.textContent = bot.icon || "🤖";
+
+    const info = document.createElement("div");
+
+    const name = document.createElement("div");
+    name.className = "bot-name";
+    name.textContent = bot.name || "Unnamed Bot";
+
+    const categoryText = document.createElement("div");
+    categoryText.className = "bot-category";
+    categoryText.textContent = bot.category || "Other";
+
+    info.append(name, categoryText);
+    top.append(icon, info);
+
+    const description = document.createElement("p");
+    description.className = "bot-description";
+    description.textContent =
+      bot.description || "No description added yet.";
+
+    const actions = document.createElement("div");
+    actions.className = "bot-actions";
+
+    const open = document.createElement("button");
+    open.className = "open-btn";
+    open.textContent = "OPEN BOT";
+    open.addEventListener("click", () => {
+      location.href =
+        "botplayground.html?bot=" + encodeURIComponent(bot.id);
+    });
+
+    const favorite = document.createElement("button");
+    favorite.textContent = bot.favorite ? "★ FAVORITE" : "☆ FAVORITE";
+    favorite.addEventListener("click", async () => {
+      try {
+        await HEX.bots.toggleFavorite(bot.id);
+        await loadDashboard();
+      } catch (error) {
+        alert("Could not update favorite: " + error.message);
+      }
+    });
+
+    const active = document.createElement("button");
+    active.textContent = bot.active ? "● ACTIVE" : "○ INACTIVE";
+    active.addEventListener("click", async () => {
+      try {
+        await HEX.bots.toggleActive(bot.id);
+        await loadDashboard();
+      } catch (error) {
+        alert("Could not update bot status: " + error.message);
+      }
+    });
+
+    actions.append(open, favorite, active);
+    card.append(top, description, actions);
+    botList.appendChild(card);
   });
-
 }
 
-
-/* LOAD DASHBOARD DATA */
-
-async function loadDashboard() {
-
+async function startAuthenticatedWorkspace() {
   try {
-
-    systemLog("Connecting to HEXCLØWN database...", "info");
-
-    const results = await Promise.all([
-
-      HEX.bots.list(),
-
-      HEX.conversations.list(),
-
-      HEX.usage.list()
-
-    ]);
-
-    allBots = getRows(results[0]);
-
-    const conversations = getRows(results[1]);
-
-    const usage = getRows(results[2]);
-
-
-    updateStatistics(
-      allBots,
-      conversations,
-      usage
-    );
-
-    renderBots();
-
-    systemLog("Bot network synchronized.", "success");
-
-    systemLog(
-      allBots.length + " bot(s) loaded successfully.",
-      "info"
-    );
-
-  } catch (error) {
-
-    showError(error);
-
-    document.getElementById("botList").textContent =
-      "Unable to load bots. Please refresh and try again.";
-
-  }
-
-}
-
-
-/* INITIALIZE */
-
-async function initializeWhisperBots() {
-
-  try {
-
-    if (!HEX) {
-      throw new Error(
-        "HEXCLØWN core was not found. Check botzone-core.js."
-      );
-    }
-
-    systemLog("Initializing HEXCLØWN core...", "info");
-
-    await HEX.initialize();
-
-    currentUser = await HEX.requireUser();
+    currentUser = await HEX.auth.getUser();
 
     if (!currentUser) {
-
-      systemLog("Authentication required.", "warning");
-
-      document.getElementById("botList").textContent =
-        "Please sign in to access your Bot Zone.";
-
+      showLogin();
       return;
     }
 
-    systemLog("Authentication successful.", "success");
+    showDashboard();
+    log("Authenticated account detected.");
+    await loadDashboard();
+
+  } catch (error) {
+    console.error(error);
+    currentUser = null;
+    showLogin("Session check failed. Please sign in again.");
+  }
+}
+
+async function initializeWhisperBots() {
+  try {
+    if (!HEX) {
+      throw new Error("botzone-core.js was not loaded.");
+    }
+
+    await HEX.initialize();
+    log("HEXCLØWN core initialized.");
+
+    await startAuthenticatedWorkspace();
+
+    if (!authListenerStarted) {
+      authListenerStarted = true;
+
+      HEX.auth.onAuthChange(async (event, session) => {
+        if (event === "SIGNED_OUT" || !session) {
+          currentUser = null;
+          showLogin("You have been signed out.");
+          return;
+        }
+
+        if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+          currentUser = session.user;
+          showDashboard();
+          await loadDashboard();
+        }
+      }).catch(error => {
+        console.error("Auth listener:", error);
+        log("Authentication listener warning.");
+      });
+    }
+
+  } catch (error) {
+    console.error(error);
+    showLogin("System initialization failed. Please refresh the page.");
+    log("Initialization error: " + error.message);
+  }
+}
+
+/* LOGIN */
+loginForm.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const email = loginEmail.value.trim();
+  const password = loginPassword.value;
+
+  if (!email || !password) {
+    loginMessage.textContent = "Enter your email and password.";
+    return;
+  }
+
+  setLoginBusy(true);
+  loginMessage.textContent = "Verifying your account...";
+
+  try {
+    await HEX.initialize();
+
+    await HEX.auth.signIn(email, password);
+
+    currentUser = await HEX.auth.getUser();
+
+    if (!currentUser) {
+      throw new Error("Sign-in completed, but no user session was found.");
+    }
+
+    loginPassword.value = "";
+    loginMessage.textContent = "";
+
+    showDashboard();
+    log("Login successful. Welcome to Whisper Bots.");
 
     await loadDashboard();
 
   } catch (error) {
+    console.error(error);
+    loginMessage.textContent =
+      error.message || "Login failed. Check your credentials.";
+    currentUser = null;
+    showLogin(loginMessage.textContent);
 
-    showError(error);
-
-    document.getElementById("botList").textContent =
-      "Dashboard initialization failed. Check your connection and sign-in status.";
-
+  } finally {
+    setLoginBusy(false);
   }
+});
 
-}
+/* SIGN OUT */
+document.getElementById("logoutButton").addEventListener("click", async () => {
+  if (!confirm("Sign out of HEXCLØWN Bot Zone?")) return;
 
+  try {
+    await HEX.auth.signOut();
+    currentUser = null;
+    showLogin("You have been signed out.");
+    log("Account signed out.");
+  } catch (error) {
+    alert("Sign-out failed: " + error.message);
+  }
+});
 
-/* SEARCH EVENTS */
+/* DASHBOARD CONTROLS */
+document.getElementById("refreshButton")
+  .addEventListener("click", loadDashboard);
 
 document.getElementById("botSearch")
   .addEventListener("input", renderBots);
@@ -1333,125 +844,9 @@ document.getElementById("botSearch")
 document.getElementById("categoryFilter")
   .addEventListener("change", renderBots);
 
-
 /* START */
-
 initializeWhisperBots();
-
-</script><style>
-
-/* FINAL DASHBOARD POLISH */
-
-.content {
-  animation:hexAppear .7s ease both;
-}
-
-@keyframes hexAppear {
-  from {
-    opacity:0;
-    transform:translateY(12px);
-  }
-  to {
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
-.stat-card {
-  transition:transform .2s,border-color .2s;
-}
-
-.stat-card:hover {
-  transform:translateY(-3px);
-  border-color:var(--cyan);
-}
-
-#botSearch:focus,
-#categoryFilter:focus {
-  border-color:var(--cyan);
-  box-shadow:0 0 13px rgba(54,234,255,.12);
-}
-
-#botList article {
-  animation:hexAppear .35s ease both;
-}
-
-.system-footer {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-top:25px;
-  padding:17px 5px;
-  border-top:1px solid var(--line);
-  color:var(--muted);
-  font-family:'Share Tech Mono',monospace;
-  font-size:10px;
-}
-
-.system-footer span {
-  color:var(--purple);
-}
-
-.refresh-btn {
-  background:rgba(54,234,255,.08);
-  border:1px solid rgba(54,234,255,.35);
-  color:var(--cyan);
-  padding:8px 13px;
-  border-radius:7px;
-  font-size:11px;
-}
-
-.refresh-btn:active {
-  transform:scale(.97);
-}
-
-@media(max-width:560px) {
-  .system-footer {
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .hero-actions button {
-    flex:1;
-  }
-}
-
-@media(prefers-reduced-motion:reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration:.01ms !important;
-    transition-duration:.01ms !important;
-    scroll-behavior:auto !important;
-  }
-}
-
-</style>
-
-
-<!-- FOOTER -->
-
-<footer class="system-footer">
-
-  <div>
-    HEXCLØWN <span>BOT NETWORK</span> © 2026
-  </div>
-
-  <button
-    class="refresh-btn"
-    type="button"
-    onclick="loadDashboard()"
-  >
-    ↻ REFRESH NETWORK
-  </button>
-
-  <div>
-    DESIGNED FOR CREATORS // POWERED BY HEXCLØWN CORE
-  </div>
-
-</footer>
+</script>
 
 </body>
 </html>
