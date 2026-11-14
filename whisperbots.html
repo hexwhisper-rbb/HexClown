@@ -4,450 +4,531 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080711">
-<title>Whisper Bots | HEXCLØWN</title>
+<meta name="theme-color" content="#080713">
+<title>HEXCLØWN | Whisper Bots</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg:#080711;
-  --panel:#100e1d;
+  --bg:#080713;
+  --panel:#100e20;
   --panel2:#171329;
   --purple:#a855f7;
-  --pink:#ff36bd;
-  --cyan:#19e6ff;
-  --green:#a5ff35;
-  --blue:#497bff;
+  --pink:#ff3cac;
+  --cyan:#00e5ff;
+  --blue:#4776ff;
+  --green:#b6ff00;
   --gold:#ffc857;
-  --text:#f3efff;
-  --muted:#918ba9;
+  --text:#f4f0ff;
+  --muted:#9690aa;
   --border:rgba(168,85,247,.25);
-  --shadow:0 0 25px rgba(168,85,247,.12);
+  --danger:#ff5470;
 }
-*{box-sizing:border-box}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
 body{
-  margin:0;
   background:
-    radial-gradient(circle at 15% 10%,rgba(168,85,247,.13),transparent 35%),
-    radial-gradient(circle at 90% 80%,rgba(25,230,255,.08),transparent 35%),
+    radial-gradient(circle at 10% 10%,rgba(168,85,247,.13),transparent 35%),
+    radial-gradient(circle at 90% 80%,rgba(0,229,255,.09),transparent 35%),
     var(--bg);
   color:var(--text);
   font-family:'Rajdhani',sans-serif;
   min-height:100vh;
 }
+
 button,input,select{font:inherit}
 button{cursor:pointer}
+
 .hidden{display:none!important}
 
 /* LOGIN SCREEN */
-#loginGate{
-  position:fixed;
-  inset:0;
-  z-index:9999;
+
+#loginScreen{
+  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  padding:20px;
+  padding:22px;
   background:
-    linear-gradient(rgba(8,7,17,.94),rgba(8,7,17,.97)),
-    repeating-linear-gradient(0deg,transparent 0 3px,rgba(255,255,255,.025) 4px);
+    linear-gradient(rgba(8,7,19,.88),rgba(8,7,19,.95)),
+    repeating-linear-gradient(0deg,transparent 0 39px,rgba(168,85,247,.08) 40px),
+    repeating-linear-gradient(90deg,transparent 0 39px,rgba(0,229,255,.06) 40px);
 }
+
 .login-card{
   width:100%;
-  max-width:430px;
-  padding:32px 25px;
-  background:rgba(16,14,29,.96);
-  border:1px solid rgba(168,85,247,.5);
-  border-radius:18px;
-  box-shadow:0 0 50px rgba(168,85,247,.15),0 0 25px rgba(25,230,255,.07);
-  position:relative;
-  overflow:hidden;
+  max-width:440px;
+  padding:30px 25px;
+  background:rgba(16,14,32,.96);
+  border:1px solid rgba(168,85,247,.55);
+  border-radius:20px;
+  box-shadow:0 0 35px rgba(168,85,247,.16),
+             0 0 75px rgba(0,229,255,.07);
 }
-.login-card:before{
-  content:"";
-  position:absolute;
-  height:3px;
-  top:0;left:0;right:0;
-  background:linear-gradient(90deg,var(--purple),var(--pink),var(--cyan),var(--green));
-}
-.brand{
+
+.logo{
   font-family:'Orbitron',sans-serif;
-  font-size:25px;
+  font-size:27px;
   font-weight:800;
-  letter-spacing:3px;
+  letter-spacing:2px;
   text-align:center;
-  background:linear-gradient(90deg,var(--purple),var(--pink),var(--cyan));
+  background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));
   -webkit-background-clip:text;
   color:transparent;
 }
-.login-sub{
+
+.login-subtitle{
   text-align:center;
   color:var(--muted);
-  letter-spacing:3px;
+  margin:9px 0 25px;
   font-family:'Share Tech Mono',monospace;
-  font-size:10px;
-  margin:10px 0 25px;
+  font-size:12px;
 }
-.login-icon{
-  width:68px;height:68px;
-  display:grid;place-items:center;
-  margin:0 auto 18px;
-  border:1px solid var(--cyan);
-  border-radius:20px;
-  color:var(--cyan);
-  font-size:30px;
-  box-shadow:0 0 25px rgba(25,230,255,.16);
-}
-.login-card h2{
-  font-family:'Orbitron',sans-serif;
-  text-align:center;
-  font-size:17px;
-  letter-spacing:2px;
-  margin:0 0 8px;
-}
-.login-description{
-  text-align:center;
-  color:var(--muted);
-  font-size:15px;
-  margin:0 0 25px;
-}
-.field-label{
-  display:block;
-  color:var(--cyan);
+
+.terminal-line{
+  color:var(--green);
   font-family:'Share Tech Mono',monospace;
   font-size:11px;
-  margin:16px 0 7px;
+  margin-bottom:20px;
+  text-align:center;
 }
+
+.field-label{
+  display:block;
+  color:#c8bce7;
+  font-size:13px;
+  margin:15px 0 7px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
 .login-input{
   width:100%;
   padding:14px;
-  border:1px solid var(--border);
+  background:#090817;
+  border:1px solid rgba(168,85,247,.35);
   border-radius:9px;
-  background:#090815;
   color:white;
   outline:none;
 }
+
 .login-input:focus{
   border-color:var(--cyan);
-  box-shadow:0 0 12px rgba(25,230,255,.12);
+  box-shadow:0 0 12px rgba(0,229,255,.13);
 }
-.login-button{
+
+.primary-btn{
   width:100%;
-  padding:14px;
-  margin-top:22px;
   border:0;
   border-radius:9px;
+  padding:14px;
+  margin-top:22px;
   background:linear-gradient(100deg,var(--purple),var(--pink));
   color:white;
   font-family:'Orbitron',sans-serif;
   font-weight:700;
+  font-size:12px;
   letter-spacing:1px;
+  box-shadow:0 0 20px rgba(168,85,247,.2);
 }
-.login-button:disabled{opacity:.55;cursor:wait}
+
+.primary-btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
 .login-message{
-  min-height:22px;
-  margin-top:15px;
-  text-align:center;
+  display:none;
+  margin-top:16px;
+  padding:12px;
+  border-radius:8px;
   font-size:13px;
-  color:var(--gold);
+  line-height:1.5;
 }
-.login-foot{
+
+.login-message.error{
+  display:block;
+  color:#ff9aaa;
+  background:rgba(255,84,112,.1);
+  border:1px solid rgba(255,84,112,.3);
+}
+
+.login-message.success{
+  display:block;
+  color:var(--green);
+  background:rgba(182,255,0,.07);
+  border:1px solid rgba(182,255,0,.25);
+}
+
+.login-footer{
   text-align:center;
-  color:#625d75;
-  font:10px 'Share Tech Mono',monospace;
   margin-top:22px;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  color:#77718c;
 }
 
 /* DASHBOARD */
-#dashboard{min-height:100vh}
+
+#dashboard{
+  display:none;
+  min-height:100vh;
+}
+
 .topbar{
-  height:68px;
+  min-height:67px;
+  padding:12px 22px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:0 22px;
+  gap:15px;
+  background:rgba(12,10,25,.94);
   border-bottom:1px solid var(--border);
-  background:rgba(10,8,20,.92);
   position:sticky;
   top:0;
-  z-index:20;
-  backdrop-filter:blur(12px);
+  z-index:10;
+  backdrop-filter:blur(15px);
 }
-.logo{
-  font:800 18px 'Orbitron',sans-serif;
-  letter-spacing:2px;
-  background:linear-gradient(90deg,var(--purple),var(--pink),var(--cyan));
+
+.top-logo{
+  font-family:'Orbitron',sans-serif;
+  font-size:17px;
+  font-weight:800;
+  background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));
   -webkit-background-clip:text;
   color:transparent;
 }
-.top-right{display:flex;align-items:center;gap:12px}
+
+.top-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
 .status{
   color:var(--green);
-  font:10px 'Share Tech Mono',monospace;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
 }
+
 .logout-btn{
-  padding:8px 13px;
-  border:1px solid rgba(255,54,189,.5);
-  background:transparent;
-  color:var(--pink);
+  padding:8px 12px;
+  background:rgba(255,84,112,.1);
+  border:1px solid rgba(255,84,112,.35);
+  color:#ff9aaa;
   border-radius:7px;
+  font-size:12px;
 }
+
 .layout{
   display:grid;
-  grid-template-columns:220px 1fr;
-  min-height:calc(100vh - 68px);
+  grid-template-columns:225px 1fr;
+  min-height:calc(100vh - 67px);
 }
+
 .sidebar{
-  padding:22px 13px;
+  padding:22px 14px;
   border-right:1px solid var(--border);
-  background:rgba(12,10,23,.7);
+  background:rgba(12,10,25,.7);
 }
-.side-label{
-  color:#625d75;
-  font:10px 'Share Tech Mono',monospace;
-  padding:10px;
+
+.sidebar-title{
+  color:#77718c;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  margin:0 10px 13px;
   letter-spacing:2px;
 }
+
 .nav-link{
   display:block;
   padding:11px 12px;
   margin:4px 0;
   border-radius:8px;
   text-decoration:none;
-  color:#b8b1ca;
+  color:#bcb5d0;
   font-size:15px;
-  border:1px solid transparent;
+  transition:.2s;
 }
-.nav-link:hover,.nav-link.current{
+
+.nav-link:hover,.nav-link.active{
+  background:linear-gradient(90deg,rgba(168,85,247,.2),rgba(0,229,255,.06));
   color:white;
-  border-color:var(--border);
-  background:linear-gradient(90deg,rgba(168,85,247,.15),rgba(25,230,255,.04));
+  border-left:3px solid var(--cyan);
 }
-.nav-link.current{color:var(--cyan)}
-main{padding:27px;min-width:0}
+
+.content{
+  padding:28px;
+  min-width:0;
+}
+
 .eyebrow{
-  color:var(--cyan);
-  font:11px 'Share Tech Mono',monospace;
-  letter-spacing:3px;
+  color:var(--green);
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
+  letter-spacing:2px;
+  margin-bottom:10px;
 }
+
 h1{
-  font:700 clamp(23px,4vw,34px) 'Orbitron',sans-serif;
-  margin:10px 0;
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(23px,4vw,34px);
+  margin-bottom:9px;
 }
-.hero-text{color:var(--muted);font-size:16px;margin:0 0 25px}
+
+.gradient-text{
+  background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.description{
+  color:var(--muted);
+  font-size:16px;
+  margin-bottom:25px;
+}
+
 .stats{
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:13px;
-  margin-bottom:25px;
+  margin-bottom:27px;
 }
+
 .stat-card{
-  padding:17px;
-  background:linear-gradient(140deg,var(--panel2),var(--panel));
+  background:linear-gradient(145deg,#171329,#100e20);
   border:1px solid var(--border);
+  padding:18px;
   border-radius:12px;
-  box-shadow:var(--shadow);
+  min-width:0;
 }
-.stat-card small{
+
+.stat-label{
   color:var(--muted);
-  font:10px 'Share Tech Mono',monospace;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1px;
 }
-.stat-card strong{
-  display:block;
-  margin-top:9px;
-  font:700 27px 'Orbitron',sans-serif;
+
+.stat-number{
+  font-family:'Orbitron',sans-serif;
+  font-size:25px;
+  margin-top:10px;
 }
-.stat-card:nth-child(1) strong{color:var(--purple)}
-.stat-card:nth-child(2) strong{color:var(--green)}
-.stat-card:nth-child(3) strong{color:var(--cyan)}
-.stat-card:nth-child(4) strong{color:var(--pink)}
-.section-head{
+
+.stat-card:nth-child(1) .stat-number{color:var(--cyan)}
+.stat-card:nth-child(2) .stat-number{color:var(--green)}
+.stat-card:nth-child(3) .stat-number{color:var(--pink)}
+.stat-card:nth-child(4) .stat-number{color:var(--gold)}
+
+.section-heading{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   gap:12px;
-  margin:28px 0 14px;
+  margin:25px 0 15px;
 }
-.section-head h2{
-  font:600 16px 'Orbitron',sans-serif;
+
+.section-heading h2{
+  font-family:'Orbitron',sans-serif;
+  font-size:16px;
 }
-.controls{
+
+.refresh-btn{
+  padding:9px 13px;
+  background:rgba(0,229,255,.08);
+  border:1px solid rgba(0,229,255,.3);
+  color:var(--cyan);
+  border-radius:7px;
+  font-size:12px;
+}
+
+.filters{
   display:flex;
   gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:17px;
+  margin-bottom:16px;
 }
-.controls input,.controls select{
+
+.filters input,.filters select{
+  min-width:0;
   flex:1;
-  min-width:140px;
-  padding:11px;
+  padding:12px;
+  background:#100e20;
   border:1px solid var(--border);
-  background:var(--panel);
   color:white;
   border-radius:8px;
   outline:none;
 }
-.primary-btn{
-  padding:11px 15px;
-  border:0;
-  border-radius:8px;
-  background:linear-gradient(100deg,var(--purple),var(--blue));
-  color:white;
-  font-weight:700;
-}
+
 .bot-list{
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
   gap:14px;
 }
+
 .bot-card{
-  padding:17px;
+  background:linear-gradient(145deg,#171329,#0f0d1e);
   border:1px solid var(--border);
-  background:linear-gradient(145deg,#171329,#0d0b18);
+  padding:17px;
   border-radius:12px;
   min-width:0;
 }
-.bot-top{display:flex;align-items:center;gap:12px}
-.bot-icon{
-  width:45px;height:45px;
-  display:grid;place-items:center;
-  border-radius:12px;
-  background:rgba(168,85,247,.13);
-  border:1px solid var(--purple);
-  font-size:22px;
+
+.bot-card h3{
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;
+  margin-bottom:8px;
 }
-.bot-name{
-  font:600 14px 'Orbitron',sans-serif;
-  overflow-wrap:anywhere;
-}
-.bot-category{font-size:12px;color:var(--cyan)}
-.bot-description{
+
+.bot-card p{
   color:var(--muted);
   font-size:14px;
-  margin:15px 0;
-  min-height:35px;
+  line-height:1.5;
+  margin-bottom:13px;
+  overflow-wrap:anywhere;
 }
-.bot-actions{display:flex;gap:7px;flex-wrap:wrap}
-.bot-actions button{
-  padding:7px 10px;
+
+.bot-meta{
+  color:var(--cyan);
+  font-size:11px;
+  margin-bottom:13px;
+  font-family:'Share Tech Mono',monospace;
+}
+
+.bot-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.small-btn{
+  padding:8px 10px;
   border-radius:7px;
-  background:#211b36;
-  border:1px solid var(--border);
+  background:#211a37;
+  border:1px solid rgba(168,85,247,.3);
   color:white;
   font-size:12px;
 }
-.bot-actions .open-btn{
-  background:rgba(25,230,255,.12);
-  border-color:var(--cyan);
+
+.small-btn.open{
+  background:rgba(0,229,255,.1);
+  border-color:rgba(0,229,255,.4);
   color:var(--cyan);
 }
-.empty-state,.error-state{
+
+.empty-state{
   grid-column:1/-1;
+  padding:30px 18px;
   text-align:center;
-  padding:35px 15px;
   color:var(--muted);
-  background:var(--panel);
   border:1px dashed var(--border);
   border-radius:12px;
 }
+
 .system-log{
-  padding:15px;
-  border:1px solid var(--border);
+  margin-top:25px;
+  padding:16px;
+  background:#090817;
+  border:1px solid rgba(0,229,255,.2);
   border-radius:10px;
-  background:#090815;
+  font-family:'Share Tech Mono',monospace;
+  font-size:11px;
   color:var(--green);
-  font:11px 'Share Tech Mono',monospace;
-  line-height:1.8;
+  line-height:1.9;
   overflow-wrap:anywhere;
 }
+
 footer{
-  padding:25px;
-  color:#625d75;
+  padding:20px;
+  color:#716b83;
   text-align:center;
-  font:10px 'Share Tech Mono',monospace;
+  font-family:'Share Tech Mono',monospace;
+  font-size:10px;
+  border-top:1px solid var(--border);
 }
+
 @media(max-width:850px){
   .layout{grid-template-columns:1fr}
   .sidebar{
     display:flex;
     overflow-x:auto;
     gap:5px;
-    padding:8px;
+    padding:10px;
     border-right:0;
     border-bottom:1px solid var(--border);
   }
-  .side-label{display:none}
-  .nav-link{white-space:nowrap;font-size:13px;padding:9px}
-  main{padding:18px}
+  .sidebar-title{display:none}
+  .nav-link{white-space:nowrap;margin:0;padding:9px 11px}
+  .content{padding:20px 15px}
 }
+
 @media(max-width:600px){
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .bot-list{grid-template-columns:1fr}
-  .topbar{padding:0 13px}
-  .logo{font-size:15px}
-  .status{display:none}
-  main{padding:15px}
+  .filters{flex-direction:column}
+  .topbar{padding:12px}
+  .top-logo{font-size:14px}
+  .status{font-size:9px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN GATE -->
-<section id="loginGate">
+<!-- LOGIN SCREEN -->
+<section id="loginScreen">
   <div class="login-card">
-    <div class="brand">HEXCLØWN</div>
-    <div class="login-sub">BOT ZONE // SECURE ACCESS</div>
+    <div class="logo">HEXCLØWN</div>
+    <div class="login-subtitle">WHISPER BOTS // SECURE ACCESS</div>
 
-    <div class="login-icon">⌘</div>
-    <h2>WHISPER BOTS</h2>
-    <p class="login-description">
-      Authenticate to access your private bot workspace.
-    </p>
+    <div class="terminal-line">
+      &gt; AUTHENTICATION REQUIRED_
+    </div>
 
     <form id="loginForm">
-      <label class="field-label" for="loginEmail">ACCOUNT EMAIL</label>
+      <label class="field-label" for="email">Email address</label>
       <input
         class="login-input"
-        id="loginEmail"
+        id="email"
         type="email"
         placeholder="Enter your account email"
         autocomplete="username"
         required
       >
 
-      <label class="field-label" for="loginPassword">PASSWORD</label>
+      <label class="field-label" for="password">Password</label>
       <input
         class="login-input"
-        id="loginPassword"
+        id="password"
         type="password"
         placeholder="Enter your password"
         autocomplete="current-password"
         required
       >
 
-      <button class="login-button" id="loginButton" type="submit">
-        ACCESS BOT ZONE →
+      <button class="primary-btn" id="loginButton" type="submit">
+        ACCESS BOT ZONE
       </button>
 
-      <div class="login-message" id="loginMessage" role="status"></div>
+      <div id="loginMessage" class="login-message"></div>
     </form>
 
-    <div class="login-foot">
-      HEXCLØWN SECURITY SYSTEM // AUTHENTICATED ACCESS
+    <div class="login-footer">
+      HEXCLØWN SYSTEMS // AUTHORIZED ACCOUNT ACCESS
     </div>
   </div>
 </section>
 
 <!-- DASHBOARD -->
-<div id="dashboard" class="hidden">
+<div id="dashboard">
 
   <header class="topbar">
-    <div class="logo">HEXCLØWN</div>
+    <div class="top-logo">HEXCLØWN / BOT ZONE</div>
+
     <div class="top-right">
-      <span class="status">● SYSTEM ONLINE</span>
+      <span class="status">● SECURE SESSION</span>
       <button class="logout-btn" id="logoutButton">SIGN OUT</button>
     </div>
   </header>
@@ -455,84 +536,95 @@ footer{
   <div class="layout">
 
     <aside class="sidebar">
-      <div class="side-label">MAIN SYSTEM</div>
-      <a class="nav-link current" href="whisperbots.html">⌘ Whisper Bots</a>
+      <div class="sidebar-title">BOT ZONE MODULES</div>
+      <a class="nav-link active" href="whisperbots.html">⌂ Whisper Bots</a>
       <a class="nav-link" href="mybots.html">◈ My Bots</a>
       <a class="nav-link" href="createbot.html">＋ Create Bot</a>
-      <a class="nav-link" href="personalityeditor.html">✧ Personality Editor</a>
-      <a class="nav-link" href="botplayground.html">⚡ Bot Playground</a>
-      <a class="nav-link" href="botknowledge.html">▤ Bot Knowledge</a>
-      <a class="nav-link" href="botcommands.html">⌨ Bot Commands</a>
+      <a class="nav-link" href="personalityeditor.html">✧ Personality</a>
+      <a class="nav-link" href="botplayground.html">⌘ Playground</a>
+      <a class="nav-link" href="botknowledge.html">▤ Knowledge</a>
+      <a class="nav-link" href="botcommands.html">⚡ Commands</a>
       <a class="nav-link" href="botgallery.html">▦ Bot Gallery</a>
-      <a class="nav-link" href="botanalytics.html">◷ Bot Analytics</a>
+      <a class="nav-link" href="botanalytics.html">◷ Analytics</a>
       <a class="nav-link" href="whispermemory.html">◉ Whisper Memory</a>
       <a class="nav-link" href="botdebate.html">⇄ Bot Debate</a>
-      <a class="nav-link" href="botadmin.html">⚙ Bot Admin</a>
+      <a class="nav-link" href="botadmin.html">⚙ Administration</a>
     </aside>
 
-    <main>
-      <div class="eyebrow">ARTIFICIAL INTELLIGENCE // BOT MANAGEMENT</div>
-      <h1>WHISPER BOTS</h1>
-      <p class="hero-text">
-        Your personal command centre for managing intelligent bots.
+    <main class="content">
+
+      <div class="eyebrow">SYSTEM ONLINE // BOT CONTROL CENTER</div>
+
+      <h1>WHISPER <span class="gradient-text">BOTS</span></h1>
+
+      <p class="description">
+        Your intelligent bot workspace. Create, manage and explore your
+        HEXCLØWN bots from one control center.
       </p>
 
       <section class="stats">
         <div class="stat-card">
-          <small>TOTAL BOTS</small>
-          <strong id="totalBots">0</strong>
+          <div class="stat-label">Total Bots</div>
+          <div class="stat-number" id="totalBots">0</div>
         </div>
+
         <div class="stat-card">
-          <small>ACTIVE BOTS</small>
-          <strong id="activeBots">0</strong>
+          <div class="stat-label">Active Bots</div>
+          <div class="stat-number" id="activeBots">0</div>
         </div>
+
         <div class="stat-card">
-          <small>CONVERSATIONS</small>
-          <strong id="totalConversations">0</strong>
+          <div class="stat-label">Conversations</div>
+          <div class="stat-number" id="totalConversations">0</div>
         </div>
+
         <div class="stat-card">
-          <small>TOTAL REQUESTS</small>
-          <strong id="totalRequests">0</strong>
+          <div class="stat-label">Total Requests</div>
+          <div class="stat-number" id="totalRequests">0</div>
         </div>
       </section>
 
-      <div class="section-head">
+      <div class="section-heading">
         <h2>YOUR BOT COLLECTION</h2>
-        <button class="primary-btn" id="refreshButton">↻ REFRESH</button>
+        <button class="refresh-btn" id="refreshButton">↻ REFRESH</button>
       </div>
 
-      <div class="controls">
-        <input id="botSearch" type="search" placeholder="Search your bots...">
+      <div class="filters">
+        <input
+          id="botSearch"
+          type="search"
+          placeholder="Search your bots..."
+        >
+
         <select id="categoryFilter">
-          <option value="all">All categories</option>
+          <option value="">All categories</option>
           <option value="assistant">Assistant</option>
           <option value="creative">Creative</option>
           <option value="coding">Coding</option>
           <option value="education">Education</option>
+          <option value="entertainment">Entertainment</option>
           <option value="other">Other</option>
         </select>
       </div>
 
-      <div class="bot-list" id="botList">
-        <div class="empty-state">Loading your bot collection...</div>
-      </div>
-
-      <div class="section-head">
-        <h2>SYSTEM TERMINAL</h2>
+      <div id="botList" class="bot-list">
+        <div class="empty-state">Loading your bots...</div>
       </div>
 
       <div class="system-log" id="systemLog">
-        [HEXCLØWN] Waiting for initialization...
+        &gt; HEXCLØWN CORE: WAITING FOR AUTHENTICATION<br>
+        &gt; DATABASE: CONNECTING...
       </div>
 
-      <footer>
-        HEXCLØWN BOT ZONE · PRIVATE WORKSPACE · 2026
-      </footer>
     </main>
   </div>
+
+  <footer>
+    HEXCLØWN BOT ZONE // POWERED BY YOUR SUPABASE BACKEND
+  </footer>
+
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="botzone-core.js"></script>
 
 <script>
@@ -540,39 +632,43 @@ footer{
 
 const HEX = window["HEXCLØWN"];
 
-const loginGate = document.getElementById("loginGate");
+const loginScreen = document.getElementById("loginScreen");
 const dashboard = document.getElementById("dashboard");
 const loginForm = document.getElementById("loginForm");
 const loginButton = document.getElementById("loginButton");
 const loginMessage = document.getElementById("loginMessage");
-const loginEmail = document.getElementById("loginEmail");
-const loginPassword = document.getElementById("loginPassword");
+const logoutButton = document.getElementById("logoutButton");
+
 const botList = document.getElementById("botList");
 const systemLog = document.getElementById("systemLog");
 
 let allBots = [];
 let currentUser = null;
-let authListenerStarted = false;
+
+/* GENERAL HELPERS */
 
 function log(message) {
   const time = new Date().toLocaleTimeString();
-  systemLog.textContent = `[${time}] ${message}\n` + systemLog.textContent;
+
+  systemLog.innerHTML =
+    "&gt; [" + time + "] " +
+    String(message).replace(/[<>&]/g, "") +
+    "<br>" + systemLog.innerHTML;
 }
 
-function showLogin(message = "") {
-  dashboard.classList.add("hidden");
-  loginGate.classList.remove("hidden");
+function showLoginMessage(message, type) {
   loginMessage.textContent = message;
+  loginMessage.className = "login-message " + type;
+}
+
+function showLogin() {
+  dashboard.style.display = "none";
+  loginScreen.style.display = "flex";
 }
 
 function showDashboard() {
-  loginGate.classList.add("hidden");
-  dashboard.classList.remove("hidden");
-}
-
-function setLoginBusy(busy) {
-  loginButton.disabled = busy;
-  loginButton.textContent = busy ? "AUTHENTICATING..." : "ACCESS BOT ZONE →";
+  loginScreen.style.display = "none";
+  dashboard.style.display = "block";
 }
 
 function getRows(result) {
@@ -581,271 +677,365 @@ function getRows(result) {
   return [];
 }
 
-async function loadDashboard() {
-  if (!currentUser) return;
+function getSessionFromResult(result) {
+  if (!result) return null;
 
-  botList.innerHTML =
-    '<div class="empty-state">Synchronizing bot collection...</div>';
+  if (result.access_token) return result;
 
+  if (result.session) return result.session;
+
+  if (result.data) {
+    if (result.data.session) return result.data.session;
+    if (result.data.access_token) return result.data;
+  }
+
+  return null;
+}
+
+/* AUTHENTICATION */
+
+async function checkExistingSession() {
   try {
-    const [botsResult, conversationsResult, usageResult] =
-      await Promise.all([
-        HEX.bots.list(),
-        HEX.conversations.list(),
-        HEX.usage.list()
-      ]);
+    if (!HEX) {
+      throw new Error("HEXCLØWN core could not be loaded.");
+    }
 
-    allBots = getRows(botsResult);
-    const conversations = getRows(conversationsResult);
-    const usage = getRows(usageResult);
+    log("Checking existing authentication session...");
 
-    document.getElementById("totalBots").textContent = allBots.length;
-    document.getElementById("activeBots").textContent =
-      allBots.filter(bot => bot.active).length;
-    document.getElementById("totalConversations").textContent =
-      conversations.length;
-    document.getElementById("totalRequests").textContent = usage.length;
+    const result = await HEX.getSession();
+    const session = getSessionFromResult(result);
 
-    renderBots();
-    log("Dashboard synchronized successfully.");
+    if (!session || !session.access_token) {
+      showLogin();
+      showLoginMessage(
+        "No active session found. Please sign in with your account.",
+        "error"
+      );
+      log("No active session. Login required.");
+      return;
+    }
+
+    await enterBotZone();
+
   } catch (error) {
-    console.error(error);
-    botList.innerHTML =
-      '<div class="error-state">Could not load your bots. Check your connection and account permissions.</div>';
-    log("Dashboard error: " + error.message);
+    console.error("Session check:", error);
+    showLogin();
+
+    showLoginMessage(
+      error.message || "Unable to check your login session.",
+      "error"
+    );
+
+    log("Session check failed.");
   }
 }
 
-function renderBots() {
-  const search = document.getElementById("botSearch").value
-    .trim().toLowerCase();
+async function enterBotZone() {
+  try {
+    if (!HEX) {
+      throw new Error("HEXCLØWN core is unavailable.");
+    }
 
-  const category = document.getElementById("categoryFilter").value;
+    /*
+      Only initialize AFTER a valid session exists.
+      Your core's initialize() requires an authenticated user.
+    */
+
+    const initialized = await HEX.initialize();
+
+    if (!initialized || !initialized.success) {
+      throw new Error("Account initialization failed.");
+    }
+
+    currentUser = initialized.user || null;
+
+    if (!currentUser) {
+      throw new Error("Authenticated user could not be verified.");
+    }
+
+    showDashboard();
+    log("AUTHENTICATION: SUCCESSFUL");
+    log("BOT ZONE: ACCESS GRANTED");
+
+    await loadDashboard();
+
+  } catch (error) {
+    console.error("Bot Zone access:", error);
+
+    currentUser = null;
+    showLogin();
+
+    showLoginMessage(
+      error.message || "Unable to open your Bot Zone.",
+      "error"
+    );
+
+    log("ACCESS DENIED: " + error.message);
+  }
+}
+
+/* LOGIN FORM */
+
+loginForm.addEventListener("submit", async function(event) {
+  event.preventDefault();
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  if (!email || !password) {
+    showLoginMessage("Enter your email and password.", "error");
+    return;
+  }
+
+  loginButton.disabled = true;
+  loginButton.textContent = "AUTHENTICATING...";
+
+  showLoginMessage("Connecting to HEXCLØWN authentication...", "success");
+
+  try {
+    if (!HEX) {
+      throw new Error("HEXCLØWN core did not load.");
+    }
+
+    /*
+      Use the signIn function you supplied.
+    */
+
+    const result = await HEX.signIn(email, password);
+    const session = getSessionFromResult(result);
+
+    if (!session || !session.access_token) {
+      throw new Error(
+        "Login returned no active session. Please check your Supabase authentication configuration."
+      );
+    }
+
+    showLoginMessage("Authentication successful. Opening Bot Zone...", "success");
+
+    await enterBotZone();
+
+  } catch (error) {
+    console.error("Login error:", error);
+
+    showLoginMessage(
+      error.message || "Login failed. Please try again.",
+      "error"
+    );
+
+  } finally {
+    loginButton.disabled = false;
+    loginButton.textContent = "ACCESS BOT ZONE";
+  }
+});
+
+/* SIGN OUT */
+
+logoutButton.addEventListener("click", async function() {
+  const confirmed = window.confirm("Sign out of HEXCLØWN Bot Zone?");
+
+  if (!confirmed) return;
+
+  try {
+    await HEX.signOut();
+
+    currentUser = null;
+    allBots = [];
+
+    loginForm.reset();
+    showLogin();
+    showLoginMessage("You have signed out successfully.", "success");
+
+  } catch (error) {
+    console.error(error);
+    alert("Sign out failed: " + error.message);
+  }
+});
+
+/* DASHBOARD DATA */
+
+async function loadDashboard() {
+  try {
+    if (!currentUser) {
+      throw new Error("Your session is not authenticated.");
+    }
+
+    log("Retrieving dashboard information...");
+
+    const results = await Promise.all([
+      HEX.bots.list(),
+      HEX.conversations.list(),
+      HEX.usage.list()
+    ]);
+
+    allBots = getRows(results[0]);
+
+    const conversations = getRows(results[1]);
+    const usage = getRows(results[2]);
+
+    document.getElementById("totalBots").textContent = allBots.length;
+
+    document.getElementById("activeBots").textContent =
+      allBots.filter(bot => bot.active === true).length;
+
+    document.getElementById("totalConversations").textContent =
+      conversations.length;
+
+    document.getElementById("totalRequests").textContent =
+      usage.length;
+
+    renderBots();
+
+    log("DASHBOARD: DATA LOADED");
+    log("BOTS FOUND: " + allBots.length);
+
+  } catch (error) {
+    console.error("Dashboard error:", error);
+
+    botList.innerHTML =
+      '<div class="empty-state">Unable to load dashboard data: ' +
+      escapeHTML(error.message) +
+      '</div>';
+
+    log("DATABASE ERROR: " + error.message);
+  }
+}
+
+/* SAFE HTML OUTPUT */
+
+function escapeHTML(value) {
+  return String(value == null ? "" : value).replace(/[&<>"']/g, function(char) {
+    const map = {"&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    };
+
+    return map[char];
+  });
+}
+
+/* BOT DISPLAY */
+
+function renderBots() {
+  const search = document.getElementById("botSearch").value.toLowerCase();
+  const category = document.getElementById("categoryFilter").value.toLowerCase();
 
   const filtered = allBots.filter(bot => {
-    const name = (bot.name || "").toLowerCase();
-    const description = (bot.description || "").toLowerCase();
-    const botCategory = (bot.category || "other").toLowerCase();
+    const name = String(bot.name || "").toLowerCase();
+    const description = String(bot.description || "").toLowerCase();
+    const botCategory = String(bot.category || "").toLowerCase();
 
     const matchesSearch =
       name.includes(search) || description.includes(search);
 
     const matchesCategory =
-      category === "all" || botCategory === category;
+      !category || botCategory === category;
 
     return matchesSearch && matchesCategory;
   });
 
   if (!filtered.length) {
-    botList.innerHTML = `
-      <div class="empty-state">
-        No bots found.<br>
-        Create your first bot to get started.
-      </div>`;
+    botList.innerHTML =
+      '<div class="empty-state">' +
+      (allBots.length
+        ? "No bots match your search."
+        : "You haven't created any bots yet. Create your first bot to get started.") +
+      '</div>';
+
     return;
   }
 
-  botList.innerHTML = "";
+  botList.innerHTML = filtered.map(bot => {
+    const id = escapeHTML(bot.id);
+    const name = escapeHTML(bot.name || "Unnamed Bot");
+    const description = escapeHTML(bot.description || "No description provided.");
+    const category = escapeHTML(bot.category || "Uncategorized");
+    const icon = escapeHTML(bot.icon || "🤖");
 
-  filtered.forEach(bot => {
-    const card = document.createElement("article");
-    card.className = "bot-card";
+    return `
+      <article class="bot-card">
+        <h3>${icon} ${name}</h3>
 
-    const top = document.createElement("div");
-    top.className = "bot-top";
+        <p>${description}</p>
 
-    const icon = document.createElement("div");
-    icon.className = "bot-icon";
-    icon.textContent = bot.icon || "🤖";
+        <div class="bot-meta">
+          ${category.toUpperCase()} //
+          ${bot.active ? "ACTIVE" : "INACTIVE"}
+          ${bot.favorite ? "// ★ FAVORITE" : ""}
+        </div>
 
-    const info = document.createElement("div");
+        <div class="bot-actions">
+          <button class="small-btn open" data-action="open" data-id="${id}">
+            OPEN BOT
+          </button>
 
-    const name = document.createElement("div");
-    name.className = "bot-name";
-    name.textContent = bot.name || "Unnamed Bot";
+          <button class="small-btn" data-action="favorite" data-id="${id}">
+            ${bot.favorite ? "★ UNFAVORITE" : "☆ FAVORITE"}
+          </button>
 
-    const categoryText = document.createElement("div");
-    categoryText.className = "bot-category";
-    categoryText.textContent = bot.category || "Other";
-
-    info.append(name, categoryText);
-    top.append(icon, info);
-
-    const description = document.createElement("p");
-    description.className = "bot-description";
-    description.textContent =
-      bot.description || "No description added yet.";
-
-    const actions = document.createElement("div");
-    actions.className = "bot-actions";
-
-    const open = document.createElement("button");
-    open.className = "open-btn";
-    open.textContent = "OPEN BOT";
-    open.addEventListener("click", () => {
-      location.href =
-        "botplayground.html?bot=" + encodeURIComponent(bot.id);
-    });
-
-    const favorite = document.createElement("button");
-    favorite.textContent = bot.favorite ? "★ FAVORITE" : "☆ FAVORITE";
-    favorite.addEventListener("click", async () => {
-      try {
-        await HEX.bots.toggleFavorite(bot.id);
-        await loadDashboard();
-      } catch (error) {
-        alert("Could not update favorite: " + error.message);
-      }
-    });
-
-    const active = document.createElement("button");
-    active.textContent = bot.active ? "● ACTIVE" : "○ INACTIVE";
-    active.addEventListener("click", async () => {
-      try {
-        await HEX.bots.toggleActive(bot.id);
-        await loadDashboard();
-      } catch (error) {
-        alert("Could not update bot status: " + error.message);
-      }
-    });
-
-    actions.append(open, favorite, active);
-    card.append(top, description, actions);
-    botList.appendChild(card);
-  });
+          <button class="small-btn" data-action="active" data-id="${id}">
+            ${bot.active ? "DEACTIVATE" : "ACTIVATE"}
+          </button>
+        </div>
+      </article>
+    `;
+  }).join("");
 }
 
-async function startAuthenticatedWorkspace() {
-  try {
-    currentUser = await HEX.auth.getUser();
+/* BOT BUTTON ACTIONS */
 
-    if (!currentUser) {
-      showLogin();
-      return;
-    }
+botList.addEventListener("click", async function(event) {
+  const button = event.target.closest("button[data-action]");
 
-    showDashboard();
-    log("Authenticated account detected.");
-    await loadDashboard();
+  if (!button) return;
 
-  } catch (error) {
-    console.error(error);
-    currentUser = null;
-    showLogin("Session check failed. Please sign in again.");
-  }
-}
+  const action = button.dataset.action;
+  const id = button.dataset.id;
 
-async function initializeWhisperBots() {
-  try {
-    if (!HEX) {
-      throw new Error("botzone-core.js was not loaded.");
-    }
+  if (!id) return;
 
-    await HEX.initialize();
-    log("HEXCLØWN core initialized.");
-
-    await startAuthenticatedWorkspace();
-
-    if (!authListenerStarted) {
-      authListenerStarted = true;
-
-      HEX.auth.onAuthChange(async (event, session) => {
-        if (event === "SIGNED_OUT" || !session) {
-          currentUser = null;
-          showLogin("You have been signed out.");
-          return;
-        }
-
-        if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
-          currentUser = session.user;
-          showDashboard();
-          await loadDashboard();
-        }
-      }).catch(error => {
-        console.error("Auth listener:", error);
-        log("Authentication listener warning.");
-      });
-    }
-
-  } catch (error) {
-    console.error(error);
-    showLogin("System initialization failed. Please refresh the page.");
-    log("Initialization error: " + error.message);
-  }
-}
-
-/* LOGIN */
-loginForm.addEventListener("submit", async event => {
-  event.preventDefault();
-
-  const email = loginEmail.value.trim();
-  const password = loginPassword.value;
-
-  if (!email || !password) {
-    loginMessage.textContent = "Enter your email and password.";
+  if (action === "open") {
+    window.location.href =
+      "botplayground.html?bot=" + encodeURIComponent(id);
     return;
   }
 
-  setLoginBusy(true);
-  loginMessage.textContent = "Verifying your account...";
+  button.disabled = true;
 
   try {
-    await HEX.initialize();
-
-    await HEX.auth.signIn(email, password);
-
-    currentUser = await HEX.auth.getUser();
-
-    if (!currentUser) {
-      throw new Error("Sign-in completed, but no user session was found.");
+    if (action === "favorite") {
+      await HEX.bots.toggleFavorite(id);
     }
 
-    loginPassword.value = "";
-    loginMessage.textContent = "";
-
-    showDashboard();
-    log("Login successful. Welcome to Whisper Bots.");
+    if (action === "active") {
+      await HEX.bots.toggleActive(id);
+    }
 
     await loadDashboard();
 
   } catch (error) {
     console.error(error);
-    loginMessage.textContent =
-      error.message || "Login failed. Check your credentials.";
-    currentUser = null;
-    showLogin(loginMessage.textContent);
+    alert("Action failed: " + error.message);
 
   } finally {
-    setLoginBusy(false);
+    button.disabled = false;
   }
 });
 
-/* SIGN OUT */
-document.getElementById("logoutButton").addEventListener("click", async () => {
-  if (!confirm("Sign out of HEXCLØWN Bot Zone?")) return;
+/* SEARCH AND FILTER */
 
-  try {
-    await HEX.auth.signOut();
-    currentUser = null;
-    showLogin("You have been signed out.");
-    log("Account signed out.");
-  } catch (error) {
-    alert("Sign-out failed: " + error.message);
-  }
-});
+document.getElementById("botSearch").addEventListener("input", renderBots);
 
-/* DASHBOARD CONTROLS */
-document.getElementById("refreshButton")
-  .addEventListener("click", loadDashboard);
+document.getElementById("categoryFilter").addEventListener("change", renderBots);
 
-document.getElementById("botSearch")
-  .addEventListener("input", renderBots);
-
-document.getElementById("categoryFilter")
-  .addEventListener("change", renderBots);
+document.getElementById("refreshButton").addEventListener("click", loadDashboard);
 
 /* START */
-initializeWhisperBots();
+
+document.addEventListener("DOMContentLoaded", function() {
+  checkExistingSession();
+});
 </script>
 
 </body>
