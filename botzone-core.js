@@ -1,31 +1,13 @@
 
-/* =========================================================
-   HEXCLØWN BOT ZONE CORE
-   VERSION: 3.0.0
-   PART 1: CONFIGURATION, CONNECTION AND AUTHENTICATION
-========================================================= */
-
 (function () {
   "use strict";
 
-  if (window["HEXCLØWN"]) {
-    console.warn("HEXCLØWN Core is already loaded.");
-    return;
-  }
-
   const CONFIG = {
     PROJECT_NAME: "HEXCLØWN",
-    VERSION: "3.0.0",
-
-    SUPABASE_URL:
-      "https://nddaaqvsnnrdylajpdmp.supabase.co",
-
-    SUPABASE_KEY:
-      "sb_publishable_DVAyBfoG7N50q4x6Vf1YeA_a7mghWFN",
-
-    HEALTH_URL:
-      "https://nddaaqvsnnrdylajpdmp.supabase.co/functions/v1/hexclown-health",
-
+    VERSION: "4.0.0",
+    SUPABASE_URL: "https://nddaaqvsnnrdylajpdmp.supabase.co",
+    SUPABASE_KEY: "sb_publishable_DVAyBfoG7N50q4x6Vf1YeA_a7mghWFN",
+    HEALTH_URL: "https://nddaaqvsnnrdylajpdmp.supabase.co/functions/v1/hexclown-health",
     TABLES: {
       bots: "hexclown_bots",
       conversations: "hexclown_conversations",
@@ -36,53 +18,39 @@
   };
 
   let supabaseClient = null;
-  let initializationPromise = null;
+  let databasePromise = null;
+  let libraryPromise = null;
   let currentUser = null;
+  let initializationPromise = null;
 
-  /* =====================================================
-     GENERAL HELPERS
-  ===================================================== */
-
-  function makeError(message) {
-    return new Error(message || "An unexpected error occurred.");
+  function makeError(message, original) {
+    const error = new Error(message);
+    if (original) error.original = original;
+    return error;
   }
 
   function throwIfError(error) {
     if (error) {
-      console.error("HEXCLØWN:", error);
-      throw error;
+      throw makeError(error.message || "Database request failed.", error);
     }
   }
 
-  function normalizeRows(result) {
-    if (Array.isArray(result)) return result;
-
-    if (result && Array.isArray(result.data)) {
-      return result.data;
-    }
-
-    return [];
+  function normalizeRows(data) {
+    if (!data) return [];
+    return Array.isArray(data) ? data : [data];
   }
 
   function createId() {
-    if (
-      window.crypto &&
-      typeof window.crypto.randomUUID === "function"
-    ) {
+    if (window.crypto && window.crypto.randomUUID) {
       return window.crypto.randomUUID();
     }
 
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
       /[xy]/g,
-      function (character) {
-        const random = Math.random() * 16 | 0;
-
-        const value =
-          character === "x"
-            ? random
-            : (random & 3 | 8);
-
-        return value.toString(16);
+      function (c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === "x" ? r : (r & 3 | 8);
+        return v.toString(16);
       }
     );
   }
@@ -91,235 +59,187 @@
     return new Date().toISOString();
   }
 
-  /* =====================================================
-     SUPABASE LIBRARY LOADER
-  ===================================================== */
+  function dispatchEvent(name, detail) {
+    try {
+      window.dispatchEvent(
+        new CustomEvent(name, { detail: detail || {} })
+      );
+    } catch (error) {
+      console.warn("HEXCLØWN event error:", error);
+    }
+  }
 
-  function loadLibrary() {
-    if (
-      window.supabase &&
-      typeof window.supabase.createClient === "function"
-    ) {
-      return Promise.resolve(window.supabase);
+  async function loadLibrary() {
+    if (window.supabase && window.supabase.createClient) {
+      return window.supabase;
     }
 
-    return new Promise(function (resolve, reject) {
-      const existing = document.querySelector(
-        'script[data-hexclown-supabase="true"]'
-      );
+    if (libraryPromise) return libraryPromise;
 
-      if (existing) {
-        existing.addEventListener("load", function () {
-          if (window.supabase) {
-            resolve(window.supabase);
-          } else {
-            reject(makeError("Supabase library failed to load."));
-          }
-        });
-
-        existing.addEventListener("error", function () {
-          reject(makeError("Unable to load Supabase library."));
-        });
-
-        return;
-      }
-
+    libraryPromise = new Promise(function (resolve, reject) {
       const script = document.createElement("script");
 
       script.src =
-        "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+        "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
 
       script.async = true;
-      script.dataset.hexclownSupabase = "true";
 
       script.onload = function () {
-        if (
-          window.supabase &&
-          typeof window.supabase.createClient === "function"
-        ) {
+        if (window.supabase && window.supabase.createClient) {
           resolve(window.supabase);
         } else {
-          reject(makeError("Supabase library is unavailable."));
+          reject(makeError("Supabase library loaded but is unavailable."));
         }
       };
 
       script.onerror = function () {
-        reject(makeError("Could not download Supabase library."));
+        libraryPromise = null;
+        reject(makeError("Could not load the Supabase library."));
       };
 
       document.head.appendChild(script);
     });
-  }
 
-  /* =====================================================
-     DATABASE CONNECTION
-  ===================================================== */
+    return libraryPromise;
+  }
 
   async function db() {
-    if (supabaseClient) {
-      return supabaseClient;
-    }
+    if (supabaseClient) return supabaseClient;
+    if (databasePromise) return databasePromise;
 
-    const library = await loadLibrary();
+    databasePromise = (async function () {
+      const library = await loadLibrary();
 
-    if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_KEY) {
-      throw makeError("Supabase configuration is incomplete.");
-    }
-
-    supabaseClient = library.createClient(
-      CONFIG.SUPABASE_URL,
-      CONFIG.SUPABASE_KEY,
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true,
-          storageKey: "hexclown-auth-session"
+      const client = library.createClient(
+        CONFIG.SUPABASE_URL,
+        CONFIG.SUPABASE_KEY,
+        {
+          auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true
+          }
         }
-      }
-    );
+      );
 
-    supabaseClient.auth.onAuthStateChange(
-      function (event, session) {
+      supabaseClient = client;
+
+      client.auth.onAuthStateChange(function (event, session) {
         currentUser = session ? session.user : null;
 
-        window.dispatchEvent(
-          new CustomEvent("hexclown:auth", {
-            detail: {
-              event: event,
-              session: session,
-              user: currentUser
-            }
-          })
-        );
-      }
-    );
+        dispatchEvent("hexclown:auth", {
+          event: event,
+          user: currentUser
+        });
+      });
 
-    return supabaseClient;
-  }
+      return client;
+    })();
 
-  /* =====================================================
-     AUTHENTICATION
-  ===================================================== */
-
-  async function signIn(email, password) {
-    if (!email || !password) {
-      throw makeError("Email and password are required.");
+    try {
+      return await databasePromise;
+    } catch (error) {
+      databasePromise = null;
+      throw error;
     }
-
-    const client = await db();
-
-    const {
-      data,
-      error
-    } = await client.auth.signInWithPassword({
-      email: email.trim(),
-      password: password
-    });
-
-    throwIfError(error);
-
-    if (!data || !data.session || !data.user) {
-      throw makeError(
-        "Authentication succeeded without an active session."
-      );
-    }
-
-    currentUser = data.user;
-
-    return data;
-  }
-
-  async function signOut() {
-    const client = await db();
-
-    const {
-      error
-    } = await client.auth.signOut();
-
-    throwIfError(error);
-
-    currentUser = null;
-
-    return true;
   }
 
   async function getSession() {
     const client = await db();
+    const result = await client.auth.getSession();
 
-    const {
-      data,
-      error
-    } = await client.auth.getSession();
+    throwIfError(result.error);
 
-    throwIfError(error);
-
-    if (data && data.session) {
-      currentUser = data.session.user;
-    } else {
-      currentUser = null;
-    }
-
-    return data ? data.session : null;
+    return result.data.session || null;
   }
 
   async function getUser() {
     const client = await db();
+    const result = await client.auth.getUser();
 
-    const {
-      data,
-      error
-    } = await client.auth.getUser();
-
-    if (error) {
+    if (result.error) {
       currentUser = null;
       return null;
     }
 
-    currentUser = data ? data.user : null;
-
+    currentUser = result.data.user || null;
     return currentUser;
   }
 
   async function requireUser() {
     const session = await getSession();
 
-    if (!session || !session.user) {
-      throw makeError("Auth session missing. Please sign in.");
+    if (!session || !session.access_token) {
+      currentUser = null;
+      throw makeError("Please sign in to access your Bot Zone account.");
     }
 
     const user = await getUser();
 
     if (!user) {
-      throw makeError("Unable to verify your account.");
+      throw makeError("Your login session is invalid. Please sign in again.");
     }
 
     return user;
   }
 
-  /* =====================================================
-     INITIALIZATION
-  ===================================================== */
+  async function signIn(email, password) {
+    if (!email || !password) {
+      throw makeError("Enter your email address and password.");
+    }
+
+    const client = await db();
+
+    const result = await client.auth.signInWithPassword({
+      email: String(email).trim(),
+      password: password
+    });
+
+    throwIfError(result.error);
+
+    if (!result.data || !result.data.session || !result.data.user) {
+      throw makeError(
+        "Sign-in did not create a session. Check your account confirmation."
+      );
+    }
+
+    currentUser = result.data.user;
+    return result.data;
+  }
+
+  async function signOut() {
+    const client = await db();
+    const result = await client.auth.signOut();
+
+    throwIfError(result.error);
+
+    currentUser = null;
+    return { success: true };
+  }
 
   async function initialize() {
-    if (!initializationPromise) {
-      initializationPromise = (async function () {
-        await db();
-
-        const session = await getSession();
-
-        if (session && session.user) {
-          currentUser = await getUser();
-        }
-
-        return {
-          success: true,
-          user: currentUser,
-          authenticated: !!currentUser,
-          version: CONFIG.VERSION
-        };
-      })();
+    if (initializationPromise) {
+      return initializationPromise;
     }
+
+    initializationPromise = (async function () {
+      await db();
+
+      const session = await getSession();
+
+      if (session && session.access_token) {
+        currentUser = await getUser();
+      } else {
+        currentUser = null;
+      }
+
+      return {
+        success: true,
+        authenticated: !!currentUser,
+        user: currentUser,
+        version: CONFIG.VERSION
+      };
+    })();
 
     try {
       return await initializationPromise;
@@ -329,51 +249,46 @@
     }
   }
 
-  /* =====================================================
-     HEALTH CHECK
-  ===================================================== */
-
   async function healthCheck() {
-    const response = await fetch(CONFIG.HEALTH_URL, {
-      method: "GET",
-      headers: {
-        "Accept": "application/json"
-      }
-    });
+    try {
+      const response = await fetch(CONFIG.HEALTH_URL, {
+        method: "GET"
+      });
 
-    if (!response.ok) {
-      throw makeError("Backend health check failed.");
+      const data = await response.json();
+
+      return {
+        success: response.ok && data.status === "online",
+        status: data.status || "unknown",
+        data: data
+      };
+    } catch (error) {
+      return {
+        success: false,
+        status: "offline",
+        error: error.message
+      };
     }
-
-    return await response.json();
   }
 
-  /* =====================================================
-     INTERNAL DATABASE HELPERS
-  ===================================================== */
-
   async function getOwnedRecord(table, id) {
-    const client = await db();
     const user = await requireUser();
+    const client = await db();
 
-    const {
-      data,
-      error
-    } = await client
+    const result = await client
       .from(table)
       .select("*")
       .eq("id", id)
       .eq("owner_id", user.id)
       .maybeSingle();
 
-    throwIfError(error);
-
-    return data;
+    throwIfError(result.error);
+    return result.data || null;
   }
 
   async function listOwnedRecords(table, options) {
-    const client = await db();
     const user = await requireUser();
+    const client = await db();
 
     let query = client
       .from(table)
@@ -385,82 +300,82 @@
     }
 
     if (options && options.conversationId) {
-      query = query.eq(
-        "conversation_id",
-        options.conversationId
-      );
+      query = query.eq("conversation_id", options.conversationId);
     }
 
-    const {
-      data,
-      error
-    } = await query.order("created_at", {
-      ascending: false
-    });
+    query = query.order("created_at", { ascending: false });
 
-    throwIfError(error);
+    if (options && Number.isInteger(options.limit)) {
+      query = query.limit(options.limit);
+    }
 
-    return normalizeRows(data);
+    const result = await query;
+
+    throwIfError(result.error);
+    return normalizeRows(result.data);
   }
 
-  console.info(
-    "HEXCLØWN CORE PART 1 READY:",
-    CONFIG.VERSION
-  );
-
-  /* PART 2 WILL CONTINUE HERE */
+  // PART 2 CONTINUES BELOW
    
-  /* =====================================================
-     BOT MANAGEMENT
-  ===================================================== */
+  // ==========================================
+  // PART 2 — BOT MANAGEMENT
+  // ==========================================
 
   const bots = {
 
-    async create(botData = {}) {
-      const client = await db();
+    async create(botData) {
       const user = await requireUser();
+      const client = await db();
+
+      if (!botData || !botData.name) {
+        throw makeError("A bot name is required.");
+      }
 
       const record = {
         owner_id: user.id,
-        name: botData.name || "New Whisper Bot",
+        name: String(botData.name).trim(),
         description: botData.description || "",
-        category: botData.category || "other",
+        category: botData.category || "General",
         icon: botData.icon || "🤖",
         visibility: botData.visibility || "private",
         personality: botData.personality || "",
-        response_style: botData.response_style || "balanced",
+        response_style: botData.response_style || "friendly",
         instructions: botData.instructions || "",
         welcome_message: botData.welcome_message || "",
         conversation_starter: botData.conversation_starter || "",
         active: botData.active !== false,
-        favorite: botData.favorite === true,
+        favorite: false,
         settings: botData.settings || {},
         created_at: now(),
         updated_at: now()
       };
 
-      const { data, error } = await client
+      const result = await client
         .from(CONFIG.TABLES.bots)
         .insert(record)
         .select("*")
         .single();
 
-      throwIfError(error);
-
-      return data;
+      throwIfError(result.error);
+      return result.data;
     },
 
-    async list() {
-      return await listOwnedRecords(CONFIG.TABLES.bots);
+    async list(options) {
+      return await listOwnedRecords(
+        CONFIG.TABLES.bots,
+        options || {}
+      );
     },
 
     async get(id) {
-      return await getOwnedRecord(CONFIG.TABLES.bots, id);
+      return await getOwnedRecord(
+        CONFIG.TABLES.bots,
+        id
+      );
     },
 
-    async update(id, changes = {}) {
-      const client = await db();
-      const user = await requireUser();
+    async update(id, changes) {
+      await requireUser();
 
       const allowed = [
         "name",
@@ -481,41 +396,43 @@
       const updateData = {};
 
       allowed.forEach(function (key) {
-        if (
-          Object.prototype.hasOwnProperty.call(changes, key)
-        ) {
+        if (Object.prototype.hasOwnProperty.call(changes, key)) {
           updateData[key] = changes[key];
         }
       });
 
       updateData.updated_at = now();
 
-      const { data, error } = await client
+      const client = await db();
+
+      const result = await client
         .from(CONFIG.TABLES.bots)
         .update(updateData)
         .eq("id", id)
-        .eq("owner_id", user.id)
         .select("*")
         .single();
 
-      throwIfError(error);
-
-      return data;
+      throwIfError(result.error);
+      return result.data;
     },
 
     async delete(id) {
-      const client = await db();
-      const user = await requireUser();
+      await requireUser();
 
-      const { error } = await client
+      const client = await db();
+
+      const result = await client
         .from(CONFIG.TABLES.bots)
         .delete()
         .eq("id", id)
-        .eq("owner_id", user.id);
+        .select("id");
 
-      throwIfError(error);
+      throwIfError(result.error);
 
-      return true;
+      return {
+        success: true,
+        deleted: normalizeRows(result.data).length
+      };
     },
 
     async toggleFavorite(id) {
@@ -541,19 +458,18 @@
         active: !bot.active
       });
     }
-
   };
 
 
-  /* =====================================================
-     CONVERSATION MANAGEMENT
-  ===================================================== */
+  // ==========================================
+  // CONVERSATION MANAGEMENT
+  // ==========================================
 
   const conversations = {
 
     async create(botId, title) {
-      const client = await db();
       const user = await requireUser();
+      const client = await db();
 
       const bot = await bots.get(botId);
 
@@ -563,27 +479,26 @@
 
       const record = {
         owner_id: user.id,
-        bot_id: bot.id,
-        title: title || "New Conversation",
+        bot_id: botId,
+        title: title || "New conversation",
         status: "active",
         created_at: now(),
         updated_at: now()
       };
 
-      const { data, error } = await client
+      const result = await client
         .from(CONFIG.TABLES.conversations)
         .insert(record)
         .select("*")
         .single();
 
-      throwIfError(error);
-
-      return data;
+      throwIfError(result.error);
+      return result.data;
     },
 
     async list(botId) {
-      const client = await db();
       const user = await requireUser();
+      const client = await db();
 
       let query = client
         .from(CONFIG.TABLES.conversations)
@@ -594,14 +509,13 @@
         query = query.eq("bot_id", botId);
       }
 
-      const { data, error } = await query.order(
-        "created_at",
+      const result = await query.order(
+        "updated_at",
         { ascending: false }
       );
 
-      throwIfError(error);
-
-      return normalizeRows(data);
+      throwIfError(result.error);
+      return normalizeRows(result.data);
     },
 
     async get(id) {
@@ -611,63 +525,67 @@
       );
     },
 
-    async update(id, changes = {}) {
-      const client = await db();
-      const user = await requireUser();
+    async update(id, changes) {
+      await requireUser();
 
       const updateData = {};
 
-      if (changes.title !== undefined) {
+      if (Object.prototype.hasOwnProperty.call(changes, "title")) {
         updateData.title = changes.title;
       }
 
-      if (changes.status !== undefined) {
+      if (Object.prototype.hasOwnProperty.call(changes, "status")) {
         updateData.status = changes.status;
       }
 
       updateData.updated_at = now();
 
-      const { data, error } = await client
+      const client = await db();
+
+      const result = await client
         .from(CONFIG.TABLES.conversations)
         .update(updateData)
         .eq("id", id)
-        .eq("owner_id", user.id)
         .select("*")
         .single();
 
-      throwIfError(error);
-
-      return data;
+      throwIfError(result.error);
+      return result.data;
     },
 
     async delete(id) {
-      const client = await db();
-      const user = await requireUser();
+      await requireUser();
 
-      const { error } = await client
+      const client = await db();
+
+      const result = await client
         .from(CONFIG.TABLES.conversations)
         .delete()
         .eq("id", id)
-        .eq("owner_id", user.id);
+        .select("id");
 
-      throwIfError(error);
+      throwIfError(result.error);
 
-      return true;
+      return {
+        success: true,
+        deleted: normalizeRows(result.data).length
+      };
     }
-
   };
 
   console.info("HEXCLØWN CORE PART 2 READY");
-       
-  /* =====================================================
-     MESSAGE MANAGEMENT
-  ===================================================== */
+
+  // PART 3 CONTINUES BELOW
+         
+  // ==========================================
+  // PART 3 — MESSAGE MANAGEMENT
+  // ==========================================
 
   const messages = {
 
-    async save(conversationId, role, content, metadata = {}) {
-      const client = await db();
+    async save(conversationId, role, content, metadata) {
       const user = await requireUser();
+      const client = await db();
 
       if (!conversationId || !content) {
         throw makeError("Conversation ID and message content are required.");
@@ -688,71 +606,66 @@
         created_at: now()
       };
 
-      const { data, error } = await client
+      const result = await client
         .from(CONFIG.TABLES.messages)
         .insert(record)
         .select("*")
         .single();
 
-      throwIfError(error);
+      throwIfError(result.error);
 
       await conversations.update(conversationId, {
         status: "active"
       });
 
-      return data;
+      return result.data;
     },
 
     async list(conversationId) {
-      const client = await db();
-      const user = await requireUser();
+      await requireUser();
 
-      let query = client
+      const client = await db();
+
+      const result = await client
         .from(CONFIG.TABLES.messages)
         .select("*")
-        .eq("owner_id", user.id);
+        .eq("conversation_id", conversationId)
+        .order("created_at", { ascending: true });
 
-      if (conversationId) {
-        query = query.eq("conversation_id", conversationId);
-      }
-
-      const { data, error } = await query.order(
-        "created_at",
-        { ascending: true }
-      );
-
-      throwIfError(error);
-
-      return normalizeRows(data);
+      throwIfError(result.error);
+      return normalizeRows(result.data);
     },
 
     async delete(id) {
-      const client = await db();
-      const user = await requireUser();
+      await requireUser();
 
-      const { error } = await client
+      const client = await db();
+
+      const result = await client
         .from(CONFIG.TABLES.messages)
         .delete()
         .eq("id", id)
-        .eq("owner_id", user.id);
+        .select("id");
 
-      throwIfError(error);
+      throwIfError(result.error);
 
-      return true;
+      return {
+        success: true,
+        deleted: normalizeRows(result.data).length
+      };
     }
-
   };
 
 
-  /* =====================================================
-     BOT KNOWLEDGE MANAGEMENT
-  ===================================================== */
+  // ==========================================
+  // PART 3 — KNOWLEDGE MANAGEMENT
+  // ==========================================
 
   const knowledge = {
 
-    async add(botId, title, content, metadata = {}) {
-      const client = await db();
+    async add(botId, title, content, metadata) {
       const user = await requireUser();
+      const client = await db();
 
       const bot = await bots.get(botId);
 
@@ -760,35 +673,34 @@
         throw makeError("Bot not found.");
       }
 
-      if (!content) {
-        throw makeError("Knowledge content cannot be empty.");
+      if (!title || !content) {
+        throw makeError("Knowledge title and content are required.");
       }
 
       const record = {
         owner_id: user.id,
         bot_id: botId,
-        title: title || "Untitled Knowledge",
+        title: String(title),
         content: String(content),
-        source_type: metadata.source_type || "manual",
+        source_type: "manual",
         metadata: metadata || {},
         created_at: now(),
         updated_at: now()
       };
 
-      const { data, error } = await client
+      const result = await client
         .from(CONFIG.TABLES.knowledge)
         .insert(record)
         .select("*")
         .single();
 
-      throwIfError(error);
-
-      return data;
+      throwIfError(result.error);
+      return result.data;
     },
 
     async list(botId) {
-      const client = await db();
       const user = await requireUser();
+      const client = await db();
 
       let query = client
         .from(CONFIG.TABLES.knowledge)
@@ -799,88 +711,73 @@
         query = query.eq("bot_id", botId);
       }
 
-      const { data, error } = await query.order(
+      const result = await query.order(
         "created_at",
         { ascending: false }
       );
 
-      throwIfError(error);
-
-      return normalizeRows(data);
+      throwIfError(result.error);
+      return normalizeRows(result.data);
     },
 
     async delete(id) {
-      const client = await db();
-      const user = await requireUser();
+      await requireUser();
 
-      const { error } = await client
+      const client = await db();
+
+      const result = await client
         .from(CONFIG.TABLES.knowledge)
         .delete()
         .eq("id", id)
-        .eq("owner_id", user.id);
+        .select("id");
 
-      throwIfError(error);
+      throwIfError(result.error);
 
-      return true;
+      return {
+        success: true,
+        deleted: normalizeRows(result.data).length
+      };
     }
-
   };
 
 
-  /* =====================================================
-     USAGE TRACKING
-  ===================================================== */
+  // ==========================================
+  // PART 3 — USAGE TRACKING
+  // ==========================================
 
   const usage = {
 
-    async record(recordData = {}) {
-      const client = await db();
+    async record(recordData) {
       const user = await requireUser();
+      const client = await db();
 
-      if (recordData.bot_id) {
-        const bot = await bots.get(recordData.bot_id);
-
-        if (!bot) {
-          throw makeError("Usage record bot not found.");
-        }
-      }
-
-      if (recordData.conversation_id) {
-        const conversation = await conversations.get(
-          recordData.conversation_id
-        );
-
-        if (!conversation) {
-          throw makeError("Usage record conversation not found.");
-        }
-      }
+      const data = recordData || {};
 
       const record = {
         owner_id: user.id,
-        bot_id: recordData.bot_id || null,
-        conversation_id: recordData.conversation_id || null,
-        provider: recordData.provider || "local",
-        model: recordData.model || "rule-based",
-        request_type: recordData.request_type || "chat",
-        input_tokens: Number(recordData.input_tokens || 0),
-        output_tokens: Number(recordData.output_tokens || 0),
+        bot_id: data.bot_id || null,
+        conversation_id: data.conversation_id || null,
+        provider: data.provider || "local",
+        model: data.model || "rule-based",
+        request_type: data.request_type || "message",
+        input_tokens: Number(data.input_tokens) || 0,
+        output_tokens: Number(data.output_tokens) || 0,
         created_at: now()
       };
 
-      const { data, error } = await client
+      const result = await client
         .from(CONFIG.TABLES.usage)
         .insert(record)
         .select("*")
         .single();
 
-      throwIfError(error);
-
-      return data;
+      throwIfError(result.error);
+      return result.data;
     },
 
     async list(botId) {
-      const client = await db();
       const user = await requireUser();
+      const client = await db();
 
       let query = client
         .from(CONFIG.TABLES.usage)
@@ -891,143 +788,123 @@
         query = query.eq("bot_id", botId);
       }
 
-      const { data, error } = await query.order(
+      const result = await query.order(
         "created_at",
         { ascending: false }
       );
 
-      throwIfError(error);
-
-      return normalizeRows(data);
+      throwIfError(result.error);
+      return normalizeRows(result.data);
     },
 
     async delete(id) {
-      const client = await db();
-      const user = await requireUser();
+      await requireUser();
 
-      const { error } = await client
+      const client = await db();
+
+      const result = await client
         .from(CONFIG.TABLES.usage)
         .delete()
         .eq("id", id)
-        .eq("owner_id", user.id)
         .select("id");
 
-      throwIfError(error);
+      throwIfError(result.error);
 
-      return true;
+      return {
+        success: true,
+        deleted: normalizeRows(result.data).length
+      };
     }
-
   };
 
 
-  /* =====================================================
-     ANALYTICS
-  ===================================================== */
+  // ==========================================
+  // PART 3 — ANALYTICS
+  // ==========================================
 
   const analytics = {
 
     async overview() {
-      await requireUser();
+      const user = await requireUser();
+      const client = await db();
 
       const results = await Promise.all([
-        bots.list(),
-        conversations.list(),
-        usage.list()
+        client.from(CONFIG.TABLES.bots)
+          .select("id", { count: "exact", head: true })
+          .eq("owner_id", user.id),
+
+        client.from(CONFIG.TABLES.conversations)
+          .select("id", { count: "exact", head: true })
+          .eq("owner_id", user.id),
+
+        client.from(CONFIG.TABLES.messages)
+          .select("id", { count: "exact", head: true })
+          .eq("owner_id", user.id),
+
+        client.from(CONFIG.TABLES.knowledge)
+          .select("id", { count: "exact", head: true })
+          .eq("owner_id", user.id),
+
+        client.from(CONFIG.TABLES.usage)
+          .select("id", { count: "exact", head: true })
+          .eq("owner_id", user.id)
       ]);
 
-      const botRows = normalizeRows(results[0]);
-      const conversationRows = normalizeRows(results[1]);
-      const usageRows = normalizeRows(results[2]);
-
-      const totalInputTokens = usageRows.reduce(
-        (total, item) => total + Number(item.input_tokens || 0),
-        0
-      );
-
-      const totalOutputTokens = usageRows.reduce(
-        (total, item) => total + Number(item.output_tokens || 0),
-        0
-      );
+      results.forEach(function (result) {
+        throwIfError(result.error);
+      });
 
       return {
-        totalBots: botRows.length,
-
-        activeBots: botRows.filter(
-          bot => bot.active === true
-        ).length,
-
-        favoriteBots: botRows.filter(
-          bot => bot.favorite === true
-        ).length,
-
-        totalConversations: conversationRows.length,
-
-        totalRequests: usageRows.length,
-
-        totalInputTokens: totalInputTokens,
-
-        totalOutputTokens: totalOutputTokens,
-
-        totalTokens: totalInputTokens + totalOutputTokens
+        bots: results[0].count || 0,
+        conversations: results[1].count || 0,
+        messages: results[2].count || 0,
+        knowledge: results[3].count || 0,
+        requests: results[4].count || 0
       };
     },
 
     async bot(botId) {
-      const selectedBot = await bots.get(botId);
+      const bot = await bots.get(botId);
 
-      if (!selectedBot) {
+      if (!bot) {
         throw makeError("Bot not found.");
       }
 
-      const results = await Promise.all([
-        conversations.list(botId),
-        knowledge.list(botId),
-        usage.list(botId)
-      ]);
-
-      const conversationRows = normalizeRows(results[0]);
-      const knowledgeRows = normalizeRows(results[1]);
-      const usageRows = normalizeRows(results[2]);
+      const [conversationRows, knowledgeRows, usageRows] =
+        await Promise.all([
+          conversations.list(botId),
+          knowledge.list(botId),
+          usage.list(botId)
+        ]);
 
       return {
-        bot: selectedBot,
-
-        totalConversations: conversationRows.length,
-
-        totalKnowledge: knowledgeRows.length,
-
-        totalRequests: usageRows.length,
-
-        totalInputTokens: usageRows.reduce(
-          (total, item) => total + Number(item.input_tokens || 0),
+        bot: bot,
+        conversations: conversationRows.length,
+        knowledge: knowledgeRows.length,
+        requests: usageRows.length,
+        input_tokens: usageRows.reduce(
+          (total, item) => total + (Number(item.input_tokens) || 0),
           0
         ),
-
-        totalOutputTokens: usageRows.reduce(
-          (total, item) => total + Number(item.output_tokens || 0),
+        output_tokens: usageRows.reduce(
+          (total, item) => total + (Number(item.output_tokens) || 0),
           0
-        ),
-
-        conversations: conversationRows,
-
-        knowledge: knowledgeRows,
-
-        usage: usageRows
+        )
       };
     }
-
   };
 
   console.info("HEXCLØWN CORE PART 3 READY");
-       
-  /* =====================================================
-     HEXCLØWN PUBLIC API
-  ===================================================== */
+
+  // PART 4 CONTINUES BELOW
+         
+  // ==========================================
+  // PART 4 — PUBLIC API
+  // ==========================================
 
   const HEXCLØWN = {
 
     name: CONFIG.PROJECT_NAME,
-
     version: CONFIG.VERSION,
 
     config: {
@@ -1036,59 +913,42 @@
       supabaseUrl: CONFIG.SUPABASE_URL
     },
 
-    /* CONNECTION */
-
+    // DATABASE
     db: db,
-
     initialize: initialize,
-
     healthCheck: healthCheck,
 
-    /* AUTHENTICATION */
-
+    // AUTHENTICATION
     signIn: signIn,
-
     signOut: signOut,
-
     getSession: getSession,
-
     getUser: getUser,
-
     requireUser: requireUser,
 
-    /* BOT MANAGEMENT */
-
+    // BOT SYSTEM
     bots: bots,
 
-    /* CONVERSATIONS */
-
+    // CONVERSATIONS
     conversations: conversations,
 
-    /* MESSAGES */
-
+    // MESSAGES
     messages: messages,
 
-    /* KNOWLEDGE */
-
+    // KNOWLEDGE
     knowledge: knowledge,
 
-    /* USAGE */
-
+    // USAGE
     usage: usage,
 
-    /* ANALYTICS */
-
+    // ANALYTICS
     analytics: analytics,
 
-    /* UTILITIES */
-
+    // UTILITIES
     utils: {
       createId: createId,
       now: now,
       normalizeRows: normalizeRows
     },
-
-    /* STATUS */
 
     get status() {
       return {
@@ -1098,67 +958,49 @@
         version: CONFIG.VERSION
       };
     }
-
   };
 
 
-  /* =====================================================
-     GLOBAL EXPORT
-  ===================================================== */
+  // ==========================================
+  // GLOBAL EXPORTS
+  // ==========================================
 
   window["HEXCLØWN"] = HEXCLØWN;
+  window.HEX = HEXCLØWN;
 
 
-  /* =====================================================
-     STARTUP EVENT
-  ===================================================== */
+  // ==========================================
+  // START CORE
+  // ==========================================
 
   async function startCore() {
-
     try {
-
       await db();
 
-      console.info(
-        "HEXCLØWN CORE: CONNECTION READY"
-      );
+      dispatchEvent("hexclown:ready", {
+        success: true,
+        version: CONFIG.VERSION
+      });
 
-      window.dispatchEvent(
-        new CustomEvent("hexclown:ready", {
-          detail: {
-            success: true,
-            version: CONFIG.VERSION
-          }
-        })
+      console.info(
+        "HEXCLØWN BOT ZONE CORE",
+        CONFIG.VERSION,
+        "READY"
       );
 
     } catch (error) {
 
       console.error(
-        "HEXCLØWN CORE STARTUP ERROR:",
+        "HEXCLØWN CORE INITIALIZATION FAILED:",
         error
       );
 
-      window.dispatchEvent(
-        new CustomEvent("hexclown:error", {
-          detail: {
-            success: false,
-            message: error.message
-          }
-        })
-      );
-
+      dispatchEvent("hexclown:error", {
+        message: error.message
+      });
     }
-
   }
 
-
   startCore();
-
-  console.info(
-    "HEXCLØWN BOT ZONE CORE",
-    CONFIG.VERSION,
-    "LOADED SUCCESSFULLY"
-  );
 
 })();
