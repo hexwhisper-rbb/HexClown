@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>HEXCLØWN Auth Test</title>
+  <title>HEXCLØWN Bot Test</title>
   <style>
     body {
       background: #090914;
@@ -12,22 +12,13 @@
       font-family: Arial, sans-serif;
       padding: 20px;
     }
-    input, button {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 14px;
-      margin: 8px 0;
-      border-radius: 8px;
-    }
-    input {
-      background: #17172a;
-      color: white;
-      border: 1px solid #555;
-    }
     button {
+      width: 100%;
+      padding: 15px;
       background: #a855f7;
       color: white;
       border: 0;
+      border-radius: 8px;
       font-weight: bold;
     }
     pre {
@@ -39,67 +30,86 @@
   </style>
 </head>
 <body>
-  <h2>HEXCLØWN AUTHENTICATION TEST</h2>
-
-  <input id="email" type="email" placeholder="Your account email">
-  <input id="password" type="password" placeholder="Your password">
-
-  <button id="login">TEST SIGN IN</button>
-  <button id="session">CHECK SESSION</button>
-  <button id="logout">SIGN OUT</button>
-
+  <h2>HEXCLØWN BOT DATABASE TEST</h2>
+  <button id="run">RUN BOT TEST</button>
   <pre id="output">Ready.</pre>
 
   <script src="botzone-core.js?v=4.0.0"></script>
   <script>
-    const output = document.getElementById("output");
     const HEX = window["HEXCLØWN"];
+    const output = document.getElementById("output");
 
-    function show(message) {
-      output.textContent = message;
-    }
+    document.getElementById("run").onclick = async function () {
+      let testBot = null;
+      const results = [];
 
-    document.getElementById("login").onclick = async function () {
-      show("Testing sign in...");
-
-      try {
-        const result = await HEX.signIn(
-          document.getElementById("email").value,
-          document.getElementById("password").value
-        );
-
-        show(
-          "SIGN IN: PASS\n" +
-          "USER ID: " + result.user.id + "\n" +
-          "SESSION: " + !!result.session
-        );
-      } catch (error) {
-        show("SIGN IN: FAIL\n" + error.message);
+      function pass(message) {
+        results.push("PASS: " + message);
+        output.textContent = results.join("\n");
       }
-    };
 
-    document.getElementById("session").onclick = async function () {
-      show("Checking session...");
-
-      try {
-        const session = await HEX.getSession();
-
-        show(
-          session
-            ? "SESSION: ACTIVE\nUSER ID: " + session.user.id
-            : "SESSION: NOT FOUND"
-        );
-      } catch (error) {
-        show("SESSION ERROR:\n" + error.message);
+      function fail(message, error) {
+        results.push("FAIL: " + message + " — " + error.message);
+        output.textContent = results.join("\n");
       }
-    };
 
-    document.getElementById("logout").onclick = async function () {
+      output.textContent = "Starting bot tests...";
+
       try {
-        await HEX.signOut();
-        show("SIGN OUT: PASS");
+        await HEX.requireUser();
+        pass("AUTHENTICATION");
+
+        testBot = await HEX.bots.create({
+          name: "HEX TEST BOT",
+          description: "Temporary diagnostic bot",
+          category: "Testing"
+        });
+        pass("CREATE BOT");
+
+        const found = await HEX.bots.get(testBot.id);
+
+        if (!found) throw new Error("Created bot could not be retrieved.");
+        pass("RETRIEVE BOT");
+
+        await HEX.bots.update(testBot.id, {
+          description: "Updated diagnostic bot"
+        });
+        pass("UPDATE BOT");
+
+        const updated = await HEX.bots.get(testBot.id);
+
+        if (updated.description !== "Updated diagnostic bot") {
+          throw new Error("Updated description did not match.");
+        }
+        pass("VERIFY UPDATE");
+
+        const list = await HEX.bots.list();
+
+        if (!list.some(bot => bot.id === testBot.id)) {
+          throw new Error("Test bot was not found in bot list.");
+        }
+        pass("LIST BOTS");
+
       } catch (error) {
-        show("SIGN OUT: FAIL\n" + error.message);
+        fail("BOT OPERATION", error);
+
+      } finally {
+        if (testBot) {
+          try {
+            const deleted = await HEX.bots.delete(testBot.id);
+
+            if (deleted.deleted === 1) {
+              pass("CLEANUP TEST BOT");
+            } else {
+              results.push("CHECK: Test bot may still exist.");
+            }
+          } catch (error) {
+            fail("CLEANUP TEST BOT", error);
+          }
+        }
+
+        results.push("BOT TEST FINISHED");
+        output.textContent = results.join("\n");
       }
     };
   </script>
