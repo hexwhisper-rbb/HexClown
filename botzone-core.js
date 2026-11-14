@@ -217,21 +217,26 @@
     return { success: true };
   }
 
+
   async function initialize() {
-    if (initializationPromise) {
-      return initializationPromise;
+    await db();
+
+    const session = await getSession();
+
+    if (session && session.access_token) {
+      currentUser = await getUser();
+    } else {
+      currentUser = null;
     }
 
-    initializationPromise = (async function () {
-      await db();
-
-      const session = await getSession();
-
-      if (session && session.access_token) {
-        currentUser = await getUser();
-      } else {
-        currentUser = null;
-      }
+    return {
+      success: true,
+      authenticated: !!currentUser,
+      user: currentUser,
+      version: CONFIG.VERSION
+    };
+  }
+  
 
       return {
         success: true,
