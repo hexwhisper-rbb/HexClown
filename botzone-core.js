@@ -1,26 +1,37 @@
 (function () {
 "use strict";
 
-/* =====================================
-   HEXCLØWN BOT ZONE CORE
-   VERSION 1.1.0
-===================================== */
+/* =========================================
+   HEXCLØWN CORE CONFIGURATION
+========================================= */
 
 const CONFIG = {
-  SUPABASE_URL: "https://nddaaqvsnnrdylajpdmp.supabase.co",
-  SUPABASE_KEY: "sb_publishable_DVAyBfoG7N50q4x6Vf1YeA_a7mghWFN",
-  HEALTH_URL: "https://nddaaqvsnnrdylajpdmp.supabase.co/functions/v1/hexclown-health"
+  SUPABASE_URL:
+    "https://nddaaqvsnnrdylajpdmp.supabase.co",
+
+  SUPABASE_KEY:
+    "sb_publishable_DVAyBfoG7N50q4x6Vf1YeA_a7mghWFN",
+
+  HEALTH_URL:
+    "https://nddaaqvsnnrdylajpdmp.supabase.co/functions/v1/hexclown-health"
 };
 
-let supabase = null;
+
+/* =========================================
+   INTERNAL STATE
+========================================= */
+
+let supabaseClient = null;
 let initializationPromise = null;
 
-/* =====================================
+
+/* =========================================
    SUPABASE INITIALIZATION
-===================================== */
+========================================= */
 
 function loadLibrary() {
   return new Promise((resolve, reject) => {
+
     if (window.supabase && window.supabase.createClient) {
       resolve();
       return;
@@ -29,11 +40,11 @@ function loadLibrary() {
     const script = document.createElement("script");
 
     script.src =
-      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js";
+      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
 
     script.onload = resolve;
 
-    script.onerror = () => {
+    script.onerror = function () {
       reject(new Error("Could not load Supabase library."));
     };
 
@@ -41,49 +52,64 @@ function loadLibrary() {
   });
 }
 
-async function initialize() {
-  if (supabase) return supabase;
-
-  if (initializationPromise) {
-    return initializationPromise;
-  }
-
-  initializationPromise = (async () => {
-    await loadLibrary();
-
-    supabase = window.supabase.createClient(
-      CONFIG.SUPABASE_URL,
-      CONFIG.SUPABASE_KEY,
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
-        }
-      }
-    );
-
-    return supabase;
-  })();
-
-  try {
-    return await initializationPromise;
-  } catch (error) {
-    initializationPromise = null;
-    throw error;
-  }
-}
 
 async function db() {
-  return initialize();
+  if (supabaseClient) {
+    return supabaseClient;
+  }
+
+  await loadLibrary();
+
+  supabaseClient = window.supabase.createClient(
+    CONFIG.SUPABASE_URL,
+    CONFIG.SUPABASE_KEY,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true
+      }
+    }
+  );
+
+  return supabaseClient;
 }
+
+
+async function initialize() {
+  if (!initializationPromise) {
+
+    initializationPromise = (async function () {
+      await db();
+
+      const user = await requireUser();
+
+      return {
+        success: true,
+        user: user
+      };
+    })();
+  }
+
+  return initializationPromise;
+}
+
+
+/* =========================================
+   AUTHENTICATION
+========================================= */
 
 async function requireUser() {
   const client = await db();
 
-  const { data, error } = await client.auth.getUser();
+  const {
+    data,
+    error
+  } = await client.auth.getUser();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   if (!data.user) {
     throw new Error("Please sign in first.");
@@ -92,157 +118,225 @@ async function requireUser() {
   return data.user;
 }
 
-function handleError(error) {
-  if (error) throw error;
-}
-
-/* =====================================
-   AUTHENTICATION
-===================================== */
 
 const auth = {
-
-  async signIn(email, password) {
-    const client = await db();
-
-    const { data, error } =
-      await client.auth.signInWithPassword({
-        email,
-        password
-      });
-
-    handleError(error);
-    return data;
-  },
-
-  async signOut() {
-    const client = await db();
-
-    const { error } = await client.auth.signOut();
-
-    handleError(error);
-    return true;
-  },
 
   async getUser() {
     const client = await db();
 
-    const { data, error } = await client.auth.getUser();
+    const {
+      data,
+      error
+    } = await client.auth.getUser();
 
-    handleError(error);
-    return data.user;
+    if (error) throw error;
+
+    return data.user || null;
   },
+
 
   async getSession() {
     const client = await db();
 
-    const { data, error } = await client.auth.getSession();
+    const {
+      data,
+      error
+    } = await client.auth.getSession();
 
-    handleError(error);
-    return data.session;
+    if (error) throw error;
+
+    return data.session || null;
   },
+
+
+  async signIn(email, password) {
+    const client = await db();
+
+    const {
+      data,
+      error
+    } = await client.auth.signInWithPassword({
+      email: email,
+      password: password
+    });
+
+    if (error) throw error;
+
+    return data;
+  },
+
+
+  async signOut() {
+    const client = await db();
+
+    const {
+      error
+    } = await client.auth.signOut();
+
+    if (error) throw error;
+
+    return true;
+  },
+
 
   onAuthChange(callback) {
-    initialize().then(client => {
-      client.auth.onAuthStateChange((event, session) => {
-        callback(event, session);
-      });
-    });
-  },
+    db().then(client => {
 
-  async requireUser() {
-    return requireUser();
+      client.auth.onAuthStateChange(
+        (event, session) => {
+          callback(event, session);
+        }
+      );
+
+    });
   }
 
 };
 
-/* =====================================
+
+/* =========================================
    BACKEND HEALTH
-===================================== */
+========================================= */
 
 const health = {
 
   async check() {
-    const response = await fetch(CONFIG.HEALTH_URL);
+    const response = await fetch(
+      CONFIG.HEALTH_URL,
+      {
+        method: "GET",
+        headers: {
+          "Accept": "application/json"
+        }
+      }
+    );
 
     if (!response.ok) {
-      throw new Error("Backend health check failed.");
+      throw new Error(
+        "Backend health check failed: " + response.status
+      );
     }
 
-    return response.json();
+    return await response.json();
   }
 
 };
 
-/* =====================================
-   BOT DATABASE
-===================================== */
+
+/* =========================================
+   BOT MANAGEMENT
+========================================= */
 
 const bots = {
 
-  async create(botData) {
+  async create(botData = {}) {
     const client = await db();
     const user = await requireUser();
 
+    if (!botData.name || !String(botData.name).trim()) {
+      throw new Error("Bot name is required.");
+    }
+
     const record = {
       owner_id: user.id,
-      name: botData.name,
+
+      name: String(botData.name).trim(),
+
       description: botData.description || "",
+
       category: botData.category || "General",
+
       icon: botData.icon || "🤖",
+
       visibility: botData.visibility || "private",
+
       personality: botData.personality || "",
-      response_style: botData.response_style || "Friendly",
+
+      response_style:
+        botData.response_style || "Friendly",
+
       instructions: botData.instructions || "",
-      welcome_message: botData.welcome_message || "",
-      conversation_starter: botData.conversation_starter || "",
+
+      welcome_message:
+        botData.welcome_message || "",
+
+      conversation_starter:
+        botData.conversation_starter || "",
+
       active: botData.active !== false,
+
       favorite: botData.favorite === true,
+
       settings: botData.settings || {}
     };
 
-    const { data, error } = await client
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_bots")
       .insert(record)
-      .select()
+      .select("*")
       .single();
 
-    handleError(error);
+    if (error) throw error;
+
     return data;
   },
+
 
   async list() {
     const client = await db();
     const user = await requireUser();
 
-    const { data, error } = await client
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_bots")
       .select("*")
       .eq("owner_id", user.id)
-      .order("created_at", { ascending: false });
+      .order("created_at", {
+        ascending: false
+      });
 
-    handleError(error);
+    if (error) throw error;
+
     return data || [];
   },
+
 
   async get(botId) {
     const client = await db();
     const user = await requireUser();
 
-    const { data, error } = await client
+    if (!botId) {
+      throw new Error("Bot ID is required.");
+    }
+
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_bots")
       .select("*")
       .eq("id", botId)
       .eq("owner_id", user.id)
-      .maybeSingle();
+      .single();
 
-    handleError(error);
+    if (error) throw error;
+
     return data;
   },
 
-  async update(botId, updates) {
+
+  async update(botId, changes = {}) {
     const client = await db();
     const user = await requireUser();
+
+    if (!botId) {
+      throw new Error("Bot ID is required.");
+    }
 
     const allowed = [
       "name",
@@ -260,33 +354,45 @@ const bots = {
       "settings"
     ];
 
-    const clean = {};
+    const safeChanges = {};
 
     allowed.forEach(key => {
-      if (Object.prototype.hasOwnProperty.call(updates, key)) {
-        clean[key] = updates[key];
+      if (Object.prototype.hasOwnProperty.call(changes, key)) {
+        safeChanges[key] = changes[key];
       }
     });
 
-    clean.updated_at = new Date().toISOString();
+    safeChanges.updated_at = new Date().toISOString();
 
-    const { data, error } = await client
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_bots")
-      .update(clean)
+      .update(safeChanges)
       .eq("id", botId)
       .eq("owner_id", user.id)
-      .select()
+      .select("*")
       .single();
 
-    handleError(error);
+    if (error) throw error;
+
     return data;
   },
+
 
   async delete(botId) {
     const client = await db();
     const user = await requireUser();
 
-    const { data, error } = await client
+    if (!botId) {
+      throw new Error("Bot ID is required.");
+    }
+
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_bots")
       .delete()
       .eq("id", botId)
@@ -294,7 +400,7 @@ const bots = {
       .select("id")
       .maybeSingle();
 
-    handleError(error);
+    if (error) throw error;
 
     if (!data) {
       throw new Error("Bot not found or could not be deleted.");
@@ -303,153 +409,183 @@ const bots = {
     return true;
   },
 
-  async toggleFavorite(botId, value) {
+
+  async toggleFavorite(botId) {
     const bot = await this.get(botId);
 
-    if (!bot) throw new Error("Bot not found.");
-
-    return this.update(botId, {
-      favorite: value === undefined ? !bot.favorite : !!value
+    return await this.update(botId, {
+      favorite: !bot.favorite
     });
   },
 
-  async toggleActive(botId, value) {
+
+  async toggleActive(botId) {
     const bot = await this.get(botId);
 
-    if (!bot) throw new Error("Bot not found.");
-
-    return this.update(botId, {
-      active: value === undefined ? !bot.active : !!value
+    return await this.update(botId, {
+      active: !bot.active
     });
   }
 
 };
 
-/* END OF PART 1
-   WAIT FOR PART 2.
-*//* =====================================
-   CONVERSATION DATABASE
-===================================== */
+
+/* END OF PART 1 *//* =========================================
+   CONVERSATION MANAGEMENT
+========================================= */
 
 const conversations = {
 
-  async create(data) {
+  async create(botId, title = "New Conversation") {
     const client = await db();
     const user = await requireUser();
 
-    const { data: bot, error: botError } = await client
-      .from("hexclown_bots")
-      .select("id")
-      .eq("id", data.bot_id)
-      .eq("owner_id", user.id)
-      .maybeSingle();
+    if (!botId || typeof botId !== "string") {
+      throw new Error("A valid bot ID is required.");
+    }
 
-    handleError(botError);
+    // Confirm that this bot belongs to the signed-in user.
+    const bot = await bots.get(botId);
 
-    if (!bot) throw new Error("Bot not found.");
+    if (!bot || !bot.id) {
+      throw new Error("Bot not found.");
+    }
 
-    const { data: result, error } = await client
+    const record = {
+      owner_id: user.id,
+      bot_id: bot.id,
+      title: title || "New Conversation",
+      status: "active"
+    };
+
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_conversations")
-      .insert({
-        owner_id: user.id,
-        bot_id: data.bot_id,
-        title: data.title || "New Conversation",
-        status: "active"
-      })
-      .select()
+      .insert(record)
+      .select("*")
       .single();
 
-    handleError(error);
-    return result;
+    if (error) throw error;
+
+    return data;
   },
 
-  async list(botId) {
+
+  async list(botId = null) {
     const client = await db();
     const user = await requireUser();
 
     let query = client
       .from("hexclown_conversations")
       .select("*")
-      .eq("owner_id", user.id);
+      .eq("owner_id", user.id)
+      .order("created_at", {
+        ascending: false
+      });
 
-    if (botId) query = query.eq("bot_id", botId);
+    if (botId) {
+      query = query.eq("bot_id", botId);
+    }
 
-    const { data, error } = await query
-      .order("created_at", { ascending: false });
+    const {
+      data,
+      error
+    } = await query;
 
-    handleError(error);
+    if (error) throw error;
+
     return data || [];
   },
+
 
   async get(conversationId) {
     const client = await db();
     const user = await requireUser();
 
-    const { data, error } = await client
+    if (!conversationId) {
+      throw new Error("Conversation ID is required.");
+    }
+
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_conversations")
       .select("*")
       .eq("id", conversationId)
       .eq("owner_id", user.id)
-      .maybeSingle();
+      .single();
 
-    handleError(error);
+    if (error) throw error;
+
     return data;
   },
 
-  async update(conversationId, updates) {
+
+  async update(conversationId, changes = {}) {
     const client = await db();
     const user = await requireUser();
 
-    const clean = {};
-
-    if (updates.title !== undefined) {
-      clean.title = updates.title;
+    if (!conversationId) {
+      throw new Error("Conversation ID is required.");
     }
 
-    if (updates.status !== undefined) {
-      clean.status = updates.status;
+    const safeChanges = {};
+
+    if (typeof changes.title === "string") {
+      safeChanges.title = changes.title;
     }
 
-    clean.updated_at = new Date().toISOString();
+    if (typeof changes.status === "string") {
+      safeChanges.status = changes.status;
+    }
 
-    const { data, error } = await client
+    safeChanges.updated_at = new Date().toISOString();
+
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_conversations")
-      .update(clean)
+      .update(safeChanges)
       .eq("id", conversationId)
       .eq("owner_id", user.id)
-      .select()
+      .select("*")
       .single();
 
-    handleError(error);
+    if (error) throw error;
+
     return data;
   },
+
 
   async delete(conversationId) {
     const client = await db();
     const user = await requireUser();
 
-    const { data: conversation, error: checkError } = await client
-      .from("hexclown_conversations")
-      .select("id")
-      .eq("id", conversationId)
-      .eq("owner_id", user.id)
-      .maybeSingle();
-
-    handleError(checkError);
-
-    if (!conversation) {
-      throw new Error("Conversation not found.");
+    if (!conversationId) {
+      throw new Error("Conversation ID is required.");
     }
 
-    const { error: messageError } = await client
+    // Verify ownership before deleting associated messages.
+    await this.get(conversationId);
+
+    const {
+      error: messageError
+    } = await client
       .from("hexclown_messages")
       .delete()
       .eq("conversation_id", conversationId)
       .eq("owner_id", user.id);
 
-    handleError(messageError);
+    if (messageError) throw messageError;
 
-    const { data, error } = await client
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_conversations")
       .delete()
       .eq("id", conversationId)
@@ -457,10 +593,10 @@ const conversations = {
       .select("id")
       .maybeSingle();
 
-    handleError(error);
+    if (error) throw error;
 
     if (!data) {
-      throw new Error("Conversation deletion failed.");
+      throw new Error("Conversation could not be deleted.");
     }
 
     return true;
@@ -468,70 +604,91 @@ const conversations = {
 
 };
 
-/* =====================================
-   MESSAGE DATABASE
-===================================== */
+
+/* =========================================
+   MESSAGE MANAGEMENT
+========================================= */
 
 const messages = {
 
-  async save(conversationId, role, content) {
+  async save(conversationId, role, content, metadata = {}) {
     const client = await db();
     const user = await requireUser();
 
-    const { data: conversation, error: checkError } = await client
-      .from("hexclown_conversations")
-      .select("id")
-      .eq("id", conversationId)
-      .eq("owner_id", user.id)
-      .maybeSingle();
-
-    handleError(checkError);
-
-    if (!conversation) {
-      throw new Error("Conversation not found.");
+    if (!conversationId) {
+      throw new Error("Conversation ID is required.");
     }
 
-    const allowedRoles = ["user", "assistant", "system"];
-
-    if (!allowedRoles.includes(role)) {
-      throw new Error("Invalid message role.");
+    if (!role || !content) {
+      throw new Error("Message role and content are required.");
     }
 
-    const { data, error } = await client
+    // Verify conversation ownership.
+    await conversations.get(conversationId);
+
+    const record = {
+      owner_id: user.id,
+      conversation_id: conversationId,
+      role: role,
+      content: content,
+      metadata: metadata || {}
+    };
+
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_messages")
-      .insert({
-        owner_id: user.id,
-        conversation_id: conversationId,
-        role,
-        content: String(content)
-      })
-      .select()
+      .insert(record)
+      .select("*")
       .single();
 
-    handleError(error);
+    if (error) throw error;
+
     return data;
   },
+
 
   async list(conversationId) {
     const client = await db();
     const user = await requireUser();
 
-    const { data, error } = await client
+    if (!conversationId) {
+      throw new Error("Conversation ID is required.");
+    }
+
+    await conversations.get(conversationId);
+
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_messages")
       .select("*")
       .eq("conversation_id", conversationId)
       .eq("owner_id", user.id)
-      .order("created_at", { ascending: true });
+      .order("created_at", {
+        ascending: true
+      });
 
-    handleError(error);
+    if (error) throw error;
+
     return data || [];
   },
+
 
   async delete(messageId) {
     const client = await db();
     const user = await requireUser();
 
-    const { data, error } = await client
+    if (!messageId) {
+      throw new Error("Message ID is required.");
+    }
+
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_messages")
       .delete()
       .eq("id", messageId)
@@ -539,7 +696,7 @@ const messages = {
       .select("id")
       .maybeSingle();
 
-    handleError(error);
+    if (error) throw error;
 
     if (!data) {
       throw new Error("Message not found or could not be deleted.");
@@ -550,64 +707,87 @@ const messages = {
 
 };
 
-/* =====================================
-   BOT KNOWLEDGE DATABASE
-===================================== */
+
+/* =========================================
+   BOT KNOWLEDGE MANAGEMENT
+========================================= */
 
 const knowledge = {
 
-  async add(botId, item) {
+  async add(botId, title, content, metadata = {}) {
     const client = await db();
     const user = await requireUser();
 
-    const { data: bot, error: checkError } = await client
-      .from("hexclown_bots")
-      .select("id")
-      .eq("id", botId)
-      .eq("owner_id", user.id)
-      .maybeSingle();
+    if (!botId || !title) {
+      throw new Error("Bot ID and knowledge title are required.");
+    }
 
-    handleError(checkError);
+    await bots.get(botId);
 
-    if (!bot) throw new Error("Bot not found.");
+    const record = {
+      owner_id: user.id,
+      bot_id: botId,
+      title: title,
+      content: content || "",
+      source_type: metadata.source_type || "text",
+      metadata: metadata || {}
+    };
 
-    const { data, error } = await client
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_knowledge")
-      .insert({
-        owner_id: user.id,
-        bot_id: botId,
-        title: item.title,
-        content: item.content || "",
-        source_type: item.source_type || "manual",
-        metadata: item.metadata || {}
-      })
-      .select()
+      .insert(record)
+      .select("*")
       .single();
 
-    handleError(error);
+    if (error) throw error;
+
     return data;
   },
+
 
   async list(botId) {
     const client = await db();
     const user = await requireUser();
 
-    const { data, error } = await client
+    if (!botId) {
+      throw new Error("Bot ID is required.");
+    }
+
+    await bots.get(botId);
+
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_knowledge")
       .select("*")
       .eq("bot_id", botId)
       .eq("owner_id", user.id)
-      .order("created_at", { ascending: false });
+      .order("created_at", {
+        ascending: false
+      });
 
-    handleError(error);
+    if (error) throw error;
+
     return data || [];
   },
+
 
   async delete(knowledgeId) {
     const client = await db();
     const user = await requireUser();
 
-    const { data, error } = await client
+    if (!knowledgeId) {
+      throw new Error("Knowledge ID is required.");
+    }
+
+    const {
+      data,
+      error
+    } = await client
       .from("hexclown_knowledge")
       .delete()
       .eq("id", knowledgeId)
@@ -615,7 +795,7 @@ const knowledge = {
       .select("id")
       .maybeSingle();
 
-    handleError(error);
+    if (error) throw error;
 
     if (!data) {
       throw new Error("Knowledge item not found or could not be deleted.");
@@ -626,21 +806,23 @@ const knowledge = {
 
 };
 
-/* END OF PART 2
-   WAIT FOR PART 3.
-*//* =====================================================
-   PART 3 — USAGE TRACKING, ANALYTICS & PUBLIC API
-===================================================== */
 
-/* USAGE TRACKING */
+/* END OF PART 2 *//* =========================================
+   USAGE TRACKING
+========================================= */
 
 const usage = {
 
   async record(data = {}) {
-    const user = await auth.getUser();
+    const client = await db();
+    const user = await requireUser();
 
-    if (!user) {
-      throw new Error("You must sign in first.");
+    if (data.bot_id) {
+      await bots.get(data.bot_id);
+    }
+
+    if (data.conversation_id) {
+      await conversations.get(data.conversation_id);
     }
 
     const record = {
@@ -654,7 +836,7 @@ const usage = {
       output_tokens: Number(data.output_tokens || 0)
     };
 
-    const { data: saved, error } = await supabase
+    const { data: saved, error } = await client
       .from("hexclown_usage")
       .insert(record)
       .select("*")
@@ -665,14 +847,12 @@ const usage = {
     return saved;
   },
 
+
   async list(botId = null) {
-    const user = await auth.getUser();
+    const client = await db();
+    const user = await requireUser();
 
-    if (!user) {
-      throw new Error("You must sign in first.");
-    }
-
-    let query = supabase
+    let query = client
       .from("hexclown_usage")
       .select("*")
       .eq("owner_id", user.id)
@@ -689,14 +869,16 @@ const usage = {
     return data || [];
   },
 
-  async delete(usageId) {
-    const user = await auth.getUser();
 
-    if (!user) {
-      throw new Error("You must sign in first.");
+  async delete(usageId) {
+    const client = await db();
+    const user = await requireUser();
+
+    if (!usageId) {
+      throw new Error("Usage ID is required.");
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await client
       .from("hexclown_usage")
       .delete()
       .eq("id", usageId)
@@ -707,7 +889,7 @@ const usage = {
     if (error) throw error;
 
     if (!data) {
-      throw new Error("Usage record was not found or could not be deleted.");
+      throw new Error("Usage record not found or could not be deleted.");
     }
 
     return true;
@@ -716,25 +898,32 @@ const usage = {
 };
 
 
-/* ANALYTICS */
+/* =========================================
+   ANALYTICS
+========================================= */
 
 const analytics = {
 
   async overview() {
-    const [allBots, allConversations, allUsage] =
-      await Promise.all([
-        bots.list(),
-        conversations.list(),
-        usage.list()
-      ]);
+    const [
+      allBots,
+      allConversations,
+      allUsage
+    ] = await Promise.all([
+      bots.list(),
+      conversations.list(),
+      usage.list()
+    ]);
 
-    const totalInput = allUsage.reduce(
-      (sum, item) => sum + Number(item.input_tokens || 0),
+    const inputTokens = allUsage.reduce(
+      (sum, item) =>
+        sum + Number(item.input_tokens || 0),
       0
     );
 
-    const totalOutput = allUsage.reduce(
-      (sum, item) => sum + Number(item.output_tokens || 0),
+    const outputTokens = allUsage.reduce(
+      (sum, item) =>
+        sum + Number(item.output_tokens || 0),
       0
     );
 
@@ -742,27 +931,31 @@ const analytics = {
       total_bots: allBots.length,
 
       active_bots: allBots.filter(
-        bot => bot.active === true
+        item => item.active === true
       ).length,
 
       favorite_bots: allBots.filter(
-        bot => bot.favorite === true
+        item => item.favorite === true
       ).length,
 
       total_conversations: allConversations.length,
 
       total_requests: allUsage.length,
 
-      input_tokens: totalInput,
+      input_tokens: inputTokens,
 
-      output_tokens: totalOutput,
+      output_tokens: outputTokens,
 
-      total_tokens: totalInput + totalOutput
+      total_tokens: inputTokens + outputTokens
     };
   },
 
 
   async bot(botId) {
+    if (!botId) {
+      throw new Error("Bot ID is required.");
+    }
+
     const [
       bot,
       botConversations,
@@ -776,12 +969,14 @@ const analytics = {
     ]);
 
     const inputTokens = botUsage.reduce(
-      (sum, item) => sum + Number(item.input_tokens || 0),
+      (sum, item) =>
+        sum + Number(item.input_tokens || 0),
       0
     );
 
     const outputTokens = botUsage.reduce(
-      (sum, item) => sum + Number(item.output_tokens || 0),
+      (sum, item) =>
+        sum + Number(item.output_tokens || 0),
       0
     );
 
@@ -805,11 +1000,13 @@ const analytics = {
 };
 
 
-/* PUBLIC HEXCLØWN API */
+/* =========================================
+   PUBLIC HEXCLØWN API
+========================================= */
 
 const HEXCLØWN = {
 
-  version: "1.1.0",
+  version: "2.0.0",
 
   ready: false,
 
@@ -831,36 +1028,46 @@ const HEXCLØWN = {
 
   analytics: analytics,
 
-  getUser: auth.getUser
+  getUser: requireUser
 
 };
 
 
-/* EXPOSE CORE TO OTHER PAGES */
+/* =========================================
+   EXPOSE CORE
+========================================= */
 
 window["HEXCLØWN"] = HEXCLØWN;
 
 
-/* INITIALIZE CORE */
+/* =========================================
+   START CORE
+========================================= */
 
 initialize()
   .then(function () {
+
     HEXCLØWN.ready = true;
+
+    console.log("HEXCLØWN CORE READY");
 
     window.dispatchEvent(
       new CustomEvent("hexclown:ready")
     );
 
-    console.log("HEXCLØWN CORE READY");
   })
   .catch(function (error) {
+
     console.error(
       "HEXCLØWN INITIALIZATION FAILED:",
       error
     );
+
   });
 
 
-/* END OF BOTZONE CORE */
+/* =========================================
+   END OF HEXCLØWN CORE
+========================================= */
 
 })();
