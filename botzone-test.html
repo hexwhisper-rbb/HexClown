@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HEXCLØWN Backend Test</title>
+  <style>
+    body {
+      background: #080d12;
+      color: #e8f5f5;
+      font-family: Arial, sans-serif;
+      padding: 25px;
+    }
+    h2 { color: #00e5c3; }
+    button {
+      background: #00bfa5;
+      color: #001410;
+      border: 0;
+      padding: 13px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #121e26;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>HEXCLØWN</h2>
+  <p>Bot Zone Backend Diagnostics</p>
+
+  <button onclick="runTests()">RUN BACKEND TEST</button>
+
+  <div id="result">Waiting for test...</div>
+
+  <script src="./botzone-core.js"></script>
+
+  <script>
+    async function runTests() {
+      const output = document.getElementById("result");
+
+      output.textContent = "Running tests...";
+
+      try {
+        const health = await window.HEXCLØWN.health.check();
+
+        await window.HEXCLØWN.ready();
+
+        output.textContent =
+          "CORE: LOADED\n\n" +
+          "SUPABASE LIBRARY: INITIALIZED\n\n" +
+          "BACKEND: " +
+          (health.online ? "ONLINE" : "OFFLINE") +
+          "\n\n" +
+          "STATUS: " + health.status +
+          "\n\n" +
+          "MESSAGE: " + health.message;
+
+      } catch (error) {
+        output.textContent =
+          "TEST FAILED\n\n" + error.message;
+      }
+    }
+  </script>
+
+</body>
+</html>
